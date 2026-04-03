@@ -8,6 +8,19 @@
  * @help
  */
 
+const SAM_NAME = "Chara_Player";
+const SAM_ACTOR_ID = 1;
+const MISSING_RIGHT_ARM_SUFFIX = "_MissingRightarm";
+const MISSING_LEFT_ARM_SUFFIX = "_MissingLeftarm";
+const MISSING_BOTH_ARM_SUFFIX = "_MissingBotharm";
+const MISSING_ARM_SLOT_NAME = "Gnawed Off";
+
+const ARM_VARIABLE_ID = 187;
+const MISSING_NO_ARM_VALUE = 0;
+const MISSING_RIGHT_ARM_VALUE = 1;
+const MISSING_LEFT_ARM_VALUE = 2;
+const MISSING_BOTH_ARM_VALUE = 3;
+
 const LIVINGROOM_MAP_ID = 3;
 const LIVINGROOM_WAKEUP_EVENT_ID = 18;
 const WAKEUP_NO_ARMS_COUCH = [
@@ -1245,19 +1258,6 @@ const WAKEUP_NO_ARMS_BED = [
   },
 ];
 
-const SAM_NAME = "Chara_Player";
-const SAM_ACTOR_ID = 1;
-const MISSING_RIGHT_ARM_SUFFIX = "_MissingRightarm";
-const MISSING_LEFT_ARM_SUFFIX = "_MissingLeftarm";
-const MISSING_BOTH_ARM_SUFFIX = "_MissingBotharm";
-const MISSING_ARM_SLOT_NAME = "Gnawed Off";
-
-const ARM_VARIABLE_ID = 187;
-const MISSING_NO_ARM_VALUE = 0;
-const MISSING_RIGHT_ARM_VALUE = 1;
-const MISSING_LEFT_ARM_VALUE = 2;
-const MISSING_BOTH_ARM_VALUE = 3;
-
 var UnarmedAndDangerous = UnarmedAndDangerous || {};
 
 UnarmedAndDangerous.applyChanges = function () {
@@ -1265,20 +1265,21 @@ UnarmedAndDangerous.applyChanges = function () {
 
   // overwrite image loading to use unencrypted pngs when loading custom armless files
   // this keeps game updates from breaking my custom images
-  const _loadBitmap = ImageManager.loadBitmap;
-  ImageManager.loadBitmap = function (folder, filename, hue, smooth) {
-    if (filename.endsWith(MISSING_BOTH_ARM_SUFFIX)) {
-      return Bitmap.load(folder + filename + ".png", filename, hue, smooth);
-    } else return _loadBitmap.call(this, folder, filename, hue, smooth);
-  };
+
   const _startLoading = Bitmap.prototype._startLoading;
   Bitmap.prototype._startLoading = function () {
-    const url = this._url;
-    if (url.includes(MISSING_BOTH_ARM_SUFFIX)) {
+    if (this._url.includes(MISSING_BOTH_ARM_SUFFIX)) {
+      console.log("here", this._url);
       this._image = new Image();
       this._image.onload = this._onLoad.bind(this);
       this._image.onerror = this._onError.bind(this);
-      this._image.src = url;
+      this._destroyCanvas();
+      this._loadingState = "loading";
+      this._image.src = this._url;
+      if (this._image.width > 0) {
+        this._image.onload = null;
+        this._onLoad();
+      }
     } else _startLoading.call(this);
   };
 
@@ -1325,6 +1326,35 @@ UnarmedAndDangerous.applyChanges = function () {
       return;
     }
     _setCharacterImage.call(this, characterName, characterIndex);
+  };
+
+  /*
+    also adding armless sprite set here
+  */
+  const _setImage = Game_CharacterBase.prototype.setImage;
+  Game_CharacterBase.prototype.setImage = function (
+    characterName,
+    characterIndex,
+  ) {
+    if (characterName.startsWith(SAM_NAME)) {
+      const armStatus = gVr(ARM_VARIABLE_ID);
+      if (armStatus == MISSING_NO_ARM_VALUE) {
+        this._characterName = SAM_NAME;
+      }
+      if (armStatus == MISSING_RIGHT_ARM_VALUE) {
+        this._characterName = SAM_NAME + MISSING_RIGHT_ARM_SUFFIX;
+      } else if (armStatus == MISSING_LEFT_ARM_VALUE) {
+        this._characterName = SAM_NAME + MISSING_LEFT_ARM_SUFFIX;
+      } else if (armStatus == MISSING_BOTH_ARM_VALUE) {
+        this._characterName = SAM_NAME + MISSING_BOTH_ARM_SUFFIX;
+      }
+      this._tileId = 0;
+
+      this._characterIndex = characterIndex;
+      this._isObjectCharacter = ImageManager.isObjectCharacter(characterName);
+      return;
+    }
+    _setImage.call(this, characterName, characterIndex);
   };
 
   // adds armless wakeup animations to the bedroom and livingroom map files
