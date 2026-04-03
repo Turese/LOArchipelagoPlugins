@@ -2,7 +2,7 @@
  * @target MZ
  * @name LookOutsideAPClient
  * @plugindesc Archipelago Client for Look Outside
- * @authors Zeropalite
+ * @authors 0palite
  * @version 1.0
  * @license Unlicensed
  * @help

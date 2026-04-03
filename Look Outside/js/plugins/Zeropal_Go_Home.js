@@ -2,7 +2,7 @@
  * @target MZ
  * @name Zeropal_Go_Home
  * @plugindesc Menu option that sends you back to apartment 33
- * @authors Zeropalite
+ * @authors 0palite
  * @version 1.0
  * @license Unlicensed
  * @help

@@ -1,8 +1,8 @@
 /**
  * @target MZ
  * @name Zeropal_Unarmed
- * @plugindesc Unarmed and Dangerous: Play a Sam with no arms!
- * @authors Zeropalite
+ * @plugindesc Unarmed and Dangerous: Play as Sam with no arms!
+ * @authors 0palite
  * @version 1.0
  * @license Unlicensed
  * @help
@@ -23,14 +23,14 @@ const WAKEUP_NO_ARMS_COUCH = [
       switch1Valid: true,
       switch2Id: 1,
       switch2Valid: false,
-      variableId: 187,
+      variableId: ARM_VARIABLE_ID,
       variableValid: true,
       variableValue: 3,
     },
     directionFix: false,
     image: {
       tileId: 0,
-      characterName: "$Chara_PlayerWakeup_MissingBoth",
+      characterName: `$Chara_PlayerWakeup${MISSING_BOTH_ARM_SUFFIX}`,
       direction: 2,
       pattern: 0,
       characterIndex: 0,
@@ -333,14 +333,14 @@ const WAKEUP_NO_ARMS_COUCH = [
       switch1Valid: true,
       switch2Id: 1,
       switch2Valid: false,
-      variableId: 187,
+      variableId: ARM_VARIABLE_ID,
       variableValid: true,
       variableValue: 3,
     },
     directionFix: false,
     image: {
       tileId: 0,
-      characterName: "$Chara_PlayerWakeup_MissingBoth",
+      characterName: `$Chara_PlayerWakeup${MISSING_BOTH_ARM_SUFFIX}`,
       direction: 2,
       pattern: 1,
       characterIndex: 0,
@@ -632,14 +632,14 @@ const WAKEUP_NO_ARMS_BED = [
       switch1Valid: true,
       switch2Id: 1,
       switch2Valid: false,
-      variableId: 187,
+      variableId: ARM_VARIABLE_ID,
       variableValid: true,
       variableValue: 3,
     },
     directionFix: false,
     image: {
       tileId: 0,
-      characterName: "$Chara_PlayerWakeup_MissingBoth",
+      characterName: `$Chara_PlayerWakeup${MISSING_BOTH_ARM_SUFFIX}`,
       direction: 2,
       pattern: 0,
       characterIndex: 0,
@@ -970,14 +970,14 @@ const WAKEUP_NO_ARMS_BED = [
       switch1Valid: true,
       switch2Id: 1,
       switch2Valid: false,
-      variableId: 187,
+      variableId: ARM_VARIABLE_ID,
       variableValid: true,
       variableValue: 3,
     },
     directionFix: false,
     image: {
       tileId: 0,
-      characterName: "$Chara_PlayerWakeup_MissingBoth",
+      characterName: `$Chara_PlayerWakeup${MISSING_BOTH_ARM_SUFFIX}`,
       direction: 2,
       pattern: 1,
       characterIndex: 0,
@@ -1245,103 +1245,89 @@ const WAKEUP_NO_ARMS_BED = [
   },
 ];
 
+const SAM_NAME = "Chara_Player";
+const SAM_ACTOR_ID = 1;
+const MISSING_RIGHT_ARM_SUFFIX = "_MissingRightarm";
+const MISSING_LEFT_ARM_SUFFIX = "_MissingLeftarm";
+const MISSING_BOTH_ARM_SUFFIX = "_MissingBotharm";
+const MISSING_ARM_SLOT_NAME = "Gnawed Off";
+
+const ARM_VARIABLE_ID = 187;
+const MISSING_NO_ARM_VALUE = 0;
+const MISSING_RIGHT_ARM_VALUE = 1;
+const MISSING_LEFT_ARM_VALUE = 2;
+const MISSING_BOTH_ARM_VALUE = 3;
+
 var UnarmedAndDangerous = UnarmedAndDangerous || {};
 
 UnarmedAndDangerous.applyChanges = function () {
-  console.log("welcome to unarmed and dangerous!");
+  console.log("Welcome to unarmed and dangerous!");
 
-  // overwrite image loading to use the unencrypted custom files
+  // overwrite image loading to use unencrypted pngs when loading custom armless files
+  // this keeps game updates from breaking my custom images
   const _loadBitmap = ImageManager.loadBitmap;
-  ImageManager.loadBitmap = function(folder, filename, hue, smooth) {
-    if (filename.includes("MissingBoth") || filename.includes("LostBoth")) {
-        console.log('looking for unencrypted')
-        return Bitmap.load(folder + filename + ".png", filename, hue, smooth)
-    }
-    else return _loadBitmap.call(this, folder, filename, hue, smooth)
-  }
-
+  ImageManager.loadBitmap = function (folder, filename, hue, smooth) {
+    if (filename.endsWith(MISSING_BOTH_ARM_SUFFIX)) {
+      return Bitmap.load(folder + filename + ".png", filename, hue, smooth);
+    } else return _loadBitmap.call(this, folder, filename, hue, smooth);
+  };
   const _startLoading = Bitmap.prototype._startLoading;
   Bitmap.prototype._startLoading = function () {
     const url = this._url;
-    if (url.includes("MissingBoth") || url.includes("LostBoth")) {
-        this._image = new Image()
-        this._image.onload = this._onLoad.bind(this);
-        this._image.onerror = this._onError.bind(this)
-        this._image.src = url
-    }
-    else _startLoading.call(this)
-  }
+    if (url.includes(MISSING_BOTH_ARM_SUFFIX)) {
+      this._image = new Image();
+      this._image.onload = this._onLoad.bind(this);
+      this._image.onerror = this._onError.bind(this);
+      this._image.src = url;
+    } else _startLoading.call(this);
+  };
 
-  // Marks Both Sam's arms as gnawed off.
-  const oldStatusBase = Window_StatusBase.prototype.actorSlotName;
+  // adds a check to mark both of Sam's arms as gnawed off on the equip screen
+  const _actorSlotName = Window_StatusBase.prototype.actorSlotName;
   Window_StatusBase.prototype.actorSlotName = function (actor, index) {
-    const defaultSlotName = oldStatusBase.call(this, actor, index);
-    if (actor._actorId == 1 && gVr(187) == 3 && (index == 0 || index == 1)) {
-      return "Gnawed Off";
+    const defaultSlotName = _actorSlotName.call(this, actor, index);
+    if (
+      actor._actorId == 1 &&
+      gVr(ARM_VARIABLE_ID) == MISSING_BOTH_ARM_VALUE &&
+      (index == 0 || index == 1)
+    ) {
+      return MISSING_ARM_SLOT_NAME;
     }
     return defaultSlotName;
   };
 
-  const samName = "Chara_Player";
-
-  // adds no arms as a possible character sprite set
-  const old_set_character_image = Game_Actor.prototype.setCharacterImage;
+  /*
+    adds no arms as a possible character sprite set
+  
+    the existing plugin that does this is a one way transition from armed -> missing an arm
+    so I'm rewriting all of setCharacterImage to check every time 
+    to account for the possibility of regaining an arm
+  */
+  const _setCharacterImage = Game_Actor.prototype.setCharacterImage;
   Game_Actor.prototype.setCharacterImage = function (
     characterName,
     characterIndex,
   ) {
-    const armStatus = gVr(187);
-    if (characterName.startsWith(samName)) {
-      if (armStatus == 0) {
-        this._characterName = samName;
+    const armStatus = gVr(ARM_VARIABLE_ID);
+    if (characterName.startsWith(SAM_NAME)) {
+      if (armStatus == MISSING_NO_ARM_VALUE) {
+        this._characterName = SAM_NAME;
       }
-      if (armStatus == 1) {
-        this._characterName = samName + "_MissingRightarm";
-      } else if (armStatus == 2) {
-        this._characterName = samName + "_MissingLeftarm";
-      } else if (armStatus == 3) {
-          this._characterName = samName + "_MissingBotharm";
-       
+      if (armStatus == MISSING_RIGHT_ARM_VALUE) {
+        this._characterName = SAM_NAME + MISSING_RIGHT_ARM_SUFFIX;
+      } else if (armStatus == MISSING_LEFT_ARM_VALUE) {
+        this._characterName = SAM_NAME + MISSING_LEFT_ARM_SUFFIX;
+      } else if (armStatus == MISSING_BOTH_ARM_VALUE) {
+        this._characterName = SAM_NAME + MISSING_BOTH_ARM_SUFFIX;
       }
-      console.log(this._characterName, this._characterIndex);
+      // keep the character position on sprite sheet the same
       this._characterIndex = characterIndex;
       return;
     }
-
-    console.log(characterName, characterIndex);
-    old_set_character_image.call(this, characterName, characterIndex);
+    _setCharacterImage.call(this, characterName, characterIndex);
   };
 
-  // for some reason this breaks the wakeup animations so im commenting it out for now
-  /*const old_character_base_set_image = Game_CharacterBase.prototype.setImage
-    Game_CharacterBase.prototype.setImage = function (
-        characterName,
-        characterIndex
-    ) {
-        const armStatus = gVr(187);
-        if (characterName.contains(samName)) {
-            this._tileId = 0;
-
-            if (armStatus == 0) {
-                this._characterName = samName;
-            }
-            if (armStatus == 1) {
-                this._characterName = samName + "_MissingRightarm";
-            }
-            if (armStatus == 2) {
-                this._characterName = samName + "_MissingLeftarm";
-            }
-            if (armStatus == 3) {
-                this._characterName = samName + "_MissingBotharm";
-            }
-            this._characterIndex = characterIndex;
-            this._isObjectCharacter = ImageManager.isObjectCharacter(characterName);
-            return;
-        }
-        old_character_base_set_image.call(this, characterName, characterIndex)
-    };*/
-
-  // add wakeup animations to the bedroom and livingroom map json files
+  // adds armless wakeup animations to the bedroom and livingroom map files
   const onMapLoaded = Scene_Map.prototype.onMapLoaded;
   Scene_Map.prototype.onMapLoaded = function () {
     onMapLoaded.call(this);
@@ -1365,76 +1351,80 @@ UnarmedAndDangerous.applyChanges = function () {
     }
   };
 
-  const old_armless_equip_weapon = Game_BattlerBase.prototype.canEquipWeapon;
+  const _canEquipWeapon = Game_BattlerBase.prototype.canEquipWeapon;
   Game_BattlerBase.prototype.canEquipWeapon = function (item) {
-    if (this._actorId == 1 && gVr(187) == 3) {
-      // cannot equip melee weapons when missing that arm.
-      // not even ash can have his chainsaw anymore :(
+    if (
+      this._actorId == SAM_ACTOR_ID &&
+      gVr(ARM_VARIABLE_ID) == MISSING_BOTH_ARM_VALUE
+    ) {
+      // cannot equip any weapons when missing both arms
+      // Ash can't even have his chainsaw anymore :(
       return false;
     }
-    return old_armless_equip_weapon.call(this, item);
+    return _canEquipWeapon.call(this, item);
   };
 
-  const old_armless_equip_armor = Game_BattlerBase.prototype.canEquipArmor;
+  const _canEquipArmor = Game_BattlerBase.prototype.canEquipArmor;
   Game_BattlerBase.prototype.canEquipArmor = function (item) {
     if (
-      this._actorId == 1 &&
-      gVr(187) == 3 &&
+      this._actorId == SAM_ACTOR_ID &&
+      gVr(ARM_VARIABLE_ID) == MISSING_BOTH_ARM_VALUE &&
       (item.atypeId == 5 || item.atypeId == 6 || item.atypeId == 7)
     ) {
-      // ash cant have the shotgun either
+      // Ash can't have his shotgun either
       return false;
     }
-    return old_armless_equip_armor.call(this, item);
+    return _canEquipArmor.call(this, item);
   };
 
-  const Tuni_LoadEnemy = ImageManager.loadEnemy;
+  // loads armless mirror sprites if needed / if they exist
+  const _loadEnemy = ImageManager.loadEnemy;
   ImageManager.loadEnemy = function (filename) {
     if (filename.includes("Reflections")) {
-      if (gVr(187) == 3) {
-        if (monsterImageExists(filename + "-LostBoth")) {
-          return this.loadBitmap("img/enemies/", filename + "-LostBoth");
-        }
+      if (
+        gVr(ARM_VARIABLE_ID) == MISSING_BOTH_ARM_VALUE &&
+        monsterImageExists(filename + MISSING_BOTH_ARM_SUFFIX)
+      ) {
+        return this.loadBitmap(
+          "img/enemies/",
+          filename + MISSING_BOTH_ARM_SUFFIX,
+        );
       }
     }
-
-    return Tuni_LoadEnemy.call(this, filename);
+    return _loadEnemy.call(this, filename);
   };
 
-  // 0 = both arms
-  // 1 = right missing
-  // 2 = left missing
-  // 3 = both missing
+  // adds console command to set custom arm value
   const setArms = (armValue) => {
-    sVr(187, armValue);
+    sVr(ARM_VARIABLE_ID, armValue);
+    // Sam is always the party leader
     const actor = $gameParty.leader();
 
-    if (armValue == 1) {
+    // removes weapon from the slot an arm was removed from
+    // note: this doesn't check for the few equips that are allowed on armless slots
+    // but you'll be able to reequip them manually
+    if (armValue == MISSING_RIGHT_ARM_VALUE) {
       actor.changeEquip(0, 0);
-    } else if (armValue == 2) {
+    } else if (armValue == MISSING_LEFT_ARM_VALUE) {
       actor.changeEquip(1, 0);
-    } else if (armValue == 3) {
+    } else if (armValue == MISSING_BOTH_ARM_VALUE) {
       actor.changeEquip(1, 0);
       actor.changeEquip(0, 0);
     }
-    actor.setCharacterImage(samName, 0);
+    // manually updates character sprite to reflect the update in arm status
+    actor.setCharacterImage(SAM_NAME, 0);
     $gamePlayer.refresh();
-    
-  };
-
-  // this is for funsies i just wanted to see what sam looks like when he's lost control of his life
-  const nullout = () => {
-    sVr(21, -10);
-    sVr(22, -10);
-    sVr(23, -10);
-    sVr(24, -10);
-    sVr(25, -10);
-    sVr(26, -10);
   };
 
   window.UnarmedAndDangerous = {
     setArms,
-    nullout,
+  };
+
+  const _addOriginalCommands = Window_MenuCommand.prototype.addOriginalCommands;
+
+  Window_MenuCommand.prototype.addOriginalCommands = function () {
+    _addOriginalCommands.call(this);
+    this.addCommand("Set Arms", "setarms", false);
   };
 };
 
