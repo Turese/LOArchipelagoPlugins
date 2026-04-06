@@ -58,8 +58,19 @@ const VALID_SKILLS = {
   419: "Confusing Word",
 };
 
-const newPage = 
-  {
+const DEFAULT_AP_ITEM_IMAGE = {
+  tileId: 0,
+  characterName: "GameCarts",
+  direction: 4,
+  pattern: 0,
+  characterIndex: 3,
+};
+
+function getAPItemPickupPage(
+  itemName = AP_ITEM,
+  itemImage = DEFAULT_AP_ITEM_IMAGE,
+) {
+  return {
     conditions: {
       actorId: 1,
       actorValid: false,
@@ -76,13 +87,7 @@ const newPage =
       variableValue: 0,
     },
     directionFix: true,
-    image: {
-      tileId: 0,
-      characterName: "GameCarts",
-      direction: 4,
-      pattern: 0,
-      characterIndex: 3,
-    },
+    image: itemImage,
     list: [
       {
         code: 101,
@@ -92,7 +97,7 @@ const newPage =
       {
         code: 401,
         indent: 0,
-        parameters: ["There is an AP_ITEM here"],
+        parameters: [`There is an ${itemName} here.`],
       },
       {
         code: 102,
@@ -112,7 +117,7 @@ const newPage =
       {
         code: 401,
         indent: 1,
-        parameters: ["Find \\C[03]{AP_ITEM}\\C[0]."],
+        parameters: [`Find \\C[03]{${itemName}\\C[0].`],
       },
       {
         code: 123,
@@ -164,16 +169,16 @@ const newPage =
     through: false,
     trigger: 0,
     walkAnime: true,
-  }
+  };
+}
 
 const IMG_OVERRIDE = new Set(["img/characters/GameCarts.png"]);
 
 const MAP_OVERWORLD_ITEM_OVERRIDES = {
-  3: [{ eventId: 99, apItemId: "APT_33_LIVINGROOM_CASH" }],
+  3: { 99: "APT_33_LIVINGROOM_CASH" },
   4: [
     {
-      eventId: 23,
-      apItemId: "APT_33_BATHROOM_FIRST_AID_KIT",
+      23: "APT_33_BATHROOM_FIRST_AID_KIT",
     },
   ],
 };
@@ -292,9 +297,8 @@ LookOutsideAPClient.helperTools = function () {
   const overWriteImgLoading = function () {
     const _startLoading = Bitmap.prototype._startLoading;
     Bitmap.prototype._startLoading = function () {
-      console.log(IMG_OVERRIDE, this)
+      console.log(IMG_OVERRIDE, this);
       if (IMG_OVERRIDE.has(this._url)) {
-        console.log("IM LOADING GAME CARTDS");
         this._image = new Image();
         this._image.onload = this._onLoad.bind(this);
         this._image.onerror = this._onError.bind(this);
@@ -309,33 +313,53 @@ LookOutsideAPClient.helperTools = function () {
     };
   };
 
+  const getItemName = function (apLocationName) {
+    // todo: actually get the item name
+    return apItemName;
+  };
 
-  const overrideOverworldPickups = function () {
+  const getItemImage = function (apLocationName) {
+    // todo: actually get the item image
+    return DEFAULT_AP_ITEM_IMAGE;
+  };
+
+  const overrideMapEvents = function () {
     const createCharacters = Spriteset_Map.prototype.createCharacters;
     Spriteset_Map.prototype.createCharacters = function () {
-      
       if (MAP_OVERWORLD_ITEM_OVERRIDES[lastLoadedMapId]) {
-        ImageManager.loadCharacter("GameCarts");
+        const characterImagesToLoad = new Set(
+          Object.values(MAP_OVERWORLD_ITEM_OVERRIDES).map(
+            (apLocationName) => getItemImage(apLocationName).characterName,
+          ),
+        );
+        // todo: check if somethings already loaded before i try to reload
+        for (const characterImage of characterImagesToLoad) {
+          ImageManager.loadCharacter(characterImage);
+        }
       }
       createCharacters.call(this);
     };
     const onMapLoaded = Scene_Map.prototype.onMapLoaded;
     Scene_Map.prototype.onMapLoaded = function () {
-
-      const mapConfig = MAP_OVERWORLD_ITEM_OVERRIDES[lastLoadedMapId];
-      mapConfig?.forEach((ev) => {
-        if (!$dataMap.events) return;
-        const event = $dataMap.events[ev.eventId];
-
-        event.pages[0] = newPage;
-
-      });
+      overrideOverworldPickups();
       onMapLoaded.call(this);
     };
   };
 
+  const overrideOverworldPickups = function () {
+    const eventsToOverride = MAP_OVERWORLD_ITEM_OVERRIDES[lastLoadedMapId];
+    Object.keys(eventsToOverride).forEach((eventId) => {
+      if (!$dataMap.events) return;
+      const event = $dataMap.events[eventId];
+      event.pages[0] = getAPItemPickupPage(
+        getItemName(eventsToOverride[eventId]),
+        getItemImage(eventsToOverride[eventId]),
+      );
+    });
+  };
+
   overWriteImgLoading();
-  overrideOverworldPickups();
+  overrideMapEvents();
 };
 
 LookOutsideAPClient.helperTools();
