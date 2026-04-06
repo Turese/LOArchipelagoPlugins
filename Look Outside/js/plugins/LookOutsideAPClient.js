@@ -9,9 +9,9 @@
  *
  * special thanks to Donais04 and the Silver Daze team for paving the way
  * and shoutout to the KELP MAN for letting me look through all that special look outside code
- * 
+ *
  * WIP
- * as of now, this isn't even a client; it makes no connection to ap servers. 
+ * as of now, this isn't even a client; it makes no connection to ap servers.
  * work so far has been in adding ability to inject items into the game
  **/
 
@@ -58,7 +58,133 @@ const VALID_SKILLS = {
   419: "Confusing Word",
 };
 
+const newPage = 
+  {
+    conditions: {
+      actorId: 1,
+      actorValid: false,
+      itemId: 1,
+      itemValid: false,
+      selfSwitchCh: "A",
+      selfSwitchValid: false,
+      switch1Id: 1,
+      switch1Valid: false,
+      switch2Id: 1,
+      switch2Valid: false,
+      variableId: 1,
+      variableValid: false,
+      variableValue: 0,
+    },
+    directionFix: true,
+    image: {
+      tileId: 0,
+      characterName: "GameCarts",
+      direction: 4,
+      pattern: 0,
+      characterIndex: 3,
+    },
+    list: [
+      {
+        code: 101,
+        indent: 0,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 0,
+        parameters: ["There is an AP_ITEM here"],
+      },
+      {
+        code: 102,
+        indent: 0,
+        parameters: [["Take it.", "Leave it."], -1, 0, 2, 0],
+      },
+      {
+        code: 402,
+        indent: 0,
+        parameters: [0, "Take it."],
+      },
+      {
+        code: 101,
+        indent: 1,
+        parameters: ["", 0, 0, 1, ""],
+      },
+      {
+        code: 401,
+        indent: 1,
+        parameters: ["Find \\C[03]{AP_ITEM}\\C[0]."],
+      },
+      {
+        code: 123,
+        indent: 1,
+        parameters: ["A", 0],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 402,
+        indent: 0,
+        parameters: [1, "Leave it."],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 404,
+        indent: 0,
+        parameters: [],
+      },
+      {
+        code: 0,
+        indent: 0,
+        parameters: [],
+      },
+    ],
+    moveFrequency: 3,
+    moveRoute: {
+      list: [
+        {
+          code: 0,
+          parameters: [],
+        },
+      ],
+      repeat: true,
+      skippable: false,
+      wait: false,
+    },
+    moveSpeed: 3,
+    moveType: 0,
+    priorityType: 1,
+    stepAnime: false,
+    through: false,
+    trigger: 0,
+    walkAnime: true,
+  }
+
+const IMG_OVERRIDE = new Set(["img/characters/GameCarts.png"]);
+
+const MAP_OVERWORLD_ITEM_OVERRIDES = {
+  3: [{ eventId: 99, apItemId: "APT_33_LIVINGROOM_CASH" }],
+  4: [
+    {
+      eventId: 23,
+      apItemId: "APT_33_BATHROOM_FIRST_AID_KIT",
+    },
+  ],
+};
+
 LookOutsideAPClient.helperTools = function () {
+  let lastLoadedMapId;
+  const loadMapData = DataManager.loadMapData;
+  DataManager.loadMapData = function (mapId) {
+    lastLoadedMapId = mapId;
+    loadMapData.call(this, mapId);
+  };
   // adds an item to player inventory
   // item ids are listed in Items.json
   // @type itemClass {'item' | 'armor' | 'weapon'}
@@ -106,10 +232,9 @@ LookOutsideAPClient.helperTools = function () {
       }
       // handle checking whether sophie moved back in with her mother
       else if (id == 362) {
-      }
-      else if (id = 380) {
+      } else if ((id = 380)) {
         // audrey has no skills when forced into the party
-      } else if (id = 34) {
+      } else if ((id = 34)) {
         // leigh has no skills when forced into the party
       }
       sSw(id, true);
@@ -162,6 +287,55 @@ LookOutsideAPClient.helperTools = function () {
     insertArm,
     reportFulfilledChecks,
   };
+
+  // use custom image overrides for mod images
+  const overWriteImgLoading = function () {
+    const _startLoading = Bitmap.prototype._startLoading;
+    Bitmap.prototype._startLoading = function () {
+      console.log(IMG_OVERRIDE, this)
+      if (IMG_OVERRIDE.has(this._url)) {
+        console.log("IM LOADING GAME CARTDS");
+        this._image = new Image();
+        this._image.onload = this._onLoad.bind(this);
+        this._image.onerror = this._onError.bind(this);
+        this._destroyCanvas();
+        this._loadingState = "loading";
+        this._image.src = this._url;
+        if (this._image.width > 0) {
+          this._image.onload = null;
+          this._onLoad();
+        }
+      } else _startLoading.call(this);
+    };
+  };
+
+
+  const overrideOverworldPickups = function () {
+    const createCharacters = Spriteset_Map.prototype.createCharacters;
+    Spriteset_Map.prototype.createCharacters = function () {
+      
+      if (MAP_OVERWORLD_ITEM_OVERRIDES[lastLoadedMapId]) {
+        ImageManager.loadCharacter("GameCarts");
+      }
+      createCharacters.call(this);
+    };
+    const onMapLoaded = Scene_Map.prototype.onMapLoaded;
+    Scene_Map.prototype.onMapLoaded = function () {
+
+      const mapConfig = MAP_OVERWORLD_ITEM_OVERRIDES[lastLoadedMapId];
+      mapConfig?.forEach((ev) => {
+        if (!$dataMap.events) return;
+        const event = $dataMap.events[ev.eventId];
+
+        event.pages[0] = newPage;
+
+      });
+      onMapLoaded.call(this);
+    };
+  };
+
+  overWriteImgLoading();
+  overrideOverworldPickups();
 };
 
 LookOutsideAPClient.helperTools();
