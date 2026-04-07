@@ -16,6 +16,82 @@ function sophieAtDoor() {
 
 var BackInTime = BackInTime || {};
 
+function fixMuttRegret() {
+  sSw(317, false); // muttDead = OFF
+}
+
+function fixPlantRegret() {
+  sVr(128, 50); // plantHealth = 50
+}
+
+function fixSophieRegret() {
+  sSw(362, true); // recruitedSophie = ON
+}
+
+const regretOptions = {
+  sophie: {
+    rCondition: sophieAtDoor,
+    rText: "(([!s[362],!s[364]]))Sophie.",
+    rFunction: "fixSophieRegret",
+    rText: [],
+  },
+  plant: {
+    rName: "(([v[128]>5]))Your plant.",
+    rFunction: "fixPlantRegret",
+    rText: [],
+  },
+  mutt: {
+    rName: "(([!s[317]]))Mutt.",
+    rFunction: "fixMuttRegret",
+    rText: [
+      {
+        code: 101,
+        indent: 2,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 2,
+        parameters: ["You think of Mutt. You know you murdered him and all"],
+      },
+      {
+        code: 401,
+        indent: 2,
+        parameters: [
+          "but you wish he didn't have to be so dead about it. You ",
+        ],
+      },
+      {
+        code: 401,
+        indent: 2,
+        parameters: ["close your eyes and vow to do better..."],
+      },
+      {
+        code: 101,
+        indent: 2,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 2,
+        parameters: ["Actually, is he dead? You might have made that part up."],
+      },
+      {
+        code: 401,
+        indent: 2,
+        parameters: [
+          "In fact, you feel as though he's healthier than ever right",
+        ],
+      },
+      {
+        code: 401,
+        indent: 2,
+        parameters: ["now..."],
+      },
+    ],
+  },
+};
+
 BackInTime.applyChanges = function () {
   function createOptionIntro(options, indent) {
     return {
@@ -51,63 +127,21 @@ BackInTime.applyChanges = function () {
     ];
   }
 
-  const MUTT_REGRET_NAME = "(([!s[317]]))Mutt.";
-  function muttRegret(index, indent) {
+  function createRegret(index, regretKey) {
+    const { rName, rFunction, rText } = regretOptions[regretKey];
+
     return [
       {
         code: 402,
-        indent: indent,
-        parameters: [index, MUTT_REGRET_NAME],
+        indent: 1,
+        parameters: [index, rName],
         collapsed: true,
       },
+      ...rText,
       {
-        code: 101,
-        indent: indent + 1,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: indent + 1,
-        parameters: ["You think of Mutt. You know you murdered him and all"],
-      },
-      {
-        code: 401,
-        indent: indent + 1,
-        parameters: [
-          "but you wish he didn't have to be so dead about it. You ",
-        ],
-      },
-      {
-        code: 401,
-        indent: indent + 1,
-        parameters: ["close your eyes and vow to do better..."],
-      },
-      {
-        code: 101,
-        indent: indent + 1,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: indent + 1,
-        parameters: ["Actually, is he dead? You might have made that part up."],
-      },
-      {
-        code: 401,
-        indent: indent + 1,
-        parameters: [
-          "In fact, you feel as though he's healthier than ever right",
-        ],
-      },
-      {
-        code: 401,
-        indent: indent + 1,
-        parameters: ["now..."],
-      },
-      {
-        code: 121,
-        indent: indent + 1,
-        parameters: [317, 317, 1],
+        code: 355,
+        indent: 2,
+        parameters: [`${rFunction}();`],
       },
       {
         code: 0,
@@ -117,9 +151,6 @@ BackInTime.applyChanges = function () {
     ];
   }
 
-  const ASTRONOMERS_REGRET_NAME = '';
-
-  console.log("welcome to back in time");
   const BEDROOM_MAP_ID = 2;
   const CALENDAR_EVENT_ID = 16;
 
@@ -150,7 +181,6 @@ BackInTime.applyChanges = function () {
         week2OptionNames.push(createDateChangeOptionName(date, i));
         week2Options.push(...createDateChangeOption(i, date, 2));
       }
-      console.log(week2Options);
       const week2OptionIntro = createOptionIntro(week2OptionNames, 2);
 
       const dateOptions = [
@@ -230,37 +260,47 @@ BackInTime.applyChanges = function () {
         },
       ];
 
-      /*{
-                            "code": 355,
-                            "indent": 1,
-                            "parameters": [
-                                "console.log('hi)"
-                            ]
-                        } */
+      const createRegretOptions = function () {
+        const regretsList = ["sophie", "mutt", "plant"];
 
-      const regretOptions = [
-        {
-          code: 102,
-          indent: 1,
-          parameters: [["I regret nothing.", MUTT_REGRET_NAME], 0, 0, 2, 0],
-        },
-        {
-          code: 402,
-          indent: 1,
-          parameters: [0, "I regret nothing."],
-        },
-        {
-          code: 115,
-          indent: 2,
-          parameters: [],
-        },
-        {
-          code: 0,
-          indent: 2,
-          parameters: [],
-        },
-        ...muttRegret(1, 1),
-      ];
+        const regretNames = [];
+        const regretCases = [];
+
+        let index = 1;
+
+        regretsList.forEac-h((regretName) => {
+          const options = regretOptions[regretName];
+          if (!options.rCondition || options.rCondition()) {
+            regretNames.push(options.rName);
+            regretCases.push(...createRegret(index, regretName));
+            index++;
+          }
+        });
+
+        return [
+          {
+            code: 102,
+            indent: 1,
+            parameters: [["I regret nothing.", ...regretNames], 0, 0, 2, 0],
+          },
+          {
+            code: 402,
+            indent: 1,
+            parameters: [0, "I regret nothing."],
+          },
+          {
+            code: 115,
+            indent: 2,
+            parameters: [],
+          },
+          {
+            code: 0,
+            indent: 2,
+            parameters: [],
+          },
+          ...regretCases,
+        ];
+      };
 
       const calendarSequence = [
         {
@@ -329,7 +369,7 @@ BackInTime.applyChanges = function () {
           indent: 1,
           parameters: ["You think of all that you regret..."],
         },
-        ...regretOptions,
+        ...createRegretOptions(),
         {
           code: 115,
           indent: 1,
