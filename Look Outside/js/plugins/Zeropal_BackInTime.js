@@ -942,6 +942,80 @@ const spares = [
 var BackInTime = BackInTime || {};
 
 BackInTime.applyChanges = function () {
+  // specifically creates the options object where the first option is a cancel button
+  function createOptions(introQuestion, options) {
+    return [
+      {
+        code: 101,
+        indent: 0,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 0,
+        parameters: ["Only \\V[8] days left..."],
+      },
+      {
+        code: 102,
+        indent: 1,
+        parameters: [options, 0, 0, 2, 0],
+      },
+    ];
+  }
+
+  function createAnswerIntro(index, name) {
+    return {
+      code: 402,
+      indent: 1,
+      parameters: [index, name],
+    };
+  }
+
+  function createExitAnswer(index, name) {
+    return [createAnswerIntro(index, name), ...createExitEvent()];
+  }
+
+  function createExitEvent() {
+    return [
+      {
+        code: 115,
+        indent: 2,
+        parameters: [],
+      },
+      {
+        code: 0,
+        indent: 2,
+        parameters: [],
+      },
+    ];
+  }
+
+  // creates an option that is unselectable if it's already that date
+  function createDateChangeOptionName(index) {
+    return `<<[v[15]=${index - 1}]>>Day ${index}.`;
+  }
+
+  // sets current date to the index selected
+  function createDateChangeOption(index) {
+    return [
+      {
+        code: 402,
+        indent: 1,
+        parameters: [index, createDateChangeOptionName(index)],
+      },
+      {
+        code: 122,
+        indent: 2,
+        parameters: [15, 15, 0, 0, 2],
+      },
+      {
+        code: 0,
+        indent: 2,
+        parameters: [],
+      },
+    ];
+  }
+
   console.log("welcome to back in time");
   const BEDROOM_MAP_ID = 2;
   const CALENDAR_EVENT_ID = 16;
@@ -956,7 +1030,80 @@ BackInTime.applyChanges = function () {
   const onMapLoaded = Scene_Map.prototype.onMapLoaded;
   Scene_Map.prototype.onMapLoaded = function () {
     if (lastLoadedMapId === BEDROOM_MAP_ID) {
-      $dataMap.events[CALENDAR_EVENT_ID].pages[1].list = CALENDAR_EVENT_PAGE_2;
+      // start with the text from the existing calendar event
+      let calendarSequence = [...$dataMap.events[CALENDAR_EVENT_ID].pages[1]];
+
+      calendarSequence.push(
+        createOptions[("Exit.", "Set current day.", "Ease regrets.")],
+      );
+
+      calendarSequence.push(...createExitAnswer(0, "Exit."));
+
+      calendarSequence.push(createAnswerIntro(1, "Set current day."));
+
+      // this creates a copy of the current day variable and posts intro text
+      calendarSequence.push(
+        ...[
+          {
+            code: 122,
+            indent: 1,
+            parameters: [7, 7, 0, 1, 15],
+          },
+          {
+            code: 101,
+            indent: 1,
+            parameters: ["", 0, 0, 2, ""],
+          },
+          {
+            code: 401,
+            indent: 1,
+            parameters: ["Set current day?"],
+          },
+        ],
+      );
+
+      let dateTimeNames = [];
+      let dateTimeOptions = [];
+      for (i = 0; i < 15; i++) {
+        dateTimeNames.push(createDateChangeOptionName(i));
+        dateTimeOptions.push(createDateChangeOption(i));
+      }
+
+      calendarSequence.push(...createOptions(dateTimeNames));
+
+      calendarSequence.push(...dateTimeOptions);
+
+      calendarSequence.push(createAnswerIntro(2, "Ease regrets."));
+
+      calendarSequence.push(
+        ...[
+          {
+            code: 101,
+            indent: 1,
+            parameters: ["", 0, 0, 2, ""],
+          },
+          {
+            code: 401,
+            indent: 1,
+            parameters: ["You think of all that you regret..."],
+          },
+        ],
+      );
+
+      // end of list ; exits out of the conditional
+      calendarSequence.push({
+        code: 0,
+        indent: 0,
+        parameters: [],
+      });
+
+      // end of date selection sequence; takes the newly chosen date and 
+      // calls new day function, updates time to first thing in the morning
+      calendarSequence.push(
+        ...[]
+      );
+
+      $dataMap.events[CALENDAR_EVENT_ID].pages[1].list = calendarSequence;
     }
 
     onMapLoaded.call(this);
