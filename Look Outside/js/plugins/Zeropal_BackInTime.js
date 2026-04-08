@@ -34,10 +34,13 @@ function BACKINTIMEfixPapKilled() {
 
 function BACKINTIMEfixLyleKilled() {
   sSw(832, false); // killedLyle = OFF
+  // so lyle doesnt attack you immediately when you get back, send him back to before you traded
+  sVr(192, 2) // shutterbugState = 2 
   delete $gameSelfSwitches._data[[9, 14, "C"].toString()]; // delete the dead lyle state on his event
 }
 
 function BACKINTIMEfixLyleNoKiss() {
+  sSw(476, true); // primeLyleJoin = ON
   }
 
 function BACKINTIMEfixEugeneKilled() {
@@ -193,7 +196,7 @@ const BACKINTIMEregretTemplates = {
     ],
   },
   lyleKilled: {
-    rName: "(([!s[832]Lyle.]))",
+    rName: "(([!s[832]]))Lyle.",
     rFunction: "BACKINTIMEfixLyleKilled",
     rText: [
       {
@@ -212,8 +215,13 @@ const BACKINTIMEregretTemplates = {
         code: 401,
         indent: 2,
         parameters: [
-          "that way. You almost miss him. You close your eyes and vow to do better...",
+          "that way. You almost miss him. You close your eyes and",
         ],
+      },
+      {
+        code: 401,
+        indent: 2,
+        parameters: ["vow to do better..."],
       },
       {
         code: 101,
@@ -241,7 +249,7 @@ const BACKINTIMEregretTemplates = {
   },
   lyleNoKiss: {
     rCondition: () => (!gSw(832)),
-    rName: "(([Lyle.]))",
+    rName: "(([v[192]>=7]))Lyle.",
     rFunction: "BACKINTIMEfixLyleNoKiss",
     rText: [
       {
