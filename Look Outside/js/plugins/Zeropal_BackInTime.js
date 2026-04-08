@@ -11,43 +11,46 @@
 var BackInTime = BackInTime || {};
 
 // checks for sophie in the special door encounter pool
-function sophieAtDoor() {
+function BACKINTIMEsophieAtDoor() {
   const special = gVr(166);
   return special.includes(63);
 }
 
-function fixMuttKilled() {
+function BACKINTIMEfixMuttKilled() {
   sSw(317, false); // muttDead = OFF
 }
 
-function fixPlantHealth() {
+function BACKINTIMEfixPlantHealth() {
   sVr(128, 50); // plantHealth = 50
 }
 
-function fixSophieGone() {
+function BACKINTIMEfixSophieGone() {
   sSw(362, true); // recruitedSophie = ON
 }
 
-function fixPapKilled() {
+function BACKINTIMEfixPapKilled() {
   sSw(362, true); // recruitedSophie = ON
 }
 
-function fixLyleKilled() {
+function BACKINTIMEfixLyleKilled() {
   sSw(832, false); // killedLyle = OFF
-  delete $gameSelfSwitches._data[[9, 14, 'C'].toString()]; // delete the dead lyle state on his event
+  delete $gameSelfSwitches._data[[9, 14, "C"].toString()]; // delete the dead lyle state on his event
 }
 
-function fixEugeneKilled() {
+function BACKINTIMEfixLyleNoKiss() {
+  }
+
+function BACKINTIMEfixEugeneKilled() {
   sSw(168, false); // killedEugene = OFF
 }
 
-function fixMaskedShadowGift() {
+function BACKINTIMEfixMaskedShadowGift() {
   sVr(152, 10); // shadowDispo = 10
   sVr(150, 6); // shadowState = 6
   sSw(161, false); // shadowItemLeft = OFF
 }
 
-function fixMaskedShadowRecruit() {
+function BACKINTIMEfixMaskedShadowRecruit() {
   sSw(27, true); // recruitedShadow = ON
 }
 
@@ -58,43 +61,39 @@ function fixAstronomersKilled() {
   sSw(173, false); // killedBeryl = OFF
 }
 
-function fixLockedInOfferings() {
+function BACKINTIMEfixLockedInOfferings() {
   sSw(206, false); // lastOfferingGood = OFF
 }
 
-function fixErnestTooLate() {
+function BACKINTIMEfixErnestTooLate() {
   sSw(797, false); // ernestTooLate = OFF
-  sSw(790, false) // colSqueakumDead = OFF
+  sSw(790, false); // colSqueakumDead = OFF
 }
 
-function fixErnestKilled() {
-  sSw(789, false) // ErnestDead = OFF
+function BACKINTIMEfixErnestKilled() {
+  sSw(789, false); // ErnestDead = OFF
 }
 
-function fixJeanneKilled() {
-  
+function BACKINTIMEfixJeanneKilled() {}
+
+function BACKINTIMEfixJoelKilled() {}
+
+function BACKINTIMEfixHellenQuest() {
+  sSw(1086, false); // MissedHellenWatering = OFF
+  sSw(35, true); // recruitedHellen = ON
+  sSw(1087, true); // hellenSpawned = OFF
 }
 
-function fixJoelKilled() {
-  
-}
-
-function fixHellenQuest() {
-  sSw(1086, false) // MissedHellenWatering = OFF
-  sSw(35, true) // recruitedHellen = ON
-  sSw(1087, true) // hellenSpawned = OFF
-}
-
-function fixBasementBlocked() {
+function BACKINTIMEfixBasementBlocked() {
   // if !1063 openedpitdoor
   sSw(1097, false); // Earthquake = OFF
 }
 
-const regretOptions = {
-  sophie: {
-    rCondition: sophieAtDoor,
+const BACKINTIMEregretTemplates = {
+  sophieGone: {
+    rCondition: BACKINTIMEsophieAtDoor,
     rText: "(([!s[362],!s[364]]))Sophie.",
-    rFunction: "fixSophieGone",
+    rFunction: "BACKINTIMEfixSophieGone",
     rText: [
       {
         code: 101,
@@ -104,7 +103,9 @@ const regretOptions = {
       {
         code: 401,
         indent: 2,
-        parameters: ["You think of Sophie. You wish you could have brought her"],
+        parameters: [
+          "You think of Sophie. You wish you could have brought her",
+        ],
       },
       {
         code: 401,
@@ -126,7 +127,9 @@ const regretOptions = {
       {
         code: 401,
         indent: 2,
-        parameters: ["Suddenly, you feel a lot better about her situation. In fact,"],
+        parameters: [
+          "Suddenly, you feel a lot better about her situation. In fact,",
+        ],
       },
       {
         code: 401,
@@ -138,15 +141,13 @@ const regretOptions = {
       {
         code: 401,
         indent: 2,
-        parameters: [
-          "back to this apartment.",
-        ],
+        parameters: ["back to this apartment."],
       },
     ],
   },
   hellenQuestFailed: {
-    rName: "((![1086]))Hellen.",
-    rFunction: "fixHellenQuest",
+    rName: "(([!s[1086]]))Hellen.",
+    rFunction: "BACKINTIMEfixHellenQuest",
     rText: [
       {
         code: 101,
@@ -156,13 +157,62 @@ const regretOptions = {
       {
         code: 401,
         indent: 2,
-        parameters: ["You think of Hellen. You really let her down. You close"],
+        parameters: [
+          "You think of Hellen. You really let her down. You close your eyes",
+        ],
+      },
+      {
+        code: 401,
+        indent: 2,
+        parameters: ["and vow to do better..."],
+      },
+      {
+        code: 101,
+        indent: 2,
+        parameters: ["", 0, 0, 2, ""],
       },
       {
         code: 401,
         indent: 2,
         parameters: [
-          "your eyes and vow to do better...",
+          "Actually, did you forget to water her plant the other day?",
+        ],
+      },
+      {
+        code: 401,
+        indent: 2,
+        parameters: [
+          "Perhaps you only imagined you did. In fact, you feel as though",
+        ],
+      },
+      {
+        code: 401,
+        indent: 2,
+        parameters: ["Hellen is waiting for you right now!"],
+      },
+    ],
+  },
+  lyleKilled: {
+    rName: "(([!s[832]Lyle.]))",
+    rFunction: "BACKINTIMEfixLyleKilled",
+    rText: [
+      {
+        code: 101,
+        indent: 2,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 2,
+        parameters: [
+          "You think of Lyle. You really wish it didn't have to end",
+        ],
+      },
+      {
+        code: 401,
+        indent: 2,
+        parameters: [
+          "that way. You almost miss him. You close your eyes and vow to do better...",
         ],
       },
       {
@@ -173,25 +223,61 @@ const regretOptions = {
       {
         code: 401,
         indent: 2,
-        parameters: ["Actually, did you forget to water her plant the other day?"],
+        parameters: ["Actually, is he dead? You might have made that part up."],
       },
       {
         code: 401,
         indent: 2,
         parameters: [
-          "Perhaps you only imagined you did. In fact, you feel as",
+          "In fact, you feel as though he's healthier than ever right",
         ],
       },
       {
         code: 401,
         indent: 2,
-        parameters: ["though Hellen is waiting for you right now."],
+        parameters: ["now."],
+      },
+    ],
+  },
+  lyleNoKiss: {
+    rCondition: () => (!gSw(832)),
+    rName: "(([Lyle.]))",
+    rFunction: "BACKINTIMEfixLyleNoKiss",
+    rText: [
+      {
+        code: 101,
+        indent: 2,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 2,
+        parameters: [
+          "You think of Lyle. You really wish you'd been nicer to him. You close",
+        ],
+      },
+      {
+        code: 401,
+        indent: 2,
+        parameters: [
+          "your eyes and imagine kissing him. It's not gay if your eyes are closed.",
+        ],
+      },
+      {
+        code: 101,
+        indent: 2,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 2,
+        parameters: ["Woah. That felt pretty real. You hope he comes to visit soon..."],
       },
     ]
   },
-  plant: {
+  plantDead: {
     rName: "(([v[128]>5]))Your plant.",
-    rFunction: "fixPlantHealth",
+    rFunction: "BACKINTIMEfixPlantHealth",
     rText: [
       {
         code: 101,
@@ -201,7 +287,9 @@ const regretOptions = {
       {
         code: 401,
         indent: 2,
-        parameters: ["You think of your plant. You haven't been taking care of it"],
+        parameters: [
+          "You think of your plant. You haven't been taking care of it",
+        ],
       },
       {
         code: 401,
@@ -223,20 +311,20 @@ const regretOptions = {
       {
         code: 401,
         indent: 2,
-        parameters: ["Suddenly, you feel a lot more optimistic. In fact,"],
+        parameters: [
+          "Suddenly, you feel a lot more optimistic. In fact, it's looking",
+        ],
       },
       {
         code: 401,
         indent: 2,
-        parameters: [
-          "it's looking greener already!",
-        ],
+        parameters: ["greener already!"],
       },
     ],
   },
   muttKilled: {
     rName: "(([!s[317]]))Mutt.",
-    rFunction: "fixMuttKilled",
+    rFunction: "BACKINTIMEfixMuttKilled",
     rText: [
       {
         code: 101,
@@ -246,19 +334,21 @@ const regretOptions = {
       {
         code: 401,
         indent: 2,
-        parameters: ["You think of Mutt. You know you murdered him and all"],
-      },
-      {
-        code: 401,
-        indent: 2,
         parameters: [
-          "but you wish he didn't have to be so dead about it. You ",
+          "You think of Mutt. You know you murdered him and all but you",
         ],
       },
       {
         code: 401,
         indent: 2,
-        parameters: ["close your eyes and vow to do better..."],
+        parameters: [
+          "but you wish he didn't have to be so dead about it. You close your eyes",
+        ],
+      },
+      {
+        code: 401,
+        indent: 2,
+        parameters: ["and vow to do better..."],
       },
       {
         code: 101,
@@ -286,7 +376,7 @@ const regretOptions = {
   },
   shadowGift: {
     rName: "(([!v[152]<10;v[150]=7]))The Masked Shadow.",
-    rFunction: "fixMaskedShadowGift",
+    rFunction: "BACKINTIMEfixMaskedShadowGift",
     rText: [
       {
         code: 101,
@@ -296,19 +386,16 @@ const regretOptions = {
       {
         code: 401,
         indent: 2,
-        parameters: ["You think of the masked shadow. If only you had treated it"],
-      },
-      {
-        code: 401,
-        indent: 2,
         parameters: [
-          "better. You close your eyes and wish it had given you a",
+          "You think of the masked shadow. If only you had treated it",
         ],
       },
       {
         code: 401,
         indent: 2,
-        parameters: ["nicer gift..."],
+        parameters: [
+          "better. You close your eyes and wish it had given you a nicer gift...",
+        ],
       },
       {
         code: 101,
@@ -318,25 +405,27 @@ const regretOptions = {
       {
         code: 401,
         indent: 2,
-        parameters: ["Now that you think of it, it did seem to like you a lot."],
-      },
-      {
-        code: 401,
-        indent: 2,
         parameters: [
-          "In fact, you'd be willing to bet that it's out searching",
+          "Now that you think of it, it did seem to like you a lot.",
         ],
       },
       {
         code: 401,
         indent: 2,
-        parameters: ["for a better gift right now."],
+        parameters: [
+          "In fact, you'd be willing to bet that it's out searching for a better",
+        ],
+      },
+      {
+        code: 401,
+        indent: 2,
+        parameters: ["gift right now."],
       },
     ],
   },
   shadowRecruit: {
     rName: "(([!s[27];v[150]>=9]))The Masked Shadow.",
-    rFunction: "fixMaskedShadowRecruit",
+    rFunction: "BACKINTIMEfixMaskedShadowRecruit",
     rText: [
       {
         code: 101,
@@ -373,15 +462,13 @@ const regretOptions = {
       {
         code: 401,
         indent: 2,
-        parameters: [
-          "surprised if it was in your kitchen right now.",
-        ],
+        parameters: ["surprised if it was in your kitchen right now."],
       },
     ],
   },
   lockedInOffering: {
     rName: "(([!s[27];v[150]>=9]))The Masked Shadow.",
-    rFunction: "fixLockedInOfferings",
+    rFunction: "BACKINTIMEfixLockedInOfferings",
     rText: [
       {
         code: 101,
@@ -391,7 +478,9 @@ const regretOptions = {
       {
         code: 401,
         indent: 2,
-        parameters: ["You think of the offerings. You told Jasper you were ready,"],
+        parameters: [
+          "You think of the offerings. You told Jasper you were ready,",
+        ],
       },
       {
         code: 401,
@@ -413,7 +502,9 @@ const regretOptions = {
       {
         code: 401,
         indent: 2,
-        parameters: ["There's nothing wrong with going back and asking him again,"],
+        parameters: [
+          "There's nothing wrong with going back and asking him again,",
+        ],
       },
       {
         code: 401,
@@ -446,9 +537,7 @@ const regretOptions = {
       {
         code: 401,
         indent: 2,
-        parameters: [
-          "any of them. They were only trying to help. You close",
-        ],
+        parameters: ["any of them. They were only trying to help. You close"],
       },
       {
         code: 401,
@@ -468,20 +557,18 @@ const regretOptions = {
       {
         code: 401,
         indent: 2,
-        parameters: [
-          "You don't think you did. In fact, you're quite certain",
-        ],
+        parameters: ["You don't think you did. In fact, you're quite certain"],
       },
       {
         code: 401,
         indent: 2,
         parameters: ["that all four of them are just fine."],
       },
-    ]
+    ],
   },
   ernestTooLate: {
     rName: "(([!s[797];!s[790]]))Ernest.",
-    rFunction: "fixErnestTooLate",
+    rFunction: "BACKINTIMEfixErnestTooLate",
     rText: [
       {
         code: 101,
@@ -518,20 +605,18 @@ const regretOptions = {
       {
         code: 401,
         indent: 2,
-        parameters: [
-          "though you should go check on Ernest today...",
-        ],
+        parameters: ["though you should go check on Ernest today..."],
       },
       {
         code: 401,
         indent: 2,
         parameters: ["now."],
       },
-    ]
+    ],
   },
   ernestKilled: {
     rName: "(([!s[789]]))Ernest.",
-    rFunction: "fixErnestKilled",
+    rFunction: "BACKINTIMEfixErnestKilled",
     rText: [
       {
         code: 101,
@@ -546,9 +631,7 @@ const regretOptions = {
       {
         code: 401,
         indent: 2,
-        parameters: [
-          "you did, it was unnecessary. You close your eyes and",
-        ],
+        parameters: ["you did, it was unnecessary. You close your eyes and"],
       },
       {
         code: 401,
@@ -563,25 +646,25 @@ const regretOptions = {
       {
         code: 401,
         indent: 2,
-        parameters: ["Actually, you didn't do a thing to him! In fact, you feel as"],
+        parameters: [
+          "Actually, you didn't do a thing to him! In fact, you feel as",
+        ],
       },
       {
         code: 401,
         indent: 2,
-        parameters: [
-          "though you should go check on Ernest today...",
-        ],
+        parameters: ["though you should go check on Ernest today..."],
       },
       {
         code: 401,
         indent: 2,
         parameters: ["now."],
       },
-    ]
+    ],
   },
   eugeneKilled: {
-    rName: "((!s[789]))Eugene.",
-    rFunction: "fixEugeneKilled",
+    rName: "(([!s[789]]))Eugene.",
+    rFunction: "BACKINTIMEfixEugeneKilled",
     rText: [
       {
         code: 101,
@@ -591,19 +674,21 @@ const regretOptions = {
       {
         code: 401,
         indent: 2,
-        parameters: ["You think of Eugene. You know you murdered him and all"],
-      },
-      {
-        code: 401,
-        indent: 2,
         parameters: [
-          "but you wish he didn't have to be so dead about it. You",
+          "You think of Eugene. You know you murdered him and all but you",
         ],
       },
       {
         code: 401,
         indent: 2,
-        parameters: ["close your eyes and vow to do better..."],
+        parameters: [
+          "wish he didn't have to be so dead about it. You close your eyes",
+        ],
+      },
+      {
+        code: 401,
+        indent: 2,
+        parameters: ["and vow to do better..."],
       },
       {
         code: 101,
@@ -627,12 +712,12 @@ const regretOptions = {
         indent: 2,
         parameters: ["now."],
       },
-    ]
+    ],
   },
   basementBlocked: {
     rName: "(([s[1097];!s[1063]]))The basement pit.",
-    rFunction: "fixBasementBlocked",
-    rText: []
+    rFunction: "BACKINTIMEfixBasementBlocked",
+    rText: [],
   },
 };
 
@@ -672,7 +757,7 @@ BackInTime.applyChanges = function () {
   }
 
   function createRegret(index, regretKey) {
-    const { rName, rFunction, rText } = regretOptions[regretKey];
+    const { rName, rFunction, rText } = BACKINTIMEregretTemplates[regretKey];
 
     return [
       {
@@ -800,7 +885,7 @@ BackInTime.applyChanges = function () {
       ];
 
       const createRegretOptions = function () {
-        const regretsList = Object.keys(regretOptions);
+        const regretsList = Object.keys(BACKINTIMEregretTemplates);
 
         const regretNames = [];
         const regretCases = [];
@@ -808,7 +893,7 @@ BackInTime.applyChanges = function () {
         let index = 1;
 
         regretsList.forEach((regretName) => {
-          const options = regretOptions[regretName];
+          const options = BACKINTIMEregretTemplates[regretName];
           if (!options.rCondition || options.rCondition()) {
             regretNames.push(options.rName);
             regretCases.push(...createRegret(index, regretName));
@@ -989,12 +1074,9 @@ BackInTime.applyChanges = function () {
         {
           code: 401,
           indent: 1,
-          parameters: ["You close your eyes and remember what it was like "],
-        },
-        {
-          code: 401,
-          indent: 1,
-          parameters: ["on day \\V[8]."],
+          parameters: [
+            "You close your eyes and remember what it was like on day \\V[8].",
+          ],
         },
         {
           code: 0,
