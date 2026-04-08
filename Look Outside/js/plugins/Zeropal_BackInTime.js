@@ -11,9 +11,10 @@
 var BackInTime = BackInTime || {};
 
 // checks for sophie in the special door encounter pool
-function BACKINTIMEsophieAtDoor() {
+function BACKINTIMEsophieNotAtDoor() {
   const special = gVr(166);
-  return special.includes(63);
+  console.log(special);
+  return !special.includes(63);
 }
 
 function BACKINTIMEfixMuttKilled() {
@@ -34,14 +35,14 @@ function BACKINTIMEfixPapKilled() {
 
 function BACKINTIMEfixLyleKilled() {
   sSw(832, false); // killedLyle = OFF
-  // so lyle doesnt attack you immediately when you get back, send him back to before you traded
-  sVr(192, 2) // shutterbugState = 2 
+  // so lyle doesnt attack you immediately when you get back, send him back to post all trading
+  sVr(192, 7); // shutterbugState = 7
   delete $gameSelfSwitches._data[[9, 14, "C"].toString()]; // delete the dead lyle state on his event
 }
 
 function BACKINTIMEfixLyleNoKiss() {
   sSw(476, true); // primeLyleJoin = ON
-  }
+}
 
 function BACKINTIMEfixEugeneKilled() {
   sSw(168, false); // killedEugene = OFF
@@ -94,8 +95,8 @@ function BACKINTIMEfixBasementBlocked() {
 
 const BACKINTIMEregretTemplates = {
   sophieGone: {
-    rCondition: BACKINTIMEsophieAtDoor,
-    rText: "(([!s[362],!s[364]]))Sophie.",
+    rCondition: BACKINTIMEsophieNotAtDoor,
+    rName: "(([!s[362];!s[364]]))Sophie.",
     rFunction: "BACKINTIMEfixSophieGone",
     rText: [
       {
@@ -214,9 +215,7 @@ const BACKINTIMEregretTemplates = {
       {
         code: 401,
         indent: 2,
-        parameters: [
-          "that way. You almost miss him. You close your eyes and",
-        ],
+        parameters: ["that way. You almost miss him. You close your eyes and"],
       },
       {
         code: 401,
@@ -248,8 +247,8 @@ const BACKINTIMEregretTemplates = {
     ],
   },
   lyleNoKiss: {
-    rCondition: () => (!gSw(832)),
-    rName: "(([v[192]>=7]))Lyle.",
+    rCondition: () => !gSw(832),
+    rName: "(([v[192]<7,s[376]]))Lyle.",
     rFunction: "BACKINTIMEfixLyleNoKiss",
     rText: [
       {
@@ -261,15 +260,20 @@ const BACKINTIMEregretTemplates = {
         code: 401,
         indent: 2,
         parameters: [
-          "You think of Lyle. You really wish you'd been nicer to him. You close",
+          "You think of Lyle. You really wish you'd been nicer to him. You",
         ],
       },
       {
         code: 401,
         indent: 2,
         parameters: [
-          "your eyes and imagine kissing him. It's not gay if your eyes are closed.",
+          "close your eyes and imagine kissing him. It's not gay if your eyes",
         ],
+      },
+      {
+        code: 401,
+        indent: 2,
+        parameters: ["are closed."],
       },
       {
         code: 101,
@@ -279,9 +283,11 @@ const BACKINTIMEregretTemplates = {
       {
         code: 401,
         indent: 2,
-        parameters: ["Woah. That felt pretty real. You hope he comes to visit soon..."],
+        parameters: [
+          "Woah. That felt pretty real. You hope he comes to visit soon...",
+        ],
       },
-    ]
+    ],
   },
   plantDead: {
     rName: "(([v[128]>5]))Your plant.",
@@ -383,7 +389,7 @@ const BACKINTIMEregretTemplates = {
     ],
   },
   shadowGift: {
-    rName: "(([!v[152]<10;v[150]=7]))The Masked Shadow.",
+    rName: "(([!v[152]<10;!v[150]=7]))The Masked Shadow.",
     rFunction: "BACKINTIMEfixMaskedShadowGift",
     rText: [
       {
@@ -432,7 +438,7 @@ const BACKINTIMEregretTemplates = {
     ],
   },
   shadowRecruit: {
-    rName: "(([!s[27];v[150]>=9]))The Masked Shadow.",
+    rName: "(([s[27];v[150]<9]))The Masked Shadow.",
     rFunction: "BACKINTIMEfixMaskedShadowRecruit",
     rText: [
       {
@@ -475,7 +481,7 @@ const BACKINTIMEregretTemplates = {
     ],
   },
   lockedInOffering: {
-    rName: "(([!s[27];v[150]>=9]))The Masked Shadow.",
+    rName: "(([!s[206]]))The offerings.",
     rFunction: "BACKINTIMEfixLockedInOfferings",
     rText: [
       {
@@ -529,7 +535,7 @@ const BACKINTIMEregretTemplates = {
     ],
   },
   astronomersKilled: {
-    rName: "(([!s[170],s[171],s[172],s[173]]))The Astronomers.",
+    rName: "(([!s[170],!s[171],!s[172],!s[173]]))The Astronomers.",
     rFunction: "fixAstronomersKilled",
     rText: [
       {
@@ -903,6 +909,7 @@ BackInTime.applyChanges = function () {
         regretsList.forEach((regretName) => {
           const options = BACKINTIMEregretTemplates[regretName];
           if (!options.rCondition || options.rCondition()) {
+            console.log(regretName, options.rName);
             regretNames.push(options.rName);
             regretCases.push(...createRegret(index, regretName));
             index++;
@@ -1155,25 +1162,6 @@ BackInTime.applyChanges = function () {
     onMapLoaded.call(this);
   };
 
-  // separate dialogue box: think about your regrets
-  // if failed helen quest: if (1086, set 1086 missedhelenwatering = off, 35 recruitedhelen = on)
-  // if failed ernest quest (if 797, set 797 ernesttoolate = off)
-  // if cave in happened:
-
-  // if you killed the astronomers
-  // you think of the astronomers. you wish you hadn't hurt any of them. they were only trying to help. you close your eyes and vow to do better...
-  // actually, did you ever attack any of them? you don't think you did. in fact, you're quite certain that all four of them are just fine.
-
-  // if you didnt get the rose:
-  // you think of the masked shadow. you wish you had treated it better whenever you saw it around. you close your eyes and wish you had a better gift...
-  // actually, now that you think of it, it did seem to like you a lot. in fact, you'd be willing to bet that it's out searching for a better gift right now...
-
-  // if kicked masked shadow out
-  // you think of the masked shadow. you wish you hadn't rebuked it so harshly. you close your eyes and wish there was a way to let it know it's still welcome.
-  // actually, it may already know. in fact, you wouldn't be surprised if it was in your kitchen right now.
-
-  // if ernest is dead: you think of ernest. You wish you had done better by him. You close your eyes and vow to do better...
-  // did you even kill him? you think you would have remembered something like that. in fact, you feel like he's just fine...
 };
 
 BackInTime.applyChanges();
