@@ -117,7 +117,7 @@ function getAPItemPickupPage(
       {
         code: 401,
         indent: 1,
-        parameters: [`Find \\C[03]{${itemName}\\C[0].`],
+        parameters: [`Find \\C[03]{${itemName}}\\C[0].`],
       },
       {
         code: 123,
@@ -176,11 +176,7 @@ const IMG_OVERRIDE = new Set(["img/characters/GameCarts.png"]);
 
 const MAP_OVERWORLD_ITEM_OVERRIDES = {
   3: { 99: "APT_33_LIVINGROOM_CASH" },
-  4: [
-    {
-      23: "APT_33_BATHROOM_FIRST_AID_KIT",
-    },
-  ],
+  4: { 23: "APT_33_BATHROOM_FIRST_AID_KIT" },
 };
 
 LookOutsideAPClient.helperTools = function () {
@@ -227,9 +223,9 @@ LookOutsideAPClient.helperTools = function () {
       if (false) throw new Error(`Invalid recruit id: ${id}`);
       // $gameVariable 633 refers to Phillippe's growth stage, {todo: whats the minimum for exploring} + means he's ready to adventure
       if (id == 499) {
-        if (gVr(633) <= 24) sVr(633, 24);
+        if (gVr(633) <= 24) sVr(633, 24); // philGrowth to max
+        sSw(319, true); // phillippeRecovered = on
         // force him to his fungus form
-        $gameTemp.reserveCommonEvent(322);
         // however, he appears in the overworld in his moth form, so we need to manually update his portraits
       }
       // handle rat baby's growth stages
@@ -240,9 +236,12 @@ LookOutsideAPClient.helperTools = function () {
       } else if ((id = 380)) {
         // audrey has no skills when forced into the party
       } else if ((id = 34)) {
-        // leigh has no skills when forced into the party
+        // when leigh is recruited, game manually grants grinning beast
+        $gameActors.actor(5).learnSkill(65);
       }
       sSw(id, true);
+      if (gVr(633) <= 24) sVr(633, 24);
+      sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
       console.log(`Recruit added: ${VALID_RECRUITS[id]}`);
     } catch (e) {
       console.error(e);
@@ -297,7 +296,6 @@ LookOutsideAPClient.helperTools = function () {
   const overWriteImgLoading = function () {
     const _startLoading = Bitmap.prototype._startLoading;
     Bitmap.prototype._startLoading = function () {
-      console.log(IMG_OVERRIDE, this);
       if (IMG_OVERRIDE.has(this._url)) {
         this._image = new Image();
         this._image.onload = this._onLoad.bind(this);
@@ -315,7 +313,7 @@ LookOutsideAPClient.helperTools = function () {
 
   const getItemName = function (apLocationName) {
     // todo: actually get the item name
-    return apItemName;
+    return apLocationName;
   };
 
   const getItemImage = function (apLocationName) {
@@ -347,10 +345,13 @@ LookOutsideAPClient.helperTools = function () {
   };
 
   const overrideOverworldPickups = function () {
+    console.log(lastLoadedMapId);
     const eventsToOverride = MAP_OVERWORLD_ITEM_OVERRIDES[lastLoadedMapId];
+    console.log(eventsToOverride);
+    if (!eventsToOverride) return;
     Object.keys(eventsToOverride).forEach((eventId) => {
-      if (!$dataMap.events) return;
       const event = $dataMap.events[eventId];
+      console.log($dataMap.events[eventId], eventId);
       event.pages[0] = getAPItemPickupPage(
         getItemName(eventsToOverride[eventId]),
         getItemImage(eventsToOverride[eventId]),
@@ -364,6 +365,23 @@ LookOutsideAPClient.helperTools = function () {
 
 LookOutsideAPClient.helperTools();
 
-LookOutsideAPClient.applyChanges = function () {};
+LookOutsideAPClient.applyChanges = function () {
+  const scripts = ["Zeropal_Go_Home"];
+
+  // load helper scripts
+  loadScript = function (filename) {
+    const url = "js/plugins/" + Utils.encodeURI(filename) + ".js";
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = url;
+    script.async = false;
+    script.defer = true;
+    script._url = url;
+    document.body.appendChild(script);
+  };
+  scripts.forEach((script) => {
+    loadScript(script);
+  });
+};
 
 LookOutsideAPClient.applyChanges();
