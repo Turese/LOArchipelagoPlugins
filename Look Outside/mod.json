@@ -1,0 +1,172 @@
+{
+  "metadata": {
+    "name": "AP CLIENT",
+    "author": "Unknown",
+    "version": "1.0",
+    "id": "ap client",
+    "nexus_id": null,
+    "description": "",
+    "is_fhmm_mod": false
+  },
+  "file_ops": [
+    {
+      "source": "img/characters/$Chara_PlayerWakeup_MissingBotharm.png",
+      "target": "img/characters/$Chara_PlayerWakeup_MissingBotharm.png"
+    },
+    {
+      "source": "img/characters/Chara_Player_MissingBotharm.png",
+      "target": "img/characters/Chara_Player_MissingBotharm.png"
+    },
+    {
+      "source": "img/characters/GameCarts.png",
+      "target": "img/characters/GameCarts.png"
+    },
+    {
+      "source": "js/plugins/LookOutsideAPClient.js",
+      "target": "js/plugins/LookOutsideAPClient.js"
+    },
+    {
+      "source": "img/enemies/Reflections/MM_sam1_MissingBotharm.png",
+      "target": "img/enemies/Reflections/MM_sam1_MissingBotharm.png"
+    },
+    {
+      "source": "img/enemies/Reflections/playerReflection_bloody_MissingBotharm.png",
+      "target": "img/enemies/Reflections/playerReflection_bloody_MissingBotharm.png"
+    },
+    {
+      "source": "img/enemies/Reflections/playerReflection_bored_MissingBotharm.png",
+      "target": "img/enemies/Reflections/playerReflection_bored_MissingBotharm.png"
+    },
+    {
+      "source": "img/enemies/Reflections/playerReflection_brushingTeeth_MissingBotharm.png",
+      "target": "img/enemies/Reflections/playerReflection_brushingTeeth_MissingBotharm.png"
+    },
+    {
+      "source": "img/enemies/Reflections/playerReflection_depressed_MissingBotharm.png",
+      "target": "img/enemies/Reflections/playerReflection_depressed_MissingBotharm.png"
+    },
+    {
+      "source": "img/enemies/Reflections/playerReflection_disgust_MissingBotharm.png",
+      "target": "img/enemies/Reflections/playerReflection_disgust_MissingBotharm.png"
+    },
+    {
+      "source": "img/enemies/Reflections/playerReflection_dispirited_MissingBotharm.png",
+      "target": "img/enemies/Reflections/playerReflection_dispirited_MissingBotharm.png"
+    },
+    {
+      "source": "img/enemies/Reflections/playerReflection_distracted_MissingBotharm.png",
+      "target": "img/enemies/Reflections/playerReflection_distracted_MissingBotharm.png"
+    },
+    {
+      "source": "img/enemies/Reflections/playerReflection_eye_MissingBotharm.png",
+      "target": "img/enemies/Reflections/playerReflection_eye_MissingBotharm.png"
+    },
+    {
+      "source": "img/enemies/Reflections/playerReflection_fear_MissingBotharm.png",
+      "target": "img/enemies/Reflections/playerReflection_fear_MissingBotharm.png"
+    },
+    {
+      "source": "img/enemies/Reflections/playerReflection_glare_MissingBotharm.png",
+      "target": "img/enemies/Reflections/playerReflection_glare_MissingBotharm.png"
+    },
+    {
+      "source": "img/enemies/Reflections/playerReflection_grin_MissingBotharm.png",
+      "target": "img/enemies/Reflections/playerReflection_grin_MissingBotharm.png"
+    },
+    {
+      "source": "img/enemies/Reflections/playerReflection_neutral_MissingBotharm.png",
+      "target": "img/enemies/Reflections/playerReflection_neutral_MissingBotharm.png"
+    },
+    {
+      "source": "img/enemies/Reflections/playerReflection_toothpaste_MissingBotharm.png",
+      "target": "img/enemies/Reflections/playerReflection_toothpaste_MissingBotharm.png"
+    },
+    {
+      "source": "img/enemies/Reflections/playerReflection_touchChin_MissingBotharm.png",
+      "target": "img/enemies/Reflections/playerReflection_touchChin_MissingBotharm.png"
+    },
+    {
+      "source": "img/enemies/Reflections/playerReflection_yawn_MissingBotharm.png",
+      "target": "img/enemies/Reflections/playerReflection_yawn_MissingBotharm.png"
+    },
+    {
+      "source": "js/plugins/BackInTime.js",
+      "target": "js/plugins/BackInTime.js"
+    },
+    {
+      "source": "js/plugins/ClearExplicitDrops.js",
+      "target": "js/plugins/ClearExplicitDrops.js"
+    },
+    {
+      "source": "js/plugins/GoHome.js",
+      "target": "js/plugins/GoHome.js"
+    },
+    {
+      "source": "js/plugins/InsertAPItems.js",
+      "target": "js/plugins/InsertAPItems.js"
+    },
+    {
+      "source": "js/plugins/NormalizeDifficulty.js",
+      "target": "js/plugins/NormalizeDifficulty.js"
+    },
+    {
+      "source": "js/plugins/Unarmed.js",
+      "target": "js/plugins/Unarmed.js"
+    },
+    {
+      "source": "js/plugins/UpdateMissableEvents.js",
+      "target": "js/plugins/UpdateMissableEvents.js"
+    }
+  ],
+  "json_patches": [],
+  "plugins_registry": [
+    {
+      "name": "BackInTime",
+      "status": true,
+      "description": "Back in time: speak to the calendar to get the option to travel through time!",
+      "parameters": {}
+    },
+    {
+      "name": "clearExplicitDrops",
+      "status": true,
+      "description": "(Auto-detected) No description found in script file.",
+      "parameters": {}
+    },
+    {
+      "name": "GoHome",
+      "status": true,
+      "description": "Menu option that sends you back to Apartment 33",
+      "parameters": {}
+    },
+    {
+      "name": "InsertAPItems",
+      "status": true,
+      "description": "Insert AP Items: Insert any item to players inventory by AP ID",
+      "parameters": {}
+    },
+    {
+      "name": "NormalizeDifficulty",
+      "status": true,
+      "description": "(Auto-detected) No description found in script file.",
+      "parameters": {}
+    },
+    {
+      "name": "Unarmed",
+      "status": true,
+      "description": "Unarmed and Dangerous: Play as Sam with no arms!",
+      "parameters": {}
+    },
+    {
+      "name": "UpdateMissableEvents",
+      "status": true,
+      "description": "(Auto-detected) No description found in script file.",
+      "parameters": {}
+    },
+    {
+      "name": "LookOutsideAPClient",
+      "status": true,
+      "description": "Archipelago Client for Look Outside",
+      "parameters": {}
+    }
+  ]
+}

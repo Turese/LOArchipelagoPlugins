@@ -20,7 +20,7 @@ var LookOutsideAPClient = LookOutsideAPClient || {};
 
 let lastLoadedMapId;
 
-LookOutsideAPClient.applyChanges = async function () {
+LookOutsideAPClient.applyChanges = function () {
   // track most recently loaded mapid for the sake of overwriting events
   const loadMapData = DataManager.loadMapData;
   DataManager.loadMapData = function (mapId) {
@@ -28,26 +28,14 @@ LookOutsideAPClient.applyChanges = async function () {
     loadMapData.call(this, mapId);
   };
 
-  const scripts = ["GoHome", "BackInTime", "Unarmed", "InsertAPItems"];
+  const scripts = [GoHome, BackInTime, Unarmed, InsertAPItems];
 
-  // load helper scripts
+  // verify required helper scripts before continuing
+  console.log(GoHome)
+  scripts.forEach(scriptName => {
+    assert(scriptName, `Missing dependency: ${scriptName}.js`)
+  })
 
-  const loadScript = function (fileName) {
-    const url = "js/plugins/APUtils/" + Utils.encodeURI(fileName) + ".js";
-    const script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src = url;
-    script.async = false;
-    script.defer = true;
-    script._url = url;
-    return new Promise((resolve, reject) => {
-      script.onload = resolve;
-      script.onerror = reject;
-      document.body.appendChild(script);
-    });
-  };
-
-  await Promise.all(scripts.map((fileName) => loadScript(fileName)));
 
   // check other mods' custom images all together
   const shouldOverrideImage = function (url) {
