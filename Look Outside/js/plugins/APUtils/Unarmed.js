@@ -1459,7 +1459,7 @@ UnarmedAndDangerous.applyChanges = function () {
     return url.includes(MISSING_BOTH_ARM_SUFFIX);
   };
 
-  window.UnarmedAndDangerous = {
+  window.Unarmed = {
     setArms,
     addArm,
     shouldOverrideImage,

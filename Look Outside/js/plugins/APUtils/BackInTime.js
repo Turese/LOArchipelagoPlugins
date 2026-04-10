@@ -777,6 +777,51 @@ BackInTime.applyChanges = function () {
     loadMapData.call(this, mapId);
   };
 
+  const createRegretOptions = function () {
+    const regretsList = Object.keys(regretTemplates);
+
+    const regretNames = [];
+    const regretCases = [];
+
+    let index = 1;
+
+    regretsList.forEach((regretName) => {
+      const options = regretTemplates[regretName];
+      if (!options.rCondition || options.rCondition()) {
+        console.log(regretName, options.rName);
+        regretNames.push(options.rName);
+        regretCases.push(...createRegret(index, regretName));
+        index++;
+      }
+    });
+
+    return [
+      {
+        code: 102,
+        indent: 1,
+        parameters: [["I regret nothing.", ...regretNames], 0, 0, 2, 0],
+      },
+      {
+        code: 402,
+        indent: 1,
+        parameters: [0, "I regret nothing."],
+      },
+      {
+        code: 115,
+        indent: 2,
+        parameters: [],
+      },
+      {
+        code: 0,
+        indent: 2,
+        parameters: [],
+      },
+      ...regretCases,
+    ];
+  };
+
+  
+
   const createCalendarBackInTimeEvent = function () {
     if (lastLoadedMapId === BEDROOM_MAP_ID) {
       const week1OptionNames = [];
@@ -792,7 +837,6 @@ BackInTime.applyChanges = function () {
       const week2Options = [];
 
       for (let date = 7, i = 0; date < 15; date++, i++) {
-        console.log(i);
         week2OptionNames.push(createDateChangeOptionName(date, i));
         week2Options.push(...createDateChangeOption(i, date, 2));
       }
@@ -869,49 +913,6 @@ BackInTime.applyChanges = function () {
           parameters: [],
         },
       ];
-
-      const createRegretOptions = function () {
-        const regretsList = Object.keys(regretTemplates);
-
-        const regretNames = [];
-        const regretCases = [];
-
-        let index = 1;
-
-        regretsList.forEach((regretName) => {
-          const options = regretTemplates[regretName];
-          if (!options.rCondition || options.rCondition()) {
-            console.log(regretName, options.rName);
-            regretNames.push(options.rName);
-            regretCases.push(...createRegret(index, regretName));
-            index++;
-          }
-        });
-
-        return [
-          {
-            code: 102,
-            indent: 1,
-            parameters: [["I regret nothing.", ...regretNames], 0, 0, 2, 0],
-          },
-          {
-            code: 402,
-            indent: 1,
-            parameters: [0, "I regret nothing."],
-          },
-          {
-            code: 115,
-            indent: 2,
-            parameters: [],
-          },
-          {
-            code: 0,
-            indent: 2,
-            parameters: [],
-          },
-          ...regretCases,
-        ];
-      };
 
       const calendarSequence = [
         {
@@ -1129,10 +1130,9 @@ BackInTime.applyChanges = function () {
 
       $dataMap.events[CALENDAR_EVENT_ID].pages[1].list = calendarSequence;
     }
-
-    window.BackInTime = {
-      createCalendarBackInTimeEvent,
-    };
+  };
+  window.BackInTime = {
+    createCalendarBackInTimeEvent,
   };
 };
 

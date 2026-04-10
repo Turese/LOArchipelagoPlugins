@@ -6,11 +6,6 @@
  * @version 1.0
  * @license Unlicensed
  * @help
- *
- * WIP
- * as of now, this successfully teleports you into apt 33 entrance
- * and drains your danger bar
- * but your party continues to follow you around
  */
 
 var GoHome = GoHome || {};
@@ -39,11 +34,14 @@ GoHome.applyChanges = function () {
   Scene_Menu.prototype.commandGoHome = function () {
     // clear weather effect
     $gameScreen.changeWeather("none", 0, 0);
-    // fadeout bgm 5 seconds
-    AudioManager.fadeOutBgm(5);
+    // fadeout bgm 1 second
+    AudioManager.fadeOutBgm(1);
+
+    sSw(1107, false) // InMeatWorld = OFF
+    sSw(348, false) // InLandlordApt = OFF
     // takes you to map 6 (f3 hall) at x=51,y=7 (frontdoor placemat)
     // position 8 (facing up) transition 0 (fade to black)
-    $gamePlayer.reserveTransfer(6, 51, y, 8, 0);
+    $gamePlayer.reserveTransfer(6, 51, 7, 8, 0);
     // unpauses
     SceneManager.pop();
   };

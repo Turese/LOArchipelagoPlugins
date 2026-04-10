@@ -20,7 +20,7 @@ var LookOutsideAPClient = LookOutsideAPClient || {};
 
 let lastLoadedMapId;
 
-LookOutsideAPClient.applyChanges = function () {
+LookOutsideAPClient.applyChanges = async function () {
   // track most recently loaded mapid for the sake of overwriting events
   const loadMapData = DataManager.loadMapData;
   DataManager.loadMapData = function (mapId) {
@@ -31,16 +31,23 @@ LookOutsideAPClient.applyChanges = function () {
   const scripts = ["GoHome", "BackInTime", "Unarmed", "InsertAPItems"];
 
   // load helper scripts
-  scripts.forEach((filename) => {
-    const url = "js/plugins/APUtils" + Utils.encodeURI(filename) + ".js";
+
+  const loadScript = function (fileName) {
+    const url = "js/plugins/APUtils/" + Utils.encodeURI(fileName) + ".js";
     const script = document.createElement("script");
     script.type = "text/javascript";
     script.src = url;
     script.async = false;
     script.defer = true;
     script._url = url;
-    document.body.appendChild(script);
-  });
+    return new Promise((resolve, reject) => {
+      script.onload = resolve;
+      script.onerror = reject;
+      document.body.appendChild(script);
+    });
+  };
+
+  await Promise.all(scripts.map((fileName) => loadScript(fileName)));
 
   // check other mods' custom images all together
   const shouldOverrideImage = function (url) {
@@ -52,7 +59,7 @@ LookOutsideAPClient.applyChanges = function () {
   // use custom image overrides for mod images to bypass encryption
   const _startLoading = Bitmap.prototype._startLoading;
   Bitmap.prototype._startLoading = function () {
-    if (shouldOverrideImage(url)) {
+    if (shouldOverrideImage(this._url)) {
       this._image = new Image();
       this._image.onload = this._onLoad.bind(this);
       this._image.onerror = this._onError.bind(this);
