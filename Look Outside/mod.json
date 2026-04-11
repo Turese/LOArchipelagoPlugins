@@ -94,6 +94,10 @@
       "target": "js/plugins/BackInTime.js"
     },
     {
+      "source": "js/plugins/MainMenuAPOptions.js",
+      "target": "js/plugins/MainMenuAPOptions.js"
+    },
+    {
       "source": "js/plugins/ClearExplicitDrops.js",
       "target": "js/plugins/ClearExplicitDrops.js"
     },
@@ -160,6 +164,12 @@
       "name": "UpdateMissableEvents",
       "status": true,
       "description": "(Auto-detected) No description found in script file.",
+      "parameters": {}
+    },
+    {
+      "name": "MainMenuAPOptions",
+      "status": true,
+      "description": "User sets ap world info from main menu.",
       "parameters": {}
     },
     {
