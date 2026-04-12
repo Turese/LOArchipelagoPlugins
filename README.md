@@ -10,7 +10,7 @@ Creates an event activated by the calendar in the player's bedroom that undoes e
 
 ### Features: 
 - [x] Ability to set current day 1-15
-- [ ] Ability to bring Joel back to life when he's been killed by the player (and give back teddy bear if lost)
+- [ ] Ability to bring Joel back to life when he's been killed by the player
 - [x] Ability to bring Mutt back to life when he's been killed by the player
 - [x] Ability to bring Eugene back to life when he's been killed by the player
 - [x] Ability to take back telling Jasper to send the astronomers to the roof for endgame
@@ -27,6 +27,7 @@ Creates an event activated by the calendar in the player's bedroom that undoes e
 - [x] Ability to return Sophie to the apartment if the player kicked her out / gave her to the imposter lady instead of Harriet
 - [ ] Ability to bring Jeanne back to life if killed by player
 - [ ] Return explicitly recruited party members to their overworld locations (Joel, Ernest, Aster) (for players who have "kill everyone" checks enabled)
+- [ ] Ability to turn on and off blackout event at will
 
 ## UpdateMissableEvents.js
 
@@ -62,6 +63,7 @@ Goes through the game's events to remove everything that explicitly grants an it
 - [ ] Clear out item exchange when using empty tape on recorder
 - [ ] Clear out painter's key reward from killing every part of Toxic Fred
 - [ ] Clear out all explicit Fred rewards (final Fred rewards and intermediate rewards from the facetaker)
+- [ ] Clear out gift from Jasper upon locking in offerings
 - [ ] Come up with the other cases...
 
 ## GoHome.js
@@ -89,6 +91,8 @@ Functionality for inserting any item into the game at any time, necessary for AP
 - [x] Ability to grant each arm individually (using logic from Unarmed plugin)
 - [ ] Ability to grant pre-defined resource packs (money + items)
 - [ ] Ability to grant any recruit (wip, missing some recruits and bugged for others)
+- [ ] Ability to randomize rat baby growth spurt as "progressive rat baby"
+- [ ] Ability to grant custom traps (reduce Sam's maintenance stats, add random status ailments to party)
 
 ## MainMenuAPOptions.js
 
@@ -118,3 +122,14 @@ Intended main entry point to other plugins.
 
 - [ ] Ability for player to re-trigger already encountered (or any) door encounter
 - [ ] In-game log sharing recent events from tracker
+- [ ] Skip intro cutscene
+- [ ] Option to skip confirmation for finding overworld items
+- [ ] Update shops so they can be used to re-acquire consumables that have been rewarded by AP before
+
+## Fun flavor text additions
+
+- [ ] Custom mirror guilt-trip dialogue that’s archipelago based
+- [ ] Custom toxic fred dialogue for picking up the randomized item in cowboy hat's place
+- [ ] If Ernest is in your party he chimes in to warn you if an item is a trap
+- [ ] If Morton is in your party he has an option to assert that filler items are still important
+- [ ] All party members have a chance to celebrate finding progression items 
