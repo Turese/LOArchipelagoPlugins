@@ -32,6 +32,11 @@ ClearExplicitDrops.applyChanges = function () {
     // replace audrey recruit check with a state update
   }
 
+  // remove all explicit rewards from all freds
+  function clearFredRewards() {
+
+  }
+
   // remove clown item drops from pierre interactions
   function clearPierreGifts() {
     //TODO: IMPLEMENT

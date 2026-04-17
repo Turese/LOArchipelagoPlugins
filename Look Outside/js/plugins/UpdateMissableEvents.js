@@ -49,6 +49,10 @@ UpdateMissableEvents.applyChanges = function () {
     // replace with custom flag check
   }
 
+  // allows wiggly fred to spawn in the fred apt even if he lives in your fridge
+  function fixWigglyFredRecruitMechanics() { 
+  }
+
   // allows lyle to spawn in his apartment even if he is recruited
   // makes him always recruited after the second trade, even if he wasnt kissed
   function fixLyleRecruitMechanics() {
