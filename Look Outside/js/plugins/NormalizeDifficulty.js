@@ -149,7 +149,15 @@ NormalizeDifficulty.applyChanges = function () {
   }
 
   // allow player to autosave and manually save anywhere, no matter the difficulty
-  function activateEasyModeSaving() {}
+  // replaces the check for easy mode to the true switch
+  function activateEasyModeSaving(commonEvents) {
+    const manageSaveRights = commonEvents[114];
+    const easyModeSaveCheck = manageSaveRights?.list.find(
+      (listEntry) =>
+        listEntry.code === 111 && listEntry.parameters[1] === EASYMODE,
+    )
+    if (easyModeSaveCheck) easyModeSaveCheck.parameters[1] = TRUE_SWITCH_ID;
+  }
 
   const _onMapLoaded = Scene_Map.prototype.onMapLoaded;
   Scene_Map.prototype.onMapLoaded = function () {
@@ -170,6 +178,7 @@ NormalizeDifficulty.applyChanges = function () {
     }
     if (object === $dataCommonEvents) {
       forceHardmodeFridgeFightLogic(object);
+      activateEasyModeSaving(object);
     }
   };
 };
