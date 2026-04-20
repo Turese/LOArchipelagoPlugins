@@ -106,9 +106,9 @@ New menu option in main menu + pause menu where player inputs AP slot name + ser
 
 Introduces functionality to make the AP experience the same no matter what difficulty mode the player chooses.
 
-- [ ] Mass-update locations that are hidden on certain difficulty settings so they either always or never appear
+- [ ] Mass-update items on the ground that are hidden on certain difficulty settings so they either always or never appear (WIP -  currently forces easy mode items)
 - [ ] Mass-update enemies that don't spawn on certain difficulty settings so they either always or never appear
-- [ ] Force save everywhere and autosave to be active in all difficulties
+- [x] Force save everywhere and autosave to be active in all difficulties
 
 ## LookOutsideAPClient.js
 

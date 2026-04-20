@@ -20,7 +20,7 @@ var LookOutsideAPClient = LookOutsideAPClient || {};
 
 let lastLoadedMapId;
 
-LookOutsideAPClient.applyChanges = function () {
+LookOutsideAPClient.applyOverrides = function () {
   // track most recently loaded mapid for the sake of overwriting events
   const loadMapData = DataManager.loadMapData;
   DataManager.loadMapData = function (mapId) {
@@ -28,14 +28,21 @@ LookOutsideAPClient.applyChanges = function () {
     loadMapData.call(this, mapId);
   };
 
-  const scripts = [GoHome, BackInTime, Unarmed, InsertAPItems];
+  const scripts = {
+    "GoHome": GoHome,
+    "BackInTime": BackInTime,
+    "Unarmed": Unarmed,
+    "InsertAPItems": InsertAPItems,
+    "MainMenuAPOptions": MainMenuAPOptions,
+    "NormalizeDifficulty": NormalizeDifficulty,
+    "UpdateMissableEvents": UpdateMissableEvents,
+    "ClearExplicitDrops": ClearExplicitDrops,
+  };
 
   // verify required helper scripts before continuing
-  console.log(GoHome)
-  scripts.forEach(scriptName => {
-    assert(scriptName, `Missing dependency: ${scriptName}.js`)
-  })
-
+  Object.entries(scripts).forEach(([scriptName, script]) => {
+    assert(script, `Missing dependency: ${scriptName}.js`);
+  });
 
   // check other mods' custom images all together
   const shouldOverrideImage = function (url) {
@@ -68,15 +75,28 @@ LookOutsideAPClient.applyChanges = function () {
     _createCharacters.call(this);
   };
 
-  // all event overrides go here
-  const _onMapLoaded = Scene_Map.prototype.onMapLoaded;
-  Scene_Map.prototype.onMapLoaded = function () {
-    BackInTime.createCalendarBackInTimeEvent();
-
-    InsertAPItems.overrideOverworldPickups();
-
-    _onMapLoaded.call(this);
+  const _dataManagerOnLoad = DataManager.onLoad;
+  DataManager.onLoad = function (object) {
+    _dataManagerOnLoad.call(this, object);
+    if (object === $dataMap) {
+      BackInTime.createCalendarBackInTimeEvent();
+      InsertAPItems.overrideOverworldPickups();
+    }
+    if (object === $dataTroops) {
+      // update troops
+    }
+    if (object === $dataCommonEvents) {
+      // update common events
+    }
   };
 };
 
-LookOutsideAPClient.applyChanges();
+LookOutsideAPClient.ConnectClient = function () {
+  const slotName = ConfigManager.slotName || "";
+  const roomId = ConfigManager.roomId || "";
+  const password = ConfigManager.password || "";
+};
+
+LookOutsideAPClient.applyOverrides();
+
+LookOutsideAPClient.ConnectClient();
