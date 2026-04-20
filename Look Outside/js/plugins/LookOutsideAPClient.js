@@ -37,6 +37,7 @@ LookOutsideAPClient.applyOverrides = function () {
     "NormalizeDifficulty": NormalizeDifficulty,
     "UpdateMissableEvents": UpdateMissableEvents,
     "ClearExplicitDrops": ClearExplicitDrops,
+    "ReportLocations": ReportLocations,
   };
 
   // verify required helper scripts before continuing
