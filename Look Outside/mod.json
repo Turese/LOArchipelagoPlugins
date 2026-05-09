@@ -136,6 +136,22 @@
     {
       "source": "img/enemies/Reflections/playerReflection_yawn_MissingBotharm.png",
       "target": "img/enemies/Reflections/playerReflection_yawn_MissingBotharm.png"
+    },
+    {
+      "source": "img/enemies/Reflections/playerReflection_lookUp-MissingBotharm.png.png",
+      "target": "img/enemies/Reflections/playerReflection_lookUp-MissingBotharm.png"
+    },
+    {
+      "source": "img/enemies/Reflections/playerReflection_smile-MissingBotharm.png.png",
+      "target": "img/enemies/Reflections/playerReflection_smile-MissingBotharm.png"
+    },
+    {
+      "source": "img/enemies/Reflections/playerReflection_squint-MissingBotharm.png.png",
+      "target": "img/enemies/Reflections/playerReflection_squint-MissingBotharm.png"
+    },
+    {
+      "source": "img/enemies/Reflections/playerReflection_surprise-MissingBotharm.png.png",
+      "target": "img/enemies/Reflections/playerReflection_surprise-MissingBotharm.png"
     }
   ],
   "json_patches": [],
