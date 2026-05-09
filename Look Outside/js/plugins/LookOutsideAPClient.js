@@ -62,6 +62,18 @@ LookOutsideAPClient.applyOverrides = function () {
     } else _startLoading.call(this);
   };
 
+  const _Game_Event_event = Game_Event.prototype.event;
+  Game_Event.prototype.event = function () {
+    const ev = _Game_Event_event.call(this);
+
+    if (!ev) return ev;
+
+    ClearExplicitDrops.applyEventClears(this._mapId, ev);
+    UpdateMissableEvents.applyChanges(this._mapId, ev);
+
+    return ev;
+  };
+
   // update - extra images may be needed to be loaded when initializing the map
   const _createCharacters = Spriteset_Map.prototype.createCharacters;
   Spriteset_Map.prototype.createCharacters = function () {
@@ -85,8 +97,8 @@ LookOutsideAPClient.applyOverrides = function () {
       UpdateEventContent.overrideOverworldPickups(lastLoadedMapId);
       ClearExplicitDrops.applyDatamapClears(lastLoadedMapId);
     }
-    if (object === $dataTroops) {
-      ClearExplicitDrops.clearAllTroopsDrops();
+    if (object === $dataEnemies) {
+      ClearExplicitDrops.clearAllEnemiesDrops();
     }
     if (object === $dataCommonEvents) {
       // update common events
@@ -196,38 +208,33 @@ LookOutsideAPClient.openAPClient = function () {
     console.log(content);
   });
 
-  client.messages.on("itemSent", (item) => {
-    console.log(`Received item: ${item}`);
-    LookOutsideAPClient.watchItems();
+  client.items.on("itemsReceived", () => {
+    console.log('Item received from AP Server:', client.items.received[client.items.received.length - 1]);
+    LookOutsideAPClient.updateItems();
   });
 
-  const _Game_Event_event = Game_Event.prototype.event;
-  Game_Event.prototype.event = function () {
-    const ev = _Game_Event_event.call(this);
+  const args = { items: 0b111 };
 
-    if (!ev) return ev;
-
-    ClearExplicitDrops.applyEventClears(this._mapId, ev);
-
-    return ev;
-  };
+  if (password.length) {
+    args.password = password;
+  }
 
   if (roomId && !client.authenticated) {
     client
-      .login(roomId, slotName, "Look Outside")
+      .login(roomId, slotName, "Look Outside", args)
       .then(() => {
         console.log("Connected to AP Server!");
         LookOutsideAPClient.initializeItemIndex();
         LookOutsideAPClient.initializeLocationObject();
         LookOutsideAPClient.initializeLocationNames();
-        LookOutsideAPClient.watchItems();
+        LookOutsideAPClient.updateItems();
       })
       .catch(console.error);
   } else {
     LookOutsideAPClient.initializeItemIndex();
     LookOutsideAPClient.initializeLocationObject();
     LookOutsideAPClient.initializeLocationNames();
-    LookOutsideAPClient.watchItems();
+    LookOutsideAPClient.updateItems();
   }
 };
 
@@ -308,26 +315,31 @@ LookOutsideAPClient.watchLocations = function () {
   };
 };
 
-LookOutsideAPClient.watchItems = function () {
+LookOutsideAPClient.updateItems = function () {
   const items = client.items.received;
   const currIndex = LookOutsideAPClient.initializeItemIndex();
-  console.log(currIndex);
+  console.log("CURRENT ITEM INDEX: ", currIndex);
   for (let i = currIndex; i < items.length; i++) {
     console.log(items[i]);
     const itemId = items[i].id;
     if (itemId < 1000) {
-      window.LookOutsideAPClientHelperTools.insertItem(itemId, "item");
+      window.InsertAPItems.insertItem(itemId, "item");
     } else if (itemId < 2000) {
-      window.LookOutsideAPClientHelperTools.insertItem(itemId - 1000, "weapon");
+      window.InsertAPItems.insertItem(itemId - 1000, "weapon");
     } else if (itemId < 3000) {
-      window.LookOutsideAPClientHelperTools.insertItem(itemId - 2000, "armor");
+      window.InsertAPItems.insertItem(itemId - 2000, "armor");
     } else if (itemId < 4000) {
-      window.LookOutsideAPClientHelperTools.insertSkill(itemId - 3000);
+      window.InsertAPItems.insertSkill(itemId - 3000);
+    } else if (itemId < 5000) {
+      window.InsertAPItems.insertMiscItem(itemId - 4000);
+    } else if (itemId < 6000) {
+      window.InsertAPItems.insertMiscItem(itemId - 5000);
+      // todo: this will be resource packs eventually
     } else {
       console.warn("ITEMTYPE NYI", itemId);
     }
   }
-  $gamePlayer.APItemsIndex = items.length;
+  $gamePlayer.APItemsIndex = items.length - 1;
 };
 
 LookOutsideAPClient.getItemName = function (apLocationName) {

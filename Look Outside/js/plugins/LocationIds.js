@@ -1160,8 +1160,421 @@ SELF_SWITCH_LOCATIONS = {
   3: {
     99: { A: "APT_33_LIVING_ROOM_CASH" },
   },
+
   4: {
     23: { A: "APT_33_BATHROOM_FIRST_AID_KIT" },
+  },
+
+  6: {
+    13: { A: "F3_PLANTER_KEY" },
+    14: { C: "F3_ONLOOKER_DOORWAY_COMBAT_VICTORY" },
+    27: { C: "F3_CLINT_COMBAT_VICTORY" },
+    40: { A: "F3_MASKED_SHADOW_GIFT" },
+  },
+
+  270: {
+    6: { C: "APT_30_TAXIDERMY_COMBAT_VICTORY" },
+    19: { A: "APT_30_TAXIDERMY_EAGLE" },
+    18: { A: "APT_30_TAXIDERMY_DOG" },
+  },
+
+  275: {
+    3: { A: "APT_30_NE_TAXIDERMY_CREATURE" },
+    4: { A: "APT_30_NE_SCALPEL" },
+    2: { A: "APT_30_NE_SQUIRREL" },
+    5: { A: "APT_30_NE_WHISKEY" },
+  },
+
+  277: {
+    3: { A: "APT_30_NW_SPIRIT_BOARD" },
+    4: { A: "APT_30_NW_SHRUNKEN_HEAD" },
+    5: { A: "APT_30_NW_GRANOLA_BAR" },
+    6: { A: "APT_30_NW_CASH" },
+    7: { C: "APT_30_NW_WIRECUTTER_COMBAT_VICTORY" },
+  },
+
+  278: {
+    7: { A: "APT_30_SW_FIRST_AID_KIT" },
+    8: { A: "APT_30_SW_FIRST_AID_BOX" },
+    6: { C: "APT_30_SW_NEEDLES_COMBAT_VICTORY" },
+    5: { C: "APT_30_SW_MEDICINE_CABINET" },
+    3: { A: "APT_30_SW_TOOTHPASTE" },
+  },
+
+  276: {
+    6: { A: "APT_30_SE_THROWING_KNIFE" },
+    7: { A: "APT_30_SE_DINNER_PLATE" },
+    8: { C: "APT_30_SE_SCISSORS" },
+    5: { A: "APT_30_SE_CHEFS_KNIFE" },
+    3: { A: "APT_30_FRIDGE" },
+  },
+
+  280: {
+    9: { C: "APT_30_FLESH_ROGUE_COMBAT_VICTORY" },
+    5: { C: "APT_30_FLESH_TIGER_COMBAT_VICTORY" },
+    8: { C: "APT_30_FLESH_ABOM_COMBAT_VICTORY" },
+    6: { A: "APT_30_FLESH_PATCHWORK_BOOTS" },
+  },
+
+  281: {
+    2: { A: "APT_30_FLESH_SW_PATCHWORK_CLUB" },
+    3: { C: "APT_30_FLESH_SW_SATYR_COMBAT_VICTORY" },
+  },
+
+  282: {
+    2: { A: "APT_30_FLESH_NE_PATCHWORK_HAT" },
+    3: { C: "APT_30_FLESH_NE_CROW_COMBAT_VICTORY" },
+  },
+
+  283: {
+    3: { A: "APT_30_FLESH_SE_NEEDLE_GLOVES" },
+    2: { C: "APT_30_FLESH_SE_LIMBS_COMBAT_VCTORY" },
+  },
+
+  284: {
+    3: { C: "APT_30_FLESH_NW_CROCODILE_COMBAT_VICTORY" },
+    4: { A: "APT_30_FLESH_NW_PATCHWORK_JACKET" },
+  },
+
+  108: {
+    18: { A: "APT_31_TRASH" },
+  },
+
+  265: {
+    18: { A: "APT_31_DARK_TRASH" },
+  },
+
+  111: {
+    11: { A: "APT_31_BATHROOM_VINEGAR" },
+    15: { A: "APT_31_BATHROOM_EYE_DROPS" },
+    10: { A: "APT_31_BATHROOM_DCLOGGER" },
+    9: { A: "APT_31_BATHROOM_DCLOGGER_2" },
+    6: { A: "APT_31_BATHROOM_MEDICINE_CABINET" },
+    12: { A: "APT_31_BATHROOM_SOAP" },
+  },
+
+  109: {
+    7: { A: "APT_31_BEDROOM_METAL_BAT" },
+    8: { A: "APT_31_BEDROOM_TONIC" },
+    12: { A: "APT_31_BEDROOM_SAFE_ITEM" },
+  },
+
+  110: {
+    10: { A: "APT_31_OBSERVATORY_PLUTO_DISC" },
+    14: { A: "APT_31_OBSERVATORY_VOID_DISC" },
+    5: { A: "APT_31_OBSERVATORY_TRASH" },
+  },
+
+  31: {
+    31: { A: "APT_32_ENTRY_BANDAGES" },
+    30: { A: "APT_32_ENTRY_HOODIE" },
+    15: { C: "APT_32_TOOTHLING_A_COMBAT_VICTORY" },
+    16: { C: "APT_32_TOOTHLING_B_COMBAT_VICTORY" },
+    35: { C: "APT_32_CLINT_DAY_5_COMBAT_VICTORY" },
+    7: { A: "APT_32_BATHROOM_JOEL_COMBAT_VICTORY" },
+    33: { C: "APT_32_KITCHEN_TOOTH_FAIRY_COMBAT_VICTORY" },
+    6: { A: "APT_32_FRIDGE" },
+    28: { A: "APT_32_KITCHEN_DRAWINGS" },
+    9: { A: "APT_32_KITCHEN_FRYING_PAN" },
+    18: { A: "APT_32_KITCHEN_CHEEZ_STIX" },
+    20: { A: "APT_32_TRASH" },
+    17: { A: "APT_32_KITCHEN_VINEGAR_1" },
+    21: { A: "APT_32_KITCHEN_VINEGAR_2" },
+  },
+
+  435: {
+    1: { C: "APT_32_CLINT_DAY_9_COMBAT_VICTORY" },
+    2: { C: "APT_32_BATHROOM_JOEL_DAY_9_COMBAT_VICTORY" },
+    4: { C: "APT_32_CHILD_BEDROOM_BEN_DAY_9_COMBAT_VICTORY" },
+    3: { C: "APT_32_MASTER_BEDROOM_MADISON_DAY_9_COMBAT_VICTORY" },
+  },
+
+  32: {
+    10: { C: "APT_32_BATHROOM_MEDICELL" },
+    8: { C: "APT_32_BATHROOM_TONIC" },
+    9: { C: "APT_32_BATHROOM_MOP" },
+  },
+
+  33: {
+    2: { A: "APT_32_CHILD_BEDROOM_BEN_COMBAT_VICTORY" },
+    7: { C: "APT_32_CHILD_BEDROOM_BASEBALL_CAP" },
+    4: { C: "APT_32_CHILD_BEDROOM_TEDDY_BEAR" },
+  },
+
+  34: {
+    25: { C: "APT_32_MASTER_BEDROOM_TANK_TOP" },
+    24: { C: "APT_32_MASTER_BEDROOM_SAFE_ITEM" },
+    21: { C: "APT_32_MASTER_BEDROOM_TERATOMA_COMBAT_VICTORY" },
+    28: { C: "APT_32_MASTER_BEDROOM_BALM" },
+    20: { C: "APT_32_MASTER_BEDROOM_MADISON_COMBAT_VICTORY" },
+    19: { A: "APT_32_MASTER_BEDROOM_ARMY_FIGURE" },
+    32: { A: "APT_32_MASTER_BEDROOM_PURSE" },
+  },
+
+  436: {
+    8: { C: "APT_32_TUNNELS_JAW_REVOLVER" },
+    2: { C: "APT_32_TUNNELS_MASTICATOR_COMBAT_VICTORY" },
+    7: { C: "APT_32_TUNNELS_TOOTH_MASTICATOR_COMBAT_VICTORY" },
+    9: { C: "APT_32_TUNNELS_FIRST_AID_KIT" },
+    15: { C: "APT_32_TUNNELS_TOOTH_GROUP_A_COMBAT_VICTORY" },
+    1: { C: "APT_32_TUNNELS_TOOTH_LEECH" },
+    5: { C: "APT_32_TUNNELS_BABY_TEETH_SUPERBOSS_COMBAT_VICTORY" },
+    10: { C: "APT_32_TUNNELS_TOOTH_RIFLE" },
+    11: { C: "APT_32_TUNNELS_TOOTH_SCIMITAR" },
+    12: { C: "APT_32_TUNNELS_HEALING_SPRAY" },
+    13: { C: "APT_32_TUNNELS_TOOTH_GROUP_B_COMBAT_VICTORY" },
+  },
+
+  268: {
+    12: { C: "APT_33_MEAT_CONFUSION_COMBAT_VICTORY" },
+  },
+
+  269: {
+    13: { C: "APT_33_MEAT_STRETCH_FACE_COMBAT_VICTORY" },
+  },
+
+  120: {
+    16: { A: "APT_34_SALT" },
+    24: { A: "APT_34_KITCHEN_ORANGE_COLA" },
+    9: { A: "APT_34_KITCHEN_TRASH" },
+    21: { A: "APT_34_FRIDGE" },
+    22: { C: "APT_34_KITCHEN_TRAPPER_HAT_COMBAT_VICTORY" },
+    6: { A: "APT_34_KITCHEN_LOWER_WRAPPED_GIFT" },
+  },
+
+  121: {
+    4: { A: "APT_34_BEDROOM_SALT" },
+    13: { A: "APT_34_BEDROOM_JEWELRY_BOX" },
+    10: { A: "APT_34_BEDROOM_SPADE" },
+    14: { A: "APT_34_BEDROOM_VODKA" },
+    12: { C: "APT_34_BEDROOM_TUQUE_COMBAT_VICTORY" },
+    2: { C: "APT_34_BEDROOM_EARMUFFS_COMBAT_VICTORY" },
+  },
+
+  122: {
+    15: { A: "APT_34_LONG_BEDROOM_FIRST_AID_KIT" },
+    20: { A: "APT_34_LONG_BEDROOM_GAMEKID_COLOR" },
+    8: { C: "APT_34_LONG_BEDROOM_POMPOM_COMBAT_VICTORY" },
+    17: { A: "APT_34_LONG_BEDROOM_CASH" },
+    10: { A: "APT_34_LONG_BEDROOM_MERCURY_DISC" },
+    9: { A: "APT_34_LONG_BEDROOM_WAKE_THE_BLOOD_KNIGHT" },
+    16: { A: "APT_34_LONG_BEDROOM_STIMULANT" },
+  },
+
+  123: {
+    10: { A: "APT_34_BATHROOM_TOOTHPASTE" },
+    9: { C: "APT_34_BATHROOM_SCARF_COMBAT_VICTORY" },
+    4: { A: "APT_34_BATHROOM_BALM" },
+    2: { A: "APT_34_BATHROOM_MEDICATION" },
+    7: { A: "APT_34_BATHROOM_TONIC" },
+  },
+
+  124: {
+    9: { A: "APT_34_OFFICE_KLYSOX" },
+    4: { A: "APT_34_OFFICE_SALT" },
+    2: { C: "APT_34_OFFICE_TRISCARF_COMBAT_VICTORY" },
+    21: { A: "APT_34_OFFICE_TONIC" },
+    10: { A: "APT_34_OFFICE_HAMMER" },
+    17: { A: "APT_34_OFFICE_OLD_CONSOLE" },
+    18: { A: "APT_34_OFFICE_HOCKEY_CARDS" },
+  },
+
+  271: {
+    6: { A: "APT_34_CLOSET_HOCKEY_STICK" },
+    4: { A: "APT_34_CLOSET_HOCKEY_TROPHY" },
+    2: { A: "APT_34_CLOSET_CASH" },
+  },
+
+  35: {
+    16: { A: "APT_37_TABLE_PLATE_1" },
+    15: { A: "APT_37_TABLE_THROWING_KNIVES" },
+    18: { A: "APT_37_TABLE_FORKS" },
+    17: { A: "APT_37_TABLE_PLATE_2" },
+    11: { A: "APT_37_CARVING_FORK" },
+    6: { A: "APT_37_FRIDGE" },
+    23: { A: "APT_37_TRASH" },
+    10: { A: "APT_37_WHISKEY" },
+    13: { A: "APT_37_CHOCKY_BAR" },
+    19: { C: "APT_37_ONLOOKER_COMBAT_VICTORY" },
+    20: { C: "APT_37_VINCENT_COMBAT_VICTORY" },
+  },
+
+  14: {
+    6: { A: "APT_37_BATHROOM_CLEANEREX" },
+    8: { A: "APT_37_BATHROOM_MEDICELL" },
+    4: { A: "APT_37_BATHROOM_BANDAGES" },
+    5: { C: "APT_37_BATHROOM_GAWKER_COMBAT_VICTORY" },
+  },
+
+  38: {
+    7: { C: "APT_37_PROJECTOR_ROOM_ONLOOKER_COMBAT_VICTORY" },
+    4: { A: "APT_37_PROJECTOR_ROOM_WIZARDS_HELL" },
+    3: { A: "APT_37_PROJECTOR_ROOM_GOLF_CLUB" },
+    15: { A: "APT_37_PROJECTOR_ROOM_CLOTH" },
+  },
+
+  39: {
+    7: { A: "APT_37_BEDROOM_GUINEA_PIG" },
+    5: { A: "APT_37_BEDROOM_GLASSES" },
+    3: { A: "APT_37_BEDROOM_CASH" },
+    8: { A: "APT_37_BEDROOM_TRASH" },
+  },
+
+  352: {
+    8: { A: "APT_37_LOCKED_ROOM_TRASH" },
+    11: { A: "APT_37_LOCKED_ROOM_WHISKEY" },
+    12: { A: "APT_37_LOCKED_ROOM_BEER" },
+    21: { A: "APT_37_LOCKED_ROOM_TONIC" },
+    22: { A: "APT_37_LOCKED_ROOM_BANDAGES" },
+    14: { A: "APT_37_LOCKED_ROOM_MACHETE" },
+    13: { A: "APT_37_LOCKED_ROOM_FIRST_AID_KIT" },
+    15: { A: "APT_37_LOCKED_ROOM_CLOGS" },
+    23: { A: "APT_37_LOCKED_ROOM_CLOTH" },
+  },
+
+  353: {
+    10: { A: "APT_38_FRIDGE" },
+    8: { A: "APT_38_CASH" },
+    12: { A: "APT_38_TRASH" },
+    25: { A: "APT_38_FORK" },
+    24: { A: "APT_38_FORK_2" },
+    15: { A: "APT_38_PLATE_1" },
+    23: { A: "APT_38_PLATE_2" },
+  },
+
+  355: {
+    34: { A: "APT_38_KAELEY_SHURIKEN" },
+    28: { A: "APT_38_KAELEY_SHOTGUN_SHELLS" },
+    35: { A: "APT_38_KAELEY_PITCHFORK" },
+    25: { A: "APT_38_KAELEY_STIMULANT" },
+    21: { A: "APT_38_KAELEY_GIFT" },
+    30: { A: "APT_38_KAELEY_RIFLE_AMMO" },
+    18: { A: "APT_38_KAELEY_GIFT_2" },
+    23: { A: "APT_38_KAELEY_TONIC" },
+    27: { A: "APT_38_KAELEY_PISTOL_BULLETS" },
+    26: { A: "APT_38_KAELEY_ELIXIR" },
+    22: { A: "APT_38_KAELEY_GIFT_3" },
+    31: { A: "APT_38_KAELEY_MAGNUM_BULLET" },
+    36: { A: "APT_38_KAELEY_SNAKE_WHIP" },
+    32: { A: "APT_38_KAELEY_FIRST_AID_KIT" },
+    33: { A: "APT_38_KAELEY_GRENADE" },
+    24: { A: "APT_38_KAELEY_HEALING_SPRAY" },
+    20: { A: "APT_38_KAELEY_GIFT_4" },
+    29: { A: "APT_38_KAELEY_SMG_AMMO" },
+  },
+
+  356: {
+    6: { A: "APT_38_PIERRE_GIFT" },
+    7: { A: "APT_38_PIERRE_CHOCKY_BAR" },
+  },
+
+  370: {
+    2: { A: "APT_38_BATHROOM_FIRST_AID_KIT" },
+    11: { A: "APT_38_BATHROOM_CLOTH" },
+    10: { A: "APT_38_BATHROOM_CLEANEREX" },
+  },
+
+  406: {
+    6: { C: "GLITCH_BGRAAT_COMBAT_VICTORY" },
+    8: { C: "GLITCH_GA2RD_COMBAT_VICTORY" },
+    2: { A: "GLITCH_LAST_WILL" },
+    9: { C: "GLITCH_EYEW0RM_COMBAT_VICTORY" },
+    16: { A: "GLITCH_BLACK_KEY" },
+  },
+
+  440: {
+    12: { A: "GLITCH_SHORTCUT_BLUE_KEY" },
+  },
+
+  449: {
+    2: { C: "GLITCH_HAIRHE3AD_COMBAT_VICTORY" },
+    4: { A: "GLITCH_GUN_COMBAT_VICTORY" },
+  },
+
+  450: {
+    2: { C: "GLITCH_GHOS7T_COMBAT_VICTORY" },
+    4: { A: "GLITCH_METTAL_BA2T" },
+  },
+
+  439: {
+    11: { C: "GLITCH_E_TR2NK_COMBAT_VICTORY" },
+    12: { C: "GLITCH_E_LLEECH_COMBAT_VICTORY" },
+    9: { A: "GLITCH_E_RED_KEY" },
+    10: { A: "GLITCH_E_YELLOW_KEY" },
+  },
+
+  446: {
+    8: { C: "GLITCH_NE_PULLOUT_COMBAT_VICTORY" },
+    4: { C: "GLITCH_NE_GREEN_KEY" },
+    7: { C: "GLITCH_NE_R0ACH3_A" },
+    6: { C: "GLITCH_NE_R0ACH3_B" },
+  },
+
+  447: {
+    7: { C: "GLITCH_SE_CRIM50N_IM92_COMBAT_VICTORY" },
+  },
+
+  458: {
+    1: { C: "GLITCH_HONKO_COMBAT_VICTORY" },
+  },
+
+  448: {
+    4: { C: "GLITCH_E_SE_P1TCH5_COMBAT_VICTORY" },
+    6: { A: "GLITCH_E_SE_RMYJCKET" },
+  },
+
+  441: {
+    7: { A: "GLITCH_W_GLITCH_ELIXIR" },
+    6: { C: "GLITCH_W_CRIM50N_IM92_COMBAT_VICTORY" },
+    5: { A: "GLITCH_W_FTBLHELMT" },
+  },
+
+  442: {
+    8: { C: "GLITCH_SW_TR2NK_COMBAT_VICTORY" },
+    7: { A: "GLITCH_SW_YELLOW_KEY" },
+    9: { A: "GLITCH_SW_AMBROSE" },
+  },
+
+  445: {
+    4: { C: "GLITCH_SE_SLIME_COMBAT_VICTORY" },
+  },
+
+  444: {
+    4: { C: "GLITCH_SW_SKNFCE_COMBAT_VICTORY" },
+    2: { A: "GLITCH_SW_WHITE_KEY" },
+  },
+
+  443: {
+    9: { C: "GLITCH_MAZE_SKEL3TON_NE_COMBAT_VICTORY" },
+    10: { C: "GLITCH_MAZE_SKEL3TON_CENTER_COMBAT_VICTORY" },
+    7: { C: "GLITCH_MAZE_SKEL3TON_W_COMBAT_VICTORY" },
+    11: { C: "GLITCH_MAZE_HEAD_COMBAT_VICTORY" },
+    12: { A: "GLITCH_MAZE_HLING_SPRAY" },
+    8: { A: "GLITCH_MAZE_YELLOW_KEY" },
+    13: { A: "GLITCH_MAZE_VNAGE_UCKY_TIEAKERS" },
+  },
+
+  23: {
+    41: { A: "APT_36_LIVING_ROOM_BASEBALL_BAT" },
+    48: { A: "APT_36_LIVING_ROOM_CASH" },
+    42: { C: "APT_36_LIVING_ROOM_ONLOOKER_COMBAT_VICTORY" },
+  },
+
+  24: {
+    5: { A: "APT_36_BATHROOM_TONIC" },
+    6: { A: "APT_36_BATHROOM_BANDAGES" },
+    7: { A: "APT_36_BATHROOM_PADLOCK_KEY" },
+    3: { B: "APT_36_BATHROOM_WOUNDED_NEIGHBOR_KNIFE" },
+    3: {
+      A: "APT_36_BATHROOM_WOUNDED_NEIGHBOR_COMBAT_VICTORY",
+      B: "APT_36_BATHROOM_WOUNDED_NEIGHBOR_COMBAT_VICTORY", // both mean hes dead
+    },
+  },
+
+  25: {
+    3: { A: "APT_36_BEDROOM_SAFE_ITEM" },
+    2: { A: "APT_36_BEDROOM_SIMPLE_KEY" },
+    4: { C: "APT_36_BEDROOM_OBSERVER_COMBAT_VICTORY" },
   },
 };
 
@@ -1171,11 +1584,95 @@ VARIABLE_LOCATIONS = {
     value: 3,
     location: "APT_33_LIVING_ROOM_SCREAMATORIUM",
   },
-  150: {
+  150: { relation: ">=", value: 9, location: "APT_33_BEDROOM_REFUSE_SHADOW" },
+  372: {
     relation: ">=",
-    value: 9,
-    location: "APT_33_BEDROOM_REFUSE_SHADOW",
+    value: 40,
+    location: "APT_33_BATHROOM_RECRUIT_ROACHES",
+  },
+  741: { relation: ">=", value: 2, location: "F3_PLAYING_CARD" },
+  906: {
+    relation: ">=",
+    value: 2,
+    location: "F3_LOUIS_LOWER_HALF_COMBAT_VICTORY",
+  },
+  742: { relation: "=", value: 0, location: "F3_VENDING_MACHINE_CHIPS" },
+  743: { relation: "=", value: 0, location: "F3_VENDING_MACHINE_SPICY" },
+  744: { relation: "=", value: 0, location: "F3_VENDING_MACHINE_GUMMI_BEARS" },
+  745: { relation: "=", value: 0, location: "F3_VENDING_MACHINE_CHEESE" },
+  746: { relation: "=", value: 0, location: "F3_VENDING_MACHINE_ONIONOS" },
+  111: { relation: ">=", value: 0, location: "APT_32_CHILD_BEDROOM_BEN_PLAY" },
+  909: { relation: "'='", value: 2, location: "APT_37_LOUIS_TAIL" },
+  904: {
+    relation: ">=",
+    value: 4,
+    location: "APT_38_FIBER_DRAGON_COMBAT_VICTORY",
+  },
+  905: {
+    relation: ">=",
+    value: 2,
+    location: "APT_38_LOUIS_UPPER_HALF_COMBAT_VICTORY",
+  },
+  907: {
+    relation: ">=",
+    value: 2,
+    location: "APT_38_LOUIS_HEAD_COMBAT_VICTORY",
+  },
+  908: {
+    relation: ">=",
+    value: 2,
+    location: "APT_38_LOUIS_TORSO_COMBAT_VICTORY",
+  },
+  617: { relation: ">=", value: 10, location: "APT_38_PIERRE_CLOWN_DRAWING" },
+  617: { relation: ">=", value: 20, location: "APT_38_PIERRE_CLOWN_WIG" },
+  81: {
+    relation: ">=",
+    value: 4,
+    location: "GAME_SKILL_WAKE_THE_BLOOD_KNIGHT",
+  },
+  82: { relation: ">=", value: 5, location: "GAME_SKILL_WIZARDS_HELL" },
+  83: { relation: ">=", value: 2, location: "GAME_SKILL_SUPER_JUMPLAD" },
+  84: { relation: ">=", value: 5, location: "GAME_SKILL_SUPER_JUMPLAD_3" },
+  85: { relation: ">=", value: 4, location: "GAME_SKILL_CATAFALQUE" },
+  86: { relation: ">=", value: 4, location: "GAME_SKILL_HONKOS_GRAND_JOURNEY" },
+  87: { relation: ">=", value: 5, location: "GAME_SKILL_MADWHEELS_97" },
+  88: { relation: ">=", value: 4, location: "GAME_SKILL_WRAITHSCOURGE" },
+  89: { relation: ">=", value: 12, location: "GAME_SKILL_MASSACRE_PRINCESS" },
+  90: { relation: ">=", value: 5, location: "GAME_SKILL_KILL_TO_SHOOT" },
+  91: { relation: ">=", value: 4, location: "GAME_SKILL_MYRMIDON" },
+  92: { relation: ">=", value: 6, location: "GAME_SKILL_MYRMIDON_XII" },
+  93: { relation: ">=", value: 4, location: "GAME_SKILL_SCREAMATORIUM" },
+  94: { relation: ">=", value: 5, location: "GAME_SKILL_FROGIT_ABOUT_IT" },
+  95: { relation: ">=", value: 4, location: "GAME_SKILL_BLOOD_GHOUL_ORGY_3" },
+  96: { relation: ">=", value: 4, location: "GAME_SKILL_OCTOCOOK" },
+  97: { relation: ">=", value: 4, location: "GAME_SKILL_SPACE_TRUCKERZ" },
+  98: { relation: ">=", value: 4, location: "GAME_SKILL_REPTILE_FOOTBALL" },
+  99: { relation: ">=", value: 5, location: "GAME_SKILL_CROSSWORD_CHALLENGE" },
+  910: {
+    relation: "=",
+    value: 2,
+    location: "APT_36_LIVING_ROOM_LOUIS_LEG_COMBAT_VICTORY",
   },
 };
 
-SWITCH_LOCATIONS = {};
+SWITCH_LOCATIONS = {
+  610: "F3_LARGE_SHADE_COMBAT_VICTORY",
+  164: "F3_ONLOOKER_STAIRWELL_COMBAT_VICTORY",
+  944: "F3_HAND_WORMS_COMBAT_VICTORY",
+  241: "APT_31_STARGAZER_COMBAT_VICTORY",
+  691: "APT_31_JUICE",
+  690: "APT_31_FRIDGE",
+  692: "APT_31_CASH",
+  784: "APT_32_BATHROOM_RECRUIT_JOEL",
+  511: "APT_32_CHILD_BEDROOM_TOOTHLING_COMBAT_VICTORY",
+  544: "APT_32_MASTER_BEDROOM_BABY_TEETH_COMBAT_VICTORY",
+  642: "APT_33_MEAT_SPINE_COMBAT_VICTORY",
+  643: "APT_33_MEAT_SPINE_SPARE",
+  688: "APT_34_KITCHEN_LOWER_BALACLAVA_COMBAT_VICTORY",
+  689: "APT_34_LONG_BEDROOM_MANTEAU_COMBAT_VICTORY",
+  739: "APT_37_BEDROOM_ONLOOKER_A_COMBAT_VICTORY", // 740 also controls it
+  964: "APT_37_LOCKED_ROOM_EYE_MONSTERS_COMBAT_VICTORY", // 965, 966 also controls it
+  939: "APT_38_KAELEY_COMBAT_VICTORY",
+  1138: "APT_38_HIVE_MAN_COMBAT_VICTORY",
+  1206: "GLITCH_SLIME_HYDRA_COMBAT_VICTORY",
+};

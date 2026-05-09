@@ -132,7 +132,7 @@ ClearExplicitDrops.applyDatamapClears = function (lastLoadedMapId) {
 ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
   // replace the event message for getting screamatorium from the shelf with the actual drop
   function clearScreamitorumEvent() {
-    if (lastLoadedMapId === 3) {
+    if (lastLoadedMapId === 3 && ev.id === 88) {
       const screamatoriumEvent = ev;
       const filteredList = screamatoriumEvent.pages[0].list.filter(
         (listItem) => {
@@ -154,13 +154,73 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
           );
         });
       ev.pages[0].list = filteredList;
-      
     }
   }
   clearScreamitorumEvent();
-  
-}
 
-ClearExplicitDrops.clearAllTroopsDrops = function () {
+  function clearWoundedManKnifeEvent() {
+    if (lastLoadedMapId === 24 && ev.id === 3) {
+      const filteredList = ev.pages[1].list.filter(
+        (listItem) => listItem.code !== 127, // dont add knife to inventory
+      );
 
-}
+      const messageListItem = filteredList.filter(
+        (listItem) =>
+          listItem.code === 401 &&
+          listItem.parameters[0].contains(
+            "His hand still clutches that bloody knife.",
+          ),
+      );
+
+      filteredList
+        .filter(
+          (listItem) =>
+            listItem.code === 401 && listItem.parameters[0].contains("knife"),
+        )
+        .forEach((listItem, i) => {
+          const replacement =
+            i == 0
+              ? `${LookOutsideAPClient.getItemName("APT_36_BATHROOM_WOUNDED_NEIGHBOR_KNIFE")}\\C[0]`
+              : "thing";
+          listItem.parameters[0] = listItem.parameters[0].replace(
+            "knife",
+            replacement,
+          );
+        });
+
+      const choiceListItem = filteredList.find(
+        (listItem) =>
+          listItem.code === 102 &&
+          listItem.parameters[0][0].contains("Take the knife."),
+      );
+
+      if (choiceListItem)
+        choiceListItem.parameters[0][0] = choiceListItem.parameters[0][0] =
+          "Take it.";
+
+      ev.pages[1].list = filteredList;
+
+      const confirmationListItem = filteredList.find(
+        (listItem) =>
+          listItem.code === 401 &&
+          listItem.parameters[0].contains(
+            "Find a \\C[03]{Kitchen Knife}\\C[0].",
+          ),
+      );
+
+      if (confirmationListItem)
+        confirmationListItem.parameters[0] =
+          confirmationListItem.parameters[0].replace(
+            "Find a \\C[03]{Kitchen Knife}\\C[0].",
+            `Find ${LookOutsideAPClient.getItemName("APT_36_BATHROOM_WOUNDED_NEIGHBOR_KNIFE")}\\C[0].`,
+          );
+    }
+  }
+  clearWoundedManKnifeEvent();
+};
+
+ClearExplicitDrops.clearAllEnemiesDrops = function () {
+  for (const enemy of $dataEnemies) {
+    if (enemy) enemy.dropItems = [];
+  }
+};

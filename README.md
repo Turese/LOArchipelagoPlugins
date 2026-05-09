@@ -35,6 +35,7 @@ Creates an event activated by the calendar in the player's bedroom that undoes e
 
 Updates overworld events so that events missed by the player can be retried.
 
+- [x] door to wounded neighbor's bathroom no longer blocks an unarmed player like on explorer/survivor
 - [ ] Update trigger for grinning beast chase so it can be retried
 - [ ] Replace gun sale from leigh with the overworld drop (cant think of a better place to reinsert it)
 - [ ] Make presence of overworld potential recruit encounters separate from their presence in player apartment (Lyle, Audrey, Aster, Leigh, Roaches)
@@ -55,8 +56,9 @@ Goes through the game's events to remove everything that explicitly grants an it
 - [x] Clear out starting arms + inventory from opening cutscene (currently only clearing games)
 - [x] Speed up opening cutscene (maybe find a better file for this one?)
 - [x] Clear out bookshelf screamatorium event
+- [x] Clear out wounded neighbor knife stealing event
 - [ ] Clear out event for Audrey to find specific items from bosses (bonus - add ability for them to be manually triggerable by the player and recorded in state)
-- [ ] Clear out rusted crown logic from rat king event
+- [ ] Clear out rusted crown gift from rat king event
 - [ ] Clear out dark room key award for killing Lyle
 - [ ] Clear out rewards granted for helping Jeanne
 - [ ] Clear out gifts from Pierre (mail, clown drawing, clown outfit)
@@ -95,7 +97,7 @@ Functionality for inserting any item into the game at any time, necessary for AP
 - [ ] Ability to grant any skill to the player (WIP) works for game skills, but is missing Leigh's event skill
 - [x] Ability to grant each arm individually (using logic from Unarmed plugin)
 - [ ] Ability to grant pre-defined resource packs (money + items)
-- [ ] Ability to grant any recruit (wip, missing some recruits and bugged for others)
+- [x] Ability to grant any recruit
 - [ ] Ability to randomize rat baby growth spurt as "progressive rat baby"
 - [ ] Ability to grant custom traps (reduce Sam's maintenance stats, add random status ailments to party)
 
@@ -121,9 +123,10 @@ Introduces functionality to make the AP experience the same no matter what diffi
 Intended main entry point to other plugins.
 
 - [x] Establish connection with multiworld
-- [ ] Connect with password protected multiworlds
+- [x] Connect with password protected multiworlds
 - [ ] Monitor connection; automatically reconnect when client connection is lost
 - [x] Receive item, weapon, and armor locations
+- [x] Receive starting inventory
 - [ ] Send location checks (wip)
 
 ## Misc goals / goals with no dedicated file

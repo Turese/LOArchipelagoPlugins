@@ -8,9 +8,17 @@
  * @help
  */
 
-var UpdateMissableEvents = ClearExplicitDrops || {};
+var UpdateMissableEvents = UpdateMissableEvents || {};
 
-UpdateMissableEvents.applyChanges = function () {
+UpdateMissableEvents.applyChanges = function (lastLoadedMapId, ev) {
+  function fixWoundedManDoor() {
+    if (lastLoadedMapId === 23 && ev.id === 40) {
+      ev.pages[1].conditions = ev.pages[0].conditions;
+      // set the page that lets you in to the bathroom unarmed on hardmode to always hit
+    }
+  }
+  fixWoundedManDoor();
+
   // remove leighs gun sale from hardmode dialogue
   function fixLeighGunSale() {
     //TODO: IMPLEMENT
@@ -50,8 +58,7 @@ UpdateMissableEvents.applyChanges = function () {
   }
 
   // allows wiggly fred to spawn in the fred apt even if he lives in your fridge
-  function fixWigglyFredRecruitMechanics() { 
-  }
+  function fixWigglyFredRecruitMechanics() {}
 
   // allows lyle to spawn in his apartment even if he is recruited
   // makes him always recruited after the second trade, even if he wasnt kissed
