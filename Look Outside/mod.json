@@ -1,14 +1,26 @@
 {
   "metadata": {
-    "name": "AP CLIENT",
+    "name": "Look Outside AP Client",
     "author": "Unknown",
     "version": "1.0",
-    "id": "ap client",
+    "id": "look outside ap client",
     "nexus_id": null,
     "description": "",
     "is_fhmm_mod": false
   },
   "file_ops": [
+    {
+      "source": "mod.json",
+      "target": "mod.json"
+    },
+    {
+      "source": "lib/archipelago-global-export.js",
+      "target": "lib/archipelago-global-export.js"
+    },
+    {
+      "source": "lib/archipelago.js",
+      "target": "lib/archipelago.js"
+    },
     {
       "source": "img/characters/$Chara_PlayerWakeup_MissingBotharm.png",
       "target": "img/characters/$Chara_PlayerWakeup_MissingBotharm.png"
@@ -22,8 +34,44 @@
       "target": "img/characters/GameCarts.png"
     },
     {
+      "source": "js/plugins/BackInTime.js",
+      "target": "js/plugins/BackInTime.js"
+    },
+    {
+      "source": "js/plugins/ClearExplicitDrops.js",
+      "target": "js/plugins/ClearExplicitDrops.js"
+    },
+    {
+      "source": "js/plugins/GoHome.js",
+      "target": "js/plugins/GoHome.js"
+    },
+    {
+      "source": "js/plugins/InsertAPItems.js",
+      "target": "js/plugins/InsertAPItems.js"
+    },
+    {
       "source": "js/plugins/LookOutsideAPClient.js",
       "target": "js/plugins/LookOutsideAPClient.js"
+    },
+    {
+      "source": "js/plugins/MainMenuAPOptions.js",
+      "target": "js/plugins/MainMenuAPOptions.js"
+    },
+    {
+      "source": "js/plugins/NormalizeDifficulty.js",
+      "target": "js/plugins/NormalizeDifficulty.js"
+    },
+    {
+      "source": "js/plugins/ReportLocations.js",
+      "target": "js/plugins/ReportLocations.js"
+    },
+    {
+      "source": "js/plugins/Unarmed.js",
+      "target": "js/plugins/Unarmed.js"
+    },
+    {
+      "source": "js/plugins/UpdateMissableEvents.js",
+      "target": "js/plugins/UpdateMissableEvents.js"
     },
     {
       "source": "img/enemies/Reflections/MM_sam1_MissingBotharm.png",
@@ -88,42 +136,22 @@
     {
       "source": "img/enemies/Reflections/playerReflection_yawn_MissingBotharm.png",
       "target": "img/enemies/Reflections/playerReflection_yawn_MissingBotharm.png"
-    },
-    {
-      "source": "js/plugins/BackInTime.js",
-      "target": "js/plugins/BackInTime.js"
-    },
-    {
-      "source": "js/plugins/MainMenuAPOptions.js",
-      "target": "js/plugins/MainMenuAPOptions.js"
-    },
-    {
-      "source": "js/plugins/ClearExplicitDrops.js",
-      "target": "js/plugins/ClearExplicitDrops.js"
-    },
-    {
-      "source": "js/plugins/GoHome.js",
-      "target": "js/plugins/GoHome.js"
-    },
-    {
-      "source": "js/plugins/InsertAPItems.js",
-      "target": "js/plugins/InsertAPItems.js"
-    },
-    {
-      "source": "js/plugins/NormalizeDifficulty.js",
-      "target": "js/plugins/NormalizeDifficulty.js"
-    },
-    {
-      "source": "js/plugins/Unarmed.js",
-      "target": "js/plugins/Unarmed.js"
-    },
-    {
-      "source": "js/plugins/UpdateMissableEvents.js",
-      "target": "js/plugins/UpdateMissableEvents.js"
     }
   ],
   "json_patches": [],
   "plugins_registry": [
+    {
+      "name": "archipelago",
+      "status": true,
+      "description": "Archipelago.js build for Look Outside client",
+      "parameters": {}
+    },
+    {      
+      "name": "LocationIds",
+      "status": true,
+      "description": "global variable mapping of all location ids",
+      "parameters": {}
+    },
     {
       "name": "BackInTime",
       "status": true,
@@ -131,9 +159,9 @@
       "parameters": {}
     },
     {
-      "name": "clearExplicitDrops",
+      "name": "ClearExplicitDrops",
       "status": true,
-      "description": "(Auto-detected) No description found in script file.",
+      "description": "Clears item drops from the game",
       "parameters": {}
     },
     {
@@ -149,9 +177,27 @@
       "parameters": {}
     },
     {
+      "name": "LookOutsideAPClient",
+      "status": true,
+      "description": "Archipelago Client for Look Outside",
+      "parameters": {}
+    },
+    {
+      "name": "MainMenuAPOptions",
+      "status": true,
+      "description": "New option in main menu to input AP room, player, password",
+      "parameters": {}
+    },
+    {
       "name": "NormalizeDifficulty",
       "status": true,
-      "description": "(Auto-detected) No description found in script file.",
+      "description": "Make the same locations available in all difficulties",
+      "parameters": {}
+    },
+    {
+      "name": "ReportLocations",
+      "status": true,
+      "description": "uses stored values for archipelago locations to report which ones have been reached",
       "parameters": {}
     },
     {
@@ -163,19 +209,7 @@
     {
       "name": "UpdateMissableEvents",
       "status": true,
-      "description": "(Auto-detected) No description found in script file.",
-      "parameters": {}
-    },
-    {
-      "name": "MainMenuAPOptions",
-      "status": true,
-      "description": "User sets ap world info from main menu.",
-      "parameters": {}
-    },
-    {
-      "name": "LookOutsideAPClient",
-      "status": true,
-      "description": "Archipelago Client for Look Outside",
+      "description": "Removes events that lock player out of locations",
       "parameters": {}
     }
   ]

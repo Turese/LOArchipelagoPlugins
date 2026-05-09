@@ -37,8 +37,12 @@ GoHome.applyChanges = function () {
     // fadeout bgm 1 second
     AudioManager.fadeOutBgm(1);
 
-    sSw(1107, false) // InMeatWorld = OFF
-    sSw(348, false) // InLandlordApt = OFF
+    if (gSw(1107)) {
+      sSw(1107, false) // InMeatWorld = OFF
+    }
+    if (gSw(348)) {
+      sSw(348, false) // InLandlordApt = OFF
+    }
     // takes you to map 6 (f3 hall) at x=51,y=7 (frontdoor placemat)
     // position 8 (facing up) transition 0 (fade to black)
     $gamePlayer.reserveTransfer(6, 51, 7, 8, 0);

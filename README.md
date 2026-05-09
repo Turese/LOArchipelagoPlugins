@@ -4,6 +4,8 @@
 
 Intended to be run with [Zorkats's RPGModder](https://github.com/Zorkats/RPGModder)
 
+Runs with the 2.1 build of [archipelago.js](https://archipelago.js.org/stable/)
+
 ## BackInTime.js
 
 Creates an event activated by the calendar in the player's bedroom that undoes events that may block the player from future actions.
@@ -50,6 +52,9 @@ Updates overworld events so that events missed by the player can be retried.
 
 Goes through the game's events to remove everything that explicitly grants an item to the player
 
+- [x] Clear out starting arms + inventory from opening cutscene (currently only clearing games)
+- [x] Speed up opening cutscene (maybe find a better file for this one?)
+- [x] Clear out bookshelf screamatorium event
 - [ ] Clear out event for Audrey to find specific items from bosses (bonus - add ability for them to be manually triggerable by the player and recorded in state)
 - [ ] Clear out rusted crown logic from rat king event
 - [ ] Clear out dark room key award for killing Lyle
@@ -101,6 +106,7 @@ New menu option in main menu + pause menu where player inputs AP slot name + ser
 - [x] New Archipelago menu option in title screen menu + pause menu
 - [ ] Add QOL features to text input (prompt text, center text entry)
 - [x] Persist player-submitted values across save files / game loads
+- [ ] Add connection status monitoring
 
 ## NormalizeDifficulty.js
 
@@ -114,9 +120,11 @@ Introduces functionality to make the AP experience the same no matter what diffi
 
 Intended main entry point to other plugins.
 
-- [ ] Run all functions from other plugins
-- [ ] Establish connection with multiworld
-- [ ] Send and receive location checks
+- [x] Establish connection with multiworld
+- [ ] Connect with password protected multiworlds
+- [ ] Monitor connection; automatically reconnect when client connection is lost
+- [x] Receive item, weapon, and armor locations
+- [ ] Send location checks (wip)
 
 ## Misc goals / goals with no dedicated file
 

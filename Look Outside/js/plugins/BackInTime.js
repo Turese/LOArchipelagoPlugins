@@ -91,6 +91,7 @@ BackInTime.applyChanges = function () {
     // todo, check for sophie as an acquired ap item
     const special = gVr(166);
     console.log(special);
+    if (!special) return false;
     return !special.includes(63);
   }
 
@@ -822,7 +823,7 @@ BackInTime.applyChanges = function () {
 
   
 
-  const createCalendarBackInTimeEvent = function () {
+  const createCalendarBackInTimeEvent = function (lastLoadedMapId) {
     if (lastLoadedMapId === BEDROOM_MAP_ID) {
       const week1OptionNames = [];
       const week1Options = [];

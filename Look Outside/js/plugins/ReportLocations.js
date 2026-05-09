@@ -33,18 +33,7 @@ check structure:
 
 */
 
-const LOCATION_ID_TO_CHECK = {
-  1: { type: "self_switch", roomId: 3, eventId: 99, switchValue: "A" },
-  2: {
-    type: "control_variable",
-    variableId: 496,
-    relationship: ">=",
-    value: 3,
-  },
-  3: { type: "self_switch", roomId: 4, eventId: 23, switchValue: "A" },
-};
-
-const ReportLocations = ReportLocations || {};
+var ReportLocations = ReportLocations || {};
 
 ReportLocations.applyChanges = function () {
   function checkLocation(check) {
@@ -80,20 +69,6 @@ ReportLocations.applyChanges = function () {
         return false;
     }
   }
-
-  function reportAllLocations() {
-    const reachedLocations = [];
-    for (const [locationId, check] of Object.entries(LOCATION_ID_TO_CHECK)) {
-      if (checkLocation(check)) {
-        reachedLocations.push(locationId);
-      }
-    }
-    return reachedLocations;
-  }
-
-  window.ReportLocations = {
-    reportAllLocations,
-  };
 };
 
 ReportLocations.applyChanges();

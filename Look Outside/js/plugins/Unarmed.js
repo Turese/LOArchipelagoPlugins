@@ -1435,10 +1435,6 @@ UnarmedAndDangerous.applyChanges = function () {
   // @type position {'left' | 'right'}
   const addArm = function (position) {
     try {
-      const hasUnarmedAndDangerous =
-        PluginManager._scripts.includes("Zeropal_Unarmed");
-      if (!hasUnarmedAndDangerous)
-        throw new Error("Error: Prerequisite arm modifier mod not detected");
       const armStatus = gVr(187);
       if (armStatus == 3) {
         sVr(187, position == "left" ? 1 : 2);

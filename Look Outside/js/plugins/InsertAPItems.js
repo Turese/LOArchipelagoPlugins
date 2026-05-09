@@ -53,125 +53,6 @@ InsertAPItems.applyChanges = function () {
     419: "Confusing Word",
   };
 
-  const DEFAULT_AP_ITEM_IMAGE = {
-    tileId: 0,
-    characterName: "GameCarts",
-    direction: 4,
-    pattern: 0,
-    characterIndex: 3,
-  };
-
-  function getAPItemPickupPage(
-    itemName = AP_ITEM,
-    itemImage = DEFAULT_AP_ITEM_IMAGE,
-  ) {
-    return {
-      conditions: {
-        actorId: 1,
-        actorValid: false,
-        itemId: 1,
-        itemValid: false,
-        selfSwitchCh: "A",
-        selfSwitchValid: false,
-        switch1Id: 1,
-        switch1Valid: false,
-        switch2Id: 1,
-        switch2Valid: false,
-        variableId: 1,
-        variableValid: false,
-        variableValue: 0,
-      },
-      directionFix: true,
-      image: itemImage,
-      list: [
-        {
-          code: 101,
-          indent: 0,
-          parameters: ["", 0, 0, 2, ""],
-        },
-        {
-          code: 401,
-          indent: 0,
-          parameters: [`There is an ${itemName} here.`],
-        },
-        {
-          code: 102,
-          indent: 0,
-          parameters: [["Take it.", "Leave it."], -1, 0, 2, 0],
-        },
-        {
-          code: 402,
-          indent: 0,
-          parameters: [0, "Take it."],
-        },
-        {
-          code: 101,
-          indent: 1,
-          parameters: ["", 0, 0, 1, ""],
-        },
-        {
-          code: 401,
-          indent: 1,
-          parameters: [`Find \\C[03]{${itemName}}\\C[0].`],
-        },
-        {
-          code: 123,
-          indent: 1,
-          parameters: ["A", 0],
-        },
-        {
-          code: 0,
-          indent: 1,
-          parameters: [],
-        },
-        {
-          code: 402,
-          indent: 0,
-          parameters: [1, "Leave it."],
-        },
-        {
-          code: 0,
-          indent: 1,
-          parameters: [],
-        },
-        {
-          code: 404,
-          indent: 0,
-          parameters: [],
-        },
-        {
-          code: 0,
-          indent: 0,
-          parameters: [],
-        },
-      ],
-      moveFrequency: 3,
-      moveRoute: {
-        list: [
-          {
-            code: 0,
-            parameters: [],
-          },
-        ],
-        repeat: true,
-        skippable: false,
-        wait: false,
-      },
-      moveSpeed: 3,
-      moveType: 0,
-      priorityType: 1,
-      stepAnime: false,
-      through: false,
-      trigger: 0,
-      walkAnime: true,
-    };
-  }
-
-  const MAP_OVERWORLD_ITEM_OVERRIDES = {
-    3: { 99: "APT_33_LIVINGROOM_CASH" },
-    4: { 23: "APT_33_BATHROOM_FIRST_AID_KIT" },
-  };
-
   // adds an item to player inventory
   // item ids are listed in Items.json
   // @type itemClass {'item' | 'armor' | 'weapon'}
@@ -193,7 +74,7 @@ InsertAPItems.applyChanges = function () {
   // grants one of the 19 game skills
   const insertSkill = function (id) {
     // sanity check in case we try to grant one of the non-game skills
-    if (!VALID_SKILLS[id]) throw new Error(`Skill ID out of range: ${id}`);
+    if (!VALID_SKILLS[id]) throw new Error(`Skill ID out of range: ${id}, skill nyi`);
     try {
       // use actorid=1 since all game skills are Sam skills
       $gameActors.actor(1).learnSkill(id);
@@ -278,21 +159,12 @@ InsertAPItems.applyChanges = function () {
     reportFulfilledChecks,
   };
 
-  const getItemName = function (apLocationName) {
-    // todo: actually get the item name
-    return apLocationName;
-  };
-
-  const getItemImage = function (apLocationName) {
-    // todo: actually get the item image
-    return DEFAULT_AP_ITEM_IMAGE;
-  };
-
   const loadCurrentMapImages = function () {
     if (MAP_OVERWORLD_ITEM_OVERRIDES[lastLoadedMapId]) {
       const characterImagesToLoad = new Set(
         Object.values(MAP_OVERWORLD_ITEM_OVERRIDES).map(
-          (apLocationName) => getItemImage(apLocationName).characterName,
+          (apLocationName) =>
+            LookOutsideAPClient.getItemImage(apLocationName).characterName,
         ),
       );
       // todo: check if somethings already loaded before i try to reload
@@ -300,18 +172,6 @@ InsertAPItems.applyChanges = function () {
         ImageManager.loadCharacter(characterImage);
       }
     }
-  };
-
-  const overrideOverworldPickups = function () {
-    const eventsToOverride = MAP_OVERWORLD_ITEM_OVERRIDES[lastLoadedMapId];
-    if (!eventsToOverride) return;
-    Object.keys(eventsToOverride).forEach((eventId) => {
-      const event = $dataMap.events[eventId];
-      event.pages[0] = getAPItemPickupPage(
-        getItemName(eventsToOverride[eventId]),
-        getItemImage(eventsToOverride[eventId]),
-      );
-    });
   };
 
   // checks URL against custom ap item sprite art
@@ -325,7 +185,8 @@ InsertAPItems.applyChanges = function () {
     insertRecruit,
     insertSkill,
     loadCurrentMapImages,
-    overrideOverworldPickups,
+    // // remove those  later
+    // overrideOverworldPickups,
     shouldOverrideImage,
   };
 };
