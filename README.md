@@ -57,14 +57,17 @@ Goes through the game's events to remove everything that explicitly grants an it
 - [x] Speed up opening cutscene (maybe find a better file for this one?)
 - [x] Clear out bookshelf screamatorium event
 - [x] Clear out wounded neighbor knife stealing event
+- [x] Clear out f3 hallway planter spare key
 - [ ] Clear out event for Audrey to find specific items from bosses (bonus - add ability for them to be manually triggerable by the player and recorded in state)
 - [ ] Clear out rusted crown gift from rat king event
 - [ ] Clear out dark room key award for killing Lyle
 - [ ] Clear out rewards granted for helping Jeanne
-- [ ] Clear out gifts from Pierre (mail, clown drawing, clown outfit)
+- [ ] Clear out door encounter gifts
+- [x] Clear out gifts from Pierre in his room (clown drawing, clown outfit)
 - [ ] Clear out prizes from completing Leigh's quest
 - [ ] Clear out item upgrade from interacting with typewriter with loose manuscript
-- [ ] Clear out item exchange when using the telescope / projector with void disc / photo paper
+- [x] Clear out item exchange when using the telescope in Edwin's apartment
+- [ ] Clear out item exchange when using the projector with void disc / photo paper
 - [ ] Clear out ability to acquire more photo paper
 - [ ] Clear out item exchange when giving lyle / using darkroom on exposed paper
 - [ ] Clear out item exchange when using empty tape on recorder
@@ -72,6 +75,15 @@ Goes through the game's events to remove everything that explicitly grants an it
 - [ ] Clear out all explicit Fred rewards (final Fred rewards and intermediate rewards from the facetaker)
 - [ ] Clear out gift from Jasper upon locking in offerings
 - [ ] Come up with the other cases...
+
+# UpdateEventContent.js
+
+- [x] Update item events to not grant items and display randomized item name (f3 and f2)
+- [x] Update trash can events to not grant items and display randomized item name (f3 and f2)
+- [ ] Update drawer loot events to not grant items and display randomized item name
+- [ ] Update first aid box events to not grant items and display randomized item name
+- [ ] Update bathroom cabinet events to not grant items and display randomized item name
+
 
 ## GoHome.js
 

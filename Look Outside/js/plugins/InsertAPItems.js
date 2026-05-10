@@ -21,6 +21,15 @@ InsertAPItems.insertItem = function (id, itemClass, amount = 1) {
     else if (itemClass === "weapon") item = $dataWeapons[id];
     else if (itemClass === "item") item = $dataItems[id];
     else throw new Error(`Unrecognized item class ${itemClass}`);
+    
+    if (itemClass === "item" && id >= 411 && id <= 429) {
+      // this id range is all the video games. add 1 to the video game count
+      sVr(41, gVr(41) + 1);
+    }
+    if (itemClass === item && id == 346) {
+      // progressive loose manuscript. second add should complete it
+      //
+    }
     $gameParty.gainItem(item, amount);
     console.log(`Item granted: ${id}`);
   } catch (e) {
@@ -30,12 +39,13 @@ InsertAPItems.insertItem = function (id, itemClass, amount = 1) {
 
 InsertAPItems.insertSkill = function (id) {
   // sanity check in case we try to grant one of the non-game skills
-  if (!VALID_SKILLS[id])
-    throw new Error(`Skill ID out of range: ${id}, skill nyi`);
   try {
     // use actorid=1 since all game skills are Sam skills
-    $gameActors.actor(1).learnSkill(id);
-    console.log(`Skill learned: ${VALID_SKILLS[id]}`);
+    if (id === 103) {
+      //leigh learns unleashed beast
+      $gameActors.actor(5).learnSkill(id);
+    } // rest of the current skills in the pool are for sam
+    else $gameActors.actor(1).learnSkill(id);
   } catch (e) {
     console.error(e);
   }
@@ -60,14 +70,14 @@ InsertAPItems.insertRecruit = function (name) {
     philActor.forgetSkill(651);
     philActor.learnSkill(652);
     philActor.setFaceImage("Philippe", 0); // yes it's supposed to be spelled like that
-    philActor.setCharacterImage("Chara_FungusLair", 6)
+    philActor.setCharacterImage("Chara_FungusLair", 6);
     // do i need to turn 491 (phildelusion) on????
   }
   if (name === "Audrey") {
     sSw(380, true);
     audreyActor = $gameActors.actor(22);
     audreyActor.setFaceImage("Portrait_Misc", 13);
-    audreyActor.setCharacterImage("!VendingMachines", 6)
+    audreyActor.setCharacterImage("!VendingMachines", 6);
     audreyActor.setClass(22, true); // shes a machine
   }
   if (name === "Rat Baby") {
@@ -133,7 +143,7 @@ InsertAPItems.insertMiscItem = function (itemId) {
     case 2:
       InsertAPItems.insertRecruit("Audrey");
       break;
-    case 3: 
+    case 3:
       InsertAPItems.insertRecruit("Joel");
       break;
     case 4:
@@ -151,7 +161,7 @@ InsertAPItems.insertMiscItem = function (itemId) {
     case 8:
       InsertAPItems.insertRecruit("Rat Baby");
       break;
-    case 9: 
+    case 9:
       InsertAPItems.insertRecruit("Spider");
       break;
     case 10:
@@ -188,16 +198,16 @@ InsertAPItems.insertMiscItem = function (itemId) {
       InsertAPItems.insertArm("right");
       break;
     case 21:
-      sSw(238, true) // foundCraftingKit
+      sSw(238, true); // foundCraftingKit
       break;
     case 22:
-      sSw(237, true) // crosswordPuzzles
+      sSw(237, true); // crosswordPuzzles
       break;
     case 23:
-      sSw(115, true) // unlockedElevator
+      sSw(115, true); // unlockedElevator
       break;
     case 24:
-      sSw(456, true) // floodedMazeGateOpen
+      sSw(456, true); // floodedMazeGateOpen
       break;
     default:
       console.warn(`Unrecognized misc item id: ${itemId}, no item granted`);

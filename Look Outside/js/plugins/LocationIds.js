@@ -167,6 +167,7 @@ const LOCATION_ID_MAPPING = {
   APT_32_TUNNELS_TOOTH_SCIMITAR: 347,
   APT_32_TUNNELS_HEALING_SPRAY: 348,
   APT_32_TUNNELS_TOOTH_GROUP_B_COMBAT_VICTORY: 349,
+  APT_32_BATHROOM_BITING_BOOTS: 350,
   APT_32_MASTER_BEDROOM_TANK_TOP: 321,
   APT_32_MASTER_BEDROOM_SAFE_ITEM: 322,
   APT_32_MASTER_BEDROOM_TERATOMA_COMBAT_VICTORY: 323,
@@ -672,7 +673,7 @@ const LOCATION_ID_MAPPING = {
   GF_OFFICE_JASPER_COMBAT_VICTORY: 3406,
   GF_OFFICE_JASPER_GIFT_OFFERING: 3407,
   GF_OFFICE_JASPER_FIX_TELESCOPE: 3408,
-  "GF OFFICE_BATHROOM_WORM_COMBAT_VICTORY": 3409,
+  GF_OFFICE_BATHROOM_WORM_COMBAT_VICTORY: 3409,
   MAILROOM_OFFICE_CELL_PHONE: 3903,
   MAILROOM_OFFICE_SUN_DISC: 3904,
   GF_MENS_BATHROOM_MARSHALL_COMBAT_VICTORY: 3501,
@@ -1156,6 +1157,10 @@ const LOCATION_ID_MAPPING = {
   CRIMSON_SCOURGE_COMBAT_VICTORY: 5804,
 };
 
+// custom switch ids (these are unused in the base game as of version 2.3
+// i use 1399 and 1400 in NormalizeDifficulty
+const APT_31_TELESCOPE_DISC_EXPOSURE_SWITCH = 1398;
+
 SELF_SWITCH_LOCATIONS = {
   3: {
     99: { A: "APT_33_LIVING_ROOM_CASH" },
@@ -1166,7 +1171,7 @@ SELF_SWITCH_LOCATIONS = {
   },
 
   6: {
-    13: { A: "F3_PLANTER_KEY" },
+    13: { B: "F3_PLANTER_KEY" }, // switches to A in vanilla whether or not you get the key; see function clearF3HallwayPlanterEvent
     14: { C: "F3_ONLOOKER_DOORWAY_COMBAT_VICTORY" },
     27: { C: "F3_CLINT_COMBAT_VICTORY" },
     40: { A: "F3_MASKED_SHADOW_GIFT" },
@@ -1392,6 +1397,7 @@ SELF_SWITCH_LOCATIONS = {
     17: { A: "APT_37_TABLE_PLATE_2" },
     11: { A: "APT_37_CARVING_FORK" },
     6: { A: "APT_37_FRIDGE" },
+    22: { A: "APT_37_CRAFTING_KIT" },
     23: { A: "APT_37_TRASH" },
     10: { A: "APT_37_WHISKEY" },
     13: { A: "APT_37_CHOCKY_BAR" },
@@ -1404,6 +1410,7 @@ SELF_SWITCH_LOCATIONS = {
     8: { A: "APT_37_BATHROOM_MEDICELL" },
     4: { A: "APT_37_BATHROOM_BANDAGES" },
     5: { C: "APT_37_BATHROOM_GAWKER_COMBAT_VICTORY" },
+    10: { A: "APT_37_CRAFTING_KIT" },
   },
 
   38: {
@@ -1554,6 +1561,10 @@ SELF_SWITCH_LOCATIONS = {
     13: { A: "GLITCH_MAZE_VNAGE_UCKY_TIEAKERS" },
   },
 
+  364: {
+    7: { A: "APT_35_FRIDGE" },
+  },
+
   23: {
     41: { A: "APT_36_LIVING_ROOM_BASEBALL_BAT" },
     48: { A: "APT_36_LIVING_ROOM_CASH" },
@@ -1575,6 +1586,289 @@ SELF_SWITCH_LOCATIONS = {
     3: { A: "APT_36_BEDROOM_SAFE_ITEM" },
     2: { A: "APT_36_BEDROOM_SIMPLE_KEY" },
     4: { C: "APT_36_BEDROOM_OBSERVER_COMBAT_VICTORY" },
+  },
+  89: {
+    4: { A: "F3_CLOSET_WALLET" },
+    2: { A: "F3_CLOSET_KEY" },
+    5: { B: "F3_CLOSET_ROACH" },
+    9: { A: "F3_CLOSET_JACKET_FIGURINE" },
+  },
+
+  285: {
+    13: { A: "APT_20_CLEANEREX" },
+    12: { A: "APT_20_MOP" },
+    9: { A: "APT_20_FORK" },
+    8: { A: "APT_20_MUFFIN" },
+    10: { A: "APT_20_CLEAVER" },
+    5: { A: "APT_20_FRIDGE" },
+  },
+
+  288: {
+    5: { A: "APT_20_BATHROOM_MEDICINE_CABINET" },
+    7: { B: "APT_20_BATHROOM_ROACH" },
+    6: { A: "APT_20_BATHROOM_SOAP" },
+  },
+
+  287: {
+    27: { A: "APT_20_W_MOTORCYCLE_HELMET" },
+    5: { A: "APT_20_W_VODKA" },
+    4: { A: "APT_20_W_CASH" },
+  },
+
+  286: {
+    25: { A: "APT_20_E_TONIC" },
+    26: { A: "APT_20_E_VINTAGE_SNEAKERS" },
+    23: { A: "APT_20_E_STUDDED_JACKET" },
+    24: { A: "APT_20_E_CASH" },
+  },
+
+  9: {
+    16: { A: "APT_21_TRASH" },
+    28: { A: "APT_21_FRIDGE" },
+    12: { A: "APT_21_CROSSWORD_BOOK" },
+  },
+
+  11: {
+    8: { A: "APT_21_CLOSET_JUNK" },
+    3: { A: "APT_21_CLOSET_DCLOGGER" },
+    4: { A: "APT_21_CLOSET_BROOM" },
+    5: { A: "APT_21_CLOSET_ANTIDOTE" },
+    2: { C: "APT_21_CLOSET_LOKJAW_COMBAT_VICTORY" },
+    9: { A: "APT_21_CLOSET_SAFE" },
+  },
+
+  12: {
+    14: { A: "APT_21_BATHROOM_SOAP" },
+    18: { A: "APT_21_BATHROOM_ANXIETY_MEDS" },
+    12: { C: "APT_21_BATHROOM_EYECLUSTER_COMBAT_VICTORY" },
+    10: { A: "APT_21_BATHROOM_MEDICINE_CABINET" },
+  },
+
+  112: {
+    14: { A: "APT_21_DARK_ROOM_KEY" },
+  },
+
+  10: {
+    10: { A: "APT_21_BEDROOM_BEEF_1" },
+    8: { A: "APT_21_BEDROOM_BEEF_2" },
+    9: { A: "APT_21_BEDROOM_BEEF_3" },
+    7: { A: "APT_21_BEDROOM_BEEF_4" },
+    16: { A: "APT_21_BEDROOM_SPACE_TRUCKERZ" },
+    20: { A: "APT_21_MNW" },
+    13: { A: "APT_21_BEDROOM_FORK" },
+    5: { A: "APT_21_BEDROOM_BEEF_5" },
+    11: { A: "APT_21_BEDROOM_PLATE" },
+    12: { A: "APT_21_BEDROOM_KNIFE" },
+    6: { A: "APT_21_BEDROOM_BEEF_6" },
+    17: { A: "APT_21_BEDROOM_BATTERIES" },
+  },
+
+  334: {
+    9: { A: "APT_22_RUBBER_BOOTS" },
+    15: { A: "APT_22_JUICE_BOX" },
+    13: { A: "APT_22_VINEGAR" },
+    6: { A: "APT_22_FRIDGE" },
+    14: { A: "APT_22_CHOCKY_BAR" },
+    11: { A: "APT_22_TRASH" },
+    12: { A: "APT_22_CASH" },
+  },
+
+  335: {
+    4: { A: "APT_22_BATHROOM_TOOTHPASTE" },
+    3: { A: "APT_22_BATHROOM_MEDICINE_CABINET" },
+  },
+
+  337: {
+    4: { A: "APT_22_HARRIET_BEDROOM_CLOTH" },
+    3: { A: "APT_22_HARRIET_BEDROOM_TRASH" },
+  },
+
+  336: {
+    4: { A: "APT_22_SOPHIE_BEDROOM_TRASH" },
+    2: { A: "APT_22_SOPHIE_BEDROOM_MARBLES" },
+  },
+
+  15: {
+    47: { A: "APT_25_KLYSOX" },
+    7: { A: "APT_25_FRIDGE" },
+    48: { A: "APT_25_PLATE" },
+    26: { A: "APT_25_FORK" },
+  },
+
+  16: {
+    3: { A: "APT_25_DANS_ROOM_NEODUO" },
+    12: { A: "APT_25_DANS_ROOM_ORANGE_DRINK" },
+  },
+
+  115: {
+    2: { C: "APT_27_TYPEWRITHER_COMBAT_VICTORY" },
+    11: { A: "APT_27_CRUMPLED_MANUSCRIPT" },
+    18: { A: "APT_27_TEA_SET" },
+    3: { A: "APT_27_WALLET" },
+    6: { A: "APT_27_FRIDGE" },
+    13: { A: "APT_27_TRASH" },
+  },
+
+  116: {
+    4: { B: "APT_27_BATHROOM_ROACH" },
+  },
+
+  117: {
+    9: { A: "APT_27_BEDROOM_KITSCH_LAMP" },
+    7: { A: "APT_27_BEDROOM_CLEAN_MANUSCRIPT" },
+  },
+
+  118: {
+    6: { A: "APT_27_OFFICE_BACKGAMMON" },
+    8: { A: "APT_27_OFFICE_WHISKEY" },
+  },
+
+  139: {
+    9: { A: "APT_28_LAUNDRY_REAGENT" },
+  },
+
+  133: {
+    9: { C: "APT_28_TWILIGHT_PIRANHAS_COMBAT_VICTORY" },
+    7: { A: "APT_28_TWILIGHT_FIRST_AID_KIT" },
+  },
+
+  134: {
+    9: { A: "APT_28_TWILIGHT_SHURIKEN" },
+  },
+
+  136: {
+    8: { C: "APT_28_JELLYFISH_COMBAT_VICTORY" },
+    7: { A: "APT_28_MIDNIGHT_VALVE" },
+  },
+
+  137: {
+    6: { A: "APT_28_TWILIGHT_VALVE" },
+  },
+
+  125: {
+    21: { C: "APT_28_PIRANHAS_COMBAT_VICTORY" },
+    23: { C: "APT_28_CRAB_COMBAT_VICTORY" },
+  },
+
+  140: {
+    8: { C: "APT_28_GARBAGE_PIRANHAS_COMBAT_VICTORY" },
+  },
+
+  142: {
+    7: { C: "APT_28_GARBAGE_OCTOPUS_COMBAT_VICTORY" },
+    8: { A: "APT_28_GARBAGE_FIRST_AID_KIT" },
+  },
+
+  138: {
+    6: { A: "APT_28_ABYSSAL_VALVE" },
+  },
+
+  141: {
+    7: { A: "APT_28_GARBAGE_ENZYME" },
+    6: { C: "APT_28_GARBAGE_DRAGONFISH_COMBAT_VICTORY" },
+  },
+
+  144: {
+    9: { A: "APT_28_ABYSSAL_CHOCKY_BAR" },
+    12: { C: "APT_28_ABYSSAL_STARFISH_COMBAT_VICTORY" },
+  },
+
+  155: {
+    6: { C: "APT_28_ABYSSAL_SHARK_COMBAT_VICTORY" },
+  },
+
+  149: {
+    49: { A: "APT_28_ABYSSAL_STIMULANT" },
+    51: { A: "APT_28_ABYSSAL_HEALING_SPRAY" },
+    50: { A: "APT_28_ABYSSAL_ELIXIR" },
+  },
+
+  147: {
+    6: { C: "APT_28_ABYSSAL_WEST_JELLYFISH" },
+    8: { A: "APT_28_HADAL_VALVE" },
+  },
+
+  159: {
+    1: { C: "APT_28_ABYSSAL_EAST_JELLYFISH" },
+  },
+
+  152: {
+    6: { C: "APT_28_SHRIMP_KNIGHT_COMBAT_VICTORY" },
+  },
+
+  7: {
+    2: { A: "F2_APT_21_KEY" },
+    30: { A: "F2_PISTOL" },
+    31: { A: "F2_PISTOL_BULLETS_1" },
+    32: { A: "F2_PISTOL_BULLETS_2" },
+    60: { D: "F2_GRASSHOPPER_COMBAT_VICTORY" },
+  },
+
+  372: {
+    31: { A: "F2_GRINNING_BEAST_CHASE_POOL_CUE" },
+  },
+
+  329: {
+    7: { A: "APT_24_MOP" },
+    8: { A: "APT_24_COMBAT_KNIFE" },
+    5: { A: "APT_24_KLYSOX" },
+    6: { A: "APT_24_PISTOL_BULLETS" },
+  },
+
+  331: {
+    5: { A: "APT_24_BATHROOM_MEDICINE_CABINET" },
+    6: { A: "APT_24_BATHROOM_SOAP" },
+  },
+
+  330: {
+    11: { A: "APT_24_LIVINGROOM_ELEPHANT_STATUETTE" },
+    12: { A: "APT_24_LIVINGROOM_DINNER_PLATE_1" },
+    14: { A: "APT_24_LIVINGROOM_KNIFE" },
+    13: { A: "APT_24_LIVINGROOM_DINNER_PLATE_2" },
+    15: { A: "APT_24_LIVINGROOM_FORK" },
+    7: { A: "APT_24_KITCHEN_FRIDGE" },
+    9: { A: "APT_24_KITCHEN_VINEGAR" },
+  },
+
+  332: {
+    9: { A: "APT_24_BEDROOM_CHOCKY_BAR_1" },
+    8: { A: "APT_24_BEDROOM_CHOCKY_BAR_2" },
+  },
+
+  333: {
+    28: { A: "APT_24_SEWING_DENIM_VEST" },
+    29: { A: "APT_24_SEWING_BUTTON_UP_SHIRT" },
+    26: { A: "APT_24_SAFE_ITEM" },
+    30: { A: "APT_24_SUIT" },
+  },
+
+  108: {
+    18: { A: "APT_31_TRASH" },
+  },
+
+  265: {
+    18: { A: "APT_31_DARK_TRASH" },
+  },
+
+  111: {
+    11: { A: "APT_31_BATHROOM_VINEGAR" },
+    15: { A: "APT_31_BATHROOM_EYE_DROPS" },
+    10: { A: "APT_31_BATHROOM_DCLOGGER" },
+    9: { A: "APT_31_BATHROOM_DCLOGGER_2" },
+    6: { A: "APT_31_BATHROOM_MEDICINE_CABINET" },
+    12: { A: "APT_31_BATHROOM_SOAP" },
+  },
+
+  109: {
+    7: { A: "APT_31_BEDROOM_METAL_BAT" },
+    8: { A: "APT_31_BEDROOM_TONIC" },
+    12: { A: "APT_31_BEDROOM_SAFE_ITEM" },
+  },
+
+  110: {
+    10: { A: "APT_31_OBSERVATORY_PLUTO_DISC" },
+    14: { A: "APT_31_OBSERVATORY_VOID_DISC" },
+    5: { A: "APT_31_OBSERVATORY_TRASH" },
   },
 };
 
@@ -1623,13 +1917,15 @@ VARIABLE_LOCATIONS = {
     value: 2,
     location: "APT_38_LOUIS_TORSO_COMBAT_VICTORY",
   },
-  617: { relation: ">=", value: 10, location: "APT_38_PIERRE_CLOWN_DRAWING" },
-  617: { relation: ">=", value: 20, location: "APT_38_PIERRE_CLOWN_WIG" },
+  617: [
+    { relation: ">=", value: 10, location: "APT_38_PIERRE_CLOWN_DRAWING" },
+    { relation: ">=", value: 17, location: "APT_38_PIERRE_CLOWN_WIG" },
+  ], // 17 is when you lose, 20 is when you win
   81: {
     relation: ">=",
     value: 4,
     location: "GAME_SKILL_WAKE_THE_BLOOD_KNIGHT",
-  },
+  } /*
   82: { relation: ">=", value: 5, location: "GAME_SKILL_WIZARDS_HELL" },
   83: { relation: ">=", value: 2, location: "GAME_SKILL_SUPER_JUMPLAD" },
   84: { relation: ">=", value: 5, location: "GAME_SKILL_SUPER_JUMPLAD_3" },
@@ -1648,11 +1944,42 @@ VARIABLE_LOCATIONS = {
   97: { relation: ">=", value: 4, location: "GAME_SKILL_SPACE_TRUCKERZ" },
   98: { relation: ">=", value: 4, location: "GAME_SKILL_REPTILE_FOOTBALL" },
   99: { relation: ">=", value: 5, location: "GAME_SKILL_CROSSWORD_CHALLENGE" },
+  */,
+  // this is way too annoying to play, every game gets 1 play
+  82: { relation: ">=", value: 1, location: "GAME_SKILL_WIZARDS_HELL" },
+  83: { relation: ">=", value: 1, location: "GAME_SKILL_SUPER_JUMPLAD" },
+  84: { relation: ">=", value: 1, location: "GAME_SKILL_SUPER_JUMPLAD_3" },
+  85: { relation: ">=", value: 1, location: "GAME_SKILL_CATAFALQUE" },
+  86: { relation: ">=", value: 1, location: "GAME_SKILL_HONKOS_GRAND_JOURNEY" },
+  87: { relation: ">=", value: 1, location: "GAME_SKILL_MADWHEELS_97" },
+  88: { relation: ">=", value: 1, location: "GAME_SKILL_WRAITHSCOURGE" },
+  89: { relation: ">=", value: 1, location: "GAME_SKILL_MASSACRE_PRINCESS" },
+  90: { relation: ">=", value: 1, location: "GAME_SKILL_KILL_TO_SHOOT" },
+  91: { relation: ">=", value: 1, location: "GAME_SKILL_MYRMIDON" },
+  92: { relation: ">=", value: 1, location: "GAME_SKILL_MYRMIDON_XII" },
+  93: { relation: ">=", value: 1, location: "GAME_SKILL_SCREAMATORIUM" },
+  94: { relation: ">=", value: 1, location: "GAME_SKILL_FROGIT_ABOUT_IT" },
+  95: { relation: ">=", value: 1, location: "GAME_SKILL_BLOOD_GHOUL_ORGY_3" },
+  96: { relation: ">=", value: 1, location: "GAME_SKILL_OCTOCOOK" },
+  97: { relation: ">=", value: 1, location: "GAME_SKILL_SPACE_TRUCKERZ" },
+  98: { relation: ">=", value: 1, location: "GAME_SKILL_REPTILE_FOOTBALL" },
+  99: { relation: ">=", value: 1, location: "GAME_SKILL_CROSSWORD_CHALLENGE" },
   910: {
     relation: "=",
     value: 2,
     location: "APT_36_LIVING_ROOM_LOUIS_LEG_COMBAT_VICTORY",
   },
+  583: [
+    { relation: ">=", value: 50, location: "APT_20_HYDRA_HEADS" },
+    { relation: ">=", value: 53, location: "APT_20_HYDRA_LAUNDRY" },
+  ],
+  896: { relation: ">=", value: 6, location: "APT_25_DANS_MOM_COMBAT_VICTORY" },
+  445: {
+    relation: ">=",
+    value: 12,
+    location: "APT_28_HADAL_LETHARGY_COMBAT_VICTORY",
+  },
+  900: { relation: ">=", value: 90, location: "LEIGH_APARTMENT_READ_NOTE" },
 };
 
 SWITCH_LOCATIONS = {
@@ -1675,4 +2002,28 @@ SWITCH_LOCATIONS = {
   939: "APT_38_KAELEY_COMBAT_VICTORY",
   1138: "APT_38_HIVE_MAN_COMBAT_VICTORY",
   1206: "GLITCH_SLIME_HYDRA_COMBAT_VICTORY",
+  746: "APT_20_JEANNE_COMBAT_VICTORY",
+  752: "APT_20_HYDRA_A_COMBAT_VICTORY",
+  749: "APT_20_HYDRA_B_COMBAT_VICTORY",
+  747: "APT_20_JEANNE_HYDRA_COMBAT_VICTORY",
+  751: "APT_20_HYDRA_C_COMBAT_VICTORY",
+  750: "APT_20_W_HYDRA_COMBAT_VICTORY",
+  748: "APT_20_E_HYDRA_COMBAT_VICTORY",
+  832: "APT_21_LYLE_COMBAT_VICTORY",
+  953: "APT_27_BATHROOM_LEG_WORMS_COMBAT_VICTORY",
+  826: "APT_28_DROWNING_COMBAT_VICTORY",
+  470: "APT_28_TWILIGHT_PIRANHA_GUY_COMBAT_VICTORY",
+  813: "APT_28_DRAGONFISH_COMBAT_VICTORY",
+  814: "APT_28_TWILIGHT_CRAB_COMBAT_VICTORY",
+  815: "APT_28_MIDNIGHT_DRAGONFISH_COMBAT_VICTORY",
+  611: "F2_LARGE_SHADE_COMBAT_VICTORY",
+  946: "F2_NESTOR_HAND_WORMS_COMBAT_VICTORY",
+  //119: "F2_GRINNING_BEAST_CHASE_POOL_CUE", how to make this be both?
+  119: "F2_GRINNING_BEAST_COMBAT_VICTORY",
+  168: "APT_24_EUGENE_COMBAT_VICTORY",
+  954: "APT_24_ENTRY_FACE_WORMS_COMBAT_VICTORY",
+  955: "APT_24_LIVINGROOM_FACE_WORMS_COMBAT_VICTORY",
+  956: "APT_24_BEDROOM_FACE_WORMS_COMBAT_VICTORY",
+  957: "APT_24_SEWING_FACE_WORMS_COMBAT_VICTORY",
+  [APT_31_TELESCOPE_DISC_EXPOSURE_SWITCH]: "APT_31_TELESCOPE_DISC_EXPOSURE",
 };

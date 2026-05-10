@@ -81,11 +81,13 @@ LookOutsideAPClient.applyOverrides = function () {
     _createCharacters.call(this);
   };
 
+  // todo: find out why i need some things to happen in both setup and onload`
   const _Game_Map_setup = Game_Map.prototype.setup;
   Game_Map.prototype.setup = function (mapId) {
-    BackInTime.createCalendarBackInTimeEvent(lastLoadedMapId);
-    UpdateEventContent.overrideOverworldPickups(lastLoadedMapId);
-    ClearExplicitDrops.applyDatamapClears(lastLoadedMapId);
+    BackInTime.createCalendarBackInTimeEvent(mapId);
+    UpdateEventContent.overrideOverworldPickups(mapId);
+    ClearExplicitDrops.applyDatamapClears(mapId);
+    UpdateEventContent.overrideTrashSearchPickups(mapId);
 
     _Game_Map_setup.call(this, mapId);
   };
@@ -96,12 +98,13 @@ LookOutsideAPClient.applyOverrides = function () {
       BackInTime.createCalendarBackInTimeEvent(lastLoadedMapId);
       UpdateEventContent.overrideOverworldPickups(lastLoadedMapId);
       ClearExplicitDrops.applyDatamapClears(lastLoadedMapId);
+      UpdateEventContent.overrideTrashSearchPickups(lastLoadedMapId);
     }
     if (object === $dataEnemies) {
       ClearExplicitDrops.clearAllEnemiesDrops();
     }
     if (object === $dataCommonEvents) {
-      // update common events
+      ClearExplicitDrops.clearCommonEventDrops();
     }
     _dataManagerOnLoad.call(this, object);
   };
@@ -109,7 +112,14 @@ LookOutsideAPClient.applyOverrides = function () {
   // on load, attempt to connect to apclient
   const _extractSaveContents = DataManager.extractSaveContents;
   DataManager.extractSaveContents = function (contents) {
-    LookOutsideAPClient.openAPClient();
+    // i want to be sure we connect before we start
+    // setting locations and junk
+
+    LookOutsideAPClient.openAPClient().then(() => {
+      ClearExplicitDrops.clearTroopsDrops();
+    });
+
+    // doing this here so we have access to $gamePlayer
 
     _extractSaveContents.call(this, contents);
   };
@@ -159,13 +169,13 @@ LookOutsideAPClient.initializeItemIndex = function () {
 
 */
 
-LookOutsideAPClient.initializeLocationNames = function () {
+LookOutsideAPClient.initializeLocationNames = async function () {
   locations = Object.values(LOCATION_ID_MAPPING);
   let locationMapping = {};
 
   if (client?.authenticated)
     for (const l of locations) {
-      client.scout([l]).then((results) => {
+      await client.scout([l]).then((results) => {
         if (results.length > 0) {
           const item = results[0];
           let itemColor = 3;
@@ -190,7 +200,7 @@ LookOutsideAPClient.initializeLocationObject = function () {
   return $gamePlayer.reachedLocations;
 };
 
-LookOutsideAPClient.openAPClient = function () {
+LookOutsideAPClient.openAPClient = async function () {
   const slotName = ConfigManager.slotName || "";
   const roomId = ConfigManager.roomId || "";
   const password = ConfigManager.password || "";
@@ -204,12 +214,7 @@ LookOutsideAPClient.openAPClient = function () {
     return;
   }
 
-  client.messages.on("message", (content) => {
-    console.log(content);
-  });
-
-  client.items.on("itemsReceived", () => {
-    console.log('Item received from AP Server:', client.items.received[client.items.received.length - 1]);
+  client.items.on("itemsReceived", (m) => {
     LookOutsideAPClient.updateItems();
   });
 
@@ -219,39 +224,37 @@ LookOutsideAPClient.openAPClient = function () {
     args.password = password;
   }
 
+  // todo: what to do when you change login location?
   if (roomId && !client.authenticated) {
-    client
+    await client
       .login(roomId, slotName, "Look Outside", args)
-      .then(() => {
-        console.log("Connected to AP Server!");
-        LookOutsideAPClient.initializeItemIndex();
-        LookOutsideAPClient.initializeLocationObject();
-        LookOutsideAPClient.initializeLocationNames();
-        LookOutsideAPClient.updateItems();
-      })
       .catch(console.error);
-  } else {
-    LookOutsideAPClient.initializeItemIndex();
-    LookOutsideAPClient.initializeLocationObject();
-    LookOutsideAPClient.initializeLocationNames();
-    LookOutsideAPClient.updateItems();
+  }
+  // do initialization steps
+  LookOutsideAPClient.initializeItemIndex();
+  LookOutsideAPClient.reportLocations();
+  await LookOutsideAPClient.initializeLocationNames();
+  LookOutsideAPClient.updateItems();
+};
+
+LookOutsideAPClient.reportLocations = function () {
+  const reachedLocations = LookOutsideAPClient.initializeLocationObject();
+  try {
+    let socket = client.check(...Object.keys(reachedLocations).map(Number));
+  } catch (error) {
+    console.error("Error reporting locations:", error);
   }
 };
 
-LookOutsideAPClient.watchLocations = function () {
-  setLocation = function (locationId) {
-    const reachedLocations = LookOutsideAPClient.initializeLocationObject();
-    if (!reachedLocations[locationId]) {
-      reachedLocations[locationId] = true;
-    }
-    try {
-      let socket = client.check(...Object.keys(reachedLocations).map(Number));
-      console.log("Checked location: ", locationId, socket);
-    } catch (error) {
-      console.error("Error checking locations:", error);
-    }
-  };
+LookOutsideAPClient.setLocation = function (locationId) {
+  const reachedLocations = LookOutsideAPClient.initializeLocationObject();
+  if (!reachedLocations[locationId]) {
+    reachedLocations[locationId] = true;
+  }
+  LookOutsideAPClient.reportLocations();
+};
 
+LookOutsideAPClient.watchLocations = function () {
   _setSelfSwitchValue = Game_SelfSwitches.prototype.setValue;
   Game_SelfSwitches.prototype.setValue = function (key, value) {
     _setSelfSwitchValue.call(this, key, value);
@@ -260,11 +263,9 @@ LookOutsideAPClient.watchLocations = function () {
 
     if (SELF_SWITCH_LOCATIONS[roomId]) {
       if (SELF_SWITCH_LOCATIONS[roomId][eventId]) {
-        console.log("sending location: ", roomId, eventId, switchId);
         const locationId = SELF_SWITCH_LOCATIONS[roomId][eventId][switchId];
-        console.log("sending location: ", locationId);
         if (locationId) {
-          setLocation(LOCATION_ID_MAPPING[locationId]);
+          LookOutsideAPClient.setLocation(LOCATION_ID_MAPPING[locationId]);
         }
       }
     }
@@ -276,8 +277,8 @@ LookOutsideAPClient.watchLocations = function () {
 
     if (SWITCH_LOCATIONS[switchId]) {
       const locationId = SWITCH_LOCATIONS[switchId];
-      console.log("sending location: ", locationId);
-      if (locationId) setLocation(LOCATION_ID_MAPPING[locationId]);
+      if (locationId)
+        LookOutsideAPClient.setLocation(LOCATION_ID_MAPPING[locationId]);
     }
   };
 
@@ -285,32 +286,39 @@ LookOutsideAPClient.watchLocations = function () {
   Game_Variables.prototype.setValue = function (variableId, value) {
     _setVarValue.call(this, variableId, value);
 
-    const variableEntry = VARIABLE_LOCATIONS[variableId];
+    const variableMapping = VARIABLE_LOCATIONS[variableId];
 
-    if (variableEntry) {
+    function checkVariableEntry(variableEntry, checkValue) {
       const { relation, value, location } = variableEntry;
       switch (relation) {
         case "=":
-          if (value != this.value(variableId)) return;
+          if (value != checkValue) return;
           break;
         case ">":
-          if (this.value(variableId) <= value) return;
+          if (checkValue <= value) return;
           break;
         case "<":
-          if (this.value(variableId) >= value) return;
+          if (checkValue >= value) return;
           break;
         case ">=":
-          if (this.value(variableId) < value) return;
+          if (checkValue < value) return;
           break;
         case "<=":
-          if (this.value(variableId) > value) return;
+          if (checkValue > value) return;
           break;
         default:
           return;
       }
       const locationId = LOCATION_ID_MAPPING[location];
-      console.log("sending location: ", locationId);
-      setLocation(locationId);
+      LookOutsideAPClient.setLocation(locationId);
+    }
+
+    if (Array.isArray(variableMapping)) {
+      variableMapping.forEach((m) =>
+        checkVariableEntry(m, this.value(variableId)),
+      );
+    } else if (variableMapping) {
+      checkVariableEntry(variableMapping, this.value(variableId));
     }
   };
 };
@@ -318,10 +326,14 @@ LookOutsideAPClient.watchLocations = function () {
 LookOutsideAPClient.updateItems = function () {
   const items = client.items.received;
   const currIndex = LookOutsideAPClient.initializeItemIndex();
-  console.log("CURRENT ITEM INDEX: ", currIndex);
-  for (let i = currIndex; i < items.length; i++) {
-    console.log(items[i]);
+  for (let i = currIndex + 1; i < items.length; i++) {
     const itemId = items[i].id;
+    if (i <= $gamePlayer.APItemsIndex) {
+      console.warn(`Item ${i} already received, skipping.`);
+      continue;
+    }
+    $gamePlayer.APItemsIndex = i;
+    console.log("----INSERTING ITEM ID: ", i);
     if (itemId < 1000) {
       window.InsertAPItems.insertItem(itemId, "item");
     } else if (itemId < 2000) {
@@ -339,17 +351,14 @@ LookOutsideAPClient.updateItems = function () {
       console.warn("ITEMTYPE NYI", itemId);
     }
   }
-  $gamePlayer.APItemsIndex = items.length - 1;
 };
 
 LookOutsideAPClient.getItemName = function (apLocationName) {
   // todo: actually get the item name
-  console.log(LOCATION_ID_MAPPING);
   const locationId = LOCATION_ID_MAPPING[apLocationName];
   const name = $gamePlayer.LOCATION_NAME_MAPPING
     ? $gamePlayer.LOCATION_NAME_MAPPING[locationId]
     : null;
-  console.log("GETTING NAME: ", apLocationName, locationId, name);
 
   return name || "\\C[24]Randomized Item\\C[0]";
 };
@@ -360,5 +369,4 @@ LookOutsideAPClient.getItemImage = function (apLocationName) {
 };
 
 LookOutsideAPClient.applyOverrides();
-
 LookOutsideAPClient.watchLocations();

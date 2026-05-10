@@ -124,6 +124,11 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     ],
   },
 
+  108: {
+    15: ["APT_31_JUICE", "sSw(691, true)"],
+    16: ["APT_31_CASH", "sSw(692, true)"],
+  },
+
   111: {
     11: [
       "APT_31_BATHROOM_VINEGAR",
@@ -190,7 +195,6 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
       "APT_32_KITCHEN_CHEEZ_STIX",
       "$gameSelfSwitches.setValue([31, 18, 'A'], true)",
     ],
-    20: ["APT_32_TRASH", "$gameSelfSwitches.setValue([31, 20, 'A'], true)"],
     17: [
       "APT_32_KITCHEN_VINEGAR_1",
       "$gameSelfSwitches.setValue([31, 17, 'A'], true)",
@@ -219,22 +223,22 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   33: {
     7: [
       "APT_32_CHILD_BEDROOM_BASEBALL_CAP",
-      "$gameSelfSwitches.setValue([33, 7, 'C'], true)",
+      "$gameSelfSwitches.setValue([33, 7, 'A'], true)",
     ],
     4: [
       "APT_32_CHILD_BEDROOM_TEDDY_BEAR",
-      "$gameSelfSwitches.setValue([33, 4, 'C'], true)",
+      "$gameSelfSwitches.setValue([33, 4, 'A'], true)",
     ],
   },
 
   34: {
     25: [
       "APT_32_MASTER_BEDROOM_TANK_TOP",
-      "$gameSelfSwitches.setValue([34, 25, 'C'], true)",
+      "$gameSelfSwitches.setValue([34, 25, 'A'], true)",
     ],
     28: [
       "APT_32_MASTER_BEDROOM_BALM",
-      "$gameSelfSwitches.setValue([34, 28, 'C'], true)",
+      "$gameSelfSwitches.setValue([34, 28, 'A'], true)",
     ],
     19: [
       "APT_32_MASTER_BEDROOM_ARMY_FIGURE",
@@ -249,19 +253,19 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   436: {
     9: [
       "APT_32_TUNNELS_FIRST_AID_KIT",
-      "$gameSelfSwitches.setValue([436, 9, 'C'], true)",
+      "$gameSelfSwitches.setValue([436, 9, 'A'], true)",
     ],
     10: [
       "APT_32_TUNNELS_TOOTH_RIFLE",
-      "$gameSelfSwitches.setValue([436, 10, 'C'], true)",
+      "$gameSelfSwitches.setValue([436, 10, 'A'], true)",
     ],
     11: [
       "APT_32_TUNNELS_TOOTH_SCIMITAR",
-      "$gameSelfSwitches.setValue([436, 11, 'C'], true)",
+      "$gameSelfSwitches.setValue([436, 11, 'A'], true)",
     ],
     12: [
       "APT_32_TUNNELS_HEALING_SPRAY",
-      "$gameSelfSwitches.setValue([436, 12, 'C'], true)",
+      "$gameSelfSwitches.setValue([436, 12, 'A'], true)",
     ],
     13: [
       "APT_32_TUNNELS_TOOTH_GROUP_B_COMBAT_VICTORY",
@@ -274,10 +278,6 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     24: [
       "APT_34_KITCHEN_ORANGE_COLA",
       "$gameSelfSwitches.setValue([120, 24, 'A'], true)",
-    ],
-    9: [
-      "APT_34_KITCHEN_TRASH",
-      "$gameSelfSwitches.setValue([120, 9, 'A'], true)",
     ],
     6: [
       "APT_34_KITCHEN_LOWER_WRAPPED_GIFT",
@@ -392,6 +392,39 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     ],
   },
 
+  23: {
+    41: [
+      "APT_36_LIVING_ROOM_BASEBALL_BAT",
+      "$gameSelfSwitches.setValue([23, 41, 'A'], true)",
+    ],
+    48: [
+      "APT_36_LIVING_ROOM_CASH",
+      "$gameSelfSwitches.setValue([23, 48, 'A'], true)",
+    ],
+  },
+
+  24: {
+    5: [
+      "APT_36_BATHROOM_TONIC",
+      "$gameSelfSwitches.setValue([24, 5, 'A'], true)",
+    ],
+    6: [
+      "APT_36_BATHROOM_BANDAGES",
+      "$gameSelfSwitches.setValue([24, 6, 'A'], true)",
+    ],
+    7: [
+      "APT_36_BATHROOM_PADLOCK_KEY",
+      "$gameSelfSwitches.setValue([24, 7, 'A'], true)",
+    ],
+  },
+
+  25: {
+    2: [
+      "APT_36_BEDROOM_SIMPLE_KEY",
+      "$gameSelfSwitches.setValue([25, 2, 'A'], true)",
+    ],
+  },
+
   35: {
     16: [
       "APT_37_TABLE_PLATE_1",
@@ -418,6 +451,10 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
       "APT_37_CHOCKY_BAR",
       "$gameSelfSwitches.setValue([35, 13, 'A'], true)",
     ],
+    22: [
+      "APT_37_CRAFTING_KIT",
+      "$gameSelfSwitches.setValue([35, 22, 'A'], true)", // CUSTOM SWITCH FOR CRAFTING KIT
+    ],
   },
 
   14: {
@@ -432,6 +469,10 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     4: [
       "APT_37_BATHROOM_BANDAGES",
       "$gameSelfSwitches.setValue([14, 4, 'A'], true)",
+    ],
+    10: [
+      "APT_37_CRAFTING_KIT",
+      "$gameSelfSwitches.setValue([14, 10, 'A'], true)", // CUSTOM SWITCH FOR CRAFTING KIT
     ],
   },
 
@@ -688,151 +729,563 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
       "$gameSelfSwitches.setValue([443, 13, 'A'], true)",
     ],
   },
-
-  23: {
-    41: [
-      "APT_36_LIVING_ROOM_BASEBALL_BAT",
-      "$gameSelfSwitches.setValue([23, 41, 'A'], true)",
-    ],
-    48: [
-      "APT_36_LIVING_ROOM_CASH",
-      "$gameSelfSwitches.setValue([23, 48, 'A'], true)",
+  89: {
+    4: ["F3_CLOSET_WALLET", "$gameSelfSwitches.setValue([89, 4, 'A'], true)"],
+    2: ["F3_CLOSET_KEY", "$gameSelfSwitches.setValue([89, 2, 'A'], true)"],
+    5: ["F3_CLOSET_ROACH", "$gameSelfSwitches.setValue([89, 5, 'B'], true)"],
+    9: [
+      "F3_CLOSET_JACKET_FIGURINE",
+      "$gameSelfSwitches.setValue([89, 9, 'A'], true)",
     ],
   },
 
-  24: {
-    5: [
-      "APT_36_BATHROOM_TONIC",
-      "$gameSelfSwitches.setValue([24, 5, 'A'], true)",
+  285: {
+    13: [
+      "APT_20_CLEANEREX",
+      "$gameSelfSwitches.setValue([285, 13, 'A'], true)",
     ],
-    6: [
-      "APT_36_BATHROOM_BANDAGES",
-      "$gameSelfSwitches.setValue([24, 6, 'A'], true)",
+    12: ["APT_20_MOP", "$gameSelfSwitches.setValue([285, 12, 'A'], true)"],
+    9: ["APT_20_FORK", "$gameSelfSwitches.setValue([285, 9, 'A'], true)"],
+    8: ["APT_20_MUFFIN", "$gameSelfSwitches.setValue([285, 8, 'A'], true)"],
+    10: ["APT_20_CLEAVER", "$gameSelfSwitches.setValue([285, 10, 'A'], true)"],
+  },
+
+  288: {
+    5: [
+      "APT_20_BATHROOM_MEDICINE_CABINET",
+      "$gameSelfSwitches.setValue([288, 5, 'A'], true)",
     ],
     7: [
-      "APT_36_BATHROOM_PADLOCK_KEY",
-      "$gameSelfSwitches.setValue([24, 7, 'A'], true)",
+      "APT_20_BATHROOM_ROACH",
+      "$gameSelfSwitches.setValue([288, 7, 'B'], true)",
+    ],
+    6: [
+      "APT_20_BATHROOM_SOAP",
+      "$gameSelfSwitches.setValue([288, 6, 'A'], true)",
     ],
   },
 
-  25: {
-    2: [
-      "APT_36_BEDROOM_SIMPLE_KEY",
-      "$gameSelfSwitches.setValue([25, 2, 'A'], true)",
+  287: {
+    27: [
+      "APT_20_W_MOTORCYCLE_HELMET",
+      "$gameSelfSwitches.setValue([287, 27, 'A'], true)",
     ],
+    5: ["APT_20_W_VODKA", "$gameSelfSwitches.setValue([287, 5, 'A'], true)"],
+    4: ["APT_20_W_CASH", "$gameSelfSwitches.setValue([287, 4, 'A'], true)"],
+  },
+
+  286: {
+    25: ["APT_20_E_TONIC", "$gameSelfSwitches.setValue([286, 25, 'A'], true)"],
+    26: [
+      "APT_20_E_VINTAGE_SNEAKERS",
+      "$gameSelfSwitches.setValue([286, 26, 'A'], true)",
+    ],
+    23: [
+      "APT_20_E_STUDDED_JACKET",
+      "$gameSelfSwitches.setValue([286, 23, 'A'], true)",
+    ],
+    24: ["APT_20_E_CASH", "$gameSelfSwitches.setValue([286, 24, 'A'], true)"],
+  },
+
+  9: {
+    12: [
+      "APT_21_CROSSWORD_BOOK",
+      "$gameSelfSwitches.setValue([9, 12, 'A'], true)",
+    ],
+  },
+
+  11: {
+    8: ["APT_21_CLOSET_JUNK", "$gameSelfSwitches.setValue([11, 8, 'A'], true)"],
+    3: [
+      "APT_21_CLOSET_DCLOGGER",
+      "$gameSelfSwitches.setValue([11, 3, 'A'], true)",
+    ],
+    4: [
+      "APT_21_CLOSET_BROOM",
+      "$gameSelfSwitches.setValue([11, 4, 'A'], true)",
+    ],
+    5: [
+      "APT_21_CLOSET_ANTIDOTE",
+      "$gameSelfSwitches.setValue([11, 5, 'A'], true)",
+    ],
+  },
+
+  12: {
+    14: [
+      "APT_21_BATHROOM_SOAP",
+      "$gameSelfSwitches.setValue([12, 14, 'A'], true)",
+    ],
+    18: [
+      "APT_21_BATHROOM_ANXIETY_MEDS",
+      "$gameSelfSwitches.setValue([12, 18, 'A'], true)",
+    ],
+  },
+
+  112: {
+    14: [
+      "APT_21_DARK_ROOM_KEY",
+      "$gameSelfSwitches.setValue([112, 14, 'A'], true)",
+    ],
+  },
+
+  10: {
+    10: [
+      "APT_21_BEDROOM_BEEF_1",
+      "$gameSelfSwitches.setValue([10, 10, 'A'], true)",
+    ],
+    8: [
+      "APT_21_BEDROOM_BEEF_2",
+      "$gameSelfSwitches.setValue([10, 8, 'A'], true)",
+    ],
+    9: [
+      "APT_21_BEDROOM_BEEF_3",
+      "$gameSelfSwitches.setValue([10, 9, 'A'], true)",
+    ],
+    7: [
+      "APT_21_BEDROOM_BEEF_4",
+      "$gameSelfSwitches.setValue([10, 7, 'A'], true)",
+    ],
+    16: [
+      "APT_21_BEDROOM_SPACE_TRUCKERZ",
+      "$gameSelfSwitches.setValue([10, 16, 'A'], true)",
+    ],
+    20: ["APT_21_MNW", "$gameSelfSwitches.setValue([10, 20, 'A'], true)"],
+    13: [
+      "APT_21_BEDROOM_FORK",
+      "$gameSelfSwitches.setValue([10, 13, 'A'], true)",
+    ],
+    5: [
+      "APT_21_BEDROOM_BEEF_5",
+      "$gameSelfSwitches.setValue([10, 5, 'A'], true)",
+    ],
+    11: [
+      "APT_21_BEDROOM_PLATE",
+      "$gameSelfSwitches.setValue([10, 11, 'A'], true)",
+    ],
+    12: [
+      "APT_21_BEDROOM_KNIFE",
+      "$gameSelfSwitches.setValue([10, 12, 'A'], true)",
+    ],
+    6: [
+      "APT_21_BEDROOM_BEEF_6",
+      "$gameSelfSwitches.setValue([10, 6, 'A'], true)",
+    ],
+    17: [
+      "APT_21_BEDROOM_BATTERIES",
+      "$gameSelfSwitches.setValue([10, 17, 'A'], true)",
+    ],
+  },
+
+  334: {
+    9: [
+      "APT_22_RUBBER_BOOTS",
+      "$gameSelfSwitches.setValue([334, 9, 'A'], true)",
+    ],
+    15: [
+      "APT_22_JUICE_BOX",
+      "$gameSelfSwitches.setValue([334, 15, 'A'], true)",
+    ],
+    13: ["APT_22_VINEGAR", "$gameSelfSwitches.setValue([334, 13, 'A'], true)"],
+    14: [
+      "APT_22_CHOCKY_BAR",
+      "$gameSelfSwitches.setValue([334, 14, 'A'], true)",
+    ],
+    12: ["APT_22_CASH", "$gameSelfSwitches.setValue([334, 12, 'A'], true)"],
+  },
+
+  335: {
+    4: [
+      "APT_22_BATHROOM_TOOTHPASTE",
+      "$gameSelfSwitches.setValue([335, 4, 'A'], true)",
+    ],
+  },
+
+  337: {
+    4: [
+      "APT_22_HARRIET_BEDROOM_CLOTH",
+      "$gameSelfSwitches.setValue([337, 4, 'A'], true)",
+    ],
+  },
+
+  336: {
+    2: [
+      "APT_22_SOPHIE_BEDROOM_MARBLES",
+      "$gameSelfSwitches.setValue([336, 2, 'A'], true)",
+    ],
+  },
+
+  15: {
+    47: ["APT_25_KLYSOX", "$gameSelfSwitches.setValue([15, 47, 'A'], true)"],
+    48: ["APT_25_PLATE", "$gameSelfSwitches.setValue([15, 48, 'A'], true)"],
+    26: ["APT_25_FORK", "$gameSelfSwitches.setValue([15, 26, 'A'], true)"],
+  },
+
+  16: {
+    3: [
+      "APT_25_DANS_ROOM_NEODUO",
+      "$gameSelfSwitches.setValue([16, 3, 'A'], true); sVr(896, 5);", // danQuestState = 5
+    ],
+    12: [
+      "APT_25_DANS_ROOM_ORANGE_DRINK",
+      "$gameSelfSwitches.setValue([16, 12, 'A'], true)",
+    ],
+  },
+
+  115: {
+    11: [
+      "APT_27_CRUMPLED_MANUSCRIPT",
+      "$gameSelfSwitches.setValue([115, 11, 'A'], true)",
+    ],
+    18: ["APT_27_TEA_SET", "$gameSelfSwitches.setValue([115, 18, 'A'], true)"],
+    3: ["APT_27_WALLET", "$gameSelfSwitches.setValue([115, 3, 'A'], true)"],
+  },
+
+  116: {
+    4: [
+      "APT_27_BATHROOM_ROACH",
+      "$gameSelfSwitches.setValue([116, 4, 'B'], true)",
+    ],
+  },
+
+  117: {
+    9: [
+      "APT_27_BEDROOM_KITSCH_LAMP",
+      "$gameSelfSwitches.setValue([117, 9, 'A'], true)",
+    ],
+    7: [
+      "APT_27_BEDROOM_CLEAN_MANUSCRIPT",
+      "$gameSelfSwitches.setValue([117, 7, 'A'], true)",
+    ],
+  },
+
+  118: {
+    6: [
+      "APT_27_OFFICE_BACKGAMMON",
+      "$gameSelfSwitches.setValue([118, 6, 'A'], true)",
+    ],
+    8: [
+      "APT_27_OFFICE_WHISKEY",
+      "$gameSelfSwitches.setValue([118, 8, 'A'], true)",
+    ],
+  },
+
+  139: {
+    9: [
+      "APT_28_LAUNDRY_REAGENT",
+      "$gameSelfSwitches.setValue([139, 9, 'A'], true)",
+    ],
+  },
+
+  133: {
+    7: [
+      "APT_28_TWILIGHT_FIRST_AID_KIT",
+      "$gameSelfSwitches.setValue([133, 7, 'A'], true)",
+    ],
+  },
+
+  134: {
+    9: [
+      "APT_28_TWILIGHT_SHURIKEN",
+      "$gameSelfSwitches.setValue([134, 9, 'A'], true)",
+    ],
+  },
+
+  136: {
+    7: [
+      "APT_28_MIDNIGHT_VALVE",
+      "$gameSelfSwitches.setValue([136, 7, 'A'], true)",
+    ],
+  },
+
+  137: {
+    6: [
+      "APT_28_TWILIGHT_VALVE",
+      "$gameSelfSwitches.setValue([137, 6, 'A'], true)",
+    ],
+  },
+
+  125: {
+    21: [
+      "APT_28_PIRANHAS_COMBAT_VICTORY",
+      "$gameSelfSwitches.setValue([125, 21, 'C'], true)",
+    ],
+  },
+
+  142: {
+    8: [
+      "APT_28_GARBAGE_FIRST_AID_KIT",
+      "$gameSelfSwitches.setValue([142, 8, 'A'], true)",
+    ],
+  },
+
+  138: {
+    6: [
+      "APT_28_ABYSSAL_VALVE",
+      "$gameSelfSwitches.setValue([138, 6, 'A'], true)",
+    ],
+  },
+
+  141: {
+    7: [
+      "APT_28_GARBAGE_ENZYME",
+      "$gameSelfSwitches.setValue([141, 7, 'A'], true)",
+    ],
+  },
+
+  144: {
+    9: [
+      "APT_28_ABYSSAL_CHOCKY_BAR",
+      "$gameSelfSwitches.setValue([144, 9, 'A'], true)",
+    ],
+  },
+
+  149: {
+    49: [
+      "APT_28_ABYSSAL_STIMULANT",
+      "$gameSelfSwitches.setValue([149, 49, 'A'], true)",
+    ],
+    51: [
+      "APT_28_ABYSSAL_HEALING_SPRAY",
+      "$gameSelfSwitches.setValue([149, 51, 'A'], true)",
+    ],
+    50: [
+      "APT_28_ABYSSAL_ELIXIR",
+      "$gameSelfSwitches.setValue([149, 50, 'A'], true)",
+    ],
+  },
+
+  147: {
+    8: [
+      "APT_28_HADAL_VALVE",
+      "$gameSelfSwitches.setValue([147, 8, 'A'], true)",
+    ],
+  },
+
+  7: {
+    2: ["F2_APT_21_KEY", "$gameSelfSwitches.setValue([7, 2, 'A'], true)"],
+    30: ["F2_PISTOL", "$gameSelfSwitches.setValue([7, 30, 'A'], true)"],
+    31: [
+      "F2_PISTOL_BULLETS_1",
+      "$gameSelfSwitches.setValue([7, 31, 'A'], true)",
+    ],
+    32: [
+      "F2_PISTOL_BULLETS_2",
+      "$gameSelfSwitches.setValue([7, 32, 'A'], true)",
+    ],
+  },
+
+  372: {
+    31: [
+      "F2_GRINNING_BEAST_CHASE_POOL_CUE",
+      "$gameSelfSwitches.setValue([372, 31, 'A'], true)",
+    ],
+  },
+
+  329: {
+    7: ["APT_24_MOP", "$gameSelfSwitches.setValue([329, 7, 'A'], true)"],
+    8: [
+      "APT_24_COMBAT_KNIFE",
+      "$gameSelfSwitches.setValue([329, 8, 'A'], true)",
+    ],
+    5: ["APT_24_KLYSOX", "$gameSelfSwitches.setValue([329, 5, 'A'], true)"],
+    6: [
+      "APT_24_PISTOL_BULLETS",
+      "$gameSelfSwitches.setValue([329, 6, 'A'], true)",
+    ],
+  },
+
+  331: {
+    6: [
+      "APT_24_BATHROOM_SOAP",
+      "$gameSelfSwitches.setValue([331, 6, 'A'], true)",
+    ],
+  },
+
+  330: {
+    11: [
+      "APT_24_LIVINGROOM_ELEPHANT_STATUETTE",
+      "$gameSelfSwitches.setValue([330, 11, 'A'], true)",
+    ],
+    12: [
+      "APT_24_LIVINGROOM_DINNER_PLATE_1",
+      "$gameSelfSwitches.setValue([330, 12, 'A'], true)",
+    ],
+    14: [
+      "APT_24_LIVINGROOM_KNIFE",
+      "$gameSelfSwitches.setValue([330, 14, 'A'], true)",
+    ],
+    13: [
+      "APT_24_LIVINGROOM_DINNER_PLATE_2",
+      "$gameSelfSwitches.setValue([330, 13, 'A'], true)",
+    ],
+    15: [
+      "APT_24_LIVINGROOM_FORK",
+      "$gameSelfSwitches.setValue([330, 15, 'A'], true)",
+    ],
+    9: [
+      "APT_24_KITCHEN_VINEGAR",
+      "$gameSelfSwitches.setValue([330, 9, 'A'], true)",
+    ],
+  },
+
+  332: {
+    9: [
+      "APT_24_BEDROOM_CHOCKY_BAR_1",
+      "$gameSelfSwitches.setValue([332, 9, 'A'], true)",
+    ],
+    8: [
+      "APT_24_BEDROOM_CHOCKY_BAR_2",
+      "$gameSelfSwitches.setValue([332, 8, 'A'], true)",
+    ],
+  },
+
+  333: {
+    28: [
+      "APT_24_SEWING_DENIM_VEST",
+      "$gameSelfSwitches.setValue([333, 28, 'A'], true)",
+    ],
+    29: [
+      "APT_24_SEWING_BUTTON_UP_SHIRT",
+      "$gameSelfSwitches.setValue([333, 29, 'A'], true)",
+    ],
+    30: ["APT_24_SUIT", "$gameSelfSwitches.setValue([333, 30, 'A'], true)"],
   },
 };
 
+const TRASH_CAN_ITEM_OVERRIDES = {
+  108: {
+    18: ["APT_31_TRASH", "$gameSelfSwitches.setValue([108, 18, 'A'], true)"],
+  },
+
+  265: {
+    18: [
+      "APT_31_DARK_TRASH",
+      "$gameSelfSwitches.setValue([265, 18, 'A'], true)",
+    ],
+  },
+
+  110: {
+    5: [
+      "APT_31_OBSERVATORY_TRASH",
+      "$gameSelfSwitches.setValue([110, 5, 'A'], true)",
+    ],
+  },
+
+  31: {
+    20: ["APT_32_TRASH", "$gameSelfSwitches.setValue([31, 20, 'A'], true)"],
+  },
+
+  120: {
+    9: [
+      "APT_34_KITCHEN_TRASH",
+      "$gameSelfSwitches.setValue([120, 9, 'A'], true)",
+    ],
+  },
+
+  35: {
+    23: ["APT_37_TRASH", "$gameSelfSwitches.setValue([35, 23, 'A'], true)"],
+  },
+  39: {
+    8: [
+      "APT_37_BEDROOM_TRASH",
+      "$gameSelfSwitches.setValue([39, 8, 'A'], true)",
+    ],
+  },
+
+  352: {
+    8: [
+      "APT_37_LOCKED_ROOM_TRASH",
+      "$gameSelfSwitches.setValue([352, 8, 'A'], true)",
+    ],
+  },
+
+  353: {
+    12: ["APT_38_TRASH", "$gameSelfSwitches.setValue([353, 12, 'A'], true)"],
+  },
+
+  9: {
+    16: ["APT_21_TRASH", "$gameSelfSwitches.setValue([9, 16, 'A'], true)"],
+  },
+
+  334: {
+    11: ["APT_22_TRASH", "$gameSelfSwitches.setValue([334, 11, 'A'], true)"],
+  },
+
+  337: {
+    3: [
+      "APT_22_HARRIET_BEDROOM_TRASH",
+      "$gameSelfSwitches.setValue([337, 3, 'A'], true)",
+    ],
+  },
+
+  336: {
+    4: [
+      "APT_22_SOPHIE_BEDROOM_TRASH",
+      "$gameSelfSwitches.setValue([336, 4, 'A'], true)",
+    ],
+  },
+
+  115: {
+    13: ["APT_27_TRASH", "$gameSelfSwitches.setValue([115, 13, 'A'], true)"],
+  },
+};
+
+const FIRST_AID_BOX_ITEM_OVERRIDES = {};
+
 var UpdateEventContent = UpdateEventContent || {};
 
-UpdateEventContent.overrideOverworldPickups = function () {
-  function getAPItemPickupPage(
-    script = "",
-    itemName = AP_ITEM,
-    itemImage = DEFAULT_AP_ITEM_IMAGE,
-  ) {
-    return {
-      conditions: {
-        actorId: 1,
-        actorValid: false,
-        itemId: 1,
-        itemValid: false,
-        selfSwitchCh: "A",
-        selfSwitchValid: false,
-        switch1Id: 1,
-        switch1Valid: false,
-        switch2Id: 1,
-        switch2Valid: false,
-        variableId: 1,
-        variableValid: false,
-        variableValue: 0,
-      },
-      directionFix: true,
-      image: itemImage,
-      list: [
-        {
-          code: 101,
-          indent: 0,
-          parameters: ["", 0, 0, 2, ""],
-        },
-        {
-          code: 401,
-          indent: 0,
-          parameters: [`Take ${itemName}\\C[0]?`],
-        },
-        {
-          code: 102,
-          indent: 0,
-          parameters: [["Take it.", "Leave it."], -1, 0, 2, 0],
-        },
-        {
-          code: 402,
-          indent: 0,
-          parameters: [0, "Take it."],
-        },
-        {
-          code: 101,
-          indent: 1,
-          parameters: ["", 0, 0, 1, ""],
-        },
-        {
-          code: 401,
-          indent: 1,
-          parameters: [`Find {${itemName}}\\C[0].`],
-        },
-        {
-          code: 355,
-          indent: 1,
-          parameters: [`${script}`],
-        },
-        {
-          code: 0,
-          indent: 1,
-          parameters: [],
-        },
-        {
-          code: 402,
-          indent: 0,
-          parameters: [1, "Leave it."],
-        },
-        {
-          code: 0,
-          indent: 1,
-          parameters: [],
-        },
-        {
-          code: 404,
-          indent: 0,
-          parameters: [],
-        },
-        {
-          code: 0,
-          indent: 0,
-          parameters: [],
-        },
-      ],
-      moveFrequency: 3,
-      moveRoute: {
+const OBSERVATORY_TRASH_ENDING = [
+  {
+    code: 401,
+    indent: 0,
+    parameters: ["You also find a crumpled note in the trash."],
+  },
+  {
+    code: 401,
+    indent: 0,
+    parameters: ["You put the note on the table."],
+  },
+  {
+    code: 205,
+    indent: 0,
+    parameters: [
+      16,
+      {
         list: [
           {
+            code: 45,
+            parameters: ['this.sOn("A");'],
+            indent: null,
+          },
+          {
             code: 0,
-            parameters: [],
           },
         ],
-        repeat: true,
+        repeat: false,
         skippable: false,
-        wait: false,
+        wait: true,
       },
-      moveSpeed: 3,
-      moveType: 0,
-      priorityType: 1,
-      stepAnime: false,
-      through: false,
-      trigger: 0,
-      walkAnime: true,
-    };
-  }
+    ],
+  },
+  {
+    code: 505,
+    indent: 0,
+    parameters: [
+      {
+        code: 45,
+        parameters: ['this.sOn("A");'],
+        indent: null,
+      },
+    ],
+  },
+  {
+    code: 0,
+    indent: 0,
+    parameters: [],
+  },
+];
 
+UpdateEventContent.overrideOverworldPickups = function (lastLoadedMapId) {
   function getAPItemPickupList(script, itemName) {
     return [
       {
@@ -903,11 +1356,93 @@ UpdateEventContent.overrideOverworldPickups = function () {
   Object.keys(eventsToOverride).forEach((eventId) => {
     const [name, script] = eventsToOverride[eventId];
     const event = $dataMap.events[eventId];
-    console.log(name, LookOutsideAPClient.getItemName(name));
     event.pages[0].list = getAPItemPickupList(
       script,
       LookOutsideAPClient.getItemName(name),
     );
     event.pages[0].image = LookOutsideAPClient.getItemImage(name);
   });
+};
+
+UpdateEventContent.overrideTrashSearchPickups = function (lastLoadedMapId) {
+  function getAPTrashSearchPickupList(script, itemName) {
+    return [
+      {
+        code: 250,
+        indent: 0,
+        parameters: [
+          {
+            name: "RifleThroughTrash",
+            volume: 90,
+            pitch: 100,
+            pan: 0,
+          },
+        ],
+      },
+      {
+        code: 230,
+        indent: 0,
+        parameters: [60],
+      },
+      {
+        code: 355,
+        indent: 0,
+        parameters: [`${script}`],
+      },
+      {
+        code: 101,
+        indent: 0,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 0,
+        parameters: [`Find {${itemName}}\\C[0].`],
+      },
+      {
+        code: 101,
+        indent: 0,
+        parameters: ["", 0, 0, 2, ""],
+      },
+    ];
+  }
+
+  const trashCanEventsToOverride = TRASH_CAN_ITEM_OVERRIDES[lastLoadedMapId];
+  console.log("LAST LOADED MAP ID:", lastLoadedMapId);
+  if (trashCanEventsToOverride) {
+    Object.keys(trashCanEventsToOverride).forEach((eventId) => {
+      const [name, script] = trashCanEventsToOverride[eventId];
+      const event = $dataMap.events[eventId];
+      console.log(`Overriding trash can event ${eventId} with item ${name}`);
+      event.pages[0].list = getAPTrashSearchPickupList(
+        script,
+        LookOutsideAPClient.getItemName(name),
+      );
+      if (name === "APT_31_OBSERVATORY_TRASH") {
+        // searching the observatory trash also pulls out edwin's notes
+        event.pages[0].list = event.pages[0].list.concat(
+          OBSERVATORY_TRASH_ENDING,
+        );
+      }
+      if (name === "APT_37_CRAFTING_KIT") {
+        // need to change page one on both the livingroom and bathroom versions
+        // so they check the custom self switch instead of the ownership switch
+        event.pages[1].conditions = {
+          actorId: 1,
+          actorValid: false,
+          itemId: 1,
+          itemValid: false,
+          selfSwitchCh: "A",
+          selfSwitchValid: true,
+          switch1Id: 1,
+          switch1Valid: false,
+          switch2Id: 1,
+          switch2Valid: false,
+          variableId: 1,
+          variableValid: false,
+          variableValue: 0,
+        };
+      }
+    });
+  }
 };
