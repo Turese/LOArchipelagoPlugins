@@ -85,9 +85,8 @@ LookOutsideAPClient.applyOverrides = function () {
   const _Game_Map_setup = Game_Map.prototype.setup;
   Game_Map.prototype.setup = function (mapId) {
     BackInTime.createCalendarBackInTimeEvent(mapId);
-    UpdateEventContent.overrideOverworldPickups(mapId);
     ClearExplicitDrops.applyDatamapClears(mapId);
-    UpdateEventContent.overrideTrashSearchPickups(mapId);
+    UpdateEventContent.overrideAllPickups(mapId);
 
     _Game_Map_setup.call(this, mapId);
   };
@@ -96,9 +95,8 @@ LookOutsideAPClient.applyOverrides = function () {
   DataManager.onLoad = function (object) {
     if (object === $dataMap) {
       BackInTime.createCalendarBackInTimeEvent(lastLoadedMapId);
-      UpdateEventContent.overrideOverworldPickups(lastLoadedMapId);
+      UpdateEventContent.overrideAllPickups(lastLoadedMapId);
       ClearExplicitDrops.applyDatamapClears(lastLoadedMapId);
-      UpdateEventContent.overrideTrashSearchPickups(lastLoadedMapId);
     }
     if (object === $dataEnemies) {
       ClearExplicitDrops.clearAllEnemiesDrops();

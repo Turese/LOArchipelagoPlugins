@@ -210,10 +210,7 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
 
       if (confirmationListItem)
         confirmationListItem.parameters[0] =
-          confirmationListItem.parameters[0].replace(
-            "Find a \\C[03]{Kitchen Knife}\\C[0].",
-            `Find ${LookOutsideAPClient.getItemName("APT_36_BATHROOM_WOUNDED_NEIGHBOR_KNIFE")}\\C[0].`,
-          );
+          confirmationListItem.parameters[0] = `Find ${LookOutsideAPClient.getItemName("APT_36_BATHROOM_WOUNDED_NEIGHBOR_KNIFE")}\\C[0].`;
     }
   }
   clearWoundedManKnifeEvent();
@@ -361,6 +358,58 @@ ClearExplicitDrops.clearTroopsDrops = function () {
     $dataTroops[19].pages[5].list = clownWigList;
   }
   clearPierreGifts();
+
+  // clears out the masked shadow tongue gift and recruit
+  // hallway gift is different
+  function clearMaskedShadowEncounters() {
+    const maskedShadowTroop = JsonEx.makeDeepCopy(originalTroops[18]);
+
+    const removedTongueGiftList = maskedShadowTroop.pages[0].list.filter(
+      (page) => page.code !== 126,
+    );
+
+    removedTongueGiftList.find(
+      (listItem) =>
+        listItem.code === 401 && listItem.parameters[0].contains("a tongue"),
+    ).parameters[0] =
+      `and appears to be... a ${LookOutsideAPClient.getItemName("MASKED_SHADOW_TONGUE")}\\C[0].`;
+
+    removedTongueGiftList.find(
+      (listItem) =>
+        listItem.code === 401 && listItem.parameters[0].contains("Tongue"),
+    ).parameters[0] =
+      `You receive a ${LookOutsideAPClient.getItemName("MASKED_SHADOW_TONGUE")}\\C[0].`;
+
+    // dont want player to refuse it, so i'll set 'refuse it' to be grayed
+    // out on a condition guaranteed to be true (current shadow interaction = 5 i.e. this one)
+    removedTongueGiftList.find(
+      (listItem) =>
+        listItem.code === 102 && listItem.parameters[0][0].contains("Take it."),
+    ).parameters[0][1] = `<<[v[150]=5]>>Refuse it`;
+
+    // remove the explicit recruit check variable setting
+    removedShadowRecruitList = removedTongueGiftList.filter(
+      (listItem) => !(listItem.code == 121 && listItem.parameters[0] === 27),
+    );
+
+    // set chosen gift to always be 1 to make it
+    // easier to overwrite that event as well
+    const shadowGiftPickingIndex = removedShadowRecruitList.findIndex(
+      (listItem) => listItem.code === 122 && listItem.parameters[0] === 155,
+    );
+
+    ((removedShadowRecruitList[shadowGiftPickingIndex] = {
+      code: 355,
+      indent: 1,
+      parameters: ["sVr(155, 1);"],
+    }),
+      ($dataTroops[18].pages[0].list = removedShadowRecruitList));
+    // for good measure im removing the code that makes shadow stop coming around when you attack it
+    $dataTroops[18].pages[1].list = maskedShadowTroop.pages[1].list.filter(
+      (listItem) => listItem.code !== 121,
+    );
+  }
+  clearMaskedShadowEncounters();
 
   troopsUpdated = true;
 };

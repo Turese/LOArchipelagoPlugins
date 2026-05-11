@@ -1202,7 +1202,7 @@ SELF_SWITCH_LOCATIONS = {
     7: { A: "APT_30_SW_FIRST_AID_KIT" },
     8: { A: "APT_30_SW_FIRST_AID_BOX" },
     6: { C: "APT_30_SW_NEEDLES_COMBAT_VICTORY" },
-    5: { C: "APT_30_SW_MEDICINE_CABINET" },
+    5: { A: "APT_30_SW_MEDICINE_CABINET" },
     3: { A: "APT_30_SW_TOOTHPASTE" },
   },
 
@@ -1575,10 +1575,9 @@ SELF_SWITCH_LOCATIONS = {
     5: { A: "APT_36_BATHROOM_TONIC" },
     6: { A: "APT_36_BATHROOM_BANDAGES" },
     7: { A: "APT_36_BATHROOM_PADLOCK_KEY" },
-    3: { B: "APT_36_BATHROOM_WOUNDED_NEIGHBOR_KNIFE" },
     3: {
       A: "APT_36_BATHROOM_WOUNDED_NEIGHBOR_COMBAT_VICTORY",
-      B: "APT_36_BATHROOM_WOUNDED_NEIGHBOR_COMBAT_VICTORY", // both mean hes dead
+      B: "APT_36_BATHROOM_WOUNDED_NEIGHBOR_KNIFE",
     },
   },
 
@@ -1638,6 +1637,7 @@ SELF_SWITCH_LOCATIONS = {
   },
 
   12: {
+    11: { A: "APT_21_BATHROOM_MEDICELL" },
     14: { A: "APT_21_BATHROOM_SOAP" },
     18: { A: "APT_21_BATHROOM_ANXIETY_MEDS" },
     12: { C: "APT_21_BATHROOM_EYECLUSTER_COMBAT_VICTORY" },
@@ -1878,7 +1878,6 @@ VARIABLE_LOCATIONS = {
     value: 3,
     location: "APT_33_LIVING_ROOM_SCREAMATORIUM",
   },
-  150: { relation: ">=", value: 9, location: "APT_33_BEDROOM_REFUSE_SHADOW" },
   372: {
     relation: ">=",
     value: 40,
@@ -1964,6 +1963,10 @@ VARIABLE_LOCATIONS = {
   97: { relation: ">=", value: 1, location: "GAME_SKILL_SPACE_TRUCKERZ" },
   98: { relation: ">=", value: 1, location: "GAME_SKILL_REPTILE_FOOTBALL" },
   99: { relation: ">=", value: 1, location: "GAME_SKILL_CROSSWORD_CHALLENGE" },
+  150: [
+    { relation: ">", value: 4, location: "MASKED_SHADOW_TONGUE" },
+    { relation: ">=", value: 9, location: "APT_33_BEDROOM_REFUSE_SHADOW" },
+  ],
   910: {
     relation: "=",
     value: 2,

@@ -21,7 +21,7 @@ InsertAPItems.insertItem = function (id, itemClass, amount = 1) {
     else if (itemClass === "weapon") item = $dataWeapons[id];
     else if (itemClass === "item") item = $dataItems[id];
     else throw new Error(`Unrecognized item class ${itemClass}`);
-    
+
     if (itemClass === "item" && id >= 411 && id <= 429) {
       // this id range is all the video games. add 1 to the video game count
       sVr(41, gVr(41) + 1);
@@ -240,17 +240,18 @@ InsertAPItems.insertArm = function (position) {
 };
 
 InsertAPItems.loadCurrentMapImages = function () {
+  console.log(
+    "has custom image: ",
+    !!MAP_OVERWORLD_ITEM_OVERRIDES[lastLoadedMapId],
+  );
   if (MAP_OVERWORLD_ITEM_OVERRIDES[lastLoadedMapId]) {
-    const characterImagesToLoad = new Set(
-      Object.values(MAP_OVERWORLD_ITEM_OVERRIDES).map(
-        (apLocationName) =>
-          LookOutsideAPClient.getItemImage(apLocationName).characterName,
-      ),
-    );
+    ImageManager.loadCharacter(DEFAULT_AP_ITEM_IMAGE.characterName);
+    /*const characterImagesToLoad = new Set();
     // todo: check if somethings already loaded before i try to reload
+    // todo: more than 1 character image
     for (const characterImage of characterImagesToLoad) {
       ImageManager.loadCharacter(characterImage);
-    }
+    }*/
   }
 };
 

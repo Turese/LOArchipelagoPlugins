@@ -1,7 +1,7 @@
 /**
  * @target MZ
  * @name UpdateEventContent
- * @plugindesc Updates events to have archipelago-specific text and images
+ * @plugindesc Updates overworld generic drops to have archipelago-specific text and images
  * @authors 0palite
  * @version 1.0
  * @license Unlicensed
@@ -14,6 +14,17 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     99: [
       "APT_33_LIVING_ROOM_CASH",
       "$gameSelfSwitches.setValue([3, 99, 'A'], true)",
+    ],
+  },
+
+  6: {
+    40: [
+      "F3_MASKED_SHADOW_GIFT",
+      // set shadowDispo to 15 when taking the gift - max, and then some
+      // also set the switch that indicates the gift has been taken
+      // shadow loses 2 dispo overnight if it isn't
+      // and then takes it back if it gets below 4
+      "$gameSelfSwitches.setValue([6, 40, 'A'], true); sVr(152, 15); sSw(161, false);",
     ],
   },
 
@@ -811,6 +822,10 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   },
 
   12: {
+    11: [
+      "APT_21_BATHROOM_MEDICELL",
+      "$gameSelfSwitches.setValue([12, 11, 'A'], true)",
+    ],
     14: [
       "APT_21_BATHROOM_SOAP",
       "$gameSelfSwitches.setValue([12, 14, 'A'], true)",
@@ -1230,7 +1245,98 @@ const TRASH_CAN_ITEM_OVERRIDES = {
   },
 };
 
-const FIRST_AID_BOX_ITEM_OVERRIDES = {};
+const FRIDGE_ITEM_OVERRIDES = {
+  276: {
+    3: ["APT_30_FRIDGE", "$gameSelfSwitches.setValue([276, 3, 'A'], true)"],
+  },
+  108: {
+    6: ["APT_31_FRIDGE", "sSw(690, true);"],
+  },
+  31: {
+    6: ["APT_32_FRIDGE", "$gameSelfSwitches.setValue([31, 6, 'A'], true)"],
+  },
+  120: {
+    21: ["APT_34_FRIDGE", "$gameSelfSwitches.setValue([120, 21, 'A'], true)"],
+  },
+  36: {
+    6: ["APT_37_FRIDGE", "$gameSelfSwitches.setValue([36, 6, 'A'], true)"],
+  },
+  353: {
+    10: ["APT_38_FRIDGE", "$gameSelfSwitches.setValue([353, 10, 'A'], true)"],
+  },
+  364: {
+    7: ["APT_35_FRIDGE", "$gameSelfSwitches.setValue([364, 7, 'A'], true)"],
+  },
+  285: {
+    5: ["APT_20_FRIDGE", "$gameSelfSwitches.setValue([285, 5, 'A'], true)"],
+  },
+  9: {
+    28: ["APT_21_FRIDGE", "$gameSelfSwitches.setValue([9, 28, 'A'], true)"],
+  },
+  334: {
+    6: ["APT_22_FRIDGE", "$gameSelfSwitches.setValue([334, 6, 'A'], true)"],
+  },
+  15: {
+    7: ["APT_25_FRIDGE", "$gameSelfSwitches.setValue([15, 7, 'A'], true)"],
+  },
+  115: {
+    6: ["APT_27_FRIDGE", "$gameSelfSwitches.setValue([115, 6, 'A'], true)"],
+  },
+  330: {
+    7: [
+      "APT_24_KITCHEN_FRIDGE",
+      "$gameSelfSwitches.setValue([330, 7, 'A'], true)",
+    ],
+  },
+};
+
+const FIRST_AID_BOX_ITEM_OVERRIDES = {
+  278: {
+    8: [
+      "APT_30_SW_FIRST_AID_BOX",
+      "$gameSelfSwitches.setValue([278, 8, 'A'], true)",
+    ],
+  },
+};
+
+const BATHROOM_MIRROR_ITEM_OVERRIDES = {
+  278: {
+    5: [
+      "APT_30_SW_MEDICINE_CABINET",
+      "$gameSelfSwitches.setValue([278, 5, 'A'], true)",
+    ],
+  },
+  111: {
+    6: [
+      "APT_31_BATHROOM_MEDICINE_CABINET",
+      "$gameSelfSwitches.setValue([111, 6, 'A'], true)",
+    ],
+  },
+  288: {
+    5: [
+      "APT_20_BATHROOM_MEDICINE_CABINET",
+      "$gameSelfSwitches.setValue([288, 5, 'A'], true)",
+    ],
+  },
+  12: {
+    10: [
+      "APT_21_BATHROOM_MEDICINE_CABINET",
+      "$gameSelfSwitches.setValue([12, 10, 'A'], true)",
+    ],
+  },
+  355: {
+    3: [
+      "APT_22_BATHROOM_MEDICINE_CABINET",
+      "$gameSelfSwitches.setValue([355, 3, 'A'], true)",
+    ],
+  },
+  331: {
+    5: [
+      "APT_24_BATHROOM_MEDICINE_CABINET",
+      "$gameSelfSwitches.setValue([331, 5, 'A'], true)",
+    ],
+  },
+};
 
 var UpdateEventContent = UpdateEventContent || {};
 
@@ -1285,8 +1391,8 @@ const OBSERVATORY_TRASH_ENDING = [
   },
 ];
 
-UpdateEventContent.overrideOverworldPickups = function (lastLoadedMapId) {
-  function getAPItemPickupList(script, itemName) {
+UpdateEventContent.overrideOverworldPickups = function (currentMapId) {
+  function getAPItemPickupList(script, itemName, prefix = "") {
     return [
       {
         code: 101,
@@ -1296,7 +1402,7 @@ UpdateEventContent.overrideOverworldPickups = function (lastLoadedMapId) {
       {
         code: 401,
         indent: 0,
-        parameters: [`Take ${itemName}\\C[0]?`],
+        parameters: [`${prefix}Take ${itemName}\\C[0]?`],
       },
       {
         code: 102,
@@ -1351,20 +1457,53 @@ UpdateEventContent.overrideOverworldPickups = function (lastLoadedMapId) {
     ];
   }
 
-  const eventsToOverride = MAP_OVERWORLD_ITEM_OVERRIDES[lastLoadedMapId];
+  const eventsToOverride = MAP_OVERWORLD_ITEM_OVERRIDES[currentMapId];
   if (!eventsToOverride) return;
   Object.keys(eventsToOverride).forEach((eventId) => {
     const [name, script] = eventsToOverride[eventId];
     const event = $dataMap.events[eventId];
-    event.pages[0].list = getAPItemPickupList(
-      script,
-      LookOutsideAPClient.getItemName(name),
-    );
-    event.pages[0].image = LookOutsideAPClient.getItemImage(name);
+    // the rose from the masked shadow is a special case because
+    // it's the only pickup that has a later event page
+    // overriding only the first possible page here
+    // because i forced the chosen gift to be the first one
+    if (name === "F3_MASKED_SHADOW_GIFT") {
+      event.pages[3].list = getAPItemPickupList(
+        script,
+        LookOutsideAPClient.getItemName("F3_MASKED_SHADOW_GIFT"),
+        "A gift from the masked shadow? ...",
+      );
+      event.pages[3].image = LookOutsideAPClient.getItemImage(name);
+    } else {
+      event.pages[0].list = getAPItemPickupList(
+        script,
+        LookOutsideAPClient.getItemName(name),
+      );
+      event.pages[0].image = LookOutsideAPClient.getItemImage(name);
+    }
+
+    if (name === "APT_37_CRAFTING_KIT") {
+      // need to change page one on both the livingroom and bathroom versions
+      // so they check the custom self switch instead of the ownership switch
+      event.pages[1].conditions = {
+        actorId: 1,
+        actorValid: false,
+        itemId: 1,
+        itemValid: false,
+        selfSwitchCh: "A",
+        selfSwitchValid: true,
+        switch1Id: 1,
+        switch1Valid: false,
+        switch2Id: 1,
+        switch2Valid: false,
+        variableId: 1,
+        variableValid: false,
+        variableValue: 0,
+      };
+    }
   });
 };
 
-UpdateEventContent.overrideTrashSearchPickups = function (lastLoadedMapId) {
+UpdateEventContent.overrideTrashSearchPickups = function (currentMapId) {
   function getAPTrashSearchPickupList(script, itemName) {
     return [
       {
@@ -1407,13 +1546,11 @@ UpdateEventContent.overrideTrashSearchPickups = function (lastLoadedMapId) {
     ];
   }
 
-  const trashCanEventsToOverride = TRASH_CAN_ITEM_OVERRIDES[lastLoadedMapId];
-  console.log("LAST LOADED MAP ID:", lastLoadedMapId);
+  const trashCanEventsToOverride = TRASH_CAN_ITEM_OVERRIDES[currentMapId];
   if (trashCanEventsToOverride) {
     Object.keys(trashCanEventsToOverride).forEach((eventId) => {
       const [name, script] = trashCanEventsToOverride[eventId];
       const event = $dataMap.events[eventId];
-      console.log(`Overriding trash can event ${eventId} with item ${name}`);
       event.pages[0].list = getAPTrashSearchPickupList(
         script,
         LookOutsideAPClient.getItemName(name),
@@ -1424,25 +1561,336 @@ UpdateEventContent.overrideTrashSearchPickups = function (lastLoadedMapId) {
           OBSERVATORY_TRASH_ENDING,
         );
       }
-      if (name === "APT_37_CRAFTING_KIT") {
-        // need to change page one on both the livingroom and bathroom versions
-        // so they check the custom self switch instead of the ownership switch
-        event.pages[1].conditions = {
-          actorId: 1,
-          actorValid: false,
-          itemId: 1,
-          itemValid: false,
-          selfSwitchCh: "A",
-          selfSwitchValid: true,
-          switch1Id: 1,
-          switch1Valid: false,
-          switch2Id: 1,
-          switch2Valid: false,
-          variableId: 1,
-          variableValid: false,
-          variableValue: 0,
-        };
-      }
     });
   }
+};
+
+UpdateEventContent.overrideFridgePickups = function (currentMapId) {
+  function getAPFridgePickupList(script, itemName) {
+    return [
+      {
+        code: 117,
+        indent: 0,
+        parameters: [286],
+      },
+      {
+        code: 205,
+        indent: 0,
+        parameters: [
+          0,
+          {
+            list: [
+              {
+                code: 36,
+                indent: null,
+              },
+              {
+                code: 17,
+                indent: null,
+              },
+              {
+                code: 15,
+                parameters: [10],
+                indent: null,
+              },
+              {
+                code: 18,
+                indent: null,
+              },
+              {
+                code: 0,
+              },
+            ],
+            repeat: false,
+            skippable: false,
+            wait: true,
+          },
+        ],
+      },
+      {
+        code: 505,
+        indent: 0,
+        parameters: [
+          {
+            code: 36,
+            indent: null,
+          },
+        ],
+      },
+      {
+        code: 505,
+        indent: 0,
+        parameters: [
+          {
+            code: 17,
+            indent: null,
+          },
+        ],
+      },
+      {
+        code: 505,
+        indent: 0,
+        parameters: [
+          {
+            code: 15,
+            parameters: [10],
+            indent: null,
+          },
+        ],
+      },
+      {
+        code: 505,
+        indent: 0,
+        parameters: [
+          {
+            code: 18,
+            indent: null,
+          },
+        ],
+      },
+      {
+        code: 101,
+        indent: 0,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 0,
+        parameters: ["Some food is in here."],
+      },
+      {
+        code: 102,
+        indent: 0,
+        parameters: [["Loot the fridge.", "Leave it."], -1, 0, 2, 0],
+      },
+      {
+        code: 402,
+        indent: 0,
+        parameters: [0, "Loot the fridge."],
+      },
+      {
+        code: 101,
+        indent: 1,
+        parameters: ["", 0, 0, 1, ""],
+      },
+      {
+        code: 401,
+        indent: 1,
+        parameters: [`Find ${itemName}\\C[0].`],
+      },
+      {
+        code: 122,
+        indent: 1,
+        parameters: [543, 543, 1, 0, 1],
+      },
+      {
+        code: 355,
+        indent: 1,
+        parameters: [`${script}`],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 402,
+        indent: 0,
+        parameters: [1, "Leave it."],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 404,
+        indent: 0,
+        parameters: [],
+      },
+      {
+        code: 0,
+        indent: 0,
+        parameters: [],
+      },
+    ];
+  }
+
+  const fridgeEventsToOverride = FRIDGE_ITEM_OVERRIDES[currentMapId];
+  if (fridgeEventsToOverride) {
+    Object.keys(fridgeEventsToOverride).forEach((eventId) => {
+      const [name, script] = fridgeEventsToOverride[eventId];
+      const event = $dataMap.events[eventId];
+      event.pages[0].list = getAPFridgePickupList(
+        script,
+        LookOutsideAPClient.getItemName(name),
+      );
+    });
+  }
+};
+
+UpdateEventContent.overrideFirstAidBoxPickups = function (currentMapId) {
+  function getFirstAidBoxPickupList(script, itemName) {
+    return [
+      {
+        code: 101,
+        indent: 0,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 0,
+        parameters: ["A small first aid box."],
+      },
+      {
+        code: 102,
+        indent: 0,
+        parameters: [["Open it.", "Leave it."], 1, 0, 2, 0],
+      },
+      {
+        code: 402,
+        indent: 0,
+        parameters: [0, "Open it."],
+      },
+      {
+        code: 355,
+        indent: 1,
+        parameters: [`${script}`],
+      },
+      {
+        code: 101,
+        indent: 0,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 1,
+        parameters: [`Inside, you find ${itemName}\\C[0].`],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 402,
+        indent: 0,
+        parameters: [1, "Leave it."],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 404,
+        indent: 0,
+        parameters: [],
+      },
+      {
+        code: 0,
+        indent: 0,
+        parameters: [],
+      },
+    ];
+  }
+
+  const firstAidBoxEventsToOverride =
+    FIRST_AID_BOX_ITEM_OVERRIDES[currentMapId];
+  if (firstAidBoxEventsToOverride) {
+    Object.keys(firstAidBoxEventsToOverride).forEach((eventId) => {
+      const [name, script] = firstAidBoxEventsToOverride[eventId];
+      const event = $dataMap.events[eventId];
+      event.pages[0].list = getFirstAidBoxPickupList(
+        script,
+        LookOutsideAPClient.getItemName(name),
+      );
+    });
+  }
+};
+
+UpdateEventContent.overrideMirrorPickups = function (currentMapId) {
+  function getMirrorPickupList(script, itemName) {
+    return [
+      {
+        code: 101,
+        indent: 0,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 0,
+        parameters: ["A bathroom sink."],
+      },
+      {
+        code: 102,
+        indent: 0,
+        parameters: [["Search medicine cabinet.", "Leave it."], 1, 0, 2, 0],
+      },
+      {
+        code: 402,
+        indent: 0,
+        parameters: [0, "Open it."],
+      },
+      {
+        code: 355,
+        indent: 1,
+        parameters: [`${script}`],
+      },
+      {
+        code: 101,
+        indent: 0,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 1,
+        parameters: [`Inside, you find ${itemName}\\C[0].`],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 402,
+        indent: 0,
+        parameters: [1, "Leave it."],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 404,
+        indent: 0,
+        parameters: [],
+      },
+      {
+        code: 0,
+        indent: 0,
+        parameters: [],
+      },
+    ];
+  }
+  const mirrorEventsToOverride = BATHROOM_MIRROR_ITEM_OVERRIDES[currentMapId];
+  if (mirrorEventsToOverride) {
+    Object.keys(mirrorEventsToOverride).forEach((eventId) => {
+      const [name, script] = mirrorEventsToOverride[eventId];
+      const event = $dataMap.events[eventId];
+      event.pages[0].list = getMirrorPickupList(
+        script,
+        LookOutsideAPClient.getItemName(name),
+      );
+    });
+  }
+};
+
+UpdateEventContent.overrideAllPickups = function (currentMapId) {
+  UpdateEventContent.overrideOverworldPickups(currentMapId);
+  UpdateEventContent.overrideTrashSearchPickups(currentMapId);
+  UpdateEventContent.overrideFridgePickups(currentMapId);
+  UpdateEventContent.overrideFirstAidBoxPickups(currentMapId);
+  UpdateEventContent.overrideMirrorPickups(currentMapId);
 };

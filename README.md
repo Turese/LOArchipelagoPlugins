@@ -58,6 +58,9 @@ Goes through the game's events to remove everything that explicitly grants an it
 - [x] Clear out bookshelf screamatorium event
 - [x] Clear out wounded neighbor knife stealing event
 - [x] Clear out f3 hallway planter spare key
+- [x] Clear out masked shadow tongue gift
+- [x] Clear out masked shadow recruitment
+- [x] Clear out masked shadow hallway gift (wip, custom sprite won't render for some reason)
 - [ ] Clear out event for Audrey to find specific items from bosses (bonus - add ability for them to be manually triggerable by the player and recorded in state)
 - [ ] Clear out rusted crown gift from rat king event
 - [ ] Clear out dark room key award for killing Lyle
