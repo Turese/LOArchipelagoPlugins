@@ -247,7 +247,7 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
       );
 
       if (itemEarnedDisplay)
-        itemEarnedDisplay.parameters[0] = `Get ${LookOutsideAPClient.getItemName("APT_31_TELESCOPE_DISC_EXPOSURE")}\\C[0].`;
+        itemEarnedDisplay.parameters[0] = `Get ${LookOutsideAPClient.getItemName("APT_31_TELESCOPE_DISC_EXPOSURE")}.`;
 
       // gray out option after the check is finished
       // only one choice block in the event so i can check for just 102
@@ -290,7 +290,7 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
           listItem.parameters[0].contains("Apartment 33 Key"),
       );
       if (keyAnnouncement)
-        keyAnnouncement.parameters[0] = `Receive ${LookOutsideAPClient.getItemName("F3_PLANTER_KEY")}\\C[0].`;
+        keyAnnouncement.parameters[0] = `Receive ${LookOutsideAPClient.getItemName("F3_PLANTER_KEY")}.`;
 
       // change the item that sets the event self switch to A
       // this works because the success case is the very first one in the list
@@ -305,6 +305,74 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
     }
   }
   clearF3HallwayPlanterEvent();
+
+  function clearElevatorFreakEvent() {
+    // the elevator access switch is also used to tell whether the freak is dead; lets change it to a self switch
+    if (lastLoadedMapId === 74 && ev.id === 3) {
+      victorySwitchIdx = ev.pages[0].list.findIndex(
+        (listItem) => listItem.code == 121,
+      );
+      if (victorySwitchIdx !== -1) {
+        ev.pages[0].list[victorySwitchIdx] = {
+          code: 355,
+          indent: 0,
+          parameters: ["$gameSelfSwitches.setValue([74, 3, 'A'], true)"],
+        };
+        ev.pages[1].conditions = {
+          actorId: 1,
+          actorValid: false,
+          itemId: 1,
+          itemValid: false,
+          selfSwitchCh: "A",
+          selfSwitchValid: true,
+          switch1Id: 1,
+          switch1Valid: false,
+          switch2Id: 1,
+          switch2Valid: false,
+          variableId: 1,
+          variableValid: false,
+          variableValue: 0,
+        };
+      }
+      // also clear out the power outage effect; player should trigger this manually
+      ev.pages[0].list = ev.pages[0].list.filter(
+        (listItem) => !(listItem.code == 122 && parameters[0] == 736),
+      );
+    }
+  }
+  clearElevatorFreakEvent();
+
+  function clearRatKingCrown() {
+    if (lastLoadedMapId === 92 && ev.id === 45) {
+      // clear out rusty crown drop
+      ev.pages[2].list = ev.pages[2].list.filter((pageItem) => pageItem.code !== 128);
+
+      // change message for both bow and non bow cases
+
+      const rustyCrownAnnouncement = ev.pages[2].list.find(
+        (listItem) =>
+          listItem.code === 401 &&
+          listItem.parameters[0].contains("Rusty Crown"),
+      );
+      if (rustyCrownAnnouncement)
+        rustyCrownAnnouncement.parameters[0] = `You receive ${LookOutsideAPClient.getItemName("F1_RAT_KING_COMBAT_VICTORY")}.`;
+
+      const crownDustAnnouncement = ev.pages[2].list.find(
+        (listItem) =>
+          listItem.code === 401 &&
+          listItem.parameters[0].contains("turns to dust"),
+      );
+      if (crownDustAnnouncement)
+        crownDustAnnouncement.parameters[0] = `The Rat King's crown turns to ${LookOutsideAPClient.getItemName("F1_RAT_KING_COMBAT_VICTORY")} in your hands.`;
+    }
+  }
+  clearRatKingCrown();
+
+  function clearBasementKeyDrops() {
+    // clear out the key prize from antoine
+    // and from the arthropods from B1
+  }
+  clearBasementKeyDrops();
 };
 
 ClearExplicitDrops.clearAllEnemiesDrops = function () {
@@ -338,7 +406,7 @@ ClearExplicitDrops.clearTroopsDrops = function () {
         listItem.code === 401 &&
         listItem.parameters[0].contains("Clown Drawing"),
     ).parameters[0] =
-      `Receive ${LookOutsideAPClient.getItemName("APT_38_PIERRE_CLOWN_DRAWING")}\\C[0].`;
+      `Receive ${LookOutsideAPClient.getItemName("APT_38_PIERRE_CLOWN_DRAWING")}.`;
 
     $dataTroops[19].pages[0].list = clownDrawingList;
 
@@ -353,7 +421,7 @@ ClearExplicitDrops.clearTroopsDrops = function () {
         listItem.code === 401 &&
         listItem.parameters[0].contains("Clown Wig and Nose"),
     ).parameters[0] =
-      `Receive ${LookOutsideAPClient.getItemName("APT_38_PIERRE_CLOWN_WIG")}\\C[0].`;
+      `Receive ${LookOutsideAPClient.getItemName("APT_38_PIERRE_CLOWN_WIG")}.`;
 
     $dataTroops[19].pages[5].list = clownWigList;
   }
@@ -372,13 +440,13 @@ ClearExplicitDrops.clearTroopsDrops = function () {
       (listItem) =>
         listItem.code === 401 && listItem.parameters[0].contains("a tongue"),
     ).parameters[0] =
-      `and appears to be... a ${LookOutsideAPClient.getItemName("MASKED_SHADOW_TONGUE")}\\C[0].`;
+      `and appears to be... a ${LookOutsideAPClient.getItemName("MASKED_SHADOW_TONGUE")}.`;
 
     removedTongueGiftList.find(
       (listItem) =>
         listItem.code === 401 && listItem.parameters[0].contains("Tongue"),
     ).parameters[0] =
-      `You receive a ${LookOutsideAPClient.getItemName("MASKED_SHADOW_TONGUE")}\\C[0].`;
+      `You receive a ${LookOutsideAPClient.getItemName("MASKED_SHADOW_TONGUE")}.`;
 
     // dont want player to refuse it, so i'll set 'refuse it' to be grayed
     // out on a condition guaranteed to be true (current shadow interaction = 5 i.e. this one)

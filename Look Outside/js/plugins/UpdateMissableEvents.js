@@ -10,7 +10,7 @@
 
 var UpdateMissableEvents = UpdateMissableEvents || {};
 
-UpdateMissableEvents.applyChanges = function (lastLoadedMapId, ev) {
+UpdateMissableEvents.applyEventUpdates = function (lastLoadedMapId, ev) {
   function fixWoundedManDoor() {
     if (lastLoadedMapId === 23 && ev.id === 40) {
       ev.pages[1].conditions = ev.pages[0].conditions;
@@ -18,6 +18,19 @@ UpdateMissableEvents.applyChanges = function (lastLoadedMapId, ev) {
     }
   }
   fixWoundedManDoor();
+
+  // screw the elevator game, just let me go to 4
+  function fixElevatorButtons() {
+    if (lastLoadedMapId === 74 && ev.id === 2) {
+      // at the start of the event, set the elevator game to be finished.
+      ev.pages[1].list.unshift({
+        code: 111,
+        indent: 1,
+        parameters: [1, 817, 0, 4, 0],
+      });
+    }
+  }
+  fixElevatorButtons()
 
   // remove leighs gun sale from hardmode dialogue
   function fixLeighGunSale() {
@@ -101,5 +114,3 @@ UpdateMissableEvents.applyChanges = function (lastLoadedMapId, ev) {
     // remove page 2 of bookcase event (room 332, event 3)
   }
 };
-
-UpdateMissableEvents.applyChanges();

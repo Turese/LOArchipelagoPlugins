@@ -69,7 +69,7 @@ LookOutsideAPClient.applyOverrides = function () {
     if (!ev) return ev;
 
     ClearExplicitDrops.applyEventClears(this._mapId, ev);
-    UpdateMissableEvents.applyChanges(this._mapId, ev);
+    UpdateMissableEvents.applyEventUpdates(this._mapId, ev);
 
     return ev;
   };
@@ -182,9 +182,9 @@ LookOutsideAPClient.initializeLocationNames = async function () {
           else if (item.trap) itemColor = 10;
           else if (item.filler) itemColor = 4;
           let player;
-          if (item.receiver.slot === item.sender.slot) player = "";
+          if (item.receiver.slot === item.sender.slot) player = null;
           else player = `${item.receiver}'s `;
-          locationMapping[l] = `${player}\\C[${itemColor}]${item.name}\\C[0]`;
+          locationMapping[l] = { player, itemColor, name: item.name };
         }
       });
     }
@@ -275,8 +275,15 @@ LookOutsideAPClient.watchLocations = function () {
 
     if (SWITCH_LOCATIONS[switchId]) {
       const locationId = SWITCH_LOCATIONS[switchId];
-      if (locationId)
+      if (locationId) {
         LookOutsideAPClient.setLocation(LOCATION_ID_MAPPING[locationId]);
+        if (locationId === "F2_GRINNING_BEAST_COMBAT_VICTORY") {
+          // todo: find a better place for this? this location should imply the following location:
+          LookOutsideAPClient.setLocation(
+            LOCATION_ID_MAPPING["F2_GRINNING_BEAST_CHASE_POOL_CUE"],
+          );
+        }
+      }
     }
   };
 
@@ -351,14 +358,22 @@ LookOutsideAPClient.updateItems = function () {
   }
 };
 
-LookOutsideAPClient.getItemName = function (apLocationName) {
+LookOutsideAPClient.getItemName = function (
+  apLocationName,
+  excludeBrackets = false,
+) {
   // todo: actually get the item name
   const locationId = LOCATION_ID_MAPPING[apLocationName];
-  const name = $gamePlayer.LOCATION_NAME_MAPPING
+  const mapping = $gamePlayer.LOCATION_NAME_MAPPING
     ? $gamePlayer.LOCATION_NAME_MAPPING[locationId]
-    : null;
+    : { player: null, name: "Randomized Item", color: 24 };
 
-  return name || "\\C[24]Randomized Item\\C[0]";
+  const { player, name, itemColor } = mapping;
+
+  if (excludeBrackets) {
+    return `${player ? player + " " : ""}\\C[${itemColor}]${name}\\C[0]`;
+  }
+  return `${player ? player + " " : ""}\\C[${itemColor}]{${name}}\\C[0]`;
 };
 
 LookOutsideAPClient.getItemImage = function (apLocationName) {

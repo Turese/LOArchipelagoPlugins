@@ -743,7 +743,6 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   89: {
     4: ["F3_CLOSET_WALLET", "$gameSelfSwitches.setValue([89, 4, 'A'], true)"],
     2: ["F3_CLOSET_KEY", "$gameSelfSwitches.setValue([89, 2, 'A'], true)"],
-    5: ["F3_CLOSET_ROACH", "$gameSelfSwitches.setValue([89, 5, 'B'], true)"],
     9: [
       "F3_CLOSET_JACKET_FIGURINE",
       "$gameSelfSwitches.setValue([89, 9, 'A'], true)",
@@ -765,10 +764,6 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     5: [
       "APT_20_BATHROOM_MEDICINE_CABINET",
       "$gameSelfSwitches.setValue([288, 5, 'A'], true)",
-    ],
-    7: [
-      "APT_20_BATHROOM_ROACH",
-      "$gameSelfSwitches.setValue([288, 7, 'B'], true)",
     ],
     6: [
       "APT_20_BATHROOM_SOAP",
@@ -955,13 +950,6 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     3: ["APT_27_WALLET", "$gameSelfSwitches.setValue([115, 3, 'A'], true)"],
   },
 
-  116: {
-    4: [
-      "APT_27_BATHROOM_ROACH",
-      "$gameSelfSwitches.setValue([116, 4, 'B'], true)",
-    ],
-  },
-
   117: {
     9: [
       "APT_27_BEDROOM_KITSCH_LAMP",
@@ -1077,7 +1065,8 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   },
 
   7: {
-    2: ["F2_APT_21_KEY", "$gameSelfSwitches.setValue([7, 2, 'A'], true)"],
+    // picking up key bri
+    1: ["F2_APT_21_KEY", "$gameSelfSwitches.setValue([7, 2, 'A'], true); setSybilMajorStory(2); $gamePlayer.reserveTransfer(8, 32, 8, 0, 2);"],
     30: ["F2_PISTOL", "$gameSelfSwitches.setValue([7, 30, 'A'], true)"],
     31: [
       "F2_PISTOL_BULLETS_1",
@@ -1165,6 +1154,1431 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     ],
     30: ["APT_24_SUIT", "$gameSelfSwitches.setValue([333, 30, 'A'], true)"],
   },
+
+  309: {
+    29: ["ERNEST_VODKA", "$gameSelfSwitches.setValue([309, 29, 'A'], true)"],
+  },
+
+  96: {
+    9: [
+      "FRED_ENTRYWAY_CHEEZ_STIX",
+      "$gameSelfSwitches.setValue([96, 9, 'A'], true)",
+    ],
+    10: [
+      "FRED_ENTRYWAY_KNIVES",
+      "$gameSelfSwitches.setValue([96, 10, 'A'], true)",
+    ],
+    7: [
+      "FRED_ENTRYWAY_MACHETE",
+      "$gameSelfSwitches.setValue([96, 7, 'A'], true)",
+    ],
+  },
+
+  217: {
+    10: [
+      "FRED_LIVING_ROOM_VINTAGE_CONSOLE",
+      "$gameSelfSwitches.setValue([217, 10, 'A'], true)",
+    ],
+    9: [
+      "FRED_LIVING_ROOM_BEER_STEIN",
+      "$gameSelfSwitches.setValue([217, 9, 'A'], true)",
+    ],
+    11: [
+      "FRED_LIVING_ROOM_WHISKEY",
+      "$gameSelfSwitches.setValue([217, 11, 'A'], true)",
+    ],
+  },
+
+  218: {
+    5: [
+      "FRED_CLOSET_FIRST_AID_KIT",
+      "$gameSelfSwitches.setValue([218, 5, 'A'], true)",
+    ],
+    6: [
+      "FRED_CLOSET_BANDAGES",
+      "$gameSelfSwitches.setValue([218, 6, 'A'], true)",
+    ],
+  },
+
+  95: {
+    6: [
+      "FRED_BATHROOM_MEDICATION",
+      "$gameSelfSwitches.setValue([95, 6, 'A'], true)",
+    ],
+    9: [
+      "FRED_BATHROOM_ANXIETY_MEDS",
+      "$gameSelfSwitches.setValue([95, 9, 'A'], true)",
+    ],
+    10: [
+      "FRED_BATHROOM_MEDICATION_2",
+      "$gameSelfSwitches.setValue([95, 10, 'A'], true)",
+    ],
+    5: [
+      "FRED_BATHROOM_TONIC",
+      "$gameSelfSwitches.setValue([95, 5, 'A'], true)",
+    ],
+  },
+
+  42: {
+    9: [
+      "FRED_HALL_CLOSET_PLASTIC_GLOVES",
+      "$gameSelfSwitches.setValue([42, 9, 'A'], true)",
+    ],
+  },
+
+  237: {
+    9: ["FRED_HAT_ROOM_HAT", "$gameSelfSwitches.setValue([237, 9, 'A'], true)"],
+  },
+
+  119: {
+    10: [
+      "FRED_TOXIC_ROOM_WINDBREAKER",
+      "$gameSelfSwitches.setValue([119, 10, 'A'], true)",
+    ],
+    11: [
+      "FRED_TOXIC_ROOM_CASH",
+      "$gameSelfSwitches.setValue([119, 11, 'A'], true)",
+    ],
+    5: [
+      "FRED_TOXIC_ROOM_TONIC",
+      "$gameSelfSwitches.setValue([119, 5, 'A'], true)",
+    ],
+    12: [
+      "FRED_TOXIC_ROOM_JUNK",
+      "$gameSelfSwitches.setValue([119, 12, 'A'], true)",
+    ],
+    17: [
+      "FRED_TOXIC_ROOM_COMIC_BOOKS",
+      "$gameSelfSwitches.setValue([119, 17, 'A'], true)",
+    ],
+  },
+
+  238: {
+    7: [
+      "FRED_GODHEAD_ROOM_SHOTGUN_SHELLS",
+      "$gameSelfSwitches.setValue([238, 7, 'A'], true)",
+    ],
+    6: [
+      "FRED_GODHEAD_ROOM_SHOTGUN",
+      "$gameSelfSwitches.setValue([238, 6, 'A'], true)",
+    ],
+    8: [
+      "FRED_GODHEAD_ROOM_SHOTGUN_SHELLS_BOX",
+      "$gameSelfSwitches.setValue([238, 8, 'A'], true)",
+    ],
+    5: [
+      "FRED_GODHEAD_ROOM_TURPENTINE",
+      "$gameSelfSwitches.setValue([238, 5, 'A'], true)",
+    ],
+  },
+
+  97: {
+    9: [
+      "FRED_DARK_ROOM_BOTTLE",
+      "$gameSelfSwitches.setValue([97, 9, 'A'], true)",
+    ],
+    2: [
+      "FRED_DARK_ROOM_CHOCKY_BAR",
+      "$gameSelfSwitches.setValue([97, 2, 'A'], true)",
+    ],
+    6: [
+      "FRED_DARK_ROOM_TURPENTINE",
+      "$gameSelfSwitches.setValue([97, 6, 'A'], true)",
+    ],
+    8: [
+      "FRED_DARK_ROOM_BEER_1",
+      "$gameSelfSwitches.setValue([97, 8, 'A'], true)",
+    ],
+    7: [
+      "FRED_DARK_ROOM_BEER_2",
+      "$gameSelfSwitches.setValue([97, 7, 'A'], true)",
+    ],
+    49: ["FRED_ROOM_HONKO", "$gameSelfSwitches.setValue([97, 49, 'A'], true)"],
+  },
+
+  239: {
+    7: [
+      "TRUE_FRED_CLOSET_COMIC_BOOK",
+      "$gameSelfSwitches.setValue([239, 7, 'A'], true)",
+    ],
+    5: [
+      "TRUE_FRED_CLOSET_TURPENTINE_1",
+      "$gameSelfSwitches.setValue([239, 5, 'A'], true)",
+    ],
+    2: [
+      "TRUE_FRED_CLOSET_TURPENTINE_2",
+      "$gameSelfSwitches.setValue([239, 2, 'A'], true)",
+    ],
+  },
+
+  290: {
+    6: ["RAT_LAIR_CLEAVER", "$gameSelfSwitches.setValue([290, 6, 'A'], true)"],
+  },
+
+  291: {
+    19: [
+      "RAT_LAIR_SIMPLE_KEY",
+      "$gameSelfSwitches.setValue([291, 19, 'A'], true)",
+    ],
+    6: [
+      "RAT_LAIR_COWBOY_HAT",
+      "$gameSelfSwitches.setValue([291, 6, 'A'], true)",
+    ],
+  },
+
+  292: {
+    5: [
+      "RAT_LAIR_JUICE_BOX",
+      "$gameSelfSwitches.setValue([292, 5, 'A'], true)",
+    ],
+    9: [
+      "RAT_LAIR_CHEEZ_STIX",
+      "$gameSelfSwitches.setValue([292, 9, 'A'], true)",
+    ],
+    7: [
+      "RAT_LAIR_CHOCKY_BAR_1",
+      "$gameSelfSwitches.setValue([292, 7, 'A'], true)",
+    ],
+    8: [
+      "RAT_LAIR_CHOCKY_BAR_2",
+      "$gameSelfSwitches.setValue([292, 8, 'A'], true)",
+    ],
+  },
+
+  100: {
+    25: ["RAT_APT_URN", "$gameSelfSwitches.setValue([100, 25, 'A'], true)"],
+    14: [
+      "RAT_APT_ROLLING_PIN",
+      "$gameSelfSwitches.setValue([100, 14, 'A'], true)",
+    ],
+    16: [
+      "RAT_APT_FOUNTAIN_PEN",
+      "$gameSelfSwitches.setValue([100, 16, 'A'], true)",
+    ],
+    13: [
+      "RAT_APT_CHEFS_KNIFE",
+      "$gameSelfSwitches.setValue([100, 13, 'A'], true)",
+    ],
+  },
+
+  101: {
+    13: [
+      "RAT_APT_BABY_ROOM_MUSIC_BOX",
+      "$gameSelfSwitches.setValue([101, 13, 'A'], true)",
+    ],
+    12: [
+      "RAT_APT_BABY_ROOM_BANDAGES",
+      "$gameSelfSwitches.setValue([101, 12, 'A'], true)",
+    ],
+    14: [
+      "RAT_APT_BABY_ROOM_DRAWINGS",
+      "$gameSelfSwitches.setValue([101, 14, 'A'], true)",
+    ],
+  },
+
+  102: {
+    15: [
+      "RAT_APT_BEDROOM_MAGAZINES",
+      "$gameSelfSwitches.setValue([102, 15, 'A'], true)",
+    ],
+    15: [
+      "RAT_APT_BEDROOM_DIRTY_MAGAZINES",
+      "$gameSelfSwitches.setValue([102, 15, 'B'], true)",
+    ],
+    9: [
+      "RAT_APT_BEDROOM_CHILD_BARRIER_KEY",
+      "$gameSelfSwitches.setValue([102, 9, 'A'], true)",
+    ],
+    10: [
+      "RAT_APT_BEDROOM_TRENCH_COAT",
+      "$gameSelfSwitches.setValue([102, 10, 'A'], true)",
+    ],
+    13: [
+      "RAT_APT_BEDROOM_DENIM_JACKET",
+      "$gameSelfSwitches.setValue([102, 13, 'A'], true)",
+    ],
+    14: [
+      "RAT_APT_BEDROOM_HOODIE",
+      "$gameSelfSwitches.setValue([102, 14, 'A'], true)",
+    ],
+  },
+
+  103: {
+    12: [
+      "RAT_APT_BATHROOM_TONIC",
+      "$gameSelfSwitches.setValue([103, 12, 'A'], true)",
+    ],
+    9: [
+      "RAT_APT_BATHROOM_TOOTHPASTE",
+      "$gameSelfSwitches.setValue([103, 9, 'A'], true)",
+    ],
+  },
+
+  98: {
+    6: ["AURELIUS_MOLOTOV", "$gameSelfSwitches.setValue([98, 6, 'A'], true)"],
+    11: ["AURELIUS_JUNK_1", "$gameSelfSwitches.setValue([98, 11, 'A'], true)"],
+    10: ["AURELIUS_JUNK_2", "$gameSelfSwitches.setValue([98, 10, 'A'], true)"],
+    2: ["AURELIUS_BROOM", "$gameSelfSwitches.setValue([98, 2, 'A'], true)"],
+    7: ["AURELIUS_GASOLINE", "$gameSelfSwitches.setValue([98, 7, 'A'], true)"],
+    5: [
+      "AURELIUS_FIRST_AID_KIT",
+      "$gameSelfSwitches.setValue([98, 5, 'A'], true)",
+    ],
+    14: [
+      "AURELIUS_DUSTIN_FIGURINE",
+      "$gameSelfSwitches.setValue([98, 14, 'A'], true)",
+    ],
+  },
+
+  36: {
+    5: ["APT_13_DISC", "$gameSelfSwitches.setValue([36, 5, 'A'], true)"],
+  },
+
+  99: {
+    17: [
+      "EYEBALL_SIMPLE_KEY",
+      "$gameSelfSwitches.setValue([99, 17, 'A'], true)",
+    ],
+  },
+
+  105: {
+    5: [
+      "APT_12_SHOTGUN_SHELLS",
+      "$gameSelfSwitches.setValue([105, 5, 'A'], true)",
+    ],
+    9: [
+      "APT_12_PISTOL_BULLETS",
+      "$gameSelfSwitches.setValue([105, 9, 'A'], true)",
+    ],
+    11: ["APT_12_GRENADE", "$gameSelfSwitches.setValue([105, 11, 'A'], true)"],
+    12: [
+      "APT_12_SHOTGUN_SHELLS_2",
+      "$gameSelfSwitches.setValue([105, 12, 'A'], true)",
+    ],
+    10: [
+      "APT_12_PISTOL_BULLETS_2",
+      "$gameSelfSwitches.setValue([105, 10, 'A'], true)",
+    ],
+  },
+
+  351: {
+    4: [
+      "APT_12_BATHROOM_VINEGAR",
+      "$gameSelfSwitches.setValue([351, 4, 'A'], true)",
+    ],
+    5: [
+      "APT_12_BATHROOM_CLEANEREX",
+      "$gameSelfSwitches.setValue([351, 5, 'A'], true)",
+    ],
+  },
+
+  348: {
+    5: [
+      "APT_12_KITCHEN_CLOSET_IRIS_KEY",
+      "$gameSelfSwitches.setValue([348, 5, 'A'], true)",
+    ],
+  },
+
+  350: {
+    3: [
+      "APT_12_INNER_WALL_HEALING_SPRAY",
+      "$gameSelfSwitches.setValue([350, 3, 'A'], true)",
+    ],
+  },
+
+  360: {
+    4: [
+      "APT_12_PLANETARIUM_BROKEN_TELESCOPE",
+      "$gameSelfSwitches.setValue([360, 4, 'A'], true)",
+    ],
+  },
+
+  363: {
+    3: [
+      "APT_12_PLANETARIUM_MUFFIN",
+      "$gameSelfSwitches.setValue([363, 3, 'A'], true)",
+    ],
+  },
+
+  377: {
+    6: [
+      "APT_12_WALLS_PISTOL_BULLETS",
+      "$gameSelfSwitches.setValue([377, 6, 'A'], true)",
+    ],
+    5: [
+      "APT_12_WALLS_SHOTGUN_SHELLS",
+      "$gameSelfSwitches.setValue([377, 5, 'A'], true)",
+    ],
+  },
+
+  359: {
+    3: [
+      "APT_12_WALLS_APT_35_KEY",
+      "$gameSelfSwitches.setValue([359, 3, 'A'], true)",
+    ],
+    25: [
+      "APT_12_WALLS_SMG_BULLETS",
+      "$gameSelfSwitches.setValue([359, 25, 'A'], true)",
+    ],
+  },
+
+  378: {
+    4: [
+      "APT_12_WALLS_MAGNUM_BULLETS",
+      "$gameSelfSwitches.setValue([378, 4, 'A'], true)",
+    ],
+    3: [
+      "APT_12_WALLS_PITCHFORK",
+      "$gameSelfSwitches.setValue([378, 3, 'A'], true)",
+    ],
+  },
+
+  379: {
+    5: [
+      "APT_12_WALLS_RIFLE_BULLETS",
+      "$gameSelfSwitches.setValue([379, 5, 'A'], true)",
+    ],
+    4: [
+      "APT_12_WALLS_SHURIKEN",
+      "$gameSelfSwitches.setValue([379, 4, 'A'], true)",
+    ],
+    6: [
+      "APT_12_WALLS_TONIC",
+      "$gameSelfSwitches.setValue([379, 6, 'A'], true)",
+    ],
+  },
+
+  294: {
+    20: ["APT_18_S_BEEF", "$gameSelfSwitches.setValue([294, 20, 'A'], true)"],
+    5: [
+      "APT_18_S_CHOCKY_BAR",
+      "$gameSelfSwitches.setValue([294, 5, 'A'], true)",
+    ],
+  },
+
+  295: {
+    6: ["APT_18_N_CASH", "$gameSelfSwitches.setValue([295, 6, 'A'], true)"],
+  },
+
+  296: {
+    8: ["APT_18_E_OLD_CDS", "$gameSelfSwitches.setValue([296, 8, 'A'], true)"],
+    6: [
+      "APT_18_E_HEADPHONES",
+      "$gameSelfSwitches.setValue([296, 6, 'A'], true)",
+    ],
+  },
+
+  297: {
+    29: [
+      "APT_18_SE_POTTING_SOIL",
+      "$gameSelfSwitches.setValue([297, 29, 'A'], true)",
+    ],
+    4: ["APT_18_SE_OLD_AXE", "$gameSelfSwitches.setValue([297, 4, 'A'], true)"],
+    5: ["APT_18_SE_CAR_KEY", "$gameSelfSwitches.setValue([297, 5, 'A'], true)"],
+  },
+
+  298: {
+    7: [
+      "APT_18_BATHROOM_FROGIT_ABOUT_IT",
+      "$gameSelfSwitches.setValue([298, 7, 'A'], true)",
+    ],
+    4: [
+      "APT_18_BATHROOM_FIRST_AID_KIT",
+      "$gameSelfSwitches.setValue([298, 4, 'A'], true)",
+    ],
+    8: [
+      "APT_18_BATHROOM_EYE_DROPS",
+      "$gameSelfSwitches.setValue([298, 8, 'A'], true)",
+    ],
+  },
+
+  106: {
+    2: ["APT_11_MARS_DISC", "$gameSelfSwitches.setValue([106, 2, 'A'], true)"],
+  },
+
+  107: {
+    1: [
+      "APT_11_ODD_NECKLACE",
+      "$gameSelfSwitches.setValue([107, 1, 'A'], true)",
+    ],
+  },
+
+  67: {
+    5: [
+      "GF_OFFICE_BATHROOM_ELIXIR",
+      "$gameSelfSwitches.setValue([67, 5, 'A'], true)",
+    ],
+  },
+
+  68: {
+    9: ["GF_OFFICE_WHISKEY", "$gameSelfSwitches.setValue([68, 9, 'A'], true)"],
+    8: ["GF_OFFICE_CLAYMORE", "$gameSelfSwitches.setValue([68, 8, 'A'], true)"],
+  },
+
+  126: {
+    2: [
+      "GF_OFFICE_UNLABELED_CARTRIDGE",
+      "$gameSelfSwitches.setValue([126, 2, 'A'], true)",
+    ],
+  },
+
+  52: {
+    14: [
+      "CORNER_STORE_FIRST_AID_KIT",
+      "$gameSelfSwitches.setValue([52, 14, 'A'], true)",
+    ],
+    5: [
+      "CORNER_STORE_MYRMIDON_XII",
+      "$gameSelfSwitches.setValue([52, 5, 'A'], true)",
+    ],
+  },
+
+  53: {
+    2: [
+      "CORNER_STORE_STORAGE_VHS",
+      "$gameSelfSwitches.setValue([53, 2, 'A'], true)",
+    ],
+    5: [
+      "CORNER_STORE_STORAGE_DUCT_TAPE",
+      "$gameSelfSwitches.setValue([53, 5, 'A'], true)",
+    ],
+    4: [
+      "CORNER_STORE_STORAGE_HERBICIDE",
+      "$gameSelfSwitches.setValue([53, 4, 'A'], true)",
+    ],
+  },
+
+  56: {
+    7: ["MUTT_WALLET", "$gameSelfSwitches.setValue([56, 7, 'A'], true)"],
+    40: ["MUTT_BEER", "$gameSelfSwitches.setValue([56, 40, 'A'], true)"],
+  },
+
+  58: {
+    3: [
+      "MUTT_BATHROOM_WRAPPED_GIFT",
+      "$gameSelfSwitches.setValue([58, 3, 'A'], true)",
+    ],
+    4: [
+      "MUTT_BATHROOM_URANUS_DISC",
+      "$gameSelfSwitches.setValue([58, 4, 'A'], true)",
+    ],
+  },
+
+  63: {
+    5: [
+      "LL_BATHROOM_OLD_PICTURE",
+      "$gameSelfSwitches.setValue([63, 5, 'A'], true)",
+    ],
+    7: [
+      "LL_BATHROOM_FIRST_AID_KIT",
+      "$gameSelfSwitches.setValue([63, 7, 'A'], true)",
+    ],
+    9: [
+      "LL_BATHROOM_ANXIETY_MEDS",
+      "$gameSelfSwitches.setValue([63, 9, 'A'], true)",
+    ],
+    6: ["LL_BATHROOM_SOAP", "$gameSelfSwitches.setValue([63, 6, 'A'], true)"],
+  },
+
+  64: {
+    13: [
+      "LL_BEDROOM_COIN_COLLECTION",
+      "$gameSelfSwitches.setValue([64, 13, 'A'], true)",
+    ],
+    11: [
+      "LL_BEDROOM_MILITARY_UNIFORM",
+      "$gameSelfSwitches.setValue([64, 11, 'A'], true)",
+    ],
+  },
+
+  180: {
+    8: [
+      "LL_DINING_TABLE_CASH",
+      "$gameSelfSwitches.setValue([180, 8, 'A'], true)",
+    ],
+    11: [
+      "LL_DINING_TABLE_TONIC",
+      "$gameSelfSwitches.setValue([180, 11, 'A'], true)",
+    ],
+    14: [
+      "LL_DINING_TABLE_CHESSBOARD",
+      "$gameSelfSwitches.setValue([180, 14, 'A'], true)",
+    ],
+  },
+
+  209: {
+    4: [
+      "LL_OFFICE_WAR_MEDAL",
+      "$gameSelfSwitches.setValue([209, 4, 'A'], true)",
+    ],
+    6: ["LL_OFFICE_WHISKEY", "$gameSelfSwitches.setValue([209, 6, 'A'], true)"],
+    1: [
+      "LL_OFFICE_CARVED_BEAVER",
+      "$gameSelfSwitches.setValue([209, 1, 'A'], true)",
+    ],
+    7: [
+      "LL_OFFICE_DETONATOR",
+      "$gameSelfSwitches.setValue([209, 7, 'A'], true)",
+    ],
+  },
+
+  208: {
+    21: [
+      "LL_EAST_SHOTGUN_SHELLS",
+      "$gameSelfSwitches.setValue([208, 21, 'A'], true)",
+    ],
+    7: ["LL_EAST_CASH", "$gameSelfSwitches.setValue([208, 7, 'A'], true)"],
+    18: [
+      "LL_EAST_BASEBALL_BAT",
+      "$gameSelfSwitches.setValue([208, 18, 'A'], true)",
+    ],
+    23: [
+      "LL_EAST_OLD_RECORDS",
+      "$gameSelfSwitches.setValue([208, 23, 'A'], true)",
+    ],
+    22: [
+      "LL_EAST_SPEAKERS",
+      "$gameSelfSwitches.setValue([208, 22, 'A'], true)",
+    ],
+  },
+
+  210: {
+    11: ["LL_NORTH_TONIC", "$gameSelfSwitches.setValue([210, 11, 'A'], true)"],
+    10: [
+      "LL_NORTH_FIRST_AID_KIT",
+      "$gameSelfSwitches.setValue([210, 10, 'A'], true)",
+    ],
+    12: [
+      "LL_NORTH_PISTOL_BULLETS",
+      "$gameSelfSwitches.setValue([210, 12, 'A'], true)",
+    ],
+  },
+
+  230: {
+    4: [
+      "LL_BEDROOM_HALL_BULLET_1",
+      "$gameSelfSwitches.setValue([230, 4, 'A'], true)",
+    ],
+    3: [
+      "LL_BEDROOM_HALL_RIFLE",
+      "$gameSelfSwitches.setValue([230, 3, 'A'], true)",
+    ],
+    5: [
+      "LL_BEDROOM_HALL_BULLET_2",
+      "$gameSelfSwitches.setValue([230, 5, 'A'], true)",
+    ],
+  },
+
+  216: {
+    6: [
+      "LL_MEMORIAL_GRENADE",
+      "$gameSelfSwitches.setValue([216, 6, 'A'], true)",
+    ],
+    7: [
+      "LL_MEMORIAL_DETONATOR",
+      "$gameSelfSwitches.setValue([216, 7, 'A'], true)",
+    ],
+  },
+
+  233: {
+    6: [
+      "LL_MEMORIAL_MAGNUM_BULLETS",
+      "$gameSelfSwitches.setValue([233, 6, 'A'], true)",
+    ],
+    2: [
+      "LL_MEMORIAL_PISTOL_BULLETS",
+      "$gameSelfSwitches.setValue([233, 2, 'A'], true)",
+    ],
+    4: [
+      "LL_MEMORIAL_SMG_BULLETS",
+      "$gameSelfSwitches.setValue([233, 4, 'A'], true)",
+    ],
+    7: [
+      "LL_MEMORIAL_AMMO_BELT",
+      "$gameSelfSwitches.setValue([233, 7, 'A'], true)",
+    ],
+    8: [
+      "LL_MEMORIAL_GRENADE",
+      "$gameSelfSwitches.setValue([233, 8, 'A'], true)",
+    ],
+    3: [
+      "LL_MEMORIAL_SHOTGUN_SHELL",
+      "$gameSelfSwitches.setValue([233, 3, 'A'], true)",
+    ],
+    5: [
+      "LL_MEMORIAL_RIFLE_BULLETS",
+      "$gameSelfSwitches.setValue([233, 5, 'A'], true)",
+    ],
+    10: [
+      "LL_MEMORIAL_AMMO_CRATE_1",
+      "$gameSelfSwitches.setValue([233, 10, 'A'], true)",
+    ],
+    9: [
+      "LL_MEMORIAL_AMMO_CRATE_2",
+      "$gameSelfSwitches.setValue([233, 9, 'A'], true)",
+    ],
+  },
+
+  181: {
+    3: ["LL_JUPITER_DISC", "$gameSelfSwitches.setValue([181, 3, 'A'], true)"],
+  },
+
+  183: {
+    2: ["LL_END_ELIXIR", "$gameSelfSwitches.setValue([183, 2, 'A'], true)"],
+  },
+
+  234: {
+    2: [
+      "LL_HELL_WRAITHSCOURGE",
+      "$gameSelfSwitches.setValue([234, 2, 'A'], true)",
+    ],
+  },
+
+  380: {
+    3: [
+      "LL_HELL_MASK_OLD_PHOTOGRAPH",
+      "$gameSelfSwitches.setValue([380, 3, 'A'], true)",
+    ],
+  },
+
+  60: {
+    14: [
+      "GF_JANITOR_NORTH_COINS",
+      "$gameSelfSwitches.setValue([60, 14, 'A'], true)",
+    ],
+    17: [
+      "GF_JANITOR_NORTH_COFFEE",
+      "$gameSelfSwitches.setValue([60, 17, 'A'], true)",
+    ],
+    13: [
+      "GF_JANITOR_NORTH_CARDS",
+      "$gameSelfSwitches.setValue([60, 13, 'A'], true)",
+    ],
+    16: [
+      "GF_JANITOR_NORTH_BEER",
+      "$gameSelfSwitches.setValue([60, 16, 'A'], true)",
+    ],
+    22: ["GF_ARROWED_SASH", "$gameSelfSwitches.setValue([60, 22, 'A'], true)"],
+    21: [
+      "GF_MACKINAW_JACKET",
+      "$gameSelfSwitches.setValue([60, 21, 'A'], true)",
+    ],
+    12: [
+      "GF_JANITORS_FIRST_AID_KIT",
+      "$gameSelfSwitches.setValue([60, 12, 'A'], true)",
+    ],
+    6: [
+      "GF_JANITORS_DUCT_TAPE",
+      "$gameSelfSwitches.setValue([60, 6, 'A'], true)",
+    ],
+    4: [
+      "GF_JANITORS_HERBICIDE_1",
+      "$gameSelfSwitches.setValue([60, 4, 'A'], true)",
+    ],
+    11: [
+      "GF_JANITORS_ACID_SPRAYER",
+      "$gameSelfSwitches.setValue([60, 11, 'A'], true)",
+    ],
+    3: [
+      "GF_JANITORS_HERBICIDE_2",
+      "$gameSelfSwitches.setValue([60, 3, 'A'], true)",
+    ],
+  },
+
+  61: {
+    6: [
+      "GF_JANITOR_S_RATAVIA",
+      "$gameSelfSwitches.setValue([61, 6, 'A'], true)",
+    ],
+    4: [
+      "GF_JANITOR_S_ICE_MELT_SALT",
+      "$gameSelfSwitches.setValue([61, 4, 'A'], true)",
+    ],
+    3: [
+      "GF_JANITOR_S_SIMPLE_KEY",
+      "$gameSelfSwitches.setValue([61, 3, 'A'], true)",
+    ],
+  },
+
+  47: {
+    44: ["GF_HERBICIDE", "$gameSelfSwitches.setValue([47, 44, 'A'], true)"],
+  },
+
+  278: {
+    39: [
+      "GF_MENS_BATHROOM_SIMPLE_KEY",
+      "$gameSelfSwitches.setValue([278, 39, 'A'], true)",
+    ],
+  },
+
+  55: {
+    36: [
+      "GF_WOMENS_BATHROOM_FIRST_AID_KIT",
+      "$gameSelfSwitches.setValue([55, 36, 'A'], true)",
+    ],
+    39: [
+      "GF_WOMENS_BATHROOM_VENUS_DISC",
+      "$gameSelfSwitches.setValue([55, 39, 'A'], true)",
+    ],
+  },
+
+  69: {
+    16: ["LAUNDRY_CLOTH_1", "$gameSelfSwitches.setValue([69, 16, 'A'], true)"],
+    9: ["LAUNDRY_KLYSOX_1", "$gameSelfSwitches.setValue([69, 9, 'A'], true)"],
+    10: ["LAUNDRY_T_SHIRT", "$gameSelfSwitches.setValue([69, 10, 'A'], true)"],
+    15: ["LAUNDRY_CLOTH_2", "$gameSelfSwitches.setValue([69, 15, 'A'], true)"],
+    6: ["LAUNDRY_DENIM_VEST", "$gameSelfSwitches.setValue([69, 6, 'A'], true)"],
+    21: [
+      "LAUNDRY_CERULEAN_FIGURE",
+      "$gameSelfSwitches.setValue([69, 21, 'A'], true)",
+    ],
+    8: ["LAUNDRY_KLYSOX_2", "$gameSelfSwitches.setValue([69, 8, 'A'], true)"],
+    7: ["LAUNDRY_KLYSOX_3", "$gameSelfSwitches.setValue([69, 7, 'A'], true)"],
+  },
+
+  240: {
+    21: [
+      "LL_SAPPER_PISTOL_BULLETS",
+      "$gameSelfSwitches.setValue([240, 21, 'A'], true)",
+    ],
+    42: [
+      "LL_SAPPER_EXPLOSIVE",
+      "$gameSelfSwitches.setValue([240, 42, 'A'], true)",
+    ],
+    41: [
+      "LL_SAPPER_DETONATOR",
+      "$gameSelfSwitches.setValue([240, 41, 'A'], true)",
+    ],
+    30: [
+      "LL_MEDICAL_VODKA",
+      "$gameSelfSwitches.setValue([240, 30, 'A'], true)",
+    ],
+    31: [
+      "LL_MEDICAL_FIRST_AID_KIT",
+      "$gameSelfSwitches.setValue([240, 31, 'A'], true)",
+    ],
+    32: [
+      "LL_MEDICAL_TONIC",
+      "$gameSelfSwitches.setValue([240, 32, 'A'], true)",
+    ],
+    40: [
+      "LL_MEDICAL_BANDAGES",
+      "$gameSelfSwitches.setValue([240, 40, 'A'], true)",
+    ],
+    33: [
+      "LL_MEDICAL_HEALING_SPRAY",
+      "$gameSelfSwitches.setValue([240, 33, 'A'], true)",
+    ],
+    43: [
+      "LL_MINESWEEPER_SPADE",
+      "$gameSelfSwitches.setValue([240, 43, 'A'], true)",
+    ],
+    22: [
+      "LL_MINESWEEPER_VODKA",
+      "$gameSelfSwitches.setValue([240, 22, 'A'], true)",
+    ],
+  },
+
+  71: {
+    24: [
+      "MAILROOM_OFFICE_CELL_PHONE",
+      "$gameSelfSwitches.setValue([71, 24, 'A'], true)",
+    ],
+    22: [
+      "MAILROOM_OFFICE_SUN_DISC",
+      "$gameSelfSwitches.setValue([71, 22, 'A'], true)",
+    ],
+  },
+
+  72: {
+    3: [
+      "MAILROOM_STORAGE_SATURN_DISC",
+      "$gameSelfSwitches.setValue([72, 3, 'A'], true)",
+    ],
+    2: [
+      "MAILROOM_STORAGE_DUCT_TAPE",
+      "$gameSelfSwitches.setValue([72, 2, 'A'], true)",
+    ],
+    6: [
+      "MAILROOM_STORAGE_MAGNUM_BULLETS",
+      "$gameSelfSwitches.setValue([72, 6, 'A'], true)",
+    ],
+    5: [
+      "MAILROOM_STORAGE_SILVER_MAGNUM",
+      "$gameSelfSwitches.setValue([72, 5, 'A'], true)",
+    ],
+  },
+
+  194: {
+    32: [
+      "SEWER_N_TOP_LOCKED_ROOM_VINTAGE_SNEAKERS",
+      "$gameSelfSwitches.setValue([194, 32, 'A'], true)",
+    ],
+  },
+
+  203: {
+    38: [
+      "SEWER_N_LOWER_LOCKED_ROOM_CATAFALQUE",
+      "$gameSelfSwitches.setValue([203, 38, 'A'], true)",
+    ],
+  },
+
+  256: {
+    17: [
+      "SEWER_E_INDIGO_MASK",
+      "$gameSelfSwitches.setValue([256, 17, 'A'], true)",
+    ],
+  },
+
+  196: {
+    17: [
+      "SEWER_NE_BANDAGES",
+      "$gameSelfSwitches.setValue([196, 17, 'A'], true)",
+    ],
+    18: [
+      "SEWER_NE_FIRST_AID_KIT",
+      "$gameSelfSwitches.setValue([196, 18, 'A'], true)",
+    ],
+  },
+
+  255: {
+    6: [
+      "SEWER_DAVID_HARD_HAT",
+      "$gameSelfSwitches.setValue([255, 6, 'A'], true)",
+    ],
+    7: [
+      "SEWER_DAVID_PLASTIC_GLOVES",
+      "$gameSelfSwitches.setValue([255, 7, 'A'], true)",
+    ],
+    8: [
+      "SEWER_DAVID_KLYSOX",
+      "$gameSelfSwitches.setValue([255, 8, 'A'], true)",
+    ],
+    3: ["SEWER_DAVID_MOP", "$gameSelfSwitches.setValue([255, 3, 'A'], true)"],
+    5: [
+      "SEWER_DAVID_RUBBER_BOOTS",
+      "$gameSelfSwitches.setValue([255, 5, 'A'], true)",
+    ],
+  },
+
+  259: {
+    16: [
+      "SEWER_SE_HEALING_SPRAY",
+      "$gameSelfSwitches.setValue([259, 16, 'A'], true)",
+    ],
+    3: [
+      "SEWER_SE_SUPER_EXPLOSIVE",
+      "$gameSelfSwitches.setValue([259, 3, 'A'], true)",
+    ],
+    18: [
+      "SEWER_SE_STIMULANT",
+      "$gameSelfSwitches.setValue([259, 18, 'A'], true)",
+    ],
+    17: [
+      "SEWER_SE_FIREBOMB",
+      "$gameSelfSwitches.setValue([259, 17, 'A'], true)",
+    ],
+  },
+
+  201: {
+    63: [
+      "SEWER_FURNACE_IRIS_KEY",
+      "$gameSelfSwitches.setValue([201, 63, 'A'], true)",
+    ],
+  },
+
+  219: {
+    32: ["SEWER_W_AXE", "$gameSelfSwitches.setValue([219, 32, 'A'], true)"],
+  },
+
+  258: {
+    9: [
+      "SEWER_SW_CHOCKY_BAR",
+      "$gameSelfSwitches.setValue([258, 9, 'A'], true)",
+    ],
+    10: ["SEWER_SW_COLA", "$gameSelfSwitches.setValue([258, 10, 'A'], true)"],
+    11: [
+      "SEWER_SW_MOLOTOV_1",
+      "$gameSelfSwitches.setValue([258, 11, 'A'], true)",
+    ],
+    12: [
+      "SEWER_SW_MOLOTOV_2",
+      "$gameSelfSwitches.setValue([258, 12, 'A'], true)",
+    ],
+  },
+
+  257: {
+    12: [
+      "SEWER_SW_PADDED_JACKET",
+      "$gameSelfSwitches.setValue([257, 12, 'A'], true)",
+    ],
+  },
+
+  87: {
+    32: ["B_UTILITY_JUNK_1", "$gameSelfSwitches.setValue([87, 32, 'A'], true)"],
+    31: ["B_UTILITY_JUNK_2", "$gameSelfSwitches.setValue([87, 31, 'A'], true)"],
+    30: ["B_UTILITY_JUNK_3", "$gameSelfSwitches.setValue([87, 30, 'A'], true)"],
+    33: [
+      "B_UTILITY_DUCT_TAPE_1",
+      "$gameSelfSwitches.setValue([87, 33, 'A'], true)",
+    ],
+    34: [
+      "B_UTILITY_DUCT_TAPE_2",
+      "$gameSelfSwitches.setValue([87, 34, 'A'], true)",
+    ],
+  },
+
+  83: {
+    48: [
+      "FUNGUS_ENTRANCE_MUSHROOM_1",
+      "$gameSelfSwitches.setValue([83, 48, 'A'], true)",
+    ],
+    7: [
+      "FUNGUS_ENTRANCE_MUSHROOM_2",
+      "$gameSelfSwitches.setValue([83, 7, 'A'], true)",
+    ],
+    50: [
+      "FUNGUS_ENTRANCE_MUSHROOM_3",
+      "$gameSelfSwitches.setValue([83, 50, 'A'], true)",
+    ],
+    51: [
+      "FUNGUS_ENTRANCE_MUSHROOM_4",
+      "$gameSelfSwitches.setValue([83, 51, 'A'], true)",
+    ],
+    46: [
+      "FUNGUS_ENTRANCE_MUSHROOM_5",
+      "$gameSelfSwitches.setValue([83, 46, 'A'], true)",
+    ],
+    5: [
+      "FUNGUS_ENTRANCE_MUSHROOM_6",
+      "$gameSelfSwitches.setValue([83, 5, 'A'], true)",
+    ],
+    52: [
+      "FUNGUS_ENTRANCE_MUSHROOM_7",
+      "$gameSelfSwitches.setValue([83, 52, 'A'], true)",
+    ],
+    49: [
+      "FUNGUS_ENTRANCE_MUSHROOM_8",
+      "$gameSelfSwitches.setValue([83, 49, 'A'], true)",
+    ],
+  },
+
+  188: {
+    15: [
+      "FUNGUS_STORE_KEY",
+      "$gameSelfSwitches.setValue([188, 15, 'A'], true)",
+    ],
+  },
+
+  187: {
+    35: [
+      "FUNGUS_NEPTUNE_DISC",
+      "$gameSelfSwitches.setValue([187, 35, 'A'], true)",
+    ],
+  },
+
+  127: {
+    48: [
+      "FUNGUS_DEPTHS_MUSHROOM_1",
+      "$gameSelfSwitches.setValue([127, 48, 'A'], true)",
+    ],
+    49: [
+      "FUNGUS_DEPTHS_MUSHROOM_2",
+      "$gameSelfSwitches.setValue([127, 49, 'A'], true)",
+    ],
+    19: [
+      "FUNGUS_DEPTHS_MUSHROOM_3",
+      "$gameSelfSwitches.setValue([127, 19, 'A'], true)",
+    ],
+    54: [
+      "FUNGUS_DEPTHS_MUSHROOM_4",
+      "$gameSelfSwitches.setValue([127, 54, 'A'], true)",
+    ],
+    5: [
+      "FUNGUS_DEPTHS_MUSHROOM_5",
+      "$gameSelfSwitches.setValue([127, 5, 'A'], true)",
+    ],
+    50: [
+      "FUNGUS_DEPTHS_MUSHROOM_6",
+      "$gameSelfSwitches.setValue([127, 50, 'A'], true)",
+    ],
+    51: [
+      "FUNGUS_DEPTHS_MUSHROOM_7",
+      "$gameSelfSwitches.setValue([127, 51, 'A'], true)",
+    ],
+    27: [
+      "FUNGUS_DEPTHS_MUSHROOM_8",
+      "$gameSelfSwitches.setValue([127, 27, 'A'], true)",
+    ],
+    52: [
+      "FUNGUS_DEPTHS_MUSHROOM_9",
+      "$gameSelfSwitches.setValue([127, 52, 'A'], true)",
+    ],
+    22: [
+      "FUNGUS_DEPTHS_MUSHROOM_10",
+      "$gameSelfSwitches.setValue([127, 22, 'A'], true)",
+    ],
+    53: [
+      "FUNGUS_DEPTHS_MUSHROOM_11",
+      "$gameSelfSwitches.setValue([127, 53, 'A'], true)",
+    ],
+    32: [
+      "FUNGUS_DEPTHS_MUSHROOM_12",
+      "$gameSelfSwitches.setValue([127, 32, 'A'], true)",
+    ],
+    31: [
+      "FUNGUS_DEPTHS_MUSHROOM_13",
+      "$gameSelfSwitches.setValue([127, 31, 'A'], true)",
+    ],
+  },
+
+  339: {
+    12: [
+      "B_PIT_ROOM_AZURE_GREATSWORD",
+      "$gameSelfSwitches.setValue([339, 12, 'A'], true)",
+    ],
+  },
+
+  401: {
+    7: [
+      "B_PIT_WRAPPED_PAINTING",
+      "$gameSelfSwitches.setValue([401, 7, 'A'], true)",
+    ],
+  },
+
+  273: {
+    22: ["B2_MANGA_PILE_1", "$gameSelfSwitches.setValue([273, 22, 'A'], true)"],
+    15: ["B2_DRAWINGS", "$gameSelfSwitches.setValue([273, 15, 'A'], true)"],
+    5: ["B2_TRILBY", "$gameSelfSwitches.setValue([273, 5, 'A'], true)"],
+    17: ["B2_MANGA_PILE_2", "$gameSelfSwitches.setValue([273, 17, 'A'], true)"],
+    8: [
+      "B2_VINTAGE_GAME_CONSOLE",
+      "$gameSelfSwitches.setValue([273, 8, 'A'], true)",
+    ],
+    9: ["B2_ENERGY_DRINK", "$gameSelfSwitches.setValue([273, 9, 'A'], true)"],
+    10: ["B2_BOCKY", "$gameSelfSwitches.setValue([273, 10, 'A'], true)"],
+    23: ["B2_MANGA_PILE_3", "$gameSelfSwitches.setValue([273, 23, 'A'], true)"],
+    6: ["B2_SHURIKEN", "$gameSelfSwitches.setValue([273, 6, 'A'], true)"],
+    4: ["B2_FIGURINE", "$gameSelfSwitches.setValue([273, 4, 'A'], true)"],
+  },
+
+  84: {
+    10: [
+      "BOILER_NORTH_JUNK_1",
+      "$gameSelfSwitches.setValue([84, 10, 'A'], true)",
+    ],
+    11: [
+      "BOILER_NORTH_JUNK_2",
+      "$gameSelfSwitches.setValue([84, 11, 'A'], true)",
+    ],
+    9: [
+      "BOILER_NORTH_JUNK_3",
+      "$gameSelfSwitches.setValue([84, 9, 'A'], true)",
+    ],
+    14: [
+      "BOILER_NORTH_VODKA",
+      "$gameSelfSwitches.setValue([84, 14, 'A'], true)",
+    ],
+  },
+
+  303: {
+    23: [
+      "BOILER_ROOM_SIMPLE_KEY",
+      "$gameSelfSwitches.setValue([303, 23, 'A'], true)",
+    ],
+    33: [
+      "BOILER_ROOM_HEALING_SPRAY",
+      "$gameSelfSwitches.setValue([303, 33, 'A'], true)",
+    ],
+    28: [
+      "BOILER_ROOM_MUSHROOM_1",
+      "$gameSelfSwitches.setValue([303, 28, 'A'], true)",
+    ],
+    27: [
+      "BOILER_ROOM_MUSHROOM_2",
+      "$gameSelfSwitches.setValue([303, 27, 'A'], true)",
+    ],
+  },
+
+  85: {
+    3: [
+      "BOILER_STORAGE_JUNK_1",
+      "$gameSelfSwitches.setValue([85, 3, 'A'], true)",
+    ],
+    5: [
+      "BOILER_STORAGE_JUNK_2",
+      "$gameSelfSwitches.setValue([85, 5, 'A'], true)",
+    ],
+    10: [
+      "BOILER_STORAGE_D_CLOGGER_1",
+      "$gameSelfSwitches.setValue([85, 10, 'A'], true)",
+    ],
+    11: [
+      "BOILER_STORAGE_D_CLOGGER_2",
+      "$gameSelfSwitches.setValue([85, 11, 'A'], true)",
+    ],
+    21: [
+      "BOILER_STORAGE_D_CLOGGER_3",
+      "$gameSelfSwitches.setValue([85, 21, 'A'], true)",
+    ],
+    17: [
+      "BOILER_STORAGE_ICE_MELT_SALT",
+      "$gameSelfSwitches.setValue([85, 17, 'A'], true)",
+    ],
+    6: [
+      "BOILER_STORAGE_DUCT_TAPE_1",
+      "$gameSelfSwitches.setValue([85, 6, 'A'], true)",
+    ],
+    13: [
+      "BOILER_STORAGE_DUCT_TAPE_2",
+      "$gameSelfSwitches.setValue([85, 13, 'A'], true)",
+    ],
+    19: [
+      "BOILER_STORAGE_DUCT_TAPE_3",
+      "$gameSelfSwitches.setValue([85, 19, 'A'], true)",
+    ],
+    24: [
+      "BOILER_STORAGE_MUSK",
+      "$gameSelfSwitches.setValue([85, 24, 'A'], true)",
+    ],
+    9: [
+      "BOILER_STORAGE_KLYSOX_1",
+      "$gameSelfSwitches.setValue([85, 9, 'A'], true)",
+    ],
+    14: [
+      "BOILER_STORAGE_KLYSOX_2",
+      "$gameSelfSwitches.setValue([85, 14, 'A'], true)",
+    ],
+    23: [
+      "BOILER_STORAGE_KLYSOX_3",
+      "$gameSelfSwitches.setValue([85, 23, 'A'], true)",
+    ],
+    8: [
+      "BOILER_STORAGE_GASOLINE_1",
+      "$gameSelfSwitches.setValue([85, 8, 'A'], true)",
+    ],
+    12: [
+      "BOILER_STORAGE_GASOLINE_2",
+      "$gameSelfSwitches.setValue([85, 12, 'A'], true)",
+    ],
+    22: [
+      "BOILER_STORAGE_VINEGAR_1",
+      "$gameSelfSwitches.setValue([85, 22, 'A'], true)",
+    ],
+    7: [
+      "BOILER_STORAGE_VINEGAR_2",
+      "$gameSelfSwitches.setValue([85, 7, 'A'], true)",
+    ],
+  },
+
+  79: {
+    19: [
+      "B_STEVE_DUCT_TAPE",
+      "$gameSelfSwitches.setValue([79, 19, 'A'], true)",
+    ],
+    195: ["B_STEVE_JUNK_1", "$gameSelfSwitches.setValue([79, 195, 'A'], true)"],
+    8: ["B_STEVE_JUNK_2", "$gameSelfSwitches.setValue([79, 8, 'A'], true)"],
+    14: ["B_STEVE_JUNK_3", "$gameSelfSwitches.setValue([79, 14, 'A'], true)"],
+    9: ["B_STEVE_JUNK_4", "$gameSelfSwitches.setValue([79, 9, 'A'], true)"],
+  },
+
+  80: {
+    3: [
+      "B_PLUTO_ROOM_CLAYMORE",
+      "$gameSelfSwitches.setValue([80, 3, 'A'], true)",
+    ],
+  },
+
+  82: {
+    5: [
+      "B_NEPTUNE_ROOM_FIRST_AID_KIT",
+      "$gameSelfSwitches.setValue([82, 5, 'A'], true)",
+    ],
+    6: [
+      "B_NEPTUNE_ROOM_TONIC",
+      "$gameSelfSwitches.setValue([82, 6, 'A'], true)",
+    ],
+    3: [
+      "B_NEPTUNE_ROOM_ELIXIR",
+      "$gameSelfSwitches.setValue([82, 3, 'A'], true)",
+    ],
+    7: [
+      "B_NEPTUNE_ROOM_BANDAGES",
+      "$gameSelfSwitches.setValue([82, 7, 'A'], true)",
+    ],
+  },
+
+  81: {
+    10: [
+      "B_STORAGE_LOCKED_MEDICATION",
+      "$gameSelfSwitches.setValue([81, 10, 'A'], true)",
+    ],
+    6: [
+      "B_STORAGE_LOCKED_ANTIDOTE",
+      "$gameSelfSwitches.setValue([81, 6, 'A'], true)",
+    ],
+    5: [
+      "B_STORAGE_LOCKED_EYE_DROPS",
+      "$gameSelfSwitches.setValue([81, 5, 'A'], true)",
+    ],
+    9: [
+      "B_STORAGE_LOCKED_SMELLING_SALTS",
+      "$gameSelfSwitches.setValue([81, 9, 'A'], true)",
+    ],
+    7: [
+      "B_STORAGE_LOCKED_BALM",
+      "$gameSelfSwitches.setValue([81, 7, 'A'], true)",
+    ],
+    3: [
+      "B_STORAGE_LOCKED_LAPIS_BAND",
+      "$gameSelfSwitches.setValue([81, 3, 'A'], true)",
+    ],
+    4: [
+      "B_STORAGE_LOCKED_ANXIETY_MEDS",
+      "$gameSelfSwitches.setValue([81, 4, 'A'], true)",
+    ],
+    8: [
+      "B_STORAGE_LOCKED_DISINFECTANT",
+      "$gameSelfSwitches.setValue([81, 8, 'A'], true)",
+    ],
+  },
+
+  78: {
+    51: ["SECURITY_CASH", "$gameSelfSwitches.setValue([78, 51, 'A'], true)"],
+  },
+
+  77: {
+    6: [
+      "SECURITY_STORAGE_GRENADE_1",
+      "$gameSelfSwitches.setValue([77, 6, 'A'], true)",
+    ],
+    3: [
+      "SECURITY_STORAGE_GRENADE_2",
+      "$gameSelfSwitches.setValue([77, 3, 'A'], true)",
+    ],
+    10: [
+      "SECURITY_STORAGE_DUCT_TAPE_1",
+      "$gameSelfSwitches.setValue([77, 10, 'A'], true)",
+    ],
+    11: [
+      "SECURITY_STORAGE_DUCT_TAPE_2",
+      "$gameSelfSwitches.setValue([77, 11, 'A'], true)",
+    ],
+    7: [
+      "SECURITY_STORAGE_SMG",
+      "$gameSelfSwitches.setValue([77, 7, 'A'], true)",
+    ],
+    8: ["SMG_AMMO_1", "$gameSelfSwitches.setValue([77, 8, 'A'], true)"],
+    9: ["SMG_AMMO_2", "$gameSelfSwitches.setValue([77, 9, 'A'], true)"],
+    5: [
+      "SECURITY_STORAGE_FLACK_JACKET",
+      "$gameSelfSwitches.setValue([77, 5, 'A'], true)",
+    ],
+    4: [
+      "SECURITY_STORAGE_COMBAT_KNIFE",
+      "$gameSelfSwitches.setValue([77, 4, 'A'], true)",
+    ],
+  },
+
+  430: {
+    16: [
+      "B_CAR_LUMPY_ITEM",
+      "$gameSelfSwitches.setValue([430, 16, 'A'], true)",
+    ],
+  },
+
+  86: {
+    74: ["B_CAR_JUNK_1", "$gameSelfSwitches.setValue([86, 74, 'A'], true)"],
+    72: ["B_CAR_JUNK_2", "$gameSelfSwitches.setValue([86, 72, 'A'], true)"],
+    73: ["B_CAR_JUNK_3", "$gameSelfSwitches.setValue([86, 73, 'A'], true)"],
+    76: ["B_CAR_GASOLINE", "$gameSelfSwitches.setValue([86, 76, 'A'], true)"],
+    60: [
+      "B_CAR_FLAMETHROWER",
+      "$gameSelfSwitches.setValue([86, 60, 'A'], true)",
+    ],
+  },
+
+  308: {
+    1: [
+      "HELL_CAR_LAIR_SWORD",
+      "$gameSelfSwitches.setValue([308, 1, 'A'], true)",
+    ],
+  },
+
+  272: {
+    3: [
+      "B_STUART_FIRST_AID_KIT",
+      "$gameSelfSwitches.setValue([272, 3, 'A'], true)",
+    ],
+    4: [
+      "B_STUART_SIMPLE_KEY",
+      "$gameSelfSwitches.setValue([272, 4, 'A'], true)",
+    ],
+  },
+
+  299: {
+    7: ["B1_FRYING_PAN", "$gameSelfSwitches.setValue([299, 7, 'A'], true)"],
+  },
+
+  300: {
+    4: [
+      "B1_BEDROOM_FUR_COAT",
+      "$gameSelfSwitches.setValue([300, 4, 'A'], true)",
+    ],
+    7: ["B1_BEDROOM_ALBUM", "$gameSelfSwitches.setValue([300, 7, 'A'], true)"],
+  },
+
+  301: {
+    4: [
+      "B1_BEDROOM_FIRST_AID_KIT",
+      "$gameSelfSwitches.setValue([301, 4, 'A'], true)",
+    ],
+  },
+
+  302: {
+    6: [
+      "B1_BATHROOM_KLYSOX",
+      "$gameSelfSwitches.setValue([302, 6, 'A'], true)",
+    ],
+    7: [
+      "B1_BATHROOM_ANXIETY_MEDS",
+      "$gameSelfSwitches.setValue([302, 7, 'A'], true)",
+    ],
+    5: [
+      "B1_BATHROOM_STIMULANT",
+      "$gameSelfSwitches.setValue([302, 5, 'A'], true)",
+    ],
+    16: [
+      "B1_BATHROOM_URANUS_DISC",
+      "$gameSelfSwitches.setValue([302, 16, 'A'], true)",
+    ],
+  },
+
+  457: {
+    8: ["F4_AXE", "$gameSelfSwitches.setValue([457, 8, 'A'], true)"],
+    6: ["F4_HEALING_SPRAY", "$gameSelfSwitches.setValue([457, 6, 'A'], true)"],
+    7: ["F4_THROWING_DARTS", "$gameSelfSwitches.setValue([457, 7, 'A'], true)"],
+  },
+
+  456: {
+    6: ["F4_STIMULANT", "$gameSelfSwitches.setValue([456, 6, 'A'], true)"],
+    1: ["F4_OLD_TAPE", "$gameSelfSwitches.setValue([456, 1, 'A'], true)"],
+  },
+
+  30: {
+    10: [
+      "STAIRWELL_POOL_CUE",
+      "$gameSelfSwitches.setValue([30, 10, 'A'], true)",
+    ],
+  },
+
+  // TODO: OTHER MEAT WORLD DROPS IN HERE
+  408: {
+    10: [
+      "APT_32_BATHROOM_BITING_BOOTS",
+      "$gameSelfSwitches.setValue([408, 10, 'A'], true)",
+    ],
+  },
 };
 
 const TRASH_CAN_ITEM_OVERRIDES = {
@@ -1243,6 +2657,73 @@ const TRASH_CAN_ITEM_OVERRIDES = {
   115: {
     13: ["APT_27_TRASH", "$gameSelfSwitches.setValue([115, 13, 'A'], true)"],
   },
+
+  96: {
+    8: [
+      "FRED_ENTRYWAY_TRASH",
+      "$gameSelfSwitches.setValue([96, 8, 'A'], true)",
+    ],
+  },
+
+  96: {
+    8: [
+      "FRED_ENTRYWAY_TRASH",
+      "$gameSelfSwitches.setValue([96, 8, 'A'], true)",
+    ],
+  },
+
+  100: {
+    17: ["RAT_APT_TRASH", "$gameSelfSwitches.setValue([100, 17, 'A'], true)"],
+  },
+
+  56: {
+    3: ["MUTT_TRASH", "$gameSelfSwitches.setValue([56, 3, 'A'], true)"],
+  },
+
+  60: {
+    5: ["GF_JANITORS_TRASH", "$gameSelfSwitches.setValue([60, 5, 'A'], true)"],
+  },
+
+  69: {
+    4: ["LAUNDRY_TRASH", "$gameSelfSwitches.setValue([69, 4, 'A'], true)"],
+  },
+
+  87: {
+    6: ["B_UTILITY_TRASH_1", "$gameSelfSwitches.setValue([87, 6, 'A'], true)"],
+    7: ["B_UTILITY_TRASH_2", "$gameSelfSwitches.setValue([87, 7, 'A'], true)"],
+  },
+
+  84: {
+    5: [
+      "BOILER_NORTH_TRASH_1",
+      "$gameSelfSwitches.setValue([84, 5, 'A'], true)",
+    ],
+    7: [
+      "BOILER_NORTH_TRASH_2",
+      "$gameSelfSwitches.setValue([84, 7, 'A'], true)",
+    ],
+  },
+
+  78: {
+    30: ["SECURITY_TRASH", "$gameSelfSwitches.setValue([78, 30, 'A'], true)"],
+  },
+
+  451: {
+    8: ["F4_TRASH_CAN_1", "$gameSelfSwitches.setValue([451, 8, 'A'], true)"],
+    9: ["F4_TRASH_CAN_1", "$gameSelfSwitches.setValue([451, 9, 'A'], true)"],
+  },
+
+  452: {
+    14: ["F4_TRASH_CAN_3", "$gameSelfSwitches.setValue([452, 14, 'A'], true)"],
+    15: ["F4_TRASH_CAN_4", "$gameSelfSwitches.setValue([452, 15, 'A'], true)"],
+    16: ["F4_TRASH_CAN_5", "$gameSelfSwitches.setValue([452, 16, 'A'], true)"],
+    17: ["F4_TRASH_CAN_6", "$gameSelfSwitches.setValue([452, 17, 'A'], true)"],
+  },
+
+  405: {
+    2: ["F4_TRASH_CAN_7", "$gameSelfSwitches.setValue([405, 2, 'A'], true)"],
+    7: ["F4_TRASH_CAN_8", "$gameSelfSwitches.setValue([405, 7, 'A'], true)"],
+  },
 };
 
 const FRIDGE_ITEM_OVERRIDES = {
@@ -1288,6 +2769,33 @@ const FRIDGE_ITEM_OVERRIDES = {
       "$gameSelfSwitches.setValue([330, 7, 'A'], true)",
     ],
   },
+  100: {
+    6: ["RAT_APT_FRIDGE", "$gameSelfSwitches.setValue([100, 6, 'A'], true)"],
+  },
+  294: {
+    4: ["APT_18_S_FRIDGE", "$gameSelfSwitches.setValue([294, 4, 'A'], true)"],
+  },
+  57: {
+    5: ["MUTT_FRIDGE_1", "$gameSelfSwitches.setValue([57, 5, 'A'], true)"],
+    9: ["MUTT_FRIDGE_1", "$gameSelfSwitches.setValue([57, 9, 'A'], true)"],
+    10: ["MUTT_FRIDGE_1", "$gameSelfSwitches.setValue([57, 10, 'A'], true)"],
+  },
+  258: {
+    6: ["SEWER_SW_FRIDGE", "$gameSelfSwitches.setValue([258, 6, 'A'], true)"],
+  },
+  273: {
+    27: ["B2_FRIDGE", "$gameSelfSwitches.setValue([273, 27, 'A'], true)"],
+  },
+  299: {
+    6: ["B1_FRIDGE", "$gameSelfSwitches.setValue([299, 6, 'A'], true)"],
+  },
+  358: {
+    30: [
+      "B_MAURICE_FRIDGE",
+      "$gameSelfSwitches.setValue([358, 30, 'A'], true)",
+    ],
+  },
+  // LL_FRIDGE
 };
 
 const FIRST_AID_BOX_ITEM_OVERRIDES = {
@@ -1295,6 +2803,30 @@ const FIRST_AID_BOX_ITEM_OVERRIDES = {
     8: [
       "APT_30_SW_FIRST_AID_BOX",
       "$gameSelfSwitches.setValue([278, 8, 'A'], true)",
+    ],
+  },
+  53: {
+    7: [
+      "CORNER_STORE_STORAGE_FIRST_AID_BOX",
+      "$gameSelfSwitches.setValue([53, 7, 'A'], true)",
+    ],
+  },
+  54: {
+    38: [
+      "GF_MENS_BATHROOM_FIRST_AID_BOX",
+      "$gameSelfSwitches.setValue([54, 38, 'A'], true)",
+    ],
+  },
+  257: {
+    10: [
+      "SEWER_SW_FIRST_AID_BOX_LOOT",
+      "$gameSelfSwitches.setValue([257, 10, 'A'], true)",
+    ],
+  },
+  56: {
+    29: [
+      "MUTT_FIRST_AID_BOX",
+      "$gameSelfSwitches.setValue([56, 29, 'A'], true)",
     ],
   },
 };
@@ -1335,6 +2867,43 @@ const BATHROOM_MIRROR_ITEM_OVERRIDES = {
       "APT_24_BATHROOM_MEDICINE_CABINET",
       "$gameSelfSwitches.setValue([331, 5, 'A'], true)",
     ],
+  },
+
+  302: {
+    4: [
+      "B1_BATHROOM_MEDICINE_CABINET",
+      "$gameSelfSwitches.setValue([302, 4, 'A'], true)",
+    ],
+  },
+};
+
+const ROACH_ITEM_OVERRIDES = {
+  89: {
+    5: "F3_CLOSET_ROACH",
+  },
+  288: {
+    7: "APT_20_BATHROOM_ROACH",
+  },
+  116: {
+    4: "APT_27_BATHROOM_ROACH",
+  },
+  42: {
+    2: "FRED_HALL_CLOSET_ROACH",
+  },
+
+  237: {
+    6: "FRED_HAT_ROOM_ROACH",
+  },
+  239: {
+    9: "TRUE_FRED_CLOSET_ROACH",
+  },
+  59: {
+    3: "MUTT_STORAGE_ROACH_1",
+    4: "MUTT_STORAGE_ROACH_2",
+  },
+  79: {
+    18: "B_STEVE_ROACH_1",
+    21: "B_STEVE_ROACH_2",
   },
 };
 
@@ -1422,7 +2991,7 @@ UpdateEventContent.overrideOverworldPickups = function (currentMapId) {
       {
         code: 401,
         indent: 1,
-        parameters: [`Find {${itemName}}\\C[0].`],
+        parameters: [`Find ${itemName}.`],
       },
       {
         code: 355,
@@ -1479,6 +3048,7 @@ UpdateEventContent.overrideOverworldPickups = function (currentMapId) {
         LookOutsideAPClient.getItemName(name),
       );
       event.pages[0].image = LookOutsideAPClient.getItemImage(name);
+      event._direction = 4; // force event to face the proper direction
     }
 
     if (name === "APT_37_CRAFTING_KIT") {
@@ -1536,7 +3106,7 @@ UpdateEventContent.overrideTrashSearchPickups = function (currentMapId) {
       {
         code: 401,
         indent: 0,
-        parameters: [`Find {${itemName}}\\C[0].`],
+        parameters: [`Find ${itemName}.`],
       },
       {
         code: 101,
@@ -1676,7 +3246,7 @@ UpdateEventContent.overrideFridgePickups = function (currentMapId) {
       {
         code: 401,
         indent: 1,
-        parameters: [`Find ${itemName}\\C[0].`],
+        parameters: [`Find ${itemName}.`],
       },
       {
         code: 122,
@@ -1765,7 +3335,7 @@ UpdateEventContent.overrideFirstAidBoxPickups = function (currentMapId) {
       {
         code: 401,
         indent: 1,
-        parameters: [`Inside, you find ${itemName}\\C[0].`],
+        parameters: [`Inside, you find ${itemName}.`],
       },
       {
         code: 0,
@@ -1845,7 +3415,7 @@ UpdateEventContent.overrideMirrorPickups = function (currentMapId) {
       {
         code: 401,
         indent: 1,
-        parameters: [`Inside, you find ${itemName}\\C[0].`],
+        parameters: [`Inside, you find ${itemName}.`],
       },
       {
         code: 0,
@@ -1887,10 +3457,25 @@ UpdateEventContent.overrideMirrorPickups = function (currentMapId) {
   }
 };
 
+UpdateEventContent.overrideRoachPickups = function (currentMapId) {
+  const eventsToOverride = ROACH_ITEM_OVERRIDES[currentMapId];
+  if (eventsToOverride) {
+    Object.keys(eventsToOverride).forEach((eventId) => {
+      const [name, script] = eventsToOverride[eventId];
+      const event = $dataMap.events[eventId];
+      // clear out the roach being added to inventory
+      event.pages[0].list = event.pages[0].list.filter(
+        (listItem) => listItem.code !== 126,
+      );
+    });
+  }
+};
+
 UpdateEventContent.overrideAllPickups = function (currentMapId) {
   UpdateEventContent.overrideOverworldPickups(currentMapId);
   UpdateEventContent.overrideTrashSearchPickups(currentMapId);
   UpdateEventContent.overrideFridgePickups(currentMapId);
   UpdateEventContent.overrideFirstAidBoxPickups(currentMapId);
   UpdateEventContent.overrideMirrorPickups(currentMapId);
+  UpdateEventContent.overrideRoachPickups(currentMapId);
 };
