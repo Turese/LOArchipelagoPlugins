@@ -345,7 +345,9 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
   function clearRatKingCrown() {
     if (lastLoadedMapId === 92 && ev.id === 45) {
       // clear out rusty crown drop
-      ev.pages[2].list = ev.pages[2].list.filter((pageItem) => pageItem.code !== 128);
+      ev.pages[2].list = ev.pages[2].list.filter(
+        (pageItem) => pageItem.code !== 128,
+      );
 
       // change message for both bow and non bow cases
 
@@ -478,6 +480,39 @@ ClearExplicitDrops.clearTroopsDrops = function () {
     );
   }
   clearMaskedShadowEncounters();
+
+  // clear both the gun sale and the recruitment itself
+  function clearLeighRecruitmentEvent() {
+    const leighTroopList = JsonEx.makeDeepCopy(originalTroops[34]).pages[0]
+      .list;
+
+    // make us never hit gun dialogue
+    const checkHardModeIndex = leighTroopList.findIndex(
+      (listEntry) => listEntry.code == 111 && listEntry.parameters[1] == 8,
+    );
+    if (checkHardModeIndex !== -1)
+      leighTroopList[checkHardModeIndex] = {
+        code: 111,
+        indent: 1,
+        parameters: [0, FALSE_SWITCH_ID, 0],
+      };
+
+    const leighRecruitIndex = leighTroopList.findIndex(
+      (listEntry) => listEntry.code == 121 && listEntry.parameters[0] == 34,
+    );
+    if (leighRecruitIndex !== -1)
+      leighTroopList[leighRecruitIndex] = {
+        code: 355,
+        indent: 1,
+        parameters: [
+          "$gameSelfSwitches.setValue([93, 3, 'D'], true); BattleManager.abort();",
+        ],
+      };
+    $dataTroops[34].pages[0].list = leighTroopList;
+  }
+  clearLeighRecruitmentEvent();
+
+  // make the recruit option hit self switch instead, and then end there.
 
   troopsUpdated = true;
 };

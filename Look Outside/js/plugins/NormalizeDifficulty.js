@@ -8,6 +8,9 @@
  * @help
  */
 
+const TRUE_SWITCH_ID = 1399;
+const FALSE_SWITCH_ID = 1400;
+
 var NormalizeDifficulty = NormalizeDifficulty || {};
 
 NormalizeDifficulty.applyChanges = function () {
@@ -27,9 +30,6 @@ NormalizeDifficulty.applyChanges = function () {
   // in-game difficulty variable ids
   const HARDMODE = 8;
   const EASYMODE = 13;
-
-  const TRUE_SWITCH_ID = 1399;
-  const FALSE_SWITCH_ID = 1400;
 
   // todo: this focuses on fights with extra events or unique spawns
   // ive skipped the rat encounters on floor 1 where hardmode adds more rats
@@ -64,7 +64,9 @@ NormalizeDifficulty.applyChanges = function () {
   ];
 
   // make all events conform to a difficulty no matter which one was selected
-  function normalizeOverworldEvents(dataMap, targetMode = TO_HARDMODE) {
+
+  // make all easymode-only events always appear
+  function forceEasyModeEvents(dataMap) {
     if (!dataMap) return;
     dataMap.events.forEach((evt) => {
       if (!evt) return;
@@ -73,39 +75,36 @@ NormalizeDifficulty.applyChanges = function () {
         const conditions = page.conditions;
 
         if (conditions.switch1Valid) {
-          if (
-            [EASYMODE, HARDMODE].includes(page.conditions.switch1Id) ||
-            [EASYMODE, HARDMODE].includes(page.conditions.switch2Id)
-          )
-            console.log(
-              `Difficulty check found! event ${evt.id} on map ${mostRecentMapId}`,
-            );
-          if (page.conditions.switch1Id === HARDMODE)
-            page.conditions.switch1Id =
-              targetMode === TO_HARDMODE ? TRUE_SWITCH_ID : FALSE_SWITCH_ID;
           if (page.conditions.switch1Id === EASYMODE)
-            page.conditions.switch1Id =
-              targetMode === TO_EASYMODE ? TRUE_SWITCH_ID : FALSE_SWITCH_ID;
+            page.conditions.switch1Id = TRUE_SWITCH_ID;
         }
         if (conditions.switch2Valid) {
-          if (page.conditions.switch2Id === HARDMODE)
-            page.conditions.switch2Id =
-              targetMode === TO_HARDMODE ? TRUE_SWITCH_ID : FALSE_SWITCH_ID;
           if (page.conditions.switch2Id === EASYMODE)
-            page.conditions.switch2Id =
-              targetMode === TO_EASYMODE ? TRUE_SWITCH_ID : FALSE_SWITCH_ID;
+            page.conditions.switch2Id = TRUE_SWITCH_ID;
         }
       });
     });
   }
 
-  function forceExtendedLeighChase(dataMap) {
-    // set all hardmode checks in map 8 (leigh chase version of floor 2 hall) to always be true
-    // there's also hardmode checks in 372 (extended chase section) even though it's only
-    // reachable in hardmode
-    if (mostRecentMapId === 8 || mostRecentMapId === 372) {
-      normalizeOverworldEvents(dataMap, TO_HARDMODE);
-    }
+  // make all easymode-only events always appear
+  function forceHardModeEvents(dataMap) {
+    if (!dataMap) return;
+    dataMap.events.forEach((evt) => {
+      if (!evt) return;
+      if (!evt.pages) return;
+      evt.pages.forEach((page) => {
+        const conditions = page.conditions;
+
+        if (conditions.switch1Valid) {
+          if (page.conditions.switch1Id === HARDMODE)
+            page.conditions.switch1Id = TRUE_SWITCH_ID;
+        }
+        if (conditions.switch2Valid) {
+          if (page.conditions.switch2Id === HARDMODE)
+            page.conditions.switch2Id = TRUE_SWITCH_ID;
+        }
+      });
+    });
   }
 
   // allows fridges to randomly attack you like on hardmode
@@ -148,6 +147,24 @@ NormalizeDifficulty.applyChanges = function () {
     });
   }
 
+  function forceHardModeBeastChaseItems(ev, lastLoadedMapId) {
+    if (lastLoadedMapId == 8) {
+      if (ev.id == 61) {
+        // checks switch 1049; if you defeated hardmode grinning beast
+        // switching it to 81; if you faced the beast at all
+        ev.pages[0].conditions.switch1Id = 81;
+      }
+    }
+
+    // make grinning beast gun always drop (on hard mode it only drops when you dont fight)
+    // and the first page of bullets always visible (hardmode gets a special page)
+    if (lastLoadedMapId == 7) {
+      if (ev.id == 31 || ev.id == 30) {
+        if (ev.pages.length > 2) ev.pages.splice(2, 3);
+      }
+    }
+  }
+
   // allow player to autosave and manually save anywhere, no matter the difficulty
   // replaces the check for easy mode to the true switch
   function activateEasyModeSaving(commonEvents) {
@@ -155,15 +172,12 @@ NormalizeDifficulty.applyChanges = function () {
     const easyModeSaveCheck = manageSaveRights?.list.find(
       (listEntry) =>
         listEntry.code === 111 && listEntry.parameters[1] === EASYMODE,
-    )
+    );
     if (easyModeSaveCheck) easyModeSaveCheck.parameters[1] = TRUE_SWITCH_ID;
   }
 
   const _onMapLoaded = Scene_Map.prototype.onMapLoaded;
   Scene_Map.prototype.onMapLoaded = function () {
-    sSw(TRUE_SWITCH_ID, true);
-    sSw(FALSE_SWITCH_ID, false); // todo: do this somewhere better
-
     _onMapLoaded.call(this);
   };
 
@@ -171,7 +185,8 @@ NormalizeDifficulty.applyChanges = function () {
   DataManager.onLoad = function (object) {
     _dataManagerOnLoad.call(this, object);
     if (object === $dataMap) {
-      forceExtendedLeighChase(object);
+      forceEasyModeEvents(object);
+      forceHardModeEvents(object);
     }
     if (object === $dataTroops) {
       addHardmodeSpawnsToTroops(object);
@@ -180,6 +195,17 @@ NormalizeDifficulty.applyChanges = function () {
       forceHardmodeFridgeFightLogic(object);
       activateEasyModeSaving(object);
     }
+  };
+
+  const _Game_Event_event = Game_Event.prototype.event;
+  Game_Event.prototype.event = function () {
+    const ev = _Game_Event_event.call(this);
+
+    if (!ev) return ev;
+
+    forceHardModeBeastChaseItems(ev, lastLoadedMapId);
+
+    return ev;
   };
 };
 

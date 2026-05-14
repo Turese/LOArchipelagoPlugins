@@ -338,6 +338,7 @@ const LOCATION_ID_MAPPING = {
   F2_GRINNING_BEAST_COMBAT_VICTORY: 1509,
   F2_RECRUIT_ASTER: 1510,
   F2_ASTER_COMBAT_VICTORY: 1511,
+  F2_GRENADE: 1512,
   APT_20_JEANNE_COMBAT_VICTORY: 1601,
   APT_20_CLEANEREX: 1602,
   APT_20_MOP: 1603,
@@ -383,6 +384,7 @@ const LOCATION_ID_MAPPING = {
   APT_21_DARK_ROOM_KEY: 1718,
   APT_21_DARK_ROOM_PHOTO: 1719,
   APT_21_DARK_ROOM_PHOTO_PAPER: 1732,
+  APT_21_PUROCARE: 1733,
   APT_21_BEDROOM_BEEF_1: 1720,
   APT_21_BEDROOM_BEEF_2: 1721,
   APT_21_BEDROOM_BEEF_3: 1722,
@@ -1166,6 +1168,9 @@ const LOCATION_ID_MAPPING = {
 // custom switch ids (these are unused in the base game as of version 2.3
 // i use 1399 and 1400 in NormalizeDifficulty
 const APT_31_TELESCOPE_DISC_EXPOSURE_SWITCH = 1398;
+const APT_37_PHOTO_PAPER_EXPOSURE_SWITCH = 1397;
+
+// setting every recruitment check to self switch D on their own event?
 
 SELF_SWITCH_LOCATIONS = {
   3: {
@@ -1636,6 +1641,7 @@ SELF_SWITCH_LOCATIONS = {
     16: { A: "APT_21_TRASH" },
     28: { A: "APT_21_FRIDGE" },
     12: { A: "APT_21_CROSSWORD_BOOK" },
+    11: { A: "APT_21_PUROCARE" },
   },
 
   11: {
@@ -1809,10 +1815,16 @@ SELF_SWITCH_LOCATIONS = {
 
   7: {
     1: { A: "F2_APT_21_KEY" },
+    61: { A: "F2_GRENADE" },
     30: { A: "F2_PISTOL" },
     31: { A: "F2_PISTOL_BULLETS_1" },
     32: { A: "F2_PISTOL_BULLETS_2" },
     60: { D: "F2_GRASSHOPPER_COMBAT_VICTORY" },
+    14: { D: "F2_RECRUIT_ASTER" }
+  },
+
+  93: {
+    3: { D: "BEAST_DEN_RECRUIT_LEIGH" }
   },
 
   372: {

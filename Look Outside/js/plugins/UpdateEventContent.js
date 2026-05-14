@@ -761,10 +761,6 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   },
 
   288: {
-    5: [
-      "APT_20_BATHROOM_MEDICINE_CABINET",
-      "$gameSelfSwitches.setValue([288, 5, 'A'], true)",
-    ],
     6: [
       "APT_20_BATHROOM_SOAP",
       "$gameSelfSwitches.setValue([288, 6, 'A'], true)",
@@ -794,6 +790,10 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   },
 
   9: {
+    11: [
+      "APT_21_PUROCARE",
+      "$gameSelfSwitches.setValue([9, 11, 'A'], true)",
+    ],
     12: [
       "APT_21_CROSSWORD_BOOK",
       "$gameSelfSwitches.setValue([9, 12, 'A'], true)",
@@ -1065,8 +1065,11 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   },
 
   7: {
-    // picking up key bri
-    1: ["F2_APT_21_KEY", "$gameSelfSwitches.setValue([7, 2, 'A'], true); setSybilMajorStory(2); $gamePlayer.reserveTransfer(8, 32, 8, 0, 2);"],
+    // picking up key sets off the beast
+    1: [
+      "F2_APT_21_KEY",
+      "$gameSelfSwitches.setValue([7, 1, 'A'], true); setSybilMajorStory(2); $gamePlayer.reserveTransfer(8, 32, 8, 0, 2);",
+    ],
     30: ["F2_PISTOL", "$gameSelfSwitches.setValue([7, 30, 'A'], true)"],
     31: [
       "F2_PISTOL_BULLETS_1",
@@ -1076,6 +1079,7 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
       "F2_PISTOL_BULLETS_2",
       "$gameSelfSwitches.setValue([7, 32, 'A'], true)",
     ],
+    61: ["F2_GRENADE", "$gameSelfSwitches.setValue([7, 61, 'A'], true)"],
   },
 
   372: {
@@ -3051,9 +3055,11 @@ UpdateEventContent.overrideOverworldPickups = function (currentMapId) {
       event._direction = 4; // force event to face the proper direction
     }
 
-    if (name === "APT_37_CRAFTING_KIT") {
+    if (name === "APT_37_CRAFTING_KIT" || name === "APT_21_CROSSWORD_BOOK") {
+      // for crafting kit
       // need to change page one on both the livingroom and bathroom versions
       // so they check the custom self switch instead of the ownership switch
+      // crossword book is a similar situation
       event.pages[1].conditions = {
         actorId: 1,
         actorValid: false,

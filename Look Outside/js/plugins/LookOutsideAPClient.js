@@ -120,6 +120,10 @@ LookOutsideAPClient.applyOverrides = function () {
     // doing this here so we have access to $gamePlayer
 
     _extractSaveContents.call(this, contents);
+
+    // set my universal true and universal false
+    sSw(TRUE_SWITCH_ID, true);
+    sSw(FALSE_SWITCH_ID, false);
   };
 };
 
@@ -275,9 +279,13 @@ LookOutsideAPClient.watchLocations = function () {
 
     if (SWITCH_LOCATIONS[switchId]) {
       const locationId = SWITCH_LOCATIONS[switchId];
-      if (locationId) {
+      if (locationId === "F2_GRINNING_BEAST_COMBAT_VICTORY")
+        console.log("SETTING THIS");
+      if (locationId && value) {
+        // make sure the switch is set to true
         LookOutsideAPClient.setLocation(LOCATION_ID_MAPPING[locationId]);
         if (locationId === "F2_GRINNING_BEAST_COMBAT_VICTORY") {
+          console.log("why am i here?");
           // todo: find a better place for this? this location should imply the following location:
           LookOutsideAPClient.setLocation(
             LOCATION_ID_MAPPING["F2_GRINNING_BEAST_CHASE_POOL_CUE"],
@@ -362,11 +370,11 @@ LookOutsideAPClient.getItemName = function (
   apLocationName,
   excludeBrackets = false,
 ) {
-  // todo: actually get the item name
   const locationId = LOCATION_ID_MAPPING[apLocationName];
-  const mapping = $gamePlayer.LOCATION_NAME_MAPPING
-    ? $gamePlayer.LOCATION_NAME_MAPPING[locationId]
-    : { player: null, name: "Randomized Item", color: 24 };
+  let mapping = $gamePlayer.LOCATION_NAME_MAPPING[locationId];
+
+  if (!mapping)
+    mapping = { player: null, name: "Randomized Item", itemColor: 24 };
 
   const { player, name, itemColor } = mapping;
 

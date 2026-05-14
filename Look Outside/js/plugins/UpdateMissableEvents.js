@@ -30,18 +30,116 @@ UpdateMissableEvents.applyEventUpdates = function (lastLoadedMapId, ev) {
       });
     }
   }
-  fixElevatorButtons()
+  fixElevatorButtons();
 
   // remove leighs gun sale from hardmode dialogue
   function fixLeighGunSale() {
     //TODO: IMPLEMENT
   }
 
-  // make it so you can refight grinning beast until you kill it
+  // update page 2 of the apt 21 key event to trigger grinning beast if you walk over it
   function leighRematch() {
-    //TODO: IMPLEMENT
-    // update page 2 of the apt 21 key event to trigger grinning beast if you walk over it,
-    // make a new page 3 empty state
+    if (lastLoadedMapId === 7 && ev.id === 1) {
+      ev.pages[1].list = [
+        {
+          code: 111,
+          indent: 0,
+          parameters: [0, 119, 1],
+        },
+        {
+          code: 355, // Script command
+          indent: 1,
+          // 84: floor2slowdown (set on the room after youve escaped)
+          // 81: floor2spook  // triggered by floor in first room; makes the door make a noise
+          // 82: floor2spookspawn // triggered by floor in first room; spawns the grinning beast
+          // 83: floor2done // despawns grinning beast
+          // 1050: grinningbeastprime // triggered by floor in second room
+          // 1105: leighpreventfight (if player is actively opening door)
+          // reset sfx on grinning beast spawn
+          // reset sfx for grinning beast door
+          // reset animation for grabby hands
+          // reset chase sequence for room 1 beast
+          parameters: [
+            "sSw(84, false), sSw(83, false); sSw(82, false); sSw(81, false); sSw(1050,false); sSw(1105, false); $gameSelfSwitches.setValue([8, 10, 'A'], false); $gameSelfSwitches.setValue([8, 4, 'A'], false); $gameSelfSwitches.setValue([8, 4, 'B'], false); $gameSelfSwitches.setValue([8, 46, 'A'], false); $gameSelfSwitches.setValue([8, 46, 'B'], false); $gameSelfSwitches.setValue([8, 14, 'B'], false); $gameSelfSwitches.setValue([8, 14, 'A'], false);",
+          ],
+        },
+        {
+          code: 201,
+          indent: 1,
+          parameters: [0, 8, 31, 8, 0, 2],
+        },
+        {
+          code: 0,
+          indent: 1,
+          parameters: [],
+        },
+        {
+          code: 412,
+          indent: 0,
+          parameters: [],
+        },
+        {
+          code: 0,
+          indent: 0,
+          parameters: [],
+        },
+      ];
+
+      ev.pages[1].trigger = 1;
+    }
+  }
+  leighRematch();
+
+  // removes the switch setters that set 119 = false when walking east after fighting the beast
+  function leighWillWait() {
+    if (lastLoadedMapId == 186) {
+      if (ev.id == 5 || ev.id == 3 || ev.id == 2) {
+        ev.pages[0].list = ev.pages[0].list.filter(
+          (listEntry) => listEntry.code !== 121,
+        );
+      }
+    }
+  }
+  leighWillWait();
+
+
+  const recruitLeaveCondition = {
+          actorId: 1,
+          actorValid: false,
+          itemId: 1,
+          itemValid: false,
+          selfSwitchCh: "D",
+          selfSwitchValid: true,
+          switch1Id: 1,
+          switch1Valid: false,
+          switch2Id: 1,
+          switch2Valid: false,
+          variableId: 1,
+          variableValid: false,
+          variableValue: 0,
+        }
+  // for overworld recruits; the switch that makes them leave their spots 
+  // if recruited is replaced with self switch D
+  function forceRecruitsToStay() {
+    
+    //leigh
+    if (lastLoadedMapId == 93 && ev.id == 3) {
+      ev.pages[2].conditions = recruitLeaveCondition; 
+    }
+
+    //lyle
+    if (lastLoadedMapId == 9 && ev.id == 14) {
+      ev.pages[6].conditions = recruitLeaveCondition;
+    }
+    
+
+    //aster
+    if (lastLoadedMapId == 7 && ev.id == 14) {
+      ev.pages[4].conditions = recruitLeaveCondition;
+    }
+
+    //joel
+
   }
 
   // make it so grasshopper doesnt leave after leighs quest

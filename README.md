@@ -36,9 +36,9 @@ Creates an event activated by the calendar in the player's bedroom that undoes e
 Updates overworld events so that events missed by the player can be retried.
 
 - [x] door to wounded neighbor's bathroom no longer blocks an unarmed player like on explorer/survivor
-- [ ] Update trigger for grinning beast chase so it can be retried
-- [ ] Replace gun sale from leigh with the overworld drop (cant think of a better place to reinsert it)
-- [ ] Make presence of overworld potential recruit encounters separate from their presence in player apartment (Lyle, Audrey, Aster, Leigh, Roaches)
+- [x] Update trigger for grinning beast chase so it can be retried
+- [x] Allow player to recruit leigh even if they walked away after defeating the grinning beast
+- [x] Make presence of overworld potential recruit encounters separate from their presence in player apartment (Lyle, Audrey, Aster, Leigh, Roaches, Joel) // todo: joel
 - [ ] Updates apartment 13 to give player drop as soon as they have rat baby item, no sacrifice required
 - [ ] Updates tooth family members to spawn in upgraded forms even if they've been killed prior
 - [ ] Make audrey recruit unmissable (infinite advice cans, remove disposition check)
@@ -54,6 +54,8 @@ Updates overworld events so that events missed by the player can be retried.
 Goes through the game's events to remove everything that explicitly grants an item to the player
 
 - [x] Clear out starting arms + inventory from opening cutscene (currently only clearing games)
+- [x] Delete gun sale from leigh
+- [x] Clear out recruitment from leigh
 - [x] Speed up opening cutscene (maybe find a better file for this one?)
 - [x] Clear out bookshelf screamatorium event
 - [x] Clear out wounded neighbor knife stealing event
@@ -61,6 +63,7 @@ Goes through the game's events to remove everything that explicitly grants an it
 - [x] Clear out masked shadow tongue gift
 - [x] Clear out masked shadow recruitment
 - [x] Clear out masked shadow hallway gift (wip, custom sprite won't render due to sprite facing the wrong direction)
+- [x] Clear out elevator access granted from killing elevator freak
 - [ ] Clear out event for Audrey to find specific items from bosses (bonus - add ability for them to be manually triggerable by the player and recorded in state)
 - [x] Clear out rusted crown gift from rat king event
 - [ ] Clear out keys dropped by the bug people living in the basement apartments in hard mode

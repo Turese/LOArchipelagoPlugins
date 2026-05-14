@@ -169,6 +169,12 @@
       "parameters": {}
     },
     {
+      "name": "NormalizeDifficulty",
+      "status": true,
+      "description": "Make the same locations available in all difficulties",
+      "parameters": {}
+    },
+    {
       "name": "BackInTime",
       "status": true,
       "description": "Back in time: speak to the calendar to get the option to travel through time!",
@@ -202,12 +208,6 @@
       "name": "MainMenuAPOptions",
       "status": true,
       "description": "New option in main menu to input AP room, player, password",
-      "parameters": {}
-    },
-    {
-      "name": "NormalizeDifficulty",
-      "status": true,
-      "description": "Make the same locations available in all difficulties",
       "parameters": {}
     },
     {
