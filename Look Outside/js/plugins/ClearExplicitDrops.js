@@ -375,6 +375,43 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
     // and from the arthropods from B1
   }
   clearBasementKeyDrops();
+
+  function clearglitchElixirDrops() {
+    if (lastLoadedMapId === 441 && ev.id === 7) {
+      const filteredList = ev.pages[0].list.filter(
+        (listItem) => listItem.code !== 126, // dont add elixirs to inventory
+      );
+
+      const messageIndex = filteredList.findIndex(
+        (listItem) =>
+          listItem.code === 401 && listItem.parameters[0].contains("Elixir"),
+      );
+      if (messageIndex) {
+        filteredList.parameters[0] = `You ha v e rec ei v ed ${LookOutsideAPClient.getItemName("GLITCH_W_GLITCH_ELIXIR")}.`;
+      }
+      ev.pages[0].list = filteredList;
+    }
+  }
+  clearglitchElixirDrops();
+
+  function clearAmbroseDrops() {
+    if (lastLoadedMapId === 442 && ev.id === 9) {
+      const filteredList = ev.pages[0].list.filter(
+        (listItem) => listItem.code !== 126, // dont add ambrose bits to inventory
+      );
+
+      const messageIndex = filteredList.findIndex(
+        (listItem) =>
+          listItem.code === 401 &&
+          listItem.parameters[0].contains("AAAAAAAAAAAAAAAAAAAAAAAAAMBROS"),
+      );
+      if (messageIndex) {
+        filteredList.parameters[0] = `You \C[5]fi\C[20]nd ${LookOutsideAPClient.getItemName("GLITCH_SW_AMBROSE")}.`;
+      }
+      ev.pages[0].list = filteredList;
+    }
+  }
+  clearAmbroseDrops();
 };
 
 ClearExplicitDrops.clearAllEnemiesDrops = function () {

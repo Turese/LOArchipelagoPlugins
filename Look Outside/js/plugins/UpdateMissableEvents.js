@@ -23,11 +23,12 @@ UpdateMissableEvents.applyEventUpdates = function (lastLoadedMapId, ev) {
   function fixElevatorButtons() {
     if (lastLoadedMapId === 74 && ev.id === 2) {
       // at the start of the event, set the elevator game to be finished.
-      ev.pages[1].list.unshift({
-        code: 111,
+      // make sure you only add the elevator function set once
+      ev.pages[1].list[0] = {
+        code: 355,
         indent: 1,
-        parameters: [1, 817, 0, 4, 0],
-      });
+        parameters: ["sVr(1, 0), sVr(817, 4)"],
+      };
     }
   }
   fixElevatorButtons();
@@ -102,36 +103,33 @@ UpdateMissableEvents.applyEventUpdates = function (lastLoadedMapId, ev) {
   }
   leighWillWait();
 
-
   const recruitLeaveCondition = {
-          actorId: 1,
-          actorValid: false,
-          itemId: 1,
-          itemValid: false,
-          selfSwitchCh: "D",
-          selfSwitchValid: true,
-          switch1Id: 1,
-          switch1Valid: false,
-          switch2Id: 1,
-          switch2Valid: false,
-          variableId: 1,
-          variableValid: false,
-          variableValue: 0,
-        }
-  // for overworld recruits; the switch that makes them leave their spots 
+    actorId: 1,
+    actorValid: false,
+    itemId: 1,
+    itemValid: false,
+    selfSwitchCh: "D",
+    selfSwitchValid: true,
+    switch1Id: 1,
+    switch1Valid: false,
+    switch2Id: 1,
+    switch2Valid: false,
+    variableId: 1,
+    variableValid: false,
+    variableValue: 0,
+  };
+  // for overworld recruits; the switch that makes them leave their spots
   // if recruited is replaced with self switch D
   function forceRecruitsToStay() {
-    
     //leigh
     if (lastLoadedMapId == 93 && ev.id == 3) {
-      ev.pages[2].conditions = recruitLeaveCondition; 
+      ev.pages[2].conditions = recruitLeaveCondition;
     }
 
     //lyle
     if (lastLoadedMapId == 9 && ev.id == 14) {
       ev.pages[6].conditions = recruitLeaveCondition;
     }
-    
 
     //aster
     if (lastLoadedMapId == 7 && ev.id == 14) {
@@ -140,7 +138,12 @@ UpdateMissableEvents.applyEventUpdates = function (lastLoadedMapId, ev) {
 
     //joel
 
+    //papineau
   }
+  forceRecruitsToStay();
+
+  // papineau is always in the closet on gf
+  function noEarlyPapineau() {}
 
   // make it so grasshopper doesnt leave after leighs quest
   function permaGrasshopper() {
@@ -180,13 +183,6 @@ UpdateMissableEvents.applyEventUpdates = function (lastLoadedMapId, ev) {
   // allows lyle to spawn in the fungal lair even if he is recruited
   function fixPhillippeRecruitMechanics() {
     //TODO: IMPLEMENT
-  }
-
-  // allows Aster to spawn in the f2 hallway even if he is recruited
-  function fixAsterRecruitMechanics() {
-    //TODO: IMPLEMENT
-    //update page 5 of his event on floor 2 (7) event 14
-    //since we need a separate switch to check recruiting him, replace that page's switch check with the new one
   }
 
   // fixes apartment 13 events so walking in with rat baby gives you the disc instantly

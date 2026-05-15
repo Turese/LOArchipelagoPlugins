@@ -85,6 +85,7 @@ LookOutsideAPClient.applyOverrides = function () {
   const _Game_Map_setup = Game_Map.prototype.setup;
   Game_Map.prototype.setup = function (mapId) {
     BackInTime.createCalendarBackInTimeEvent(mapId);
+    BlackoutLamp.createLampBlackoutEvent(mapId);
     ClearExplicitDrops.applyDatamapClears(mapId);
     UpdateEventContent.overrideAllPickups(mapId);
 
@@ -95,6 +96,7 @@ LookOutsideAPClient.applyOverrides = function () {
   DataManager.onLoad = function (object) {
     if (object === $dataMap) {
       BackInTime.createCalendarBackInTimeEvent(lastLoadedMapId);
+      BlackoutLamp.createLampBlackoutEvent(lastLoadedMapId);
       UpdateEventContent.overrideAllPickups(lastLoadedMapId);
       ClearExplicitDrops.applyDatamapClears(lastLoadedMapId);
     }
@@ -170,6 +172,11 @@ LookOutsideAPClient.initializeItemIndex = function () {
  31 '#8595a1'
 
 */
+const TRAP_MAPPINGS = [
+  { player: null, itemColor: 22, name: "Paper-Maché Crown" },
+  { player: null, itemColor: 22, name: "Elixer" },
+  { player: null, itemColor: 22, name: "Jasper Roommate" },
+]
 
 LookOutsideAPClient.initializeLocationNames = async function () {
   locations = Object.values(LOCATION_ID_MAPPING);
@@ -180,15 +187,18 @@ LookOutsideAPClient.initializeLocationNames = async function () {
       await client.scout([l]).then((results) => {
         if (results.length > 0) {
           const item = results[0];
+          if (item.trap) {
+            locationMapping[l] = { trueName: item.name, isTrap: true, ...TRAP_MAPPINGS[0]} // todo: get a deterministic random index
+          } else {
           let itemColor = 3;
           if (item.progression) itemColor = 15;
           else if (item.useful) itemColor = 22;
-          else if (item.trap) itemColor = 10;
           else if (item.filler) itemColor = 4;
           let player;
           if (item.receiver.slot === item.sender.slot) player = null;
           else player = `${item.receiver}'s `;
           locationMapping[l] = { player, itemColor, name: item.name };
+          }
         }
       });
     }
@@ -358,8 +368,9 @@ LookOutsideAPClient.updateItems = function () {
     } else if (itemId < 5000) {
       window.InsertAPItems.insertMiscItem(itemId - 4000);
     } else if (itemId < 6000) {
-      window.InsertAPItems.insertMiscItem(itemId - 5000);
-      // todo: this will be resource packs eventually
+      window.InsertAPItems.insertResourcePack(itemId - 6000);
+    } else if (itemId < 7000) {
+      window.InsertAPItems.insertTrap(itemId - 7000);
     } else {
       console.warn("ITEMTYPE NYI", itemId);
     }

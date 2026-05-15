@@ -790,10 +790,7 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   },
 
   9: {
-    11: [
-      "APT_21_PUROCARE",
-      "$gameSelfSwitches.setValue([9, 11, 'A'], true)",
-    ],
+    11: ["APT_21_PUROCARE", "$gameSelfSwitches.setValue([9, 11, 'A'], true)"],
     12: [
       "APT_21_CROSSWORD_BOOK",
       "$gameSelfSwitches.setValue([9, 12, 'A'], true)",
@@ -859,7 +856,10 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
       "APT_21_BEDROOM_SPACE_TRUCKERZ",
       "$gameSelfSwitches.setValue([10, 16, 'A'], true)",
     ],
-    20: ["APT_21_MNW", "$gameSelfSwitches.setValue([10, 20, 'A'], true)"],
+    20: [
+      "APT_21_BEDROOM_MNW",
+      "$gameSelfSwitches.setValue([10, 20, 'A'], true)",
+    ],
     13: [
       "APT_21_BEDROOM_FORK",
       "$gameSelfSwitches.setValue([10, 13, 'A'], true)",
@@ -2737,8 +2737,8 @@ const FRIDGE_ITEM_OVERRIDES = {
   108: {
     6: ["APT_31_FRIDGE", "sSw(690, true);"],
   },
-  31: {
-    6: ["APT_32_FRIDGE", "$gameSelfSwitches.setValue([31, 6, 'A'], true)"],
+  31: { // looting the fridge summons baby teeth
+    6: ["APT_32_FRIDGE", "$gameSelfSwitches.setValue([31, 6, 'A'], true); sSw(105, true);"],
   },
   120: {
     21: ["APT_34_FRIDGE", "$gameSelfSwitches.setValue([120, 21, 'A'], true)"],
@@ -3477,6 +3477,11 @@ UpdateEventContent.overrideRoachPickups = function (currentMapId) {
   }
 };
 
+UpdateEventContent.overrideDrawerPickups = function (currentMapId) {
+
+}
+
+
 UpdateEventContent.overrideAllPickups = function (currentMapId) {
   UpdateEventContent.overrideOverworldPickups(currentMapId);
   UpdateEventContent.overrideTrashSearchPickups(currentMapId);
@@ -3484,4 +3489,5 @@ UpdateEventContent.overrideAllPickups = function (currentMapId) {
   UpdateEventContent.overrideFirstAidBoxPickups(currentMapId);
   UpdateEventContent.overrideMirrorPickups(currentMapId);
   UpdateEventContent.overrideRoachPickups(currentMapId);
+  UpdateEventContent.overrideDrawerPickups(currentMapId);
 };

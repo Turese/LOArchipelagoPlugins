@@ -34,6 +34,10 @@
       "target": "img/characters/GameCarts.png"
     },
     {
+      "source": "js/plugins/BlackoutLamp.js",
+      "target": "js/plugins/BlackoutLamp.js"
+    },
+    {
       "source": "js/plugins/BackInTime.js",
       "target": "js/plugins/BackInTime.js"
     },
@@ -60,10 +64,6 @@
     {
       "source": "js/plugins/NormalizeDifficulty.js",
       "target": "js/plugins/NormalizeDifficulty.js"
-    },
-    {
-      "source": "js/plugins/ReportLocations.js",
-      "target": "js/plugins/ReportLocations.js"
     },
     {
       "source": "js/plugins/Unarmed.js",
@@ -181,6 +181,12 @@
       "parameters": {}
     },
     {
+      "name": "BlackoutLamp",
+      "status": true,
+      "description": "If player interacts with the lamp after unlocking elevator, they can toggle blackout",
+      "parameters": {}
+    },
+    {
       "name": "ClearExplicitDrops",
       "status": true,
       "description": "Clears item drops from the game",
@@ -208,12 +214,6 @@
       "name": "MainMenuAPOptions",
       "status": true,
       "description": "New option in main menu to input AP room, player, password",
-      "parameters": {}
-    },
-    {
-      "name": "ReportLocations",
-      "status": true,
-      "description": "uses stored values for archipelago locations to report which ones have been reached",
       "parameters": {}
     },
     {
