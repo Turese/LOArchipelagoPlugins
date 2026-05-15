@@ -42,6 +42,10 @@
       "target": "js/plugins/BackInTime.js"
     },
     {
+      "source": "js/plugins/ShopHelpers.js",
+      "target": "js/plugins/ShopHelpers.js"
+    },
+    {
       "source": "js/plugins/ClearExplicitDrops.js",
       "target": "js/plugins/ClearExplicitDrops.js"
     },
@@ -162,7 +166,7 @@
       "description": "Archipelago.js build for Look Outside client",
       "parameters": {}
     },
-    {      
+    {
       "name": "LocationIds",
       "status": true,
       "description": "global variable mapping of all location ids",
@@ -184,6 +188,12 @@
       "name": "BlackoutLamp",
       "status": true,
       "description": "If player interacts with the lamp after unlocking elevator, they can toggle blackout",
+      "parameters": {}
+    },
+    {
+      "name": "ShopHelpers",
+      "status": true,
+      "description": "helper function for overriding merchants and vending machines",
       "parameters": {}
     },
     {

@@ -28,6 +28,16 @@ ClearExplicitDrops.applyDatamapClears = function (lastLoadedMapId) {
           return listItem.code !== 230; // remove the 60 frame waits for good measure
         });
         startingpage.list = newList;
+        startingpage.list.push({
+          code: 355,
+          indent: 1,
+          // foughtwoundedman = true; allows hallway encounters
+          // self switch ensures stairwell door never allows early papineau
+          parameters: [
+            `sSw(94, true); $gameSelfSwitches.setValue([27, 8, 'B'], true); $gameSelfSwitches.setValue([27, 7, 'B'], true); sSw(${TRUE_SWITCH_ID}, true);
+    sSw(${FALSE_SWITCH_ID}, false);`,
+          ],
+        });
       }
     }
   }
@@ -306,6 +316,47 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
   }
   clearF3HallwayPlanterEvent();
 
+  function clearF3HallwayVendingMachineEvent() {
+    if (lastLoadedMapId === 6 && ev.id === 25) {
+      // theres too many things to change here so im
+      // just recreating the page
+      const cardTrickName = LookOutsideAPClient.getItemName(
+        "F3_PLAYING_CARD",
+        true,
+      );
+      const cheezName = LookOutsideAPClient.getItemName(
+        "F3_VENDING_MACHINE_CHEESE",
+        true,
+      );
+      const chipsName = LookOutsideAPClient.getItemName(
+        "F3_VENDING_MACHINE_CHIPS",
+        true,
+      );
+      const spicyChipsName = LookOutsideAPClient.getItemName(
+        "F3_VENDING_MACHINE_SPICY",
+        true,
+      );
+      const gummiBearName = LookOutsideAPClient.getItemName(
+        "F3_VENDING_MACHINE_GUMMI_BEARS",
+        true,
+      );
+      const onionOsName = LookOutsideAPClient.getItemName(
+        "F3_VENDING_MACHINE_ONIONOS",
+        true,
+      );
+
+      ev.pages[1].list = ShopHelpers.getF3VendingMachineList(
+        cardTrickName,
+        cheezName,
+        chipsName,
+        spicyChipsName,
+        gummiBearName,
+        onionOsName,
+      );
+    }
+  }
+  clearF3HallwayVendingMachineEvent();
+
   function clearElevatorFreakEvent() {
     // the elevator access switch is also used to tell whether the freak is dead; lets change it to a self switch
     if (lastLoadedMapId === 74 && ev.id === 3) {
@@ -548,6 +599,18 @@ ClearExplicitDrops.clearTroopsDrops = function () {
     $dataTroops[34].pages[0].list = leighTroopList;
   }
   clearLeighRecruitmentEvent();
+
+  function clearRoachesRecruitmentEvent() {
+    const roachTroopList = JsonEx.makeDeepCopy(originalTroops[279]).pages[0]
+      .list;
+
+    // clear out the part that sets roaches as a recruit;
+    // we can already use roach event >= 40 as the location check
+    $dataTroops[279].pages[0].list = roachTroopList.filter(
+      (listEntry) => !(listEntry.code == 121 && listEntry.parameters[0] == 249),
+    );
+  }
+  clearRoachesRecruitmentEvent()
 
   // make the recruit option hit self switch instead, and then end there.
 

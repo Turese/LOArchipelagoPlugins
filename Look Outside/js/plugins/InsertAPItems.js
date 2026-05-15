@@ -94,7 +94,7 @@ InsertAPItems.insertRecruit = function (name) {
     sSw(34, true);
     // she needs to manually acquire the grinning beast skill
     $gameActors.actor(5).learnSkill(65);
-    setSibylMajorStory(53);
+    setSybilMajorStory(53);
   }
   if (name === "Hellen") {
     sSw(35, true);

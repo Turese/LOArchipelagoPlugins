@@ -95,8 +95,6 @@ LookOutsideAPClient.applyOverrides = function () {
   const _dataManagerOnLoad = DataManager.onLoad;
   DataManager.onLoad = function (object) {
     if (object === $dataMap) {
-      BackInTime.createCalendarBackInTimeEvent(lastLoadedMapId);
-      BlackoutLamp.createLampBlackoutEvent(lastLoadedMapId);
       UpdateEventContent.overrideAllPickups(lastLoadedMapId);
       ClearExplicitDrops.applyDatamapClears(lastLoadedMapId);
     }
@@ -123,9 +121,6 @@ LookOutsideAPClient.applyOverrides = function () {
 
     _extractSaveContents.call(this, contents);
 
-    // set my universal true and universal false
-    sSw(TRUE_SWITCH_ID, true);
-    sSw(FALSE_SWITCH_ID, false);
   };
 };
 
@@ -368,9 +363,9 @@ LookOutsideAPClient.updateItems = function () {
     } else if (itemId < 5000) {
       window.InsertAPItems.insertMiscItem(itemId - 4000);
     } else if (itemId < 6000) {
-      window.InsertAPItems.insertResourcePack(itemId - 6000);
+      window.InsertAPItems.insertResourcePack(itemId - 5000);
     } else if (itemId < 7000) {
-      window.InsertAPItems.insertTrap(itemId - 7000);
+      window.InsertAPItems.insertTrap(itemId - 6000);
     } else {
       console.warn("ITEMTYPE NYI", itemId);
     }

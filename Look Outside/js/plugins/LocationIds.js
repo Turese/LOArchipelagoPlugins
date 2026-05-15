@@ -1342,7 +1342,7 @@ SELF_SWITCH_LOCATIONS = {
   33: {
     2: { A: "APT_32_CHILD_BEDROOM_BEN_COMBAT_VICTORY" },
     7: { C: "APT_32_CHILD_BEDROOM_BASEBALL_CAP" },
-    4: { C: "APT_32_CHILD_BEDROOM_TEDDY_BEAR" },
+    4: { A: "APT_32_CHILD_BEDROOM_TEDDY_BEAR" },
   },
 
   34: {
@@ -2834,11 +2834,21 @@ VARIABLE_LOCATIONS = {
     value: 3,
     location: "APT_33_LIVING_ROOM_SCREAMATORIUM",
   },
-  372: {
-    relation: ">=",
-    value: 40,
-    location: "APT_33_BATHROOM_RECRUIT_ROACHES",
-  },
+
+  376: [
+    {
+      // roachDispo; is hit whether or not roaches is already recruited
+      relation: ">=",
+      value: 100,
+      location: "APT_33_BATHROOM_RECRUIT_ROACHES",
+    },
+    {
+      // this the dispo where they declare war
+      relation: "<=",
+      value: -50,
+      location: "APT_33_ROACH_WAR",
+    },
+  ],
   741: { relation: ">=", value: 2, location: "F3_PLAYING_CARD" },
   906: {
     relation: ">=",
@@ -2876,11 +2886,11 @@ VARIABLE_LOCATIONS = {
     { relation: ">=", value: 10, location: "APT_38_PIERRE_CLOWN_DRAWING" },
     { relation: ">=", value: 17, location: "APT_38_PIERRE_CLOWN_WIG" },
   ], // 17 is when you lose, 20 is when you win
-  81: {
+  /*81: {
     relation: ">=",
     value: 4,
     location: "GAME_SKILL_WAKE_THE_BLOOD_KNIGHT",
-  } /*
+  } 
   82: { relation: ">=", value: 5, location: "GAME_SKILL_WIZARDS_HELL" },
   83: { relation: ">=", value: 2, location: "GAME_SKILL_SUPER_JUMPLAD" },
   84: { relation: ">=", value: 5, location: "GAME_SKILL_SUPER_JUMPLAD_3" },
@@ -2899,8 +2909,13 @@ VARIABLE_LOCATIONS = {
   97: { relation: ">=", value: 4, location: "GAME_SKILL_SPACE_TRUCKERZ" },
   98: { relation: ">=", value: 4, location: "GAME_SKILL_REPTILE_FOOTBALL" },
   99: { relation: ">=", value: 5, location: "GAME_SKILL_CROSSWORD_CHALLENGE" },
-  */,
+  */
   // this is way too annoying to play, every game gets 1 play
+  81: {
+    relation: ">=",
+    value: 1,
+    location: "GAME_SKILL_WAKE_THE_BLOOD_KNIGHT",
+  },
   82: { relation: ">=", value: 1, location: "GAME_SKILL_WIZARDS_HELL" },
   83: { relation: ">=", value: 1, location: "GAME_SKILL_SUPER_JUMPLAD" },
   84: { relation: ">=", value: 1, location: "GAME_SKILL_SUPER_JUMPLAD_3" },

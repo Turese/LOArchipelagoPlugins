@@ -165,17 +165,20 @@ NormalizeDifficulty.applyChanges = function () {
     }
   }
 
-  // allow player to autosave and manually save anywhere, no matter the difficulty
-  // replaces the check for easy mode to the true switch
-  function activateEasyModeSaving(commonEvents) {
-    const manageSaveRights = commonEvents[114];
-    const easyModeSaveCheck = manageSaveRights?.list.find(
-      (listEntry) =>
-        listEntry.code === 111 && listEntry.parameters[1] === EASYMODE,
-    );
-    if (easyModeSaveCheck) easyModeSaveCheck.parameters[1] = TRUE_SWITCH_ID;
-  }
+  // always enable saves, even in places like the roof and rat hell
+  DataManager.isSaveEnabled = function () {
+    return true;
+  };
 
+  // shoutout to LaughingLeader's alwaysAutosave mod
+  // for the pointers as to which functions to override
+  Window_MenuCommand.prototype.isSaveEnabled = () => DataManager.isSaveEnabled;
+
+  Window_MenuCommand.prototype.addSaveCommand = function () {
+    if (this.needsCommand("save")) {
+      this.addCommand(TextManager.save, "save", true);
+    }
+  };
   const _onMapLoaded = Scene_Map.prototype.onMapLoaded;
   Scene_Map.prototype.onMapLoaded = function () {
     _onMapLoaded.call(this);
@@ -193,7 +196,6 @@ NormalizeDifficulty.applyChanges = function () {
     }
     if (object === $dataCommonEvents) {
       forceHardmodeFridgeFightLogic(object);
-      activateEasyModeSaving(object);
     }
   };
 

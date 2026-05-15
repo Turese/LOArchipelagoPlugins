@@ -1908,7 +1908,7 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     44: ["GF_HERBICIDE", "$gameSelfSwitches.setValue([47, 44, 'A'], true)"],
   },
 
-  278: {
+  54: {
     39: [
       "GF_MENS_BATHROOM_SIMPLE_KEY",
       "$gameSelfSwitches.setValue([278, 39, 'A'], true)",
@@ -2743,8 +2743,8 @@ const FRIDGE_ITEM_OVERRIDES = {
   120: {
     21: ["APT_34_FRIDGE", "$gameSelfSwitches.setValue([120, 21, 'A'], true)"],
   },
-  36: {
-    6: ["APT_37_FRIDGE", "$gameSelfSwitches.setValue([36, 6, 'A'], true)"],
+  35: {
+    6: ["APT_37_FRIDGE", "$gameSelfSwitches.setValue([35, 6, 'A'], true)"],
   },
   353: {
     10: ["APT_38_FRIDGE", "$gameSelfSwitches.setValue([353, 10, 'A'], true)"],
@@ -3035,6 +3035,7 @@ UpdateEventContent.overrideOverworldPickups = function (currentMapId) {
   Object.keys(eventsToOverride).forEach((eventId) => {
     const [name, script] = eventsToOverride[eventId];
     const event = $dataMap.events[eventId];
+    console.log(event, eventId)
     // the rose from the masked shadow is a special case because
     // it's the only pickup that has a later event page
     // overriding only the first possible page here
@@ -3045,8 +3046,10 @@ UpdateEventContent.overrideOverworldPickups = function (currentMapId) {
         LookOutsideAPClient.getItemName("F3_MASKED_SHADOW_GIFT"),
         "A gift from the masked shadow? ...",
       );
+      event.pages[3].directionFix = true;
       event.pages[3].image = LookOutsideAPClient.getItemImage(name);
     } else {
+      console.log(event)
       event.pages[0].list = getAPItemPickupList(
         script,
         LookOutsideAPClient.getItemName(name),
