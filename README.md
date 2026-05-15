@@ -10,6 +10,12 @@ Runs with the 2.1 build of [archipelago.js](https://archipelago.js.org/stable/)
 
 Creates an event activated by the calendar in the player's bedroom that undoes events that may block the player from future actions.
 
+## BlackoutLamp.js
+
+Lets player activate/deactivate the blackout (prior to it being fully solved by the player) by interacting with the lamp in their bedroom.
+
+The lamp moves out into the open after juicebox arrives.
+
 ### Features: 
 - [x] Ability to set current day 1-15
 - [ ] Ability to bring Joel back to life when he's been killed by the player
@@ -64,6 +70,7 @@ Goes through the game's events to remove everything that explicitly grants an it
 - [x] Clear out masked shadow recruitment
 - [x] Clear out masked shadow hallway gift (wip, custom sprite won't render due to sprite facing the wrong direction)
 - [x] Clear out elevator access granted from killing elevator freak
+- [x] Clear out glitch world gifts (ambrose, 99 glitch elixir)
 - [ ] Clear out event for Audrey to find specific items from bosses (bonus - add ability for them to be manually triggerable by the player and recorded in state)
 - [x] Clear out rusted crown gift from rat king event
 - [ ] Clear out keys dropped by the bug people living in the basement apartments in hard mode
@@ -77,7 +84,7 @@ Goes through the game's events to remove everything that explicitly grants an it
 - [ ] Clear out item exchange when using the projector with void disc / photo paper
 - [ ] Clear out ability to acquire more photo paper
 - [ ] Clear out item exchange when giving lyle / using darkroom on exposed paper
-- [ ] Clear out item exchange when using empty tape on recorder
+- [ ] Clear out item exchange when using any tape on recorder
 - [ ] Clear out painter's key reward from killing every part of Toxic Fred
 - [ ] Clear out all explicit Fred rewards (final Fred rewards and intermediate rewards from the facetaker)
 - [ ] Clear out gift from Jasper upon locking in offerings
@@ -85,11 +92,12 @@ Goes through the game's events to remove everything that explicitly grants an it
 
 # UpdateEventContent.js
 
-- [x] Update item events to not grant items and display randomized item name (f3 and f2)
-- [x] Update trash can events to not grant items and display randomized item name (f3 and f2)
+- [x] Update item events to not grant items and display randomized item name
+- [x] Update trash can events to not grant items and display randomized item name
+- [x] Update roach events to not grant items and display randomized item name
 - [ ] Update drawer loot events to not grant items and display randomized item name
-- [ ] Update first aid box events to not grant items and display randomized item name
-- [ ] Update bathroom cabinet events to not grant items and display randomized item name
+- [x] Update first aid box events to not grant items and display randomized item name
+- [x] Update bathroom cabinet events to not grant items and display randomized item name
 
 
 ## GoHome.js
@@ -111,14 +119,13 @@ Adds support for a player state that's missing both left and right arms, necessa
 
 Functionality for inserting any item into the game at any time, necessary for AP to grant items.
 
-- [ ] Mass replacement of overworld item pickups to show icon for new item, not grant item (WIP)
 - [x] Ability to grant individual items, weapons, and gear to the player.
-- [ ] Ability to grant any skill to the player (WIP) works for game skills, but is missing Leigh's event skill
+- [x] Ability to grant any skill to the player
 - [x] Ability to grant each arm individually (using logic from Unarmed plugin)
-- [ ] Ability to grant pre-defined resource packs (money + items)
+- [x] Ability to grant pre-defined resource packs (money + items)
 - [x] Ability to grant any recruit
 - [ ] Ability to randomize rat baby growth spurt as "progressive rat baby"
-- [ ] Ability to grant custom traps (reduce Sam's maintenance stats, add random status ailments to party)
+- [x] Ability to grant custom traps (reduce Sam's maintenance stats, add random status ailments to party)
 
 ## MainMenuAPOptions.js
 
