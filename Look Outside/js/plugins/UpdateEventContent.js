@@ -2860,10 +2860,10 @@ const BATHROOM_MIRROR_ITEM_OVERRIDES = {
       "$gameSelfSwitches.setValue([12, 10, 'A'], true)",
     ],
   },
-  355: {
+  335: {
     3: [
       "APT_22_BATHROOM_MEDICINE_CABINET",
-      "$gameSelfSwitches.setValue([355, 3, 'A'], true)",
+      "$gameSelfSwitches.setValue([335, 3, 'A'], true)",
     ],
   },
   331: {

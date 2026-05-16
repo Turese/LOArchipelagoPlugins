@@ -142,25 +142,50 @@ UpdateMissableEvents.applyEventUpdates = function (lastLoadedMapId, ev) {
   }
   forceRecruitsToStay();
 
-  // papineau is always in the closet on gf
-  function noEarlyPapineau() {}
-
   // make it so grasshopper doesnt leave after leighs quest
   function permaGrasshopper() {
     // remove page 4 of its event on floor 2 (7) event 60
     //TODO: IMPLEMENT
   }
 
-  // add separate phase 2 forms of the tooth family
-  // for members whose phase 2 shares an event with their phase 1 (joel, madison)
-  function addPhase2ToothFamily() {
-    //TODO: IMPLEMENT
-  }
-
   // allows each tooth family phase to spawn even if theyve been killed in another form
   function fixToothFamilySpawnTriggers() {
-    //TODO: IMPLEMENT
+    if (lastLoadedMapId == 32 && ev.id == 7) {
+      ev.pages = ToothHelpers.JoelPages;
+    }
+
+    if (lastLoadedMapId == 34 && ev.id == 20) {
+      ev.pages = ToothHelpers.MadisonPages;
+    }
+
+    // day5 clint
+    // he has less complicated logic since
+    // his day 5 form is a different event than his day 2-4 form
+    if (lastLoadedMapId == 31 && ev.id == 35 && ev.pages.length == 5) {
+      ev.pages.splice(3, 1); // clear page that checks 'killedClint'
+    }
+
+    if (lastLoadedMapId == 435) {
+      if (ev.id == 2 && ev.pages.length == 7) {
+        // joel
+        ev.pages.splice(5, 2); // clear last2 pages that check 'removeJoel' and 'recruitedJoel'
+        ev.pages.splice(3, 1); // clear page that checks 'killedJoel'
+      }
+      if (ev.id == 4 && ev.pages.length == 3) {
+        // mound of teeth and gums
+        ev.pages.splice(1, 1); // clear page that checks 'killedBen'
+      }
+      if (ev.id == 3 && ev.pages.length == 5) {
+        // madison
+        ev.pages.splice(3, 1); // clear page that checks 'killedMadison'
+      }
+      if (ev.id === 1 && ev.pages.length == 5) {
+        // clint
+        ev.pages.splice(3, 1); // clear page that checks 'killedClint'
+      }
+    }
   }
+  fixToothFamilySpawnTriggers();
 
   // audreys disposition requirements are met instantly if you give the key
   // gives her infinite advice cans

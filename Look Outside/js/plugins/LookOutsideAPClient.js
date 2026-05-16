@@ -120,7 +120,6 @@ LookOutsideAPClient.applyOverrides = function () {
     // doing this here so we have access to $gamePlayer
 
     _extractSaveContents.call(this, contents);
-
   };
 };
 
@@ -171,7 +170,7 @@ const TRAP_MAPPINGS = [
   { player: null, itemColor: 22, name: "Paper-Maché Crown" },
   { player: null, itemColor: 22, name: "Elixer" },
   { player: null, itemColor: 22, name: "Jasper Roommate" },
-]
+];
 
 LookOutsideAPClient.initializeLocationNames = async function () {
   locations = Object.values(LOCATION_ID_MAPPING);
@@ -183,16 +182,20 @@ LookOutsideAPClient.initializeLocationNames = async function () {
         if (results.length > 0) {
           const item = results[0];
           if (item.trap) {
-            locationMapping[l] = { trueName: item.name, isTrap: true, ...TRAP_MAPPINGS[0]} // todo: get a deterministic random index
+            locationMapping[l] = {
+              trueName: item.name,
+              isTrap: true,
+              ...TRAP_MAPPINGS[0],
+            }; // todo: get a deterministic random index
           } else {
-          let itemColor = 3;
-          if (item.progression) itemColor = 15;
-          else if (item.useful) itemColor = 22;
-          else if (item.filler) itemColor = 4;
-          let player;
-          if (item.receiver.slot === item.sender.slot) player = null;
-          else player = `${item.receiver}'s `;
-          locationMapping[l] = { player, itemColor, name: item.name };
+            let itemColor = 3;
+            if (item.progression) itemColor = 15;
+            else if (item.useful) itemColor = 22;
+            else if (item.filler) itemColor = 4;
+            let player;
+            if (item.receiver.slot === item.sender.slot) player = null;
+            else player = `${item.receiver}'s `;
+            locationMapping[l] = { player, itemColor, name: item.name };
           }
         }
       });

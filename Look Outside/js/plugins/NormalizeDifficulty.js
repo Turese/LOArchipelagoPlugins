@@ -148,12 +148,10 @@ NormalizeDifficulty.applyChanges = function () {
   }
 
   function forceHardModeBeastChaseItems(ev, lastLoadedMapId) {
-    if (lastLoadedMapId == 8) {
-      if (ev.id == 61) {
-        // checks switch 1049; if you defeated hardmode grinning beast
-        // switching it to 81; if you faced the beast at all
-        ev.pages[0].conditions.switch1Id = 81;
-      }
+    if (lastLoadedMapId == 8 && ev.id == 61) {
+      // checks switch 1049; if you defeated hardmode grinning beast
+      // switching it to 81; if you faced the beast at all
+      ev.pages[0].conditions.switch1Id = 81;
     }
 
     // make grinning beast gun always drop (on hard mode it only drops when you dont fight)
@@ -162,6 +160,12 @@ NormalizeDifficulty.applyChanges = function () {
       if (ev.id == 31 || ev.id == 30) {
         if (ev.pages.length > 2) ev.pages.splice(2, 3);
       }
+    }
+  }
+
+  function forceStairwellPoolCue(ev, lastLoadedMapId) {
+    if (lastLoadedMapId == 30 && ev.id == 10 && ev.pages.length == 3) {
+      ev.pages.splice(2, 1); // this is the only location that explicitly checks hardmode = true
     }
   }
 
@@ -206,6 +210,7 @@ NormalizeDifficulty.applyChanges = function () {
     if (!ev) return ev;
 
     forceHardModeBeastChaseItems(ev, lastLoadedMapId);
+    forceStairwellPoolCue(ev, lastLoadedMapId);
 
     return ev;
   };

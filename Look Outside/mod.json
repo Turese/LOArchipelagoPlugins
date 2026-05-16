@@ -46,6 +46,10 @@
       "target": "js/plugins/ShopHelpers.js"
     },
     {
+      "source": "js/plugins/ToothHelpers.js",
+      "target": "js/plugins/ToothHelpers.js"
+    },
+    {
       "source": "js/plugins/ClearExplicitDrops.js",
       "target": "js/plugins/ClearExplicitDrops.js"
     },
@@ -194,6 +198,12 @@
       "name": "ShopHelpers",
       "status": true,
       "description": "helper function for overriding merchants and vending machines",
+      "parameters": {}
+    },
+    {
+      "name": "ToothHelpers",
+      "status": true,
+      "description": "helper function for overriding tooth family events",
       "parameters": {}
     },
     {

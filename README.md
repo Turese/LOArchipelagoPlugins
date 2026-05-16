@@ -6,15 +6,15 @@ Intended to be run with [Zorkats's RPGModder](https://github.com/Zorkats/RPGModd
 
 Runs with the 2.1 build of [archipelago.js](https://archipelago.js.org/stable/)
 
-## BackInTime.js
-
-Creates an event activated by the calendar in the player's bedroom that undoes events that may block the player from future actions.
-
 ## BlackoutLamp.js
 
 Lets player activate/deactivate the blackout (prior to it being fully solved by the player) by interacting with the lamp in their bedroom.
 
 The lamp moves out into the open after juicebox arrives.
+
+## BackInTime.js
+
+Creates an event activated by the calendar in the player's bedroom that undoes events that may block the player from future actions.
 
 ### Features: 
 - [x] Ability to set current day 1-15
@@ -34,8 +34,6 @@ The lamp moves out into the open after juicebox arrives.
 - [x] Ability to bring Lyle back to life and turn him non-hostile if player previously attacked + killed him
 - [x] Ability to return Sophie to the apartment if the player kicked her out / gave her to the imposter lady instead of Harriet
 - [ ] Ability to bring Jeanne back to life if killed by player
-- [ ] Return explicitly recruited party members to their overworld locations (Joel, Ernest, Aster) (for players who have "kill everyone" checks enabled)
-- [ ] Ability to turn on and off blackout event at will
 
 ## UpdateMissableEvents.js
 
@@ -43,11 +41,11 @@ Updates overworld events so that events missed by the player can be retried.
 
 - [x] door to wounded neighbor's bathroom no longer blocks an unarmed player like on explorer/survivor
 - [x] Update trigger for grinning beast chase so it can be retried
-- [x] Allow player to recruit leigh even if they walked away after defeating the grinning beast
-- [x] Make presence of overworld potential recruit encounters separate from their presence in player apartment (Lyle, Audrey, Aster, Leigh, Roaches, Joel) // todo: joel
+- [x] Allow player to recruit Leigh even if they walked away after defeating the grinning beast
+- [x] Make presence of overworld potential recruit encounters separate from their presence in player apartment (Lyle, Audrey, Aster, Leigh, Roaches, Joel, Papineau, Ernest) // todo: joel & papineau & ernest
 - [ ] Updates apartment 13 to give player drop as soon as they have rat baby item, no sacrifice required
-- [ ] Updates tooth family members to spawn in upgraded forms even if they've been killed prior
-- [ ] Make audrey recruit unmissable (infinite advice cans, remove disposition check)
+- [x] Updates tooth family members to spawn in upgraded forms even if they've been killed prior
+- [ ] Make Audrey recruit unmissable (infinite advice cans, remove disposition check)
 - [ ] Make Joel recruit unmissable (remove disposition check)
 - [ ] Force player to kill every hydra part individually (killing body won't give all checks)
 - [ ] Update Eugene's bookcase so it never becomes blocked by Nestor
@@ -79,6 +77,7 @@ Goes through the game's events to remove everything that explicitly grants an it
 - [ ] Clear out door encounter gifts
 - [x] Clear out gifts from Pierre in his room (clown drawing, clown outfit)
 - [ ] Clear out prizes from completing Leigh's quest
+- [ ] Clear out prizes from completing Roach's quest
 - [ ] Clear out item upgrade from interacting with typewriter with loose manuscript
 - [x] Clear out item exchange when using the telescope in Edwin's apartment
 - [ ] Clear out item exchange when using the projector with void disc / photo paper
@@ -153,20 +152,17 @@ Intended main entry point to other plugins.
 - [ ] Monitor connection; automatically reconnect when client connection is lost
 - [x] Receive item, weapon, and armor locations
 - [x] Receive starting inventory
-- [ ] Send location checks (wip)
+- [x] Send location checks
 
 ## Misc goals / goals with no dedicated file
 
 - [ ] Ability for player to re-trigger already encountered (or any) door encounter
 - [ ] In-game log sharing recent events from tracker
-- [ ] Skip intro cutscene
+- [x] Skip intro cutscene
 - [ ] Option to skip confirmation for finding overworld items
-- [ ] Update shops so they can be used to re-acquire consumables that have been rewarded by AP before
 
 ## Fun flavor text additions
 
 - [ ] Custom mirror guilt-trip dialogue that’s archipelago based
 - [ ] Custom toxic fred dialogue for picking up the randomized item in cowboy hat's place
 - [ ] If Ernest is in your party he chimes in to warn you if an item is a trap
-- [ ] If Morton is in your party he has an option to assert that filler items are still important
-- [ ] All party members have a chance to celebrate finding progression items 

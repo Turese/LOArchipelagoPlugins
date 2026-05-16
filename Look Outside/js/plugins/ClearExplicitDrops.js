@@ -610,7 +610,7 @@ ClearExplicitDrops.clearTroopsDrops = function () {
       (listEntry) => !(listEntry.code == 121 && listEntry.parameters[0] == 249),
     );
   }
-  clearRoachesRecruitmentEvent()
+  clearRoachesRecruitmentEvent();
 
   // make the recruit option hit self switch instead, and then end there.
 

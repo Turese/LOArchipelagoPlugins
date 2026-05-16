@@ -1315,7 +1315,6 @@ SELF_SWITCH_LOCATIONS = {
     15: { C: "APT_32_TOOTHLING_A_COMBAT_VICTORY" },
     16: { C: "APT_32_TOOTHLING_B_COMBAT_VICTORY" },
     35: { C: "APT_32_CLINT_DAY_5_COMBAT_VICTORY" },
-    7: { A: "APT_32_BATHROOM_JOEL_COMBAT_VICTORY" },
     33: { C: "APT_32_KITCHEN_TOOTH_FAIRY_COMBAT_VICTORY" },
     6: { A: "APT_32_FRIDGE" },
     28: { A: "APT_32_KITCHEN_DRAWINGS" },
@@ -1337,6 +1336,10 @@ SELF_SWITCH_LOCATIONS = {
     10: { C: "APT_32_BATHROOM_MEDICELL" },
     8: { C: "APT_32_BATHROOM_TONIC" },
     9: { C: "APT_32_BATHROOM_MOP" },
+    7: {
+      A: "APT_32_BATHROOM_JOEL_COMBAT_VICTORY",
+      B: "APT_32_BATHROOM_JOEL_DAY_5_COMBAT_VICTORY",
+    },
   },
 
   33: {
@@ -1353,6 +1356,10 @@ SELF_SWITCH_LOCATIONS = {
     20: { C: "APT_32_MASTER_BEDROOM_MADISON_COMBAT_VICTORY" },
     19: { A: "APT_32_MASTER_BEDROOM_ARMY_FIGURE" },
     32: { A: "APT_32_MASTER_BEDROOM_PURSE" },
+    20: {
+      C: "APT_32_MASTER_BEDROOM_MADISON_COMBAT_VICTORY",
+      D: "APT_32_MASTER_BEDROOM_MADISON_DAY_5_COMBAT_VICTORY",
+    },
   },
 
   436: {
@@ -2971,8 +2978,11 @@ VARIABLE_LOCATIONS = {
     value: 15,
     location: "FRED_DARK_ROOM_CORRECT_PAINTING",
   },
-  869: { relation: ">=", value: 18, location: "APT_18_HELLEN_QUEST_FRUIT" },
-  869: { relation: ">=", value: 100, location: "APT_18_HELLEN_QUEST_SHEARS" },
+  869: [
+    { relation: ">=", value: 18, location: "APT_18_HELLEN_QUEST_FRUIT" },
+    { relation: ">=", value: 100, location: "APT_18_HELLEN_QUEST_SHEARS" },
+  ],
+  899: {relation ">=", value: 100, location: "APT_33_ROACH_QUEST"},
   874: { relation: ">=", value: 26, location: "MUTT_SPIDER_HUSK_HEART" },
   169: { relation: ">=", value: 2, location: "LL_RENT_1" },
   169: { relation: ">=", value: 3, location: "LL_RENT_2" },
