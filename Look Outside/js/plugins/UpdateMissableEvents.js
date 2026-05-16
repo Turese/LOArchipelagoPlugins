@@ -163,6 +163,7 @@ UpdateMissableEvents.applyEventUpdates = function (lastLoadedMapId, ev) {
     // his day 5 form is a different event than his day 2-4 form
     if (lastLoadedMapId == 31 && ev.id == 35 && ev.pages.length == 5) {
       ev.pages.splice(3, 1); // clear page that checks 'killedClint'
+      // todo: set his indoor spawn to depend on the day
     }
 
     if (lastLoadedMapId == 435) {

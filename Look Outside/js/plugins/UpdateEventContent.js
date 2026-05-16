@@ -262,6 +262,10 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   },
 
   436: {
+    8: [
+      "APT_32_TUNNELS_JAW_REVOLVER",
+      "$gameSelfSwitches.setValue([436, 8, 'A'], true)",
+    ],
     9: [
       "APT_32_TUNNELS_FIRST_AID_KIT",
       "$gameSelfSwitches.setValue([436, 9, 'A'], true)",
@@ -277,10 +281,6 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     12: [
       "APT_32_TUNNELS_HEALING_SPRAY",
       "$gameSelfSwitches.setValue([436, 12, 'A'], true)",
-    ],
-    13: [
-      "APT_32_TUNNELS_TOOTH_GROUP_B_COMBAT_VICTORY",
-      "$gameSelfSwitches.setValue([436, 13, 'C'], true)",
     ],
   },
 
@@ -2737,8 +2737,12 @@ const FRIDGE_ITEM_OVERRIDES = {
   108: {
     6: ["APT_31_FRIDGE", "sSw(690, true);"],
   },
-  31: { // looting the fridge summons baby teeth
-    6: ["APT_32_FRIDGE", "$gameSelfSwitches.setValue([31, 6, 'A'], true); sSw(105, true);"],
+  31: {
+    // looting the fridge summons baby teeth
+    6: [
+      "APT_32_FRIDGE",
+      "$gameSelfSwitches.setValue([31, 6, 'A'], true); sSw(105, true);",
+    ],
   },
   120: {
     21: ["APT_34_FRIDGE", "$gameSelfSwitches.setValue([120, 21, 'A'], true)"],
@@ -3035,7 +3039,6 @@ UpdateEventContent.overrideOverworldPickups = function (currentMapId) {
   Object.keys(eventsToOverride).forEach((eventId) => {
     const [name, script] = eventsToOverride[eventId];
     const event = $dataMap.events[eventId];
-    console.log(event, eventId)
     // the rose from the masked shadow is a special case because
     // it's the only pickup that has a later event page
     // overriding only the first possible page here
@@ -3049,7 +3052,6 @@ UpdateEventContent.overrideOverworldPickups = function (currentMapId) {
       event.pages[3].directionFix = true;
       event.pages[3].image = LookOutsideAPClient.getItemImage(name);
     } else {
-      console.log(event)
       event.pages[0].list = getAPItemPickupList(
         script,
         LookOutsideAPClient.getItemName(name),
@@ -3480,10 +3482,7 @@ UpdateEventContent.overrideRoachPickups = function (currentMapId) {
   }
 };
 
-UpdateEventContent.overrideDrawerPickups = function (currentMapId) {
-
-}
-
+UpdateEventContent.overrideDrawerPickups = function (currentMapId) {};
 
 UpdateEventContent.overrideAllPickups = function (currentMapId) {
   UpdateEventContent.overrideOverworldPickups(currentMapId);

@@ -585,6 +585,7 @@ ClearExplicitDrops.clearTroopsDrops = function () {
         parameters: [0, FALSE_SWITCH_ID, 0],
       };
 
+    // make the recruit option hit self switch instead, and then end there.
     const leighRecruitIndex = leighTroopList.findIndex(
       (listEntry) => listEntry.code == 121 && listEntry.parameters[0] == 34,
     );
@@ -600,6 +601,9 @@ ClearExplicitDrops.clearTroopsDrops = function () {
   }
   clearLeighRecruitmentEvent();
 
+  function clearJoelRecruitmentEvent() {}
+  clearJoelRecruitmentEvent();
+
   function clearRoachesRecruitmentEvent() {
     const roachTroopList = JsonEx.makeDeepCopy(originalTroops[279]).pages[0]
       .list;
@@ -612,7 +616,34 @@ ClearExplicitDrops.clearTroopsDrops = function () {
   }
   clearRoachesRecruitmentEvent();
 
-  // make the recruit option hit self switch instead, and then end there.
+  function clearJeannePrizeEvent() {
+    // clear out elixir prize
+    // clear out 50 dollar prize
+    let jeanneTroopList = JsonEx.makeDeepCopy(
+      originalTroops[479],
+    ).pages[0].list.filter(
+      (listItem) =>
+        listItem.code !== 125 ||
+        !(listItem.code === 126 && listItem.parameters[0] == 16),
+    );
+
+    // the elixir prize for killing all the hydras
+    jeanneTroopList.find(
+      (listItem) =>
+        listItem.code === 401 && listItem.parameters[0].contains("Elixir"),
+    ).parameters[0] =
+      `Receive ${LookOutsideAPClient.getItemName("APT_20_HYDRA_HEADS")}.`;
+
+    // the 50 dollar prize for returning laundry
+    jeanneTroopList.find(
+      (listItem) =>
+        listItem.code === 401 && listItem.parameters[0].contains("$50!"),
+    ).parameters[0] =
+      `Receive ${LookOutsideAPClient.getItemName("APT_20_HYDRA_LAUNDRY")}.`;
+
+    $dataTroops[479].pages[0].list = jeanneTroopList;
+  }
+  clearJeannePrizeEvent();
 
   troopsUpdated = true;
 };
@@ -628,8 +659,17 @@ ClearExplicitDrops.clearCommonEventDrops = function () {
       $dataCommonEvents[i].list = $dataCommonEvents[i].list.filter(
         (listItem) => listItem.code !== 318,
       );
+          // todo: alert the player to what they earned
+
     }
-    // todo: alert the player to what they earned
+
+    function clearNewDayEvent() {
+      // clear rat baby growth spurt
+    }
+
+    function clearSleepEvent() {
+      // clear wiggly fred moving into fridge
+    }
   }
   clearGameSkills();
 };

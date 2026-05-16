@@ -51,6 +51,33 @@ InsertAPItems.insertSkill = function (id) {
   }
 };
 
+InsertAPItems.growRatBaby = function () {
+  sSw(1167, true); // ratChildBig
+  const ratBaby = $gameActors.actor(8);
+
+  ratBaby.changeClass(23, true);
+
+  // these are the stat boosts from easy mode, but rat baby is worth it :>
+  ratBaby.addParam(0, 60); // +60 hp
+  ratBaby.addParam(1, 30); // +30 stam
+  ratBaby.addParam(2, 6); // + 6atk
+  ratBaby.addParam(3, 6); // +6 ballistics
+  ratBaby.addParam(4, 6); // +6 def
+  ratBaby.addParam(5, 6); // +6 bdef
+  ratBaby.addParam(6, 6); // +6 agi
+  ratBaby.addParam(7, 6); // +6 luck
+
+  // new grown rat art
+  ratBaby.setCharacterImage("RatChild", 4);
+  ratBaby.setFaceImage("Portrait_RatGrown", 1);
+  $gamePlayer.refresh();
+  setSybilMajorStory(56); // she comments on it
+};
+
+InsertAPItems.setRatBabyName = function (name) {
+  $gameActors.actor(8).setName(name);
+};
+
 InsertAPItems.insertRecruit = function (name) {
   if (name === "Aster") {
     sSw(374, true);
@@ -83,11 +110,9 @@ InsertAPItems.insertRecruit = function (name) {
   if (name === "Rat Baby") {
     if (!gSw(365)) {
       sSw(290, true); // ratFollows (it's big enough to join the party)
-      // 366 ratbabygrown???
       sSw(365, true); // ratBabyIn (recruited)
     } else {
-      sSw(1167); // ratChildBig
-      // TODO: THIS ALSO COMES WITH STAT BOOSTS
+      InsertAPItems.growRatBaby();
     }
   }
   if (name === "Leigh") {

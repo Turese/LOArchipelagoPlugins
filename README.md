@@ -73,7 +73,7 @@ Goes through the game's events to remove everything that explicitly grants an it
 - [x] Clear out rusted crown gift from rat king event
 - [ ] Clear out keys dropped by the bug people living in the basement apartments in hard mode
 - [ ] Clear out dark room key award for killing Lyle
-- [ ] Clear out rewards granted for helping Jeanne
+- [x] Clear out rewards granted for helping Jeanne
 - [ ] Clear out door encounter gifts
 - [x] Clear out gifts from Pierre in his room (clown drawing, clown outfit)
 - [ ] Clear out prizes from completing Leigh's quest
