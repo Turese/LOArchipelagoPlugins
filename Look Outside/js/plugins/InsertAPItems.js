@@ -105,7 +105,7 @@ InsertAPItems.insertRecruit = function (name) {
     audreyActor = $gameActors.actor(22);
     audreyActor.setFaceImage("Portrait_Misc", 13);
     audreyActor.setCharacterImage("!VendingMachines", 6);
-    audreyActor.setClass(22, true); // shes a machine
+    audreyActor.changeClass(22, true); // shes a machine
   }
   if (name === "Rat Baby") {
     if (!gSw(365)) {
@@ -548,6 +548,28 @@ InsertAPItems.insertResourcePack = function (itemId) {
     case 62: // 5x junk
       InsertAPItems.insertItem(177, "item", 5);
       break;
+    case 63: // 10x bandages
+      InsertAPItems.insertItem(7, "item", 10);
+      break;
+    case 64: // 5x bandages
+      InsertAPItems.insertItem(7, "item", 5);
+      break;
+    case 65: // Revival Item Pack
+      InsertAPItems.insertItem(12, "item", 1); // smelling salts
+      InsertAPItems.insertItem(15, "item", 1); // stimulant
+      InsertAPItems.insertItem(9, "item", 1); // first aid kit
+      break;
+    case 66:
+      InsertAPItems.insertItem(10, "item", 1); // balm
+      InsertAPItems.insertItem(6, "item", 1); // eye drops
+      InsertAPItems.insertItem(11, "item", 1); // antidote
+      InsertAPItems.insertItem(14, "item", 1); // medication
+      InsertAPItems.insertItem(13, "item", 1); // disinfectant
+      InsertAPItems.insertItem(17, "item", 1); // anxiety meds
+      break;
+    case 67:
+      InsertAPItems.insertItem(8, "item", 2); // 2x tonic
+      break;
     default:
       console.warn(`Unrecognized pack item id: ${itemId}, no item granted`);
   }
@@ -579,10 +601,7 @@ InsertAPItems.insertTrap = function (itemId) {
       sVr(22, Math.min(gVr(22), 0));
       $gameTemp.reserveCommonEvent(14);
       break;
-    case 7: // bad breath
-      sVr(117, Math.max(gVr(117), 9));
-      break;
-    case 8: // max danger
+    case 7: // max danger
       sVr(112, Math.max(gVr(112), 480));
       break;
     default:

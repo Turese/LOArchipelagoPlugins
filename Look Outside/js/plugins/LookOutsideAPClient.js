@@ -107,19 +107,72 @@ LookOutsideAPClient.applyOverrides = function () {
     _dataManagerOnLoad.call(this, object);
   };
 
+  const gameLoadedAPSetup = async function () {
+    ClearExplicitDrops.clearTroopsDrops();
+    LookOutsideAPClient.initializeSlotData();
+    LookOutsideAPClient.initializeItemIndex();
+    LookOutsideAPClient.reportLocations();
+    await LookOutsideAPClient.initializeLocationNames();
+    LookOutsideAPClient.updateItems();
+    LookOutsideAPClient.updateDeathLink();
+  };
+
   // on load, attempt to connect to apclient
   const _extractSaveContents = DataManager.extractSaveContents;
   DataManager.extractSaveContents = function (contents) {
     // i want to be sure we connect before we start
     // setting locations and junk
 
-    LookOutsideAPClient.openAPClient().then(() => {
-      ClearExplicitDrops.clearTroopsDrops();
+    let deathLink;
+    if ($gamePlayer && $gamePlayer.slotData) {
+      deathLink = $gamePlayer.slotData.death_link;
+    }
+
+    LookOutsideAPClient.openAPClient(deathLink).then(() => {
+      gameLoadedAPSetup();
     });
-
-    // doing this here so we have access to $gamePlayer
-
     _extractSaveContents.call(this, contents);
+  };
+
+  const _Scene_GameoverStart = Scene_Gameover.prototype.start;
+  Scene_Gameover.prototype.start = function () {
+    _Scene_GameoverStart.call(this);
+
+    if (gettingDeathLink) {
+      // don't send a death link if your gameover was triggered by one
+      gettingDeathLink = false;
+      return;
+    }
+
+    // any of these could play for any game over, but
+    // we can still fit some fun references
+    const DEATH_LINK_PHRASES = [
+      " looked outside.",
+      " saw it... Did you?", // wounded neighbor quote
+      " broke the promise.",
+      " has transformed into something horrible.", //examining ben quote
+      " is slain!", // enemy battle death message
+      "'s party was defeated.", // player battle death message
+      " has been remade.", // spine?
+      " has been given the ultimate smooch.", // visitor smooch mode
+      " was tricked by a hat.", // toxic fred
+      " drank too much black ooze.",
+      " stepped into the sea of worms.", // marshall stage 2
+      " isn't making it to the ritual.",
+    ];
+
+    if (client && client.authenticated) {
+      const playerName = client.players.self.alias;
+      // random death phrase from the list
+      const message =
+        DEATH_LINK_PHRASES[
+          Math.floor(Math.random() * DEATH_LINK_PHRASES.length)
+        ];
+
+      const phrase = `${playerName}${message}`;
+
+      client.deathLink.sendDeathLink(playerName, phrase);
+    }
   };
 };
 
@@ -128,6 +181,18 @@ LookOutsideAPClient.initializeItemIndex = function () {
     $gamePlayer.APItemsIndex = 0;
   }
   return $gamePlayer.APItemsIndex;
+};
+
+LookOutsideAPClient.initializeSlotData = async function () {
+  if (!$gamePlayer) return;
+  $gamePlayer.slotData = await client.players.self.fetchSlotData();
+  return $gamePlayer.slotData;
+};
+
+LookOutsideAPClient.updateDeathLink = function () {
+  if ($gamePlayer.slotData.death_link) {
+    client.deathLink.enableDeathLink();
+  } else client.deathLink.disableDeathLink();
 };
 
 // the games colors for reference:
@@ -167,9 +232,9 @@ LookOutsideAPClient.initializeItemIndex = function () {
 
 */
 const TRAP_MAPPINGS = [
-  { player: null, itemColor: 22, name: "Paper-Maché Crown" },
+  { player: null, trapTextColor: 22, trapName: "Paper-Maché Crown" },
   { player: null, itemColor: 22, name: "Elixer" },
-  { player: null, itemColor: 22, name: "Jasper Roommate" },
+  { itemColor: 22, name: "Jasper Roommate" },
 ];
 
 LookOutsideAPClient.initializeLocationNames = async function () {
@@ -181,22 +246,20 @@ LookOutsideAPClient.initializeLocationNames = async function () {
       await client.scout([l]).then((results) => {
         if (results.length > 0) {
           const item = results[0];
+
+          let itemColor = 3;
+          if (item.progression) itemColor = 15;
+          else if (item.useful) itemColor = 22;
+          else if (item.filler) itemColor = 4;
+          else if (item.trap) itemColor = 18;
+          let player;
+          if (item.receiver.slot === item.sender.slot) player = null;
+          else player = `${item.receiver}'s `;
+          let mapping = { player, itemColor, name: item.name };
           if (item.trap) {
-            locationMapping[l] = {
-              trueName: item.name,
-              isTrap: true,
-              ...TRAP_MAPPINGS[0],
-            }; // todo: get a deterministic random index
-          } else {
-            let itemColor = 3;
-            if (item.progression) itemColor = 15;
-            else if (item.useful) itemColor = 22;
-            else if (item.filler) itemColor = 4;
-            let player;
-            if (item.receiver.slot === item.sender.slot) player = null;
-            else player = `${item.receiver}'s `;
-            locationMapping[l] = { player, itemColor, name: item.name };
+            mapping = { ...mapping, ...TRAP_MAPPINGS[0], isTrap: true };
           }
+          locationMapping[l] = mapping;
         }
       });
     }
@@ -210,7 +273,7 @@ LookOutsideAPClient.initializeLocationObject = function () {
   return $gamePlayer.reachedLocations;
 };
 
-LookOutsideAPClient.openAPClient = async function () {
+LookOutsideAPClient.openAPClient = async function (deathLink) {
   const slotName = ConfigManager.slotName || "";
   const roomId = ConfigManager.roomId || "";
   const password = ConfigManager.password || "";
@@ -219,16 +282,26 @@ LookOutsideAPClient.openAPClient = async function () {
     client = new window.ArchipelagoModules.Client();
   }
 
-  if (!slotName.length) {
+  if (!slotName.length || !roomId.length) {
     console.warn("AP Client not connected: missing slot name.");
     return;
   }
 
-  client.items.on("itemsReceived", (m) => {
+  let tags = [];
+
+  if (deathLink) {
+    tags = ["DeathLink"];
+  }
+
+  client.items.on("itemsReceived", (_m) => {
     LookOutsideAPClient.updateItems();
   });
 
-  const args = { items: 0b111 };
+  client.deathLink.on("deathReceived", (_m) => {
+    if (client.deathLink.enabled) forceGameOver();
+  });
+
+  const args = {};
 
   if (password.length) {
     args.password = password;
@@ -240,11 +313,6 @@ LookOutsideAPClient.openAPClient = async function () {
       .login(roomId, slotName, "Look Outside", args)
       .catch(console.error);
   }
-  // do initialization steps
-  LookOutsideAPClient.initializeItemIndex();
-  LookOutsideAPClient.reportLocations();
-  await LookOutsideAPClient.initializeLocationNames();
-  LookOutsideAPClient.updateItems();
 };
 
 LookOutsideAPClient.reportLocations = function () {
@@ -396,6 +464,14 @@ LookOutsideAPClient.getItemName = function (
 LookOutsideAPClient.getItemImage = function (apLocationName) {
   // todo: actually get the item image
   return DEFAULT_AP_ITEM_IMAGE;
+};
+
+// used for deathlink; don't want to send death link on a death caused by someone else's
+let gettingDeathLink;
+
+LookOutsideAPClient.forceGameOver = function () {
+  gettingDeathLink = true;
+  SceneManager.goto(Scene_Gameover);
 };
 
 LookOutsideAPClient.applyOverrides();
