@@ -712,10 +712,50 @@ ClearExplicitDrops.clearCommonEventDrops = function () {
 
   function clearGameSkills() {
     // filter out skill drops (code 318) from the game playing events (21->39)
+
+    const gameToSkill = {
+      21: 413, // wake the blood knight : blood madness
+      22: 410, // wizards hell : painful stab
+      23: 401, // superjumplad : jump attack
+      24: 405, // jumplad 3 : numbness
+      25: 418, // catafalque : risk taker
+      26: 412, // honko : cash sock
+      27: 402, // madwheels : nitro boost
+      28: 416, // wraithscourge : dungeon dance
+      29: 409, // massacre princess : meteor strike
+      30: 411, // kill to shoot : aim the killshot
+      31: 403, // myrmidon : combat medic
+      32: 417, // myrmidon xii : garrison
+      33: 404, // screamatorium : screamer
+      34: 406, // frogit about it : croak orders
+      35: 407, // blood ghoul orgy : hurt me plenty
+      36: 408, // octocook : octostrike
+      37: 414, // space truckerz : long haul flow
+      38: 415, // reptile football : running tackle
+      39: 419, // crossword challenge : confusing word
+    };
+
     for (let i = 21; i <= 39; i++) {
       $dataCommonEvents[i].list = $dataCommonEvents[i].list.filter(
         (listItem) => listItem.code !== 318,
       );
+      if (
+        $gamePlayer.slotData &&
+        $gamePlayer.slotData["include_game_skills"] == 0
+      ) {
+        // doing this makes it so the skill awarded even if you play this
+        // in meat apt 33, but whatever
+        if ($dataCommonEvents[i].list[0].code !== 355) {
+          $dataCommonEvents[i].list = [
+            {
+              code: 355,
+              indent: 0,
+              parameters: [`InsertAPItems.insertSkill(${gameToSkill[i]});`],
+            },
+            ...$dataCommonEvents[i].list,
+          ];
+        }
+      }
       // todo: alert the player to what they earned
     }
 
