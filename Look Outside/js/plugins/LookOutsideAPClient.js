@@ -20,7 +20,7 @@ var LookOutsideAPClient = LookOutsideAPClient || {};
 
 let lastLoadedMapId;
 
-let client;
+const client = new window.ArchipelagoModules.Client();
 
 const DEFAULT_AP_ITEM_IMAGE = {
   tileId: 0,
@@ -32,10 +32,16 @@ const DEFAULT_AP_ITEM_IMAGE = {
 
 LookOutsideAPClient.applyOverrides = function () {
   // track most recently loaded mapid for the sake of overwriting events
-  const loadMapData = DataManager.loadMapData;
+  const _loadMapData = DataManager.loadMapData;
   DataManager.loadMapData = function (mapId) {
     lastLoadedMapId = mapId;
-    loadMapData.call(this, mapId);
+    _loadMapData.call(this, mapId);
+  };
+
+  const _onDatabaseLoaded = Scene_Boot.prototype.onDatabaseLoaded;
+  Scene_Boot.prototype.onDatabaseLoaded = function () {
+    _onDatabaseLoaded.call(this);
+    ClearExplicitDrops.clearTroopsDrops();
   };
 
   // check other mods' custom images all together
@@ -107,30 +113,10 @@ LookOutsideAPClient.applyOverrides = function () {
     _dataManagerOnLoad.call(this, object);
   };
 
-  const gameLoadedAPSetup = async function () {
-    ClearExplicitDrops.clearTroopsDrops();
-    LookOutsideAPClient.initializeSlotData();
-    LookOutsideAPClient.initializeItemIndex();
-    LookOutsideAPClient.reportLocations();
-    await LookOutsideAPClient.initializeLocationNames();
-    LookOutsideAPClient.updateItems();
-    LookOutsideAPClient.updateDeathLink();
-  };
-
   // on load, attempt to connect to apclient
   const _extractSaveContents = DataManager.extractSaveContents;
   DataManager.extractSaveContents = function (contents) {
-    // i want to be sure we connect before we start
-    // setting locations and junk
-
-    let deathLink;
-    if ($gamePlayer && $gamePlayer.slotData) {
-      deathLink = $gamePlayer.slotData.death_link;
-    }
-
-    LookOutsideAPClient.openAPClient(deathLink).then(() => {
-      gameLoadedAPSetup();
-    });
+    LookOutsideAPClient.startAPClient();
     _extractSaveContents.call(this, contents);
   };
 
@@ -161,7 +147,7 @@ LookOutsideAPClient.applyOverrides = function () {
       " isn't making it to the ritual.",
     ];
 
-    if (client && client.authenticated) {
+    if (client.authenticated) {
       const playerName = client.players.self.alias;
       // random death phrase from the list
       const message =
@@ -189,8 +175,8 @@ LookOutsideAPClient.initializeSlotData = async function () {
   return $gamePlayer.slotData;
 };
 
-LookOutsideAPClient.updateDeathLink = function () {
-  if ($gamePlayer.slotData.death_link) {
+LookOutsideAPClient.updateDeathLink = function (slotData) {
+  if (slotData.death_link) {
     client.deathLink.enableDeathLink();
   } else client.deathLink.disableDeathLink();
 };
@@ -273,14 +259,19 @@ LookOutsideAPClient.initializeLocationObject = function () {
   return $gamePlayer.reachedLocations;
 };
 
-LookOutsideAPClient.openAPClient = async function (deathLink) {
+LookOutsideAPClient.gameLoadedAPSetup = async function (slotData) {
+  console.log(slotData, client.authenticated);
+  LookOutsideAPClient.initializeItemIndex();
+  LookOutsideAPClient.reportLocations();
+  await LookOutsideAPClient.initializeLocationNames();
+  LookOutsideAPClient.updateItems();
+  LookOutsideAPClient.updateDeathLink(slotData);
+};
+
+LookOutsideAPClient.startAPClient = async function (deathLink) {
   const slotName = ConfigManager.slotName || "";
   const roomId = ConfigManager.roomId || "";
   const password = ConfigManager.password || "";
-
-  if (!client) {
-    client = new window.ArchipelagoModules.Client();
-  }
 
   if (!slotName.length || !roomId.length) {
     console.warn("AP Client not connected: missing slot name.");
@@ -301,6 +292,10 @@ LookOutsideAPClient.openAPClient = async function (deathLink) {
     if (client.deathLink.enabled) forceGameOver();
   });
 
+  client.socket.on("disconnected", (_m) => {
+    console.log("disconnected! todo: reconnect");
+  });
+
   const args = {};
 
   if (password.length) {
@@ -308,20 +303,24 @@ LookOutsideAPClient.openAPClient = async function (deathLink) {
   }
 
   // todo: what to do when you change login location?
-  if (roomId && !client.authenticated) {
-    await client
+  if (!client.authenticated) {
+    client
       .login(roomId, slotName, "Look Outside", args)
+      .then((slotData) => LookOutsideAPClient.gameLoadedAPSetup(slotData))
       .catch(console.error);
+  } else {
+    if ($gamePlayer) {
+      LookOutsideAPClient.initializeSlotData.then((slotData) =>
+        LookOutsideAPClient.gameLoadedAPSetup(slotData),
+      );
+    }
   }
 };
 
 LookOutsideAPClient.reportLocations = function () {
   const reachedLocations = LookOutsideAPClient.initializeLocationObject();
-  try {
-    let socket = client.check(...Object.keys(reachedLocations).map(Number));
-  } catch (error) {
-    console.error("Error reporting locations:", error);
-  }
+  if (client.authenticated)
+    client.check(...Object.keys(reachedLocations).map(Number));
 };
 
 LookOutsideAPClient.setLocation = function (locationId) {
@@ -448,7 +447,11 @@ LookOutsideAPClient.getItemName = function (
   excludeBrackets = false,
 ) {
   const locationId = LOCATION_ID_MAPPING[apLocationName];
-  let mapping = $gamePlayer.LOCATION_NAME_MAPPING[locationId];
+
+  let mapping;
+
+  if ($gamePlayer && $gamePlayer.LOCATION_NAME_MAPPING)
+    mapping = $gamePlayer.LOCATION_NAME_MAPPING[locationId];
 
   if (!mapping)
     mapping = { player: null, name: "Randomized Item", itemColor: 24 };
@@ -470,8 +473,10 @@ LookOutsideAPClient.getItemImage = function (apLocationName) {
 let gettingDeathLink;
 
 LookOutsideAPClient.forceGameOver = function () {
-  gettingDeathLink = true;
-  SceneManager.goto(Scene_Gameover);
+  if ($gamePlayer) {
+    gettingDeathLink = true;
+    SceneManager.goto(Scene_Gameover);
+  }
 };
 
 LookOutsideAPClient.applyOverrides();

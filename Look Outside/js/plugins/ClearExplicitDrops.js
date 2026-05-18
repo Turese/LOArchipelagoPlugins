@@ -50,7 +50,7 @@ ClearExplicitDrops.applyDatamapClears = function (lastLoadedMapId) {
         code: 355,
         indent: 0,
         parameters: [
-          "sSw(148, true); sSw(149, true); sVr(102, 1); sSw(103, 2); sSw(44, true); LookOutsideAPClient.openAPClient();",
+          "sSw(148, true); sSw(149, true); sVr(102, 1); sSw(103, 2); sSw(44, true); LookOutsideAPClient.startAPClient();",
         ],
       };
       const startingRoomEvent = $dataMap.events[2];
@@ -659,8 +659,7 @@ ClearExplicitDrops.clearCommonEventDrops = function () {
       $dataCommonEvents[i].list = $dataCommonEvents[i].list.filter(
         (listItem) => listItem.code !== 318,
       );
-          // todo: alert the player to what they earned
-
+      // todo: alert the player to what they earned
     }
 
     function clearNewDayEvent() {
