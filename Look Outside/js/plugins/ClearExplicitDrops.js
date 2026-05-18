@@ -733,6 +733,8 @@ ClearExplicitDrops.clearCommonEventDrops = function () {
   function clearReturnHomePhillippeRatbaby() {
     const returnHomeEventList = $dataCommonEvents[3].list;
 
+    console.log("ORIGINAL LENGTH ", $dataCommonEvents[3].list.length);
+
     const ratBabyInCheckIndex = returnHomeEventList.findIndex(
       (listItem) => listItem.code == 111 && listItem.parameters[1] == 365,
     );
@@ -782,11 +784,15 @@ ClearExplicitDrops.clearCommonEventDrops = function () {
           },
         ];
 
+        console.log("SPLICE IT: ---- ", startClearIndex, endClearIndex - 1);
+        console.log("ORIGINAL LENGTH ", $dataCommonEvents[3].list.length);
+
         returnHomeEventList.splice(
           startClearIndex,
-          endClearIndex - 1,
+          endClearIndex - startClearIndex,
           ...newRatBabyListBlock,
         );
+        console.log("new LENGTH ", $dataCommonEvents[3].list.length);
       }
     }
 
@@ -809,4 +815,31 @@ ClearExplicitDrops.clearCommonEventDrops = function () {
     }
   }
   clearReturnHomePhillippeRatbaby();
+
+  function clearAudreyShop() {
+    const colaName = LookOutsideAPClient.getItemName(
+      "AUDREY_VENDING_COLA",
+      true,
+    );
+    const lemonSodaName = LookOutsideAPClient.getItemName(
+      "AUDREY_VENDING_LEMON",
+      true,
+    );
+    const orangeSodaName = LookOutsideAPClient.getItemName(
+      "AUDREY_VENDING_ORANGE",
+      true,
+    );
+    const juiceName = LookOutsideAPClient.getItemName(
+      "AUDREY_VENDING_JUICE",
+      true,
+    );
+
+    $dataCommonEvents[216].list = ShopHelpers.getAudreyVendingMachineList(
+      colaName,
+      lemonSodaName,
+      orangeSodaName,
+      juiceName,
+    );
+  }
+  clearAudreyShop();
 };

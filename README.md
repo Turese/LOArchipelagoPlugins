@@ -114,7 +114,7 @@ Adds support for a player state that's missing both left and right arms, necessa
 - [x] Update logic for equipping items when missing both arms
 - [x] Update logic for arm state being updated (updates player sprite sheets on every transition instead of just the first time)
 - [x] Add new sprites for no-arm state
-- [ ] Add new mirror portraits for no-arm state (WIP)
+- [x] Add new mirror portraits for no-arm state (WIP)
 
 ## InsertAPItems.js
 
@@ -135,7 +135,7 @@ New menu option in main menu + pause menu where player inputs AP slot name + ser
 - [x] New Archipelago menu option in title screen menu + pause menu
 - [ ] Add QOL features to text input (prompt text, center text entry)
 - [x] Persist player-submitted values across save files / game loads
-- [ ] Add connection status monitoring
+- [x] Add connection status monitoring
 
 ## NormalizeDifficulty.js
 
