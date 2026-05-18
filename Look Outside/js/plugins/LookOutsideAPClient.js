@@ -170,15 +170,29 @@ LookOutsideAPClient.initializeItemIndex = function () {
   return $gamePlayer.APItemsIndex;
 };
 
-LookOutsideAPClient.initializeSlotData = async function () {
+LookOutsideAPClient.initializeSlotData = function (slotData) {
   if (!$gamePlayer) return;
-  return ($gamePlayer.slotData = client.players.self.fetchSlotData());
+  return ($gamePlayer.slotData = slotData);
 };
 
+LookOutsideAPClient.retrieveSlotData = async function () {
+  return client.players.self.fetchSlotData();
+};
+
+// this happens whether or not a save file is loaded
 LookOutsideAPClient.updateDeathLink = function (slotData) {
   if (slotData.death_link) {
     client.deathLink.enableDeathLink();
   } else client.deathLink.disableDeathLink();
+};
+
+// immediate save file changes according to slot data
+// currently we only have rat baby name
+LookOutsideAPClient.makeSlotDataChanges = function () {
+  if (!$gamePlayer || !$gamePlayer.slotData) return;
+  const slotData = $gamePlayer.slotData;
+  if (slotData["rat_baby_name"])
+    InsertAPItems.setRatBabyName(slotData["rat_baby_name"]);
 };
 
 // the games colors for reference:
@@ -260,6 +274,8 @@ LookOutsideAPClient.initializeLocationObject = function () {
 };
 
 LookOutsideAPClient.gameLoadedAPSetup = async function (slotData) {
+  LookOutsideAPClient.initializeSlotData(slotData);
+  LookOutsideAPClient.makeSlotDataChanges();
   LookOutsideAPClient.initializeItemIndex();
   LookOutsideAPClient.reportLocations();
   await LookOutsideAPClient.initializeLocationNames();
@@ -308,7 +324,7 @@ LookOutsideAPClient.startAPClient = async function (deathLink) {
   });
 
   client.socket.on("disconnected", (_m) => {
-    disconnectedMessage = "Disconnected from server"
+    disconnectedMessage = "Disconnected from server";
     connectionTimerFrames = TIMER_RETRY_SECONDS * 60;
   });
 
@@ -335,7 +351,7 @@ LookOutsideAPClient.startAPClient = async function (deathLink) {
       });
   } else {
     if ($gamePlayer) {
-      LookOutsideAPClient.initializeSlotData().then((slotData) =>
+      LookOutsideAPClient.retrieveSlotData().then((slotData) =>
         LookOutsideAPClient.gameLoadedAPSetup(slotData),
       );
     }
@@ -417,7 +433,7 @@ LookOutsideAPClient.watchLocations = function () {
           if (checkValue > value) return;
           break;
         default:
-          throw new Error("ERROR: CAN'T FIND RELATION ON SWITCH")
+          throw new Error("ERROR: CAN'T FIND RELATION ON SWITCH");
           return;
       }
       const locationId = LOCATION_ID_MAPPING[location];
@@ -495,7 +511,7 @@ LookOutsideAPClient.getItemImage = function (apLocationName) {
 let gettingDeathLink;
 
 LookOutsideAPClient.forceGameOver = function () {
-  if ($gamePlayer) {
+  if ($gamePlayer && !(SceneManager._scene instanceof Scene_Title)) {
     gettingDeathLink = true;
     SceneManager.goto(Scene_Gameover);
   }

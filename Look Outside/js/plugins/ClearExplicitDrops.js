@@ -733,12 +733,9 @@ ClearExplicitDrops.clearCommonEventDrops = function () {
   function clearReturnHomePhillippeRatbaby() {
     const returnHomeEventList = $dataCommonEvents[3].list;
 
-    console.log("ORIGINAL LENGTH ", $dataCommonEvents[3].list.length);
-
     const ratBabyInCheckIndex = returnHomeEventList.findIndex(
       (listItem) => listItem.code == 111 && listItem.parameters[1] == 365,
     );
-    console.log("RAT BABY IN CHECK ", ratBabyInCheckIndex);
     if (ratBabyInCheckIndex !== -1) {
       returnHomeEventList[ratBabyInCheckIndex].parameters[1] =
         APT_33_RECRUIT_RAT_BABY_SWITCH;
@@ -784,15 +781,11 @@ ClearExplicitDrops.clearCommonEventDrops = function () {
           },
         ];
 
-        console.log("SPLICE IT: ---- ", startClearIndex, endClearIndex - 1);
-        console.log("ORIGINAL LENGTH ", $dataCommonEvents[3].list.length);
-
         returnHomeEventList.splice(
           startClearIndex,
           endClearIndex - startClearIndex,
           ...newRatBabyListBlock,
         );
-        console.log("new LENGTH ", $dataCommonEvents[3].list.length);
       }
     }
 
