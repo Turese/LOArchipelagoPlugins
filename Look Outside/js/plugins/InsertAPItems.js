@@ -94,6 +94,7 @@ InsertAPItems.insertRecruit = function (name) {
   if (name === "Aster") {
     sSw(374, true);
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
+    setSybilMajorStory(51);
   }
   if (name === "Sophie") {
     sSw(362, true);
@@ -102,6 +103,7 @@ InsertAPItems.insertRecruit = function (name) {
     InsertAPItems.insertItem(203, "item", 12); // marbles
     InsertAPItems.insertItem(661, "item", 3); // steel marbles
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
+    setSybilMajorStory(60);
   }
   if (name === "Phillippe") {
     sSw(319, true); // phillippeRecovered = on
@@ -122,6 +124,7 @@ InsertAPItems.insertRecruit = function (name) {
     audreyActor.setCharacterImage("!VendingMachines", 6);
     audreyActor.changeClass(22, true); // shes a machine
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
+    setSybilMajorStory(64);
   }
   if (name === "Rat Baby") {
     if (!gSw(365)) {
@@ -155,22 +158,27 @@ InsertAPItems.insertRecruit = function (name) {
   if (name === "Joel") {
     sSw(33, true);
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
+    setSybilMajorStory(52);
   }
   if (name === "Ernest") {
     sSw(361, true);
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
+    setSybilMajorStory(59);
   }
   if (name === "Morton") {
     sSw(371, true);
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
+    setSybilMajorStory(63);
   }
   if (name === "Dan") {
     sSw(32, true);
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
+    setSybilMajorStory(54);
   }
   if (name === "Shadow") {
     sSw(27, true);
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
+    setSybilMajorStory(90);
   }
   if (name === "Wiggly Fred") {
     sSw(539, true);
@@ -184,14 +192,17 @@ InsertAPItems.insertRecruit = function (name) {
     sSw(378, true);
     InsertAPItems.insertItem(284, "item", 1); // Papineau's lunch
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
+    setSybilMajorStory(61);
   }
   if (name === "Xaria and Montgomery") {
     sSw(363, true);
     sVr(37, gVr(37) + 2); // add 2 people when xaria and mongomery arrive
+    setSybilMajorStory(62);
   }
   if (name === "Spider") {
     sSw(375, true);
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
+     setSybilMajorStory(66);
   }
 };
 
