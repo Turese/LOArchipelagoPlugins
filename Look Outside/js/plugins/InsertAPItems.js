@@ -26,9 +26,20 @@ InsertAPItems.insertItem = function (id, itemClass, amount = 1) {
       // this id range is all the video games. add 1 to the video game count
       sVr(41, gVr(41) + 1);
     }
-    if (itemClass === item && id == 346) {
+    if (itemClass === "item" && id == 346) {
       // progressive loose manuscript. second add should complete it
-      //
+      // check if player either offered manuscript to jasper or if it's in their inventory...
+      if (gSw(218) || $gameParty.hasItem(item)) {
+        // 218 = offeredmanuscript
+        sSw(231, true); // manuscriptfull = true
+      } else {
+        $gameParty.gainItem(item, amount);
+      }
+      return;
+    }
+    if (itemClass === "item" && id == 5) {
+      // rat baby thing; set the sacrifice room to "solved"
+      sSw(130, true); // gratingRoomSolved
     }
     $gameParty.gainItem(item, amount);
     console.log(`Item granted: ${id}`);
@@ -79,8 +90,10 @@ InsertAPItems.setRatBabyName = function (name) {
 };
 
 InsertAPItems.insertRecruit = function (name) {
+  sSw(1004, true); // notaloner = true
   if (name === "Aster") {
     sSw(374, true);
+    sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
   }
   if (name === "Sophie") {
     sSw(362, true);
@@ -88,6 +101,7 @@ InsertAPItems.insertRecruit = function (name) {
     // but im doing normal mode 12 for now
     InsertAPItems.insertItem(203, "item", 12); // marbles
     InsertAPItems.insertItem(661, "item", 3); // steel marbles
+    sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
   }
   if (name === "Phillippe") {
     sSw(319, true); // phillippeRecovered = on
@@ -99,6 +113,7 @@ InsertAPItems.insertRecruit = function (name) {
     philActor.setFaceImage("Philippe", 0); // yes it's supposed to be spelled like that
     philActor.setCharacterImage("Chara_FungusLair", 6);
     // do i need to turn 491 (phildelusion) on????
+    sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
   }
   if (name === "Audrey") {
     sSw(380, true);
@@ -106,11 +121,18 @@ InsertAPItems.insertRecruit = function (name) {
     audreyActor.setFaceImage("Portrait_Misc", 13);
     audreyActor.setCharacterImage("!VendingMachines", 6);
     audreyActor.changeClass(22, true); // shes a machine
+    sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
   }
   if (name === "Rat Baby") {
     if (!gSw(365)) {
       sSw(290, true); // ratFollows (it's big enough to join the party)
       sSw(365, true); // ratBabyIn (recruited)
+      sVr(381, 50); // set rat activity to 50;
+      sVr(382, 50); // set rat clean to 50;
+      sVr(383, 50); // set rat hunger to 50
+      sVr(384, 50); // set rat calm to 50
+      sVr(385, 100); // set rat energy to 100
+      sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
     } else {
       InsertAPItems.growRatBaby();
     }
@@ -120,45 +142,57 @@ InsertAPItems.insertRecruit = function (name) {
     // she needs to manually acquire the grinning beast skill
     $gameActors.actor(5).learnSkill(65);
     setSybilMajorStory(53);
+    sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
   }
   if (name === "Hellen") {
     sSw(35, true);
+    sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
   }
   if (name === "Lyle") {
     sSw(376, true);
+    sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
   }
   if (name === "Joel") {
     sSw(33, true);
+    sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
   }
   if (name === "Ernest") {
     sSw(361, true);
+    sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
   }
   if (name === "Morton") {
     sSw(371, true);
+    sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
   }
   if (name === "Dan") {
     sSw(32, true);
+    sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
   }
   if (name === "Shadow") {
     sSw(27, true);
+    sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
   }
   if (name === "Wiggly Fred") {
     sSw(539, true);
+    sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
   }
   if (name === "Roaches") {
     sSw(249, true);
+    sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
   }
   if (name === "Papineau") {
     sSw(378, true);
     InsertAPItems.insertItem(284, "item", 1); // Papineau's lunch
+    sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
   }
   if (name === "Xaria and Montgomery") {
     sSw(363, true);
+    sVr(37, gVr(37) + 2); // add 2 people when xaria and mongomery arrive
   }
   if (name === "Spider") {
     sSw(375, true);
+    sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
   }
-  sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
 };
 
 InsertAPItems.insertMiscItem = function (itemId) {

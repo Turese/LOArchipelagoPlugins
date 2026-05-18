@@ -463,6 +463,63 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
     }
   }
   clearAmbroseDrops();
+
+  // removes both loose manuscript drop and the message telling player they got it
+  function clearTypewritherDrop() {
+    if (lastLoadedMapId === 115 && ev.id === 2) {
+      // item drops on first 2 pages
+      for (let i = 0; i <= 1; i++) {
+        ev.pages[i].list = ev.pages[i].list.filter(
+          (listItem) => ![126, 101, 401].includes(listItem.code),
+        );
+      }
+    }
+  }
+  clearTypewritherDrop();
+
+  function clearManuscriptCompletion() {
+    if (lastLoadedMapId === 118 && ev.id === 5) {
+      // remove where it sets the manuscriptfull switch
+      const completeManuscriptIndex = ev.pages[0].list.findIndex(
+        (listItem) => listItem.code == 121,
+      );
+      if (completeManuscriptIndex !== -1) {
+        ev.pages[0].list[completeManuscriptIndex] = {
+          code: 355,
+          indent: 0,
+          parameters: ["$gameSelfSwitches.setValue([118, 5, 'A'], true)"],
+        };
+      }
+
+      const completeManuscriptMessageIdx = ev.pages[0].list.findIndex(
+        (listItem) =>
+          listItem.code == 401 &&
+          listItem.parameters[0] ==
+            "You add the sheet to the incomplete manuscript.",
+      );
+      if (completeManuscriptMessageIdx !== -1) {
+        ev.pages[0].list[completeManuscriptMessageIdx].parameters[0] =
+          `Find ${LookOutsideAPClient.getItemName("APT_27_COMPLETE_MANUSCRIPT")}.`;
+      }
+
+      ev.pages[1].conditions = {
+        actorId: 1,
+        actorValid: false,
+        itemId: 1,
+        itemValid: false,
+        selfSwitchCh: "A",
+        selfSwitchValid: true,
+        switch1Id: 1,
+        switch1Valid: false,
+        switch2Id: 1,
+        switch2Valid: false,
+        variableId: 1,
+        variableValid: false,
+        variableValue: 0,
+      };
+    }
+  }
+  clearManuscriptCompletion();
 };
 
 ClearExplicitDrops.clearAllEnemiesDrops = function () {
@@ -671,4 +728,85 @@ ClearExplicitDrops.clearCommonEventDrops = function () {
     }
   }
   clearGameSkills();
+
+  // fix up explicit recruitments phillippe's remains and the rat baby thing home
+  function clearReturnHomePhillippeRatbaby() {
+    const returnHomeEventList = $dataCommonEvents[3].list;
+
+    const ratBabyInCheckIndex = returnHomeEventList.findIndex(
+      (listItem) => listItem.code == 111 && listItem.parameters[1] == 365,
+    );
+    console.log("RAT BABY IN CHECK ", ratBabyInCheckIndex);
+    if (ratBabyInCheckIndex !== -1) {
+      returnHomeEventList[ratBabyInCheckIndex].parameters[1] =
+        APT_33_RECRUIT_RAT_BABY_SWITCH;
+
+      const startClearIndex = ratBabyInCheckIndex + 1;
+
+      // the last item of the rat baby event grants the achievement
+      // use this index to know its bounds
+      const endClearIndex = returnHomeEventList.findIndex(
+        (listItem) =>
+          listItem.code == 355 &&
+          listItem.parameters[0].includes("Recruit_Rat"),
+      );
+
+      if (endClearIndex !== -1) {
+        const newRatBabyListBlock = [
+          {
+            code: 355,
+            indent: 4,
+            parameters: [`sSw(${APT_33_RECRUIT_RAT_BABY_SWITCH}, true);`],
+          },
+          {
+            code: 101,
+            indent: 4,
+            parameters: ["", 0, 0, 2, ""],
+          },
+          {
+            code: 401,
+            indent: 4,
+            parameters: [
+              "The little rat thing hops out of your bags and scampers off",
+            ],
+          },
+          {
+            code: 401,
+            indent: 4,
+            parameters: ["into your home."],
+          },
+          {
+            code: 126,
+            indent: 4,
+            parameters: [5, 1, 0, 1],
+          },
+        ];
+
+        returnHomeEventList.splice(
+          startClearIndex,
+          endClearIndex - 1,
+          ...newRatBabyListBlock,
+        );
+      }
+    }
+
+    const philHomeCheckIndex = returnHomeEventList.findIndex(
+      (listItem) => listItem.code == 111 && listItem.parameters[1] == 499,
+    );
+    if (philHomeCheckIndex !== -1)
+      returnHomeEventList[philHomeCheckIndex].parameters[1] =
+        APT_33_RECRUIT_PHILLIPPE_SWITCH;
+
+    const philHomeSetIndex = returnHomeEventList.findIndex(
+      (listItem) => listItem.code == 121 && listItem.parameters[0] == 499,
+    );
+    if (philHomeSetIndex !== -1) {
+      // code 121 includes switch on first and second index
+      returnHomeEventList[philHomeSetIndex].parameters[0] =
+        APT_33_RECRUIT_PHILLIPPE_SWITCH;
+      returnHomeEventList[philHomeSetIndex].parameters[1] =
+        APT_33_RECRUIT_PHILLIPPE_SWITCH;
+    }
+  }
+  clearReturnHomePhillippeRatbaby();
 };

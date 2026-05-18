@@ -979,6 +979,13 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     ],
   },
 
+  140: {
+    10: [
+      "APT_28_GARBAGE_REBREATHER",
+      "$gameSelfSwitches.setValue([140, 10, 'A'], true)",
+    ],
+  },
+
   133: {
     7: [
       "APT_28_TWILIGHT_FIRST_AID_KIT",
@@ -1462,6 +1469,10 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     10: [
       "APT_12_PISTOL_BULLETS_2",
       "$gameSelfSwitches.setValue([105, 10, 'A'], true)",
+    ],
+    6: [
+      "APT_12_SHOTGUN_SHELLS_3",
+      "$gameSelfSwitches.setValue([105, 6, 'A'], true)",
     ],
   },
 
@@ -2913,6 +2924,10 @@ const ROACH_ITEM_OVERRIDES = {
     18: "B_STEVE_ROACH_1",
     21: "B_STEVE_ROACH_2",
   },
+  303: {
+    24: "BOILER_ROOM_ROACH_1",
+    25: "BOILER_ROOM_ROACH_2",
+  },
 };
 
 var UpdateEventContent = UpdateEventContent || {};
@@ -3051,13 +3066,40 @@ UpdateEventContent.overrideOverworldPickups = function (currentMapId) {
       );
       event.pages[3].directionFix = true;
       event.pages[3].image = LookOutsideAPClient.getItemImage(name);
+      event.pages[3].direction = 4;
     } else {
-      event.pages[0].list = getAPItemPickupList(
-        script,
-        LookOutsideAPClient.getItemName(name),
-      );
-      event.pages[0].image = LookOutsideAPClient.getItemImage(name);
-      event._direction = 4; // force event to face the proper direction
+      let pageIndex = 0;
+      // some items have different pages for whatever reason
+      if (name == "APT_13_DISC") pageIndex = 1;
+
+      event.pages[pageIndex] = {
+        ...event.pages[pageIndex],
+        list: getAPItemPickupList(
+          script,
+          LookOutsideAPClient.getItemName(name),
+        ),
+        image: LookOutsideAPClient.getItemImage(name),
+        direction: 4,
+        moveFrequency: 3,
+        moveRoute: {
+          list: [
+            {
+              code: 0,
+              parameters: [],
+            },
+          ],
+          repeat: true,
+          skippable: false,
+          wait: false,
+        },
+        moveSpeed: 3,
+        moveType: 0,
+        priorityType: 1,
+        stepAnime: false,
+        through: false,
+        trigger: 0,
+        walkAnime: true,
+      };
     }
 
     if (name === "APT_37_CRAFTING_KIT" || name === "APT_21_CROSSWORD_BOOK") {

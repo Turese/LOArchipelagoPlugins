@@ -379,7 +379,6 @@ LookOutsideAPClient.watchLocations = function () {
 
     if (SWITCH_LOCATIONS[switchId]) {
       const locationId = SWITCH_LOCATIONS[switchId];
-      if (locationId === "F2_GRINNING_BEAST_COMBAT_VICTORY")
       if (locationId && value) {
         // make sure the switch is set to true
         LookOutsideAPClient.setLocation(LOCATION_ID_MAPPING[locationId]);
@@ -418,6 +417,7 @@ LookOutsideAPClient.watchLocations = function () {
           if (checkValue > value) return;
           break;
         default:
+          throw new Error("ERROR: CAN'T FIND RELATION ON SWITCH")
           return;
       }
       const locationId = LOCATION_ID_MAPPING[location];

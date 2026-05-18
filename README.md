@@ -43,7 +43,7 @@ Updates overworld events so that events missed by the player can be retried.
 - [x] Update trigger for grinning beast chase so it can be retried
 - [x] Allow player to recruit Leigh even if they walked away after defeating the grinning beast
 - [x] Make presence of overworld potential recruit encounters separate from their presence in player apartment (Lyle, Audrey, Aster, Leigh, Roaches, Joel, Papineau, Ernest) // todo: joel & papineau & ernest
-- [ ] Updates apartment 13 to give player drop as soon as they have rat baby item, no sacrifice required
+- [x] Updates apartment 13 to give player drop as soon as they have rat baby item, no sacrifice required
 - [x] Updates tooth family members to spawn in upgraded forms even if they've been killed prior
 - [ ] Make Audrey recruit unmissable (infinite advice cans, remove disposition check)
 - [ ] Make Joel recruit unmissable (remove disposition check)
@@ -57,6 +57,7 @@ Updates overworld events so that events missed by the player can be retried.
 
 Goes through the game's events to remove everything that explicitly grants an item to the player
 
+- [x] Clear out explicit recruit activation from bringing Phillippe/Rat Baby home
 - [x] Clear out starting arms + inventory from opening cutscene (currently only clearing games)
 - [x] Delete gun sale from leigh
 - [x] Clear out recruitment from leigh
@@ -78,7 +79,8 @@ Goes through the game's events to remove everything that explicitly grants an it
 - [x] Clear out gifts from Pierre in his room (clown drawing, clown outfit)
 - [ ] Clear out prizes from completing Leigh's quest
 - [ ] Clear out prizes from completing Roach's quest
-- [ ] Clear out item upgrade from interacting with typewriter with loose manuscript
+- [x] Clear out typewrither manuscript drop
+- [x] Clear out item upgrade from interacting with typewriter with loose manuscript
 - [x] Clear out item exchange when using the telescope in Edwin's apartment
 - [ ] Clear out item exchange when using the projector with void disc / photo paper
 - [ ] Clear out ability to acquire more photo paper
@@ -123,7 +125,7 @@ Functionality for inserting any item into the game at any time, necessary for AP
 - [x] Ability to grant each arm individually (using logic from Unarmed plugin)
 - [x] Ability to grant pre-defined resource packs (money + items)
 - [x] Ability to grant any recruit
-- [ ] Ability to randomize rat baby growth spurt as "progressive rat baby"
+- [x] Ability to randomize rat baby growth spurt as "progressive rat baby"
 - [x] Ability to grant custom traps (reduce Sam's maintenance stats, add random status ailments to party)
 
 ## MainMenuAPOptions.js
