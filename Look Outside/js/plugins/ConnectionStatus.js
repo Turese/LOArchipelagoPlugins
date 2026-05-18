@@ -15,7 +15,7 @@ const TIMER_RETRY_SECONDS = 30;
 
 let connectionTimerFrames = null;
 
-let disconnectedMessage = "Not connected (click to connect)";
+let disconnectedMessage = "Not connected";
 
 const initializeConnectionStatus = function () {
   function ConnectionStatus() {
@@ -54,7 +54,7 @@ const initializeConnectionStatus = function () {
       text = "Connecting...";
     } else if (typeof connectionTimerFrames !== "number") {
       this.changeTextColor("#ac3232");
-      text = disconnectedMessage;
+      text = `${disconnectedMessage} (click to retry)`;
     } else {
       // disconnected
       if (connectionTimerFrames > 0) {
