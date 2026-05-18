@@ -149,10 +149,15 @@ Intended main entry point to other plugins.
 
 - [x] Establish connection with multiworld
 - [x] Connect with password protected multiworlds
-- [ ] Monitor connection; automatically reconnect when client connection is lost
+- [x] Monitor connection; automatically reconnect when client connection is lost
 - [x] Receive item, weapon, and armor locations
 - [x] Receive starting inventory
 - [x] Send location checks
+- [x] Send and receive death links
+
+## ConnectionStatus.js
+
+- [x] display and count down to automatic reconnection
 
 ## Misc goals / goals with no dedicated file
 

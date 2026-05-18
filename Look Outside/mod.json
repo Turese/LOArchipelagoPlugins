@@ -62,6 +62,10 @@
       "target": "js/plugins/InsertAPItems.js"
     },
     {
+      "source": "js/plugins/ConnectionStatus",
+      "target": "js/plugins/ConnectionStatus"
+    },
+    {
       "source": "js/plugins/LookOutsideAPClient.js",
       "target": "js/plugins/LookOutsideAPClient.js"
     },
@@ -228,6 +232,12 @@
       "name": "LookOutsideAPClient",
       "status": true,
       "description": "Archipelago Client for Look Outside",
+      "parameters": {}
+    },
+    {
+      "name": "ConnectionStatus",
+      "status": true,
+      "description": "connection status display",
       "parameters": {}
     },
     {

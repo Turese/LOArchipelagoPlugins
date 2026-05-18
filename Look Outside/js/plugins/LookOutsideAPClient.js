@@ -8,16 +8,17 @@
  * @help
  *
  * special thanks to Donais04 and the Silver Daze team for paving the way
- * to
+ *
  * and shoutout to the KELP MAN for letting me look through all that special look outside code
  *
- * WIP
- * as of now, this isn't even a client; it makes no connection to ap servers.
- * work so far has been in adding ability to inject items into the game
  **/
 
 var LookOutsideAPClient = LookOutsideAPClient || {};
 
+// set to true when actively logging in
+let connecting;
+
+// set to last loaded map id every map load
 let lastLoadedMapId;
 
 const client = new window.ArchipelagoModules.Client();
@@ -171,8 +172,7 @@ LookOutsideAPClient.initializeItemIndex = function () {
 
 LookOutsideAPClient.initializeSlotData = async function () {
   if (!$gamePlayer) return;
-  $gamePlayer.slotData = await client.players.self.fetchSlotData();
-  return $gamePlayer.slotData;
+  return ($gamePlayer.slotData = client.players.self.fetchSlotData());
 };
 
 LookOutsideAPClient.updateDeathLink = function (slotData) {
@@ -260,7 +260,6 @@ LookOutsideAPClient.initializeLocationObject = function () {
 };
 
 LookOutsideAPClient.gameLoadedAPSetup = async function (slotData) {
-  console.log(slotData, client.authenticated);
   LookOutsideAPClient.initializeItemIndex();
   LookOutsideAPClient.reportLocations();
   await LookOutsideAPClient.initializeLocationNames();
@@ -268,13 +267,29 @@ LookOutsideAPClient.gameLoadedAPSetup = async function (slotData) {
   LookOutsideAPClient.updateDeathLink(slotData);
 };
 
+const resetClient = async function () {
+  if (client.authenticated) {
+    client.socket.off("disconnected");
+    client.socket.disconnect();
+  }
+  LookOutsideAPClient.startAPClient();
+};
+
 LookOutsideAPClient.startAPClient = async function (deathLink) {
+  if (connecting) return;
   const slotName = ConfigManager.slotName || "";
   const roomId = ConfigManager.roomId || "";
   const password = ConfigManager.password || "";
 
-  if (!slotName.length || !roomId.length) {
-    console.warn("AP Client not connected: missing slot name.");
+  if (!slotName.length) {
+    disconnectedMessage = "AP Client not connected: missing slot name.";
+    connectionTimerFrames = null;
+    return;
+  }
+
+  if (!roomId.length) {
+    disconnectedMessage = "AP Client not connected: missing room id.";
+    connectionTimerFrames = null;
     return;
   }
 
@@ -293,7 +308,8 @@ LookOutsideAPClient.startAPClient = async function (deathLink) {
   });
 
   client.socket.on("disconnected", (_m) => {
-    console.log("disconnected! todo: reconnect");
+    disconnectedMessage = "Disconnected from server"
+    connectionTimerFrames = TIMER_RETRY_SECONDS * 60;
   });
 
   const args = {};
@@ -304,13 +320,22 @@ LookOutsideAPClient.startAPClient = async function (deathLink) {
 
   // todo: what to do when you change login location?
   if (!client.authenticated) {
+    connecting = true;
+    connectionTimerFrames = null;
     client
       .login(roomId, slotName, "Look Outside", args)
-      .then((slotData) => LookOutsideAPClient.gameLoadedAPSetup(slotData))
-      .catch(console.error);
+      .then((slotData) => {
+        connecting = false;
+        LookOutsideAPClient.gameLoadedAPSetup(slotData);
+      })
+      .catch((e) => {
+        connecting = false;
+        console.error(e);
+        disconnectedMessage = e.message;
+      });
   } else {
     if ($gamePlayer) {
-      LookOutsideAPClient.initializeSlotData.then((slotData) =>
+      LookOutsideAPClient.initializeSlotData().then((slotData) =>
         LookOutsideAPClient.gameLoadedAPSetup(slotData),
       );
     }
@@ -355,12 +380,10 @@ LookOutsideAPClient.watchLocations = function () {
     if (SWITCH_LOCATIONS[switchId]) {
       const locationId = SWITCH_LOCATIONS[switchId];
       if (locationId === "F2_GRINNING_BEAST_COMBAT_VICTORY")
-        console.log("SETTING THIS");
       if (locationId && value) {
         // make sure the switch is set to true
         LookOutsideAPClient.setLocation(LOCATION_ID_MAPPING[locationId]);
         if (locationId === "F2_GRINNING_BEAST_COMBAT_VICTORY") {
-          console.log("why am i here?");
           // todo: find a better place for this? this location should imply the following location:
           LookOutsideAPClient.setLocation(
             LOCATION_ID_MAPPING["F2_GRINNING_BEAST_CHASE_POOL_CUE"],
@@ -421,7 +444,6 @@ LookOutsideAPClient.updateItems = function () {
       continue;
     }
     $gamePlayer.APItemsIndex = i;
-    console.log("----INSERTING ITEM ID: ", i);
     if (itemId < 1000) {
       window.InsertAPItems.insertItem(itemId, "item");
     } else if (itemId < 2000) {

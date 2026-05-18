@@ -274,6 +274,7 @@ MainMenuAPOptions.applyChanges = function () {
     this._actor.setName(this._editWindow.name());
     ConfigManager.save();
     this.popScene();
+    resetClient();
   };
 
   APNameScene.prototype.onInputCancel = function () {
