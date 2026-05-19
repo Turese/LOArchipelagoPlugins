@@ -96,7 +96,9 @@ Goes through the game's events to remove everything that explicitly grants an it
 - [x] Update item events to not grant items and display randomized item name
 - [x] Update trash can events to not grant items and display randomized item name
 - [x] Update roach events to not grant items and display randomized item name
-- [ ] Update drawer loot events to not grant items and display randomized item name
+- [x] Update drawer loot events to not grant items and display randomized item name
+- [x] Update landlord couch loot events to not grant items and display randomized item name
+- [ ] Update safe loot events to not grant items and display randomized item name
 - [x] Update first aid box events to not grant items and display randomized item name
 - [x] Update bathroom cabinet events to not grant items and display randomized item name
 
