@@ -621,6 +621,9 @@ InsertAPItems.insertResourcePack = function (itemId) {
       InsertAPItems.insertItem(108, "item", 2);
       InsertAPItems.insertItem(110, "item", 5);
       break;
+    case 69: // 4x cheese
+      InsertAPItems.insertItem(34, "item", 4);
+      break;
     default:
       console.warn(`Unrecognized pack item id: ${itemId}, no item granted`);
   }

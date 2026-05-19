@@ -3158,58 +3158,140 @@ UpdateEventContent.overrideOverworldPickups = function (currentMapId) {
     ];
   }
 
+  function getTrapPickupList(script, fakeItemName, itemName, prefix = "") {
+    return [
+      {
+        code: 101,
+        indent: 0,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 0,
+        parameters: [`${prefix}Take ${fakeItemName}\\C[0]?`],
+      },
+      {
+        code: 102,
+        indent: 0,
+        parameters: [["Take it.", "Leave it."], -1, 0, 2, 0],
+      },
+      {
+        code: 402,
+        indent: 0,
+        parameters: [0, "Take it."],
+      },
+      {
+        code: 101,
+        indent: 1,
+        parameters: ["", 0, 0, 1, ""],
+      },
+      {
+        code: 401,
+        indent: 1,
+        parameters: ["You are a \\C[18]FOOL!\\C[0]"],
+      },
+      {
+        code: 101,
+        indent: 1,
+        parameters: ["", 0, 0, 1, ""],
+      },
+      {
+        code: 401,
+        indent: 1,
+        parameters: [`Find ${itemName}.`],
+      },
+      {
+        code: 355,
+        indent: 1,
+        parameters: [`${script}`],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 402,
+        indent: 0,
+        parameters: [1, "Leave it."],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 404,
+        indent: 0,
+        parameters: [],
+      },
+      {
+        code: 0,
+        indent: 0,
+        parameters: [],
+      },
+    ];
+  }
+
   const eventsToOverride = MAP_OVERWORLD_ITEM_OVERRIDES[currentMapId];
   if (!eventsToOverride) return;
   Object.keys(eventsToOverride).forEach((eventId) => {
     const [name, script] = eventsToOverride[eventId];
     const event = $dataMap.events[eventId];
-    // the rose from the masked shadow is a special case because
-    // it's the only pickup that has a later event page
+    let pageIndex = 0;
+
+    let prefix;
+    // some items have different pages for whatever reason
+    if (name == "APT_13_DISC") pageIndex = 1;
+    // the rose/other item from the masked shadow is a special case because
+    // it's the only pickup that has multiple event pages
     // overriding only the first possible page here
     // because i forced the chosen gift to be the first one
     if (name === "F3_MASKED_SHADOW_GIFT") {
-      event.pages[3].list = getAPItemPickupList(
-        script,
-        LookOutsideAPClient.getItemName("F3_MASKED_SHADOW_GIFT"),
-        "A gift from the masked shadow? ...",
-      );
-      event.pages[3].directionFix = true;
-      event.pages[3].image = LookOutsideAPClient.getItemImage(name);
-      event.pages[3].direction = 4;
-    } else {
-      let pageIndex = 0;
-      // some items have different pages for whatever reason
-      if (name == "APT_13_DISC") pageIndex = 1;
-
-      event.pages[pageIndex] = {
-        ...event.pages[pageIndex],
-        list: getAPItemPickupList(
-          script,
-          LookOutsideAPClient.getItemName(name),
-        ),
-        image: LookOutsideAPClient.getItemImage(name),
-        direction: 4,
-        moveFrequency: 3,
-        moveRoute: {
-          list: [
-            {
-              code: 0,
-              parameters: [],
-            },
-          ],
-          repeat: true,
-          skippable: false,
-          wait: false,
-        },
-        moveSpeed: 3,
-        moveType: 0,
-        priorityType: 1,
-        stepAnime: false,
-        through: false,
-        trigger: 0,
-        walkAnime: true,
-      };
+      pageIndex = 3;
+      prefix = "A gift from the masked shadow? ...";
     }
+
+    const isTrap = LookOutsideAPClient.isLocationTrap(name);
+
+    console.log(name, isTrap);
+    const itemName = LookOutsideAPClient.getItemName(name);
+
+    let pickupList = isTrap
+      ? getTrapPickupList(
+          script,
+          // gets trap item name
+          LookOutsideAPClient.getItemName(name, false, true),
+          itemName,
+          prefix,
+        )
+      : getAPItemPickupList(script, itemName, prefix);
+
+    event.pages[pageIndex] = {
+      ...event.pages[pageIndex],
+      list: pickupList,
+      image: LookOutsideAPClient.getItemImage(name),
+      direction: 4,
+      moveFrequency: 3,
+      moveRoute: {
+        list: [
+          {
+            code: 0,
+            parameters: [],
+          },
+        ],
+        repeat: true,
+        skippable: false,
+        wait: false,
+      },
+      moveSpeed: 3,
+      moveType: 0,
+      priorityType: 1,
+      stepAnime: false,
+      through: false,
+      trigger: 0,
+      walkAnime: true,
+    };
 
     if (name === "APT_37_CRAFTING_KIT" || name === "APT_21_CROSSWORD_BOOK") {
       // for crafting kit

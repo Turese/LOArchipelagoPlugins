@@ -1205,6 +1205,20 @@ const LOCATION_ID_MAPPING = {
   ELEVATOR_FREAK_COMBAT_VICTORY: 5805,
 };
 
+// if a location becomes unreachable
+// upon granting another, then grant both at once
+const IMPLIED_LOCATIONS = {
+  F2_GRINNING_BEAST_COMBAT_VICTORY: ["F2_GRINNING_BEAST_CHASE_POOL_CUE"],
+  APT_32_BATHROOM_RECRUIT_JOEL: ["APT_32_BATHROOM_JOEL_COMBAT_VICTORY"],
+  F2_RECRUIT_ASTER: ["F2_ASTER_COMBAT_VICTORY"],
+  APT_21_SECOND_KISS_GIFT: ["APT_21_LYLE_COMBAT_VICTORY"], // lets make him always vanish after 2nd kiss
+  ERNEST_COLONEL_COMBAT_VICTORY: ["ERNEST_COMBAT_VICTORY"],
+  RAT_HELL_RECRUIT_ERNEST: [
+    "ERNEST_COMBAT_VICTORY",
+    "ERNEST_COLONEL_COMBAT_VICTORY",
+  ],
+};
+
 // custom switch ids (these are unused in the base game as of version 2.3
 // i use 1399 and 1400 in NormalizeDifficulty
 const APT_33_RECRUIT_RAT_BABY_SWITCH = 1395;
@@ -2905,7 +2919,8 @@ VARIABLE_LOCATIONS = {
     location: "APT_38_LOUIS_TORSO_COMBAT_VICTORY",
   },
   617: [
-    { relation: ">=", value: 10, location: "APT_38_PIERRE_CLOWN_DRAWING" },
+    //{ relation: ">=", value: 10, location: "DOOR_PIERRE" }, TODO: DOOR ENC PIERRE
+    { relation: ">=", value: 11, location: "APT_38_PIERRE_CLOWN_DRAWING" },
     { relation: ">=", value: 17, location: "APT_38_PIERRE_CLOWN_WIG" },
   ], // 17 is when you lose, 20 is when you win
   /*81: {

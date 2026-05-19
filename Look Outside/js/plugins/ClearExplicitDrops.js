@@ -514,7 +514,7 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
     if (lastLoadedMapId === 9 && ev.id === 14) {
       // all first 3 event states have the drop
       for (let i = 0; i <= 2; i++) {
-        ev.page[i].list = ev.page[i].list.filter(
+        ev.pages[i].list = ev.pages[i].list.filter(
           (listItem) => listItem.code !== 126 && listItem.code !== 401,
         );
       }
@@ -527,6 +527,26 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
       //TODO
     }
   }
+
+  function clearLandlordCache() {
+    if (lastLoadedMapId === 180 && ev.id === 15) {
+      // remove dollar coin item drop
+      ev.pages[0].list = ev.pages[0].list.filter(
+        (listItem) => listItem.code !== 126,
+      );
+
+      const itemGetMessageIndex = ev.pages[0].list.findIndex(
+        (listItem) =>
+          listItem.code == 401 &&
+          listItem.parameters[0].includes("Dollar Coin"),
+      );
+      if (itemGetMessageIndex !== -1) {
+        ev.pages[0].list[itemGetMessageIndex].parameters[0] =
+          `Find ${LookOutsideAPClient.getItemName("LL_DINING_SECRET_CACHE")}.`;
+      }
+    }
+  }
+  clearLandlordCache();
 };
 
 ClearExplicitDrops.clearAllEnemiesDrops = function () {
@@ -885,7 +905,5 @@ ClearExplicitDrops.clearCommonEventDrops = function () {
   clearAudreyShop();
 
   // both smooches / photos item exchanges
-  function clearLyleTrades() {
-    
-  }
+  function clearLyleTrades() {}
 };

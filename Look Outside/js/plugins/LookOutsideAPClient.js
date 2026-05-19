@@ -232,9 +232,17 @@ LookOutsideAPClient.makeSlotDataChanges = function () {
 
 */
 const TRAP_MAPPINGS = [
-  { player: null, trapTextColor: 22, trapName: "Paper-Maché Crown" },
-  { player: null, itemColor: 22, name: "Elixer" },
-  { itemColor: 22, name: "Jasper Roommate" },
+  { trapTextColor: 22, trapName: "Paper-Maché Crown" },
+  { trapTextColor: 22, trapName: "Elixer" },
+  { trapTextColor: 22, trapName: "Cheese Boy" },
+  { trapTextColor: 22, trapName: "Jasper Roommate" },
+  { trapTextColor: 15, trapName: "Ceres Disk" },
+  { trapTextColor: 15, trapName: "Old Rusty Key" },
+  { trapTextColor: 15, trapName: "Sybil's Journal" },
+  { trapTextColor: 15, trapName: "Super Jumplad 2" },
+  { trapTextColor: 4, trapName: "Old Checkerboard" },
+  { trapTextColor: 15, trapName: "Apt. 43 Key" },
+  { trapTextColor: 22, trapName: "Master Sword" },
 ];
 
 LookOutsideAPClient.initializeLocationNames = async function () {
@@ -257,7 +265,10 @@ LookOutsideAPClient.initializeLocationNames = async function () {
           else player = `${item.receiver}'s `;
           let mapping = { player, itemColor, name: item.name };
           if (item.trap) {
-            mapping = { ...mapping, ...TRAP_MAPPINGS[0], isTrap: true };
+            const randIndex = Math.floor(
+              Math.random() * Object.keys(TRAP_MAPPINGS).length,
+            );
+            mapping = { ...mapping, ...TRAP_MAPPINGS[randIndex], isTrap: true };
           }
           locationMapping[l] = mapping;
         }
@@ -398,11 +409,12 @@ LookOutsideAPClient.watchLocations = function () {
       if (locationId && value) {
         // make sure the switch is set to true
         LookOutsideAPClient.setLocation(LOCATION_ID_MAPPING[locationId]);
-        if (locationId === "F2_GRINNING_BEAST_COMBAT_VICTORY") {
-          // todo: find a better place for this? this location should imply the following location:
-          LookOutsideAPClient.setLocation(
-            LOCATION_ID_MAPPING["F2_GRINNING_BEAST_CHASE_POOL_CUE"],
-          );
+        if (IMPLIED_LOCATIONS[locationId]) {
+          for (impliedLocationId of IMPLIED_LOCATIONS[locationId]) {
+            LookOutsideAPClient.setLocation(
+              LOCATION_ID_MAPPING[impliedLocationId],
+            );
+          }
         }
       }
     }
@@ -480,9 +492,22 @@ LookOutsideAPClient.updateItems = function () {
   }
 };
 
+LookOutsideAPClient.isLocationTrap = function (apLocationName) {
+  const locationId = LOCATION_ID_MAPPING[apLocationName];
+  if (
+    $gamePlayer &&
+    $gamePlayer.LOCATION_NAME_MAPPING &&
+    $gamePlayer.LOCATION_NAME_MAPPING[locationId]
+  ) {
+    if ($gamePlayer.LOCATION_NAME_MAPPING[locationId].isTrap) return true;
+  }
+  return false;
+};
+
 LookOutsideAPClient.getItemName = function (
   apLocationName,
   excludeBrackets = false,
+  useTrapName = false,
 ) {
   const locationId = LOCATION_ID_MAPPING[apLocationName];
 
@@ -494,12 +519,15 @@ LookOutsideAPClient.getItemName = function (
   if (!mapping)
     mapping = { player: null, name: "Randomized Item", itemColor: 24 };
 
-  const { player, name, itemColor } = mapping;
+  const { player, name, itemColor, trapName, trapTextColor } = mapping;
+
+  const nameToUse = useTrapName ? trapName : name;
+  const colorToUse = useTrapName ? trapTextColor : itemColor;
 
   if (excludeBrackets) {
-    return `${player ? player + " " : ""}\\C[${itemColor}]${name}\\C[0]`;
+    return `${player && !useTrapName ? player + " " : ""}\\C[${colorToUse}]${nameToUse}\\C[0]`;
   }
-  return `${player ? player + " " : ""}\\C[${itemColor}]{${name}}\\C[0]`;
+  return `${player && !useTrapName ? player + " " : ""}\\C[${colorToUse}]{${nameToUse}}\\C[0]`;
 };
 
 LookOutsideAPClient.getItemImage = function (apLocationName) {
