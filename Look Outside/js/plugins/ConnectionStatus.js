@@ -48,7 +48,8 @@ const initializeConnectionStatus = function () {
 
     if (client.authenticated) {
       this.changeTextColor("#6daa2c");
-      text = "Connected";
+      const playerName = client.players.self.alias;
+      text = `Connected as ${playerName}`;
     } else if (connecting) {
       this.changeTextColor("#d27d2c");
       text = "Connecting...";

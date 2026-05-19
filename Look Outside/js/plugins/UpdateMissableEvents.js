@@ -121,19 +121,26 @@ UpdateMissableEvents.applyEventUpdates = function (lastLoadedMapId, ev) {
   // for overworld recruits; the switch that makes them leave their spots
   // if recruited is replaced with self switch D
   function forceRecruitsToStay() {
-    //leigh
+    // leigh
     if (lastLoadedMapId == 93 && ev.id == 3) {
       ev.pages[2].conditions = recruitLeaveCondition;
     }
 
-    //lyle
+    // lyle
     if (lastLoadedMapId == 9 && ev.id == 14) {
       ev.pages[6].conditions = recruitLeaveCondition;
     }
 
-    //aster
+    // aster
     if (lastLoadedMapId == 7 && ev.id == 14) {
       ev.pages[4].conditions = recruitLeaveCondition;
+    }
+
+    // audrey
+    if (lastLoadedMapId == 92 && ev.id == 111) {
+      if (ev.pages.length >= 7) {
+        ev.pages.splice(5, 1);
+      }
     }
 
     //joel

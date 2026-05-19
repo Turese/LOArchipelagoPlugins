@@ -542,6 +542,7 @@ const LOCATION_ID_MAPPING = {
   RAT_APT_BABY_ROOM_RATS_COMBAT_VICTORY: 2609,
   RAT_APT_BABY_ROOM_BANDAGES: 2610,
   RAT_APT_BABY_ROOM_DRAWINGS: 2611,
+  RAT_APT_RAT_BABY_THING: 2622,
   RAT_LAIR_GIANT_RAT_COMBAT_VICTORY: 2701,
   RAT_LAIR_GIANT_RAT_BURRITO: 2702,
   RAT_LAIR_CLEAVER: 2703,
@@ -709,6 +710,7 @@ const LOCATION_ID_MAPPING = {
   LAUNDRY_CERULEAN_FIGURE: 3515,
   LAUNDRY_KLYSOX_2: 3516,
   LAUNDRY_KLYSOX_3: 3517,
+  GF_MENS_BATHROOM_TRASH: 3518,
   BUS_TOUCHY_COMBAT_VICTORY: 3601,
   BUS_FEELY_COMBAT_VICTORY: 3602,
   BUS_ARMKNOT_COMBAT_VICTORY: 3603,
@@ -728,6 +730,7 @@ const LOCATION_ID_MAPPING = {
   GF_OFFICE_WHISKEY: 3411,
   GF_OFFICE_CLAYMORE: 3412,
   GF_OFFICE_UNLABELED_CARTRIDGE: 3413,
+  GF_OFFICE_TRASH: 3414,
   MUTT_CHAMPIONS_BELT: 3701,
   MUTT_CHAINSAW: 3702,
   MUTT_CATTLE_PROD: 3703,
@@ -774,6 +777,7 @@ const LOCATION_ID_MAPPING = {
   MAILROOM_N_GARBAGE_WORM_COMBAT_VICTORY: 3901,
   MAILROOM_N_SAFE: 3902,
   GF_WEST_HAND_WORMS_COMBAT_VICTORY: 3909,
+  MAILROOM_OFFICE_TRASH: 3910,
   MAILROOM_STORAGE_SATURN_DISC: 3905,
   MAILROOM_STORAGE_DUCT_TAPE: 3906,
   MAILROOM_STORAGE_MAGNUM_BULLETS: 3907,
@@ -811,6 +815,7 @@ const LOCATION_ID_MAPPING = {
   LL_OFFICE_CARVED_BEAVER: 4038,
   LL_OFFICE_DETONATOR: 4039,
   LL_OFFICE_MANATARMS_COMBAT_VICTORY: 4040,
+  LL_OFFICE_CASH: 4085,
   LL_EAST_SOLDIER_COMBAT_VICTORY: 4041,
   LL_EAST_SIDE_TABLE: 4042,
   LL_EAST_GATLING_COMBAT_VICTORY: 4043,
@@ -1916,29 +1921,8 @@ SELF_SWITCH_LOCATIONS = {
     18: { A: "APT_31_TRASH" },
   },
 
-  265: {
-    18: { A: "APT_31_DARK_TRASH" },
-  },
-
-  111: {
-    11: { A: "APT_31_BATHROOM_VINEGAR" },
-    15: { A: "APT_31_BATHROOM_EYE_DROPS" },
-    10: { A: "APT_31_BATHROOM_DCLOGGER" },
-    9: { A: "APT_31_BATHROOM_DCLOGGER_2" },
-    6: { A: "APT_31_BATHROOM_MEDICINE_CABINET" },
-    12: { A: "APT_31_BATHROOM_SOAP" },
-  },
-
-  109: {
-    7: { A: "APT_31_BEDROOM_METAL_BAT" },
-    8: { A: "APT_31_BEDROOM_TONIC" },
-    12: { A: "APT_31_BEDROOM_SAFE_ITEM" },
-  },
-
-  110: {
-    10: { A: "APT_31_OBSERVATORY_PLUTO_DISC" },
-    14: { A: "APT_31_OBSERVATORY_VOID_DISC" },
-    5: { A: "APT_31_OBSERVATORY_TRASH" },
+  92: {
+    111: { A: "F1_AUDREY_RECRUIT" },
   },
 
   309: {
@@ -2050,6 +2034,7 @@ SELF_SWITCH_LOCATIONS = {
     13: { A: "RAT_APT_BABY_ROOM_MUSIC_BOX" },
     12: { A: "RAT_APT_BABY_ROOM_BANDAGES" },
     14: { A: "RAT_APT_BABY_ROOM_DRAWINGS" },
+    5: { A: "RAT_APT_RAT_BABY_THING" },
   },
 
   102: {
@@ -2214,6 +2199,10 @@ SELF_SWITCH_LOCATIONS = {
     5: { A: "GF_OFFICE_BATHROOM_ELIXIR" },
   },
 
+  65: {
+    21: { A: "GF_OFFICE_TRASH" },
+  },
+
   68: {
     9: { A: "GF_OFFICE_WHISKEY" },
     8: { A: "GF_OFFICE_CLAYMORE" },
@@ -2309,6 +2298,7 @@ SELF_SWITCH_LOCATIONS = {
     1: { A: "LL_OFFICE_CARVED_BEAVER" },
     7: { A: "LL_OFFICE_DETONATOR" },
     2: { D: "LL_OFFICE_MANATARMS_COMBAT_VICTORY" },
+    3: { A: "LL_OFFICE_CASH" },
   },
 
   208: {
@@ -2414,6 +2404,7 @@ SELF_SWITCH_LOCATIONS = {
   54: {
     38: { A: "GF_MENS_BATHROOM_FIRST_AID_BOX" },
     39: { A: "GF_MENS_BATHROOM_SIMPLE_KEY" },
+    31: { A: "GF_MENS_BATHROOM_TRASH" },
   },
 
   55: {
@@ -2467,6 +2458,7 @@ SELF_SWITCH_LOCATIONS = {
   71: {
     24: { A: "MAILROOM_OFFICE_CELL_PHONE" },
     22: { A: "MAILROOM_OFFICE_SUN_DISC" },
+    25: { A: "MAILROOM_OFFICE_TRASH" },
   },
 
   72: {
@@ -2855,6 +2847,12 @@ VARIABLE_LOCATIONS = {
     location: "APT_33_LIVING_ROOM_SCREAMATORIUM",
   },
 
+  // shutterbugstate
+  192: [
+    { relation: "=", value: 3, location: "APT_21_FIRST_KISS_GIFT" },
+    { relation: "=", value: 7, location: "APT_21_SECOND_KISS_GIFT" },
+  ],
+
   376: [
     {
       // roachDispo; is hit whether or not roaches is already recruited
@@ -3001,9 +2999,12 @@ VARIABLE_LOCATIONS = {
   ],
   899: { relation: ">=", value: 100, location: "APT_33_ROACH_QUEST" },
   874: { relation: ">=", value: 26, location: "MUTT_SPIDER_HUSK_HEART" },
-  169: { relation: ">=", value: 2, location: "LL_RENT_1" },
-  169: { relation: ">=", value: 3, location: "LL_RENT_2" },
-  169: { relation: ">=", value: 4, location: "LL_RENT_3" },
+  169: [
+    { relation: ">=", value: 2, location: "LL_RENT_1" },
+    { relation: ">=", value: 3, location: "LL_RENT_2" },
+    { relation: ">=", value: 4, location: "LL_RENT_3" },
+    { relation: ">=", value: 5, location: "LL_RENT_4" },
+  ],
   355: { relation: "=", value: 1, location: "LL_DINING_RADIO" },
   353: { relation: "=", value: 1, location: "LL_SAPPER_GIFT_FROM_SAPPER" },
   354: { relation: "=", value: 1, location: "LL_MINESWEEPER_GIFT" },
@@ -3108,7 +3109,7 @@ SWITCH_LOCATIONS = {
   172: "GF_OFFICE_JASPER_COMBAT_VICTORY",
   950: "GF_OFFICE_BATHROOM_WORM_COMBAT_VICTORY",
   390: "CORNER_STORE_CENTIFINGERS_COMBAT_VICTORY",
-  353: "LL_RENT_4",
+  353: "LL_RENT_4", //rentallpaid, this is a backup
   440: "LL_INTRO_COMBAT_VICTORY",
   404: "LL_SOLDIER_GRP1_COMBAT_VICTORY",
   408: "LL_GATLING_COMBAT_VICTORY",

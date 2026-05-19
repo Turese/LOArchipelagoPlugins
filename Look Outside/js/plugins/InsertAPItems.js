@@ -202,7 +202,7 @@ InsertAPItems.insertRecruit = function (name) {
   if (name === "Spider") {
     sSw(375, true);
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
-     setSybilMajorStory(66);
+    setSybilMajorStory(66);
   }
 };
 
@@ -614,6 +614,12 @@ InsertAPItems.insertResourcePack = function (itemId) {
       break;
     case 67:
       InsertAPItems.insertItem(8, "item", 2); // 2x tonic
+      break;
+    case 68: // landlord's couch cash, 20 dollars, 5x penny, 2x dime, 4x quarter
+      InsertAPItems.insertMoney(20);
+      InsertAPItems.insertItem(107, "item", 4);
+      InsertAPItems.insertItem(108, "item", 2);
+      InsertAPItems.insertItem(110, "item", 5);
       break;
     default:
       console.warn(`Unrecognized pack item id: ${itemId}, no item granted`);

@@ -10,6 +10,32 @@
 
 var ClearExplicitDrops = ClearExplicitDrops || {};
 
+ClearExplicitDrops.buildConditions = function (selfSwitch) {
+  let conditions = {
+    actorId: 1,
+    actorValid: false,
+    itemId: 1,
+    itemValid: false,
+    selfSwitchCh: "A",
+    selfSwitchValid: false,
+    switch1Id: 1,
+    switch1Valid: false,
+    switch2Id: 1,
+    switch2Valid: false,
+    variableId: 1,
+    variableValid: false,
+    variableValue: 0,
+  };
+  if (selfSwitch) {
+    conditions = {
+      ...conditions,
+      selfSwitchCh: selfSwitch,
+      selfSwitchValid: true,
+    };
+  }
+  return conditions;
+};
+
 ClearExplicitDrops.applyDatamapClears = function (lastLoadedMapId) {
   // clear out the starting video games from player's inventory
   function updateStartingVideoGames() {
@@ -82,61 +108,6 @@ ClearExplicitDrops.applyDatamapClears = function (lastLoadedMapId) {
     }
   }
   updateStartingArms();
-
-  // make it so killing lyle wont drop the darkroom key
-  function clearShutterbugDrop() {
-    //TODO: IMPLEMENT
-  }
-
-  // make it so killing taxidermy with audrey wont explicitly award rhino skin
-  // other audrey drops...
-  function clearAudreyDrops() {
-    //TODO: IMPLEMENT
-  }
-
-  // remove rusty crown reward from rat king
-  function clearRatKingDrops() {
-    //TODO: IMPLEMENT
-    // room 92 event 45 page 3
-  }
-
-  function updateAudreyRecruit() {
-    // replace audrey recruit check with a state update
-  }
-
-  // remove all explicit rewards from all freds
-  function clearFredRewards() {}
-
-  // remove clown item drops from pierre interactions
-  function clearPierreGifts() {
-    //TODO: IMPLEMENT
-  }
-
-  // remove elixir prize and laundry prize
-  function clearJeanneRewards() {
-    //TODO: IMPLEMENT
-  }
-
-  // remove ring / grinning beast skill reward from finishing leighs quest
-  function clearMartinNoteDrop() {
-    //TODO: IMPLEMENT
-  }
-
-  // instead of setting and checking for variable 231, typewriter sets and checks self state A
-  function updateTypewriterTrigger() {
-    //TODO: IMPLEMENT
-    // typewriter is room 118, event 5
-  }
-
-  // remove photo paper collection spots in lyles apartment
-  function updatePhotoPaperTriggers() {
-    //TODO: IMPLEMENT
-  }
-
-  // remove blank tape consumption in security room
-  function updateCCTVTriggers() {
-    //TODO: IMPLEMENT
-  }
 };
 
 ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
@@ -369,21 +340,7 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
           indent: 0,
           parameters: ["$gameSelfSwitches.setValue([74, 3, 'A'], true)"],
         };
-        ev.pages[1].conditions = {
-          actorId: 1,
-          actorValid: false,
-          itemId: 1,
-          itemValid: false,
-          selfSwitchCh: "A",
-          selfSwitchValid: true,
-          switch1Id: 1,
-          switch1Valid: false,
-          switch2Id: 1,
-          switch2Valid: false,
-          variableId: 1,
-          variableValid: false,
-          variableValue: 0,
-        };
+        ev.pages[1].conditions = ClearExplicitDrops.buildConditions("A");
       }
       // also clear out the power outage effect; player should trigger this manually
       ev.pages[0].list = ev.pages[0].list.filter(
@@ -456,7 +413,7 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
           listItem.code === 401 &&
           listItem.parameters[0].contains("AAAAAAAAAAAAAAAAAAAAAAAAAMBROS"),
       );
-      if (messageIndex) {
+      if (messageIndex !== -1) {
         filteredList.parameters[0] = `You \C[5]fi\C[20]nd ${LookOutsideAPClient.getItemName("GLITCH_SW_AMBROSE")}.`;
       }
       ev.pages[0].list = filteredList;
@@ -477,6 +434,7 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
   }
   clearTypewritherDrop();
 
+  // instead of setting and checking for variable 231, typewriter sets and checks self state A
   function clearManuscriptCompletion() {
     if (lastLoadedMapId === 118 && ev.id === 5) {
       // remove where it sets the manuscriptfull switch
@@ -502,24 +460,73 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
           `Find ${LookOutsideAPClient.getItemName("APT_27_COMPLETE_MANUSCRIPT")}.`;
       }
 
-      ev.pages[1].conditions = {
-        actorId: 1,
-        actorValid: false,
-        itemId: 1,
-        itemValid: false,
-        selfSwitchCh: "A",
-        selfSwitchValid: true,
-        switch1Id: 1,
-        switch1Valid: false,
-        switch2Id: 1,
-        switch2Valid: false,
-        variableId: 1,
-        variableValid: false,
-        variableValue: 0,
-      };
+      ev.pages[1].conditions = ClearExplicitDrops.buildConditions("A");
     }
   }
   clearManuscriptCompletion();
+
+  function clearCribDrop() {
+    if (lastLoadedMapId === 101 && ev.id === 5) {
+      // find where it sets the switch ratChasePrime
+      const ratChaseTriggerIndex = ev.pages[0].list.findIndex(
+        (listItem) => listItem.code == 121,
+      );
+
+      if (ratChaseTriggerIndex !== -1) {
+        ev.pages[0].list.splice(
+          ratChaseTriggerIndex,
+          1,
+          ...[
+            {
+              code: 355,
+              indent: 1,
+              parameters: ["$gameSelfSwitches.setValue([101, 5, 'A'], true);"],
+            },
+            {
+              code: 101,
+              indent: 1,
+              parameters: ["", 0, 0, 2, ""],
+            },
+            {
+              code: 401,
+              indent: 1,
+              parameters: [
+                `Find ${LookOutsideAPClient.getItemName("RAT_APT_RAT_BABY_THING")}.`,
+              ],
+            },
+            {
+              code: 101,
+              indent: 1,
+              parameters: ["", 0, 0, 2, ""],
+            },
+          ],
+        );
+      }
+
+      ev.pages[2].conditions = ClearExplicitDrops.buildConditions("A");
+    }
+  }
+  clearCribDrop();
+
+  // make it so killing lyle wont drop the darkroom key
+  // remove both item grant and alert message
+  function clearShutterbugDrop() {
+    if (lastLoadedMapId === 9 && ev.id === 14) {
+      // all first 3 event states have the drop
+      for (let i = 0; i <= 2; i++) {
+        ev.page[i].list = ev.page[i].list.filter(
+          (listItem) => listItem.code !== 126 && listItem.code !== 401,
+        );
+      }
+    }
+  }
+  clearShutterbugDrop();
+
+  function clearJeanneLaundry() {
+    if (lastLoadedMapId === 69 && ev.id === 65) {
+      //TODO
+    }
+  }
 };
 
 ClearExplicitDrops.clearAllEnemiesDrops = function () {
@@ -740,6 +747,7 @@ ClearExplicitDrops.clearCommonEventDrops = function () {
         (listItem) => listItem.code !== 318,
       );
       if (
+        $gamePlayer &&
         $gamePlayer.slotData &&
         $gamePlayer.slotData["include_game_skills"] == 0
       ) {
@@ -875,4 +883,9 @@ ClearExplicitDrops.clearCommonEventDrops = function () {
     );
   }
   clearAudreyShop();
+
+  // both smooches / photos item exchanges
+  function clearLyleTrades() {
+    
+  }
 };

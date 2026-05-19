@@ -1735,6 +1735,7 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
       "LL_OFFICE_DETONATOR",
       "$gameSelfSwitches.setValue([209, 7, 'A'], true)",
     ],
+    3: ["LL_OFFICE_CASH", "$gameSelfSwitches.setValue([209, 3, 'A'], true)"],
   },
 
   208: {
@@ -1922,7 +1923,7 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   54: {
     39: [
       "GF_MENS_BATHROOM_SIMPLE_KEY",
-      "$gameSelfSwitches.setValue([278, 39, 'A'], true)",
+      "$gameSelfSwitches.setValue([54, 39, 'A'], true)",
     ],
   },
 
@@ -2691,6 +2692,13 @@ const TRASH_CAN_ITEM_OVERRIDES = {
     17: ["RAT_APT_TRASH", "$gameSelfSwitches.setValue([100, 17, 'A'], true)"],
   },
 
+  54: {
+    31: [
+      "GF_MENS_BATHROOM_TRASH",
+      "$gameSelfSwitches.setValue([54, 31, 'A'], true)",
+    ],
+  },
+
   56: {
     3: ["MUTT_TRASH", "$gameSelfSwitches.setValue([56, 3, 'A'], true)"],
   },
@@ -2699,8 +2707,19 @@ const TRASH_CAN_ITEM_OVERRIDES = {
     5: ["GF_JANITORS_TRASH", "$gameSelfSwitches.setValue([60, 5, 'A'], true)"],
   },
 
+  71: {
+    25: [
+      "MAILROOM_OFFICE_TRASH",
+      "$gameSelfSwitches.setValue([71, 25, 'A'], true)",
+    ],
+  },
+
   69: {
     4: ["LAUNDRY_TRASH", "$gameSelfSwitches.setValue([69, 4, 'A'], true)"],
+  },
+
+  65: {
+    21: ["GF_OFFICE_TRASH", "$gameSelfSwitches.setValue([65, 21, 'A'], true)"],
   },
 
   87: {
@@ -2815,6 +2834,12 @@ const FRIDGE_ITEM_OVERRIDES = {
     ],
   },
   // LL_FRIDGE
+  62: { 1: ["LL_FRIDGE", "sSw(354, true);"] },
+  129: { 4: ["LL_FRIDGE", "sSw(354, true);"] },
+  204: { 4: ["LL_FRIDGE", "sSw(354, true);"] },
+  205: { 4: ["LL_FRIDGE", "sSw(354, true);"] },
+  130: { 17: ["LL_FRIDGE", "sSw(354, true);"] },
+  207: { 11: ["LL_FRIDGE", "sSw(354, true);"] },
 };
 
 const FIRST_AID_BOX_ITEM_OVERRIDES = {
@@ -2928,6 +2953,90 @@ const ROACH_ITEM_OVERRIDES = {
     24: "BOILER_ROOM_ROACH_1",
     25: "BOILER_ROOM_ROACH_2",
   },
+};
+
+const DRAWER_ITEM_OVERRIDES = {
+  295: {
+    5: ["APT_18_N_DRAWER", "$gameSelfSwitches.setValue([295, 5, 'A'], true)"],
+  },
+  297: {
+    8: ["APT_18_SE_DRAWER", "$gameSelfSwitches.setValue([297, 8, 'A'], true)"],
+  },
+  129: {
+    21: ["LL_SIDETABLE_N", "sSw(443, true);"],
+    22: ["LL_SIDETABLE_W", "sSw(444, true);"],
+    23: ["LL_SIDETABLE_S", "sSw(447, true);"],
+  },
+  64: {
+    9: [
+      "LL_BEDROOM_SIDE_TABLE_W",
+      "$gameSelfSwitches.setValue([64, 9, 'A'], true)",
+    ],
+    10: [
+      "LL_BEDROOM_WIDE_TABLE_E",
+      "$gameSelfSwitches.setValue([64, 10, 'A'], true)",
+    ],
+  },
+  204: {
+    9: ["LL_SIDETABLE_N", "sSw(443, true);"],
+    13: ["LL_SIDETABLE_W", "sSw(444, true);"],
+    11: ["LL_SIDETABLE_S", "sSw(447, true);"],
+    10: ["LL_WIDE_TABLE_S", "sSw(445, true);"],
+  },
+  180: {
+    4: ["LL_DINING_DRAWER", "$gameSelfSwitches.setValue([180, 4, 'A'], true)"],
+    6: [
+      "LL_DINING_WIDE_TABLE_E",
+      "$gameSelfSwitches.setValue([180, 6, 'A'], true)",
+    ],
+    7: [
+      "LL_DINING_SIDE_TABLE",
+      "$gameSelfSwitches.setValue([180, 7, 'A'], true)",
+    ],
+  },
+  205: {
+    11: ["LL_SIDETABLE_N", "sSw(443, true);"],
+    12: ["LL_WIDE_TABLE_S", "sSw(445, true);"],
+    13: ["LL_SIDETABLE_S", "sSw(447, true);"],
+    14: ["LL_WIDE_TABLE_E", "sSw(446, true);"],
+    15: ["LL_SIDETABLE_W", "sSw(444, true);"],
+  },
+  208: {
+    3: ["LL_EAST_DRAWER_W", "$gameSelfSwitches.setValue([208, 3, 'A'], true)"],
+    4: [
+      "LL_EAST_SIDE_TABLE",
+      "$gameSelfSwitches.setValue([208, 4, 'A'], true)",
+    ],
+    6: ["LL_EAST_DRAWER_W", "$gameSelfSwitches.setValue([208, 6, 'A'], true)"],
+  },
+  210: {
+    5: [
+      "LL_NORTH_SIDE_TABLE",
+      "$gameSelfSwitches.setValue([210, 5, 'A'], true)",
+    ],
+    6: [
+      "LL_NORTH_SIDE_TABLE_W",
+      "$gameSelfSwitches.setValue([210, 6, 'A'], true)",
+    ],
+  },
+  206: {
+    14: ["LL_SIDETABLE_N", "sSw(443, true);"],
+    15: ["LL_WIDE_TABLE_S", "sSw(445, true);"],
+    16: ["LL_SIDETABLE_S", "sSw(447, true);"],
+    17: ["LL_WIDE_TABLE_E", "sSw(446, true);"],
+    18: ["LL_SIDETABLE_W", "sSw(444, true);"],
+  },
+};
+
+// only the landlord's couch is searchable
+// but it appears in multiple places
+// all are "LL_COUCH_LOOT" with "sSw(436, true);"
+const COUCH_ITEM_OVERRIDES = {
+  129: 17,
+  204: 23,
+  205: 28,
+  206: 33,
+  184: 15,
 };
 
 var UpdateEventContent = UpdateEventContent || {};
@@ -3514,7 +3623,6 @@ UpdateEventContent.overrideRoachPickups = function (currentMapId) {
   const eventsToOverride = ROACH_ITEM_OVERRIDES[currentMapId];
   if (eventsToOverride) {
     Object.keys(eventsToOverride).forEach((eventId) => {
-      const [name, script] = eventsToOverride[eventId];
       const event = $dataMap.events[eventId];
       // clear out the roach being added to inventory
       event.pages[0].list = event.pages[0].list.filter(
@@ -3524,7 +3632,108 @@ UpdateEventContent.overrideRoachPickups = function (currentMapId) {
   }
 };
 
-UpdateEventContent.overrideDrawerPickups = function (currentMapId) {};
+UpdateEventContent.overrideDrawerPickups = function (currentMapId) {
+  function getDrawerPickupList(itemName, script) {
+    return [
+      {
+        code: 355,
+        indent: 0,
+        parameters: ['qkSfx("SearchThrough",90,100,20,0,3);'],
+      },
+      {
+        code: 101,
+        indent: 0,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 0,
+        parameters: ["You search the drawer\\..\\..\\..\\.\\.\\."],
+      },
+      {
+        code: 230,
+        indent: 0,
+        parameters: [30],
+      },
+      {
+        code: 355,
+        indent: 0,
+        parameters: [script],
+      },
+      {
+        code: 101,
+        indent: 0,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 0,
+        parameters: [`You find ${itemName}.`],
+      },
+      {
+        code: 0,
+        indent: 0,
+        parameters: [],
+      },
+    ];
+  }
+  const eventsToOverride = DRAWER_ITEM_OVERRIDES[currentMapId];
+  if (eventsToOverride) {
+    Object.keys(eventsToOverride).forEach((eventId) => {
+      const [name, script] = eventsToOverride[eventId];
+      const event = $dataMap.events[eventId];
+      event.pages[0].list = getDrawerPickupList(
+        LookOutsideAPClient.getItemName(name),
+        script,
+      );
+    });
+  }
+};
+
+UpdateEventContent.overrideCouchPickups = function (currentMapId) {
+  const eventToOverride = COUCH_ITEM_OVERRIDES[currentMapId];
+  if (eventToOverride) {
+    $dataMap.events[eventToOverride].pages[0].list = [
+      {
+        code: 121,
+        indent: 0,
+        parameters: [436, 436, 0],
+      },
+      {
+        code: 101,
+        indent: 0,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 0,
+        parameters: ["You search the couch for loose change..."],
+      },
+      {
+        code: 230,
+        indent: 0,
+        parameters: [30],
+      },
+      {
+        code: 101,
+        indent: 0,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 0,
+        parameters: [
+          `You find ${LookOutsideAPClient.getItemName("LL_COUCH_LOOT")}.`,
+        ],
+      },
+      {
+        code: 0,
+        indent: 0,
+        parameters: [],
+      },
+    ];
+  }
+};
 
 UpdateEventContent.overrideAllPickups = function (currentMapId) {
   UpdateEventContent.overrideOverworldPickups(currentMapId);
@@ -3534,4 +3743,5 @@ UpdateEventContent.overrideAllPickups = function (currentMapId) {
   UpdateEventContent.overrideMirrorPickups(currentMapId);
   UpdateEventContent.overrideRoachPickups(currentMapId);
   UpdateEventContent.overrideDrawerPickups(currentMapId);
+  UpdateEventContent.overrideCouchPickups(currentMapId);
 };
