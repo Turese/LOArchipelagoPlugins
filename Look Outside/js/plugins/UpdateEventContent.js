@@ -1695,6 +1695,18 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     6: ["LL_BATHROOM_SOAP", "$gameSelfSwitches.setValue([63, 6, 'A'], true)"],
   },
 
+  204: {
+    22: ["LL_BASEMENT_KEY", `sSw(${LL_BASEMENT_KEY_SWITCH}, true);`],
+  },
+
+  184: {
+    1: ["LL_BASEMENT_KEY", `sSw(${LL_BASEMENT_KEY_SWITCH}, true);`],
+  },
+
+  206: {
+    13: ["LL_BASEMENT_KEY", `sSw(${LL_BASEMENT_KEY_SWITCH}, true);`],
+  },
+
   64: {
     13: [
       "LL_BEDROOM_COIN_COLLECTION",
@@ -2142,6 +2154,10 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
       "B_UTILITY_DUCT_TAPE_2",
       "$gameSelfSwitches.setValue([87, 34, 'A'], true)",
     ],
+    21: [
+      "B_UTILITY_JANITOR_KEYRING",
+      "$gameSelfSwitches.setValue([87, 21, 'A'], true)",
+    ],
   },
 
   83: {
@@ -2392,7 +2408,7 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
       "B_STEVE_DUCT_TAPE",
       "$gameSelfSwitches.setValue([79, 19, 'A'], true)",
     ],
-    195: ["B_STEVE_JUNK_1", "$gameSelfSwitches.setValue([79, 195, 'A'], true)"],
+    15: ["B_STEVE_JUNK_1", "$gameSelfSwitches.setValue([79, 15, 'A'], true)"],
     8: ["B_STEVE_JUNK_2", "$gameSelfSwitches.setValue([79, 8, 'A'], true)"],
     14: ["B_STEVE_JUNK_3", "$gameSelfSwitches.setValue([79, 14, 'A'], true)"],
     9: ["B_STEVE_JUNK_4", "$gameSelfSwitches.setValue([79, 9, 'A'], true)"],
@@ -2510,7 +2526,8 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     76: ["B_CAR_GASOLINE", "$gameSelfSwitches.setValue([86, 76, 'A'], true)"],
     60: [
       "B_CAR_FLAMETHROWER",
-      "$gameSelfSwitches.setValue([86, 60, 'A'], true)",
+      // set hellcarprepare = true when picking this up
+      "$gameSelfSwitches.setValue([86, 60, 'A'], true); sSw(383, true);",
     ],
   },
 
@@ -2681,13 +2698,6 @@ const TRASH_CAN_ITEM_OVERRIDES = {
     ],
   },
 
-  96: {
-    8: [
-      "FRED_ENTRYWAY_TRASH",
-      "$gameSelfSwitches.setValue([96, 8, 'A'], true)",
-    ],
-  },
-
   100: {
     17: ["RAT_APT_TRASH", "$gameSelfSwitches.setValue([100, 17, 'A'], true)"],
   },
@@ -2722,6 +2732,10 @@ const TRASH_CAN_ITEM_OVERRIDES = {
     21: ["GF_OFFICE_TRASH", "$gameSelfSwitches.setValue([65, 21, 'A'], true)"],
   },
 
+  75: {
+    24: ["B_CAR_TRASH", "$gameSelfSwitches.setValue([75, 24, 'A'], true)"],
+  },
+
   87: {
     6: ["B_UTILITY_TRASH_1", "$gameSelfSwitches.setValue([87, 6, 'A'], true)"],
     7: ["B_UTILITY_TRASH_2", "$gameSelfSwitches.setValue([87, 7, 'A'], true)"],
@@ -2744,7 +2758,7 @@ const TRASH_CAN_ITEM_OVERRIDES = {
 
   451: {
     8: ["F4_TRASH_CAN_1", "$gameSelfSwitches.setValue([451, 8, 'A'], true)"],
-    9: ["F4_TRASH_CAN_1", "$gameSelfSwitches.setValue([451, 9, 'A'], true)"],
+    9: ["F4_TRASH_CAN_2", "$gameSelfSwitches.setValue([451, 9, 'A'], true)"],
   },
 
   452: {
@@ -3026,6 +3040,12 @@ const DRAWER_ITEM_OVERRIDES = {
     17: ["LL_WIDE_TABLE_E", "sSw(446, true);"],
     18: ["LL_SIDETABLE_W", "sSw(444, true);"],
   },
+  300: {
+    5: [
+      "B1_BEDROOM_SIDE_TABLE_W",
+      "$gameSelfSwitches.setValue([300, 5, 'A'], true)",
+    ],
+  },
 };
 
 // only the landlord's couch is searchable
@@ -3037,6 +3057,53 @@ const COUCH_ITEM_OVERRIDES = {
   205: 28,
   206: 33,
   184: 15,
+};
+
+// all safes use self switch = A (set by the simplelocks common event)
+const SAFE_ITEM_OVERRIDES = {
+  109: {
+    12: "APT_31_BEDROOM_SAFE_ITEM",
+  },
+
+  34: {
+    24: "APT_32_MASTER_BEDROOM_SAFE_ITEM",
+  },
+
+  25: {
+    3: "APT_36_BEDROOM_SAFE_ITEM",
+  },
+
+  11: {
+    9: "APT_21_CLOSET_SAFE",
+  },
+
+  333: {
+    26: "APT_24_SAFE_ITEM",
+  },
+
+  119: {
+    14: "FRED_TOXIC_ROOM_SAFE",
+  },
+
+  296: {
+    5: "APT_18_E_SAFE_ITEM",
+  },
+
+  53: {
+    8: "CORNER_STORE_STORAGE_SAFE",
+  },
+
+  64: {
+    8: "LL_BEDROOM_SAFE",
+  },
+
+  73: {
+    8: "MAILROOM_N_SAFE",
+  },
+
+  258: {
+    17: "SEWER_SW_SAFE_ITEM",
+  },
 };
 
 var UpdateEventContent = UpdateEventContent || {};
@@ -3242,7 +3309,8 @@ UpdateEventContent.overrideOverworldPickups = function (currentMapId) {
 
     let prefix;
     // some items have different pages for whatever reason
-    if (name == "APT_13_DISC") pageIndex = 1;
+    if (name == "APT_13_DISC" || name === "B_UTILITY_JANITOR_KEYRING")
+      pageIndex = 1;
     // the rose/other item from the masked shadow is a special case because
     // it's the only pickup that has multiple event pages
     // overriding only the first possible page here
@@ -3254,7 +3322,6 @@ UpdateEventContent.overrideOverworldPickups = function (currentMapId) {
 
     const isTrap = LookOutsideAPClient.isLocationTrap(name);
 
-    console.log(name, isTrap);
     const itemName = LookOutsideAPClient.getItemName(name);
 
     let pickupList = isTrap
@@ -3817,6 +3884,87 @@ UpdateEventContent.overrideCouchPickups = function (currentMapId) {
   }
 };
 
+UpdateEventContent.overrideSafePickups = function (currentMapId) {
+  function getSafeItemPickupList(itemName) {
+    return [
+      {
+        code: 101,
+        indent: 0,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 0,
+        parameters: ["There is a small safe."],
+      },
+      {
+        code: 117,
+        indent: 0,
+        parameters: [184],
+      },
+      {
+        code: 111,
+        indent: 0,
+        parameters: [2, "A", 0],
+      },
+      {
+        code: 250,
+        indent: 1,
+        parameters: [
+          {
+            name: "DoorUnlock",
+            volume: 90,
+            pitch: 120,
+            pan: 0,
+          },
+        ],
+      },
+      {
+        code: 101,
+        indent: 1,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 1,
+        parameters: [`Inside you find... ${itemName}`],
+      },
+      {
+        code: 122,
+        indent: 1,
+        parameters: [543, 543, 1, 0, 1],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 412,
+        indent: 0,
+        parameters: [],
+      },
+      {
+        code: 0,
+        indent: 0,
+        parameters: [],
+      },
+    ];
+  }
+
+  const eventsToOverride = SAFE_ITEM_OVERRIDES[currentMapId];
+  if (eventsToOverride) {
+    Object.keys(eventsToOverride).forEach((eventId) => {
+      const name = eventsToOverride[eventId];
+      const event = $dataMap.events[eventId];
+
+      const itemName = LookOutsideAPClient.getItemName(name);
+
+      event.pages[0].list = getSafeItemPickupList(itemName);
+    });
+  }
+};
+
 UpdateEventContent.overrideAllPickups = function (currentMapId) {
   UpdateEventContent.overrideOverworldPickups(currentMapId);
   UpdateEventContent.overrideTrashSearchPickups(currentMapId);
@@ -3826,4 +3974,5 @@ UpdateEventContent.overrideAllPickups = function (currentMapId) {
   UpdateEventContent.overrideRoachPickups(currentMapId);
   UpdateEventContent.overrideDrawerPickups(currentMapId);
   UpdateEventContent.overrideCouchPickups(currentMapId);
+  UpdateEventContent.overrideSafePickups(currentMapId);
 };

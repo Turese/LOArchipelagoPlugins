@@ -8,98 +8,154 @@
  * @help
  */
 
-function BIT_fixMuttKilled() {
+var BackInTime = BackInTime || {};
+
+// checks for sophie in the special door encounter pool
+BackInTime.sophieAcquiredInPast = function () {
+  // todo, check for sophie as an acquired ap item
+  return $gamePlayer && $gamePlayer.sophieAcquired;
+};
+
+BackInTime.fixMuttKilled = function () {
   sSw(317, false); // muttDead = OFF
-}
+};
 
-function BIT_fixPlantHealth() {
+BackInTime.fixPlantHealth = function () {
   sVr(128, 50); // plantHealth = 50
-}
+  sVr(129, 0); // wateredit = 0
+};
 
-function BIT_fixSophieGone() {
+BackInTime.fixSophieGone = function () {
   sSw(362, true); // recruitedSophie = ON
-}
+};
 
-function BIT_fixPapKilled() {
-  sSw(362, true); // recruitedSophie = ON
-}
+BackInTime.fixPapKilled = function () {
+  sSw(169, true); // killedpapineau = OFF
+};
 
-function BIT_fixLyleKilled() {
+BackInTime.fixLyleKilled = function () {
   sSw(832, false); // killedLyle = OFF
-  // so lyle doesnt attack you immediately when you get back, send him back to post all trading
-  sVr(192, 7); // shutterbugState = 7
+  // so lyle doesnt attack you immediately when you get back, send him back to pre-all trading
+  sVr(192, 0); // shutterbugState = 0
   delete $gameSelfSwitches._data[[9, 14, "C"].toString()]; // delete the dead lyle state on his event
-}
+};
 
-function BIT_fixLyleNoKiss() {
-  sSw(476, true); // primeLyleJoin = ON
-}
-
-function BIT_fixEugeneKilled() {
+BackInTime.fixEugeneKilled = function () {
   sSw(168, false); // killedEugene = OFF
-}
+};
 
-function BIT_fixMaskedShadowDispo() {
+BackInTime.fixMaskedShadowDispo = function () {
   sVr(152, 10); // shadowDispo = 10
-}
+};
 
-function BIT_fixAstronomersKilled() {
+BackInTime.fixAstronomersKilled = function () {
   sSw(170, false); // killedAurelius = OFF
   sSw(171, false); // killedAster = OFF
   sSw(172, false); // killedJasper = OFF
   sSw(173, false); // killedBeryl = OFF
-}
+};
 
-function BIT_fixLockedInOfferings() {
+BackInTime.fixLockedInOfferings = function () {
   sSw(206, false); // lastOfferingGood = OFF
-}
+};
 
-function BIT_fixErnestTooLate() {
+BackInTime.fixErnestTooLate = function () {
   sSw(797, false); // ernestTooLate = OFF
   sSw(790, false); // colSqueakumDead = OFF
-}
+};
 
-function BIT_fixErnestKilled() {
+BackInTime.fixErnestKilled = function () {
   sSw(789, false); // ErnestDead = OFF
-}
+};
 
-function BIT_fixJeanneKilled() {}
+BackInTime.fixJoelKilled = function () {};
 
-function BIT_fixJoelKilled() {}
-
-function BIT_fixHellenQuest() {
+BackInTime.fixHellenQuest = function () {
   sSw(1086, false); // MissedHellenWatering = OFF
   sSw(35, true); // recruitedHellen = ON
   sSw(1087, true); // hellenSpawned = OFF
-}
+};
 
-function BIT_fixBasementBlocked() {
+BackInTime.fixBasementBlocked = function () {
   // if !1063 openedpitdoor
   sSw(1097, false); // Earthquake = OFF
-}
+};
 
-function BIT_fixjeanneKilled() {
+BackInTime.fixJeanneKilled = function () {
   sSw(746, false); // JeanneDead = OFF
   sSw(747, false); // MainHydraHeadDead = OFF
-}
+  // change jeane apartment tileset back to normal
+};
 
-var BackInTime = BackInTime || {};
+BackInTime.revertJeannePhase = function () {
+  sVr(583, 5); // set jeanne state to her middle phase
+};
 
-BackInTime.applyChanges = function () {
-  // checks for sophie in the special door encounter pool
-  function sophieAcquiredInPast() {
-    // todo, check for sophie as an acquired ap item
-    const special = gVr(166);
-    console.log(special);
-    if (!special) return false;
-    return !special.includes(63);
-  }
+BackInTime.fixSteveKilled = function () {
+  $gameSelfSwitches.setValue([79, 17, "B"], false); // steve dead = off
+  sVr(611, 0); // steveDispo = 0 (starting from scratch)
+};
 
+BackInTime.isSteveDead = function () {
+  return !!$gameSelfSwitches._data[[79, 17, "C"].toString()];
+};
+
+BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
   const regretTemplates = {
+    steveDead: {
+      rCondition: BackInTime.isSteveDead,
+      rName: "Steve.",
+      rFunction: "BackInTime.fixSteveKilled",
+      rText: [
+        {
+          code: 101,
+          indent: 2,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "You think of Steve. You wish you had fed him instead of",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "killing him. You close your eyes and vow to do better...",
+          ],
+        },
+        {
+          code: 101,
+          indent: 2,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "Actually, is he dead? You might have made that part up.",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "In fact, you feel as though he's healthier than ever right",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["now."],
+        },
+      ],
+    },
     sophieGone: {
-      rCondition: sophieAcquiredInPast,
+      rCondition: BackInTime.sophieAcquiredInPast,
       rName: "(([!s[362];!s[364]]))Sophie.",
-      rFunction: "BIT_fixSophieGone",
+      rFunction: "BackInTime.fixSophieGone",
       rText: [
         {
           code: 101,
@@ -153,7 +209,7 @@ BackInTime.applyChanges = function () {
     },
     hellenQuestFailed: {
       rName: "(([!s[1086]]))Hellen.",
-      rFunction: "BIT_fixHellenQuest",
+      rFunction: "BackInTime.fixHellenQuest",
       rText: [
         {
           code: 101,
@@ -200,7 +256,7 @@ BackInTime.applyChanges = function () {
     },
     lyleKilled: {
       rName: "(([!s[832]]))Lyle.",
-      rFunction: "BIT_fixLyleKilled",
+      rFunction: "BackInTime.fixLyleKilled",
       rText: [
         {
           code: 101,
@@ -252,52 +308,9 @@ BackInTime.applyChanges = function () {
         },
       ],
     },
-    lyleNoKiss: {
-      rCondition: () => !gSw(832),
-      rName: "(([v[192]<7,s[376]]))Lyle.",
-      rFunction: "BIT_fixLyleNoKiss",
-      rText: [
-        {
-          code: 101,
-          indent: 2,
-          parameters: ["", 0, 0, 2, ""],
-        },
-        {
-          code: 401,
-          indent: 2,
-          parameters: [
-            "You think of Lyle. You really wish you'd been nicer to him. You",
-          ],
-        },
-        {
-          code: 401,
-          indent: 2,
-          parameters: [
-            "close your eyes and imagine kissing him. It's not gay if your eyes",
-          ],
-        },
-        {
-          code: 401,
-          indent: 2,
-          parameters: ["are closed."],
-        },
-        {
-          code: 101,
-          indent: 2,
-          parameters: ["", 0, 0, 2, ""],
-        },
-        {
-          code: 401,
-          indent: 2,
-          parameters: [
-            "Woah. That felt pretty real. You hope he comes to visit soon...",
-          ],
-        },
-      ],
-    },
     plantDead: {
       rName: "(([v[128]>5]))Your plant.",
-      rFunction: "BIT_fixPlantHealth",
+      rFunction: "BackInTime.fixPlantHealth",
       rText: [
         {
           code: 101,
@@ -344,7 +357,7 @@ BackInTime.applyChanges = function () {
     },
     muttKilled: {
       rName: "(([!s[317]]))Mutt.",
-      rFunction: "BIT_fixMuttKilled",
+      rFunction: "BackInTime.fixMuttKilled",
       rText: [
         {
           code: 101,
@@ -398,7 +411,7 @@ BackInTime.applyChanges = function () {
     },
     shadowDispo: {
       rName: "(([!v[152]<10;!v[150]=7]))The Masked Shadow.",
-      rFunction: "BIT_fixMaskedShadowDispo",
+      rFunction: "BackInTime.fixMaskedShadowDispo",
       rText: [
         {
           code: 101,
@@ -447,7 +460,7 @@ BackInTime.applyChanges = function () {
     },
     lockedInOffering: {
       rName: "(([!s[206]]))The offerings.",
-      rFunction: "BIT_fixLockedInOfferings",
+      rFunction: "BackInTime.fixLockedInOfferings",
       rText: [
         {
           code: 101,
@@ -501,7 +514,7 @@ BackInTime.applyChanges = function () {
     },
     astronomersKilled: {
       rName: "(([!s[170],!s[171],!s[172],!s[173]]))The Astronomers.",
-      rFunction: "BIT_fixAstronomersKilled",
+      rFunction: "BackInTime.fixAstronomersKilled",
       rText: [
         {
           code: 101,
@@ -551,7 +564,7 @@ BackInTime.applyChanges = function () {
     },
     ernestTooLate: {
       rName: "(([!s[797];!s[790]]))Ernest.",
-      rFunction: "BIT_fixErnestTooLate",
+      rFunction: "BackInTime.fixErnestTooLate",
       rText: [
         {
           code: 101,
@@ -603,7 +616,7 @@ BackInTime.applyChanges = function () {
     },
     ernestKilled: {
       rName: "(([!s[789]]))Ernest.",
-      rFunction: "BIT_fixErnestKilled",
+      rFunction: "BackInTime.fixErnestKilled",
       rText: [
         {
           code: 101,
@@ -651,7 +664,7 @@ BackInTime.applyChanges = function () {
     },
     eugeneKilled: {
       rName: "(([!s[789]]))Eugene.",
-      rFunction: "BIT_fixEugeneKilled",
+      rFunction: "BackInTime.fixEugeneKilled",
       rText: [
         {
           code: 101,
@@ -704,9 +717,164 @@ BackInTime.applyChanges = function () {
       ],
     },
     basementBlocked: {
-      rName: "(([s[1097];!s[1063]]))The basement pit.",
-      rFunction: "BIT_fixBasementBlocked",
-      rText: [],
+      rName: "(([!s[1097];s[1063]]))The basement pit.",
+      rFunction: "BackInTime.fixBasementBlocked",
+      rText: [
+        {
+          code: 101,
+          indent: 2,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "You think of that earthquake. You wish you'd had more time",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "to explore a little before it happened. You close your eyes",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["and imagine what you could have found..."],
+        },
+        {
+          code: 101,
+          indent: 2,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "Actually, was there an earthquake? You might have dreamed it.",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "In fact, you feel as though you should go explore down in",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["the parking garage right now."],
+        },
+      ],
+    },
+    jeanneKilled: {
+      rName: "(([!s[746]]))Jeanne.",
+      rFunction: "BackInTime.fixJeanneKilled",
+      rText: [
+        {
+          code: 101,
+          indent: 2,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "You think of Jeanne. You know you murdered her and all but you",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "wish she didn't have to be so dead about it. You close your eyes",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["and vow to do better..."],
+        },
+        {
+          code: 101,
+          indent: 2,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "Actually, is she dead? You might have made that part up.",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "In fact, you feel as though she's healthier than ever right",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["now."],
+        },
+      ],
+    },
+    jeanneMutated: {
+      rName: "(([s[746];v[583]>=20]))Jeanne.",
+      rFunction: "BackInTime.revertJeannePhase",
+      rText: [
+        {
+          code: 101,
+          indent: 2,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "You think of Jeanne. You wish you could have seen more",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "of her aparement before she grew through the walls. You close",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["your eyes and imagine..."],
+        },
+        {
+          code: 101,
+          indent: 2,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["Actually, did her mutation ever get any worse?"],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "You feel as though you should run down to double check.",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["now."],
+        },
+      ],
     },
   };
 
@@ -771,13 +939,6 @@ BackInTime.applyChanges = function () {
   const BEDROOM_MAP_ID = 2;
   const CALENDAR_EVENT_ID = 16;
 
-  let lastLoadedMapId;
-  const loadMapData = DataManager.loadMapData;
-  DataManager.loadMapData = function (mapId) {
-    lastLoadedMapId = mapId;
-    loadMapData.call(this, mapId);
-  };
-
   const createRegretOptions = function () {
     const regretsList = Object.keys(regretTemplates);
 
@@ -821,320 +982,309 @@ BackInTime.applyChanges = function () {
     ];
   };
 
-  
+  if (lastLoadedMapId === BEDROOM_MAP_ID) {
+    const week1OptionNames = [];
+    const week1Options = [];
 
-  const createCalendarBackInTimeEvent = function (lastLoadedMapId) {
-    if (lastLoadedMapId === BEDROOM_MAP_ID) {
-      const week1OptionNames = [];
-      const week1Options = [];
-
-      for (let date = 0; date < 7; date++) {
-        week1OptionNames.push(createDateChangeOptionName(date));
-        week1Options.push(...createDateChangeOption(date, date, 2));
-      }
-      const week1OptionIntro = createOptionIntro(week1OptionNames, 2);
-
-      const week2OptionNames = [];
-      const week2Options = [];
-
-      for (let date = 7, i = 0; date < 15; date++, i++) {
-        week2OptionNames.push(createDateChangeOptionName(date, i));
-        week2Options.push(...createDateChangeOption(i, date, 2));
-      }
-      const week2OptionIntro = createOptionIntro(week2OptionNames, 2);
-
-      const dateOptions = [
-        {
-          code: 102,
-          indent: 1,
-          parameters: [
-            [
-              "No, stay.",
-              "Go to week 1 (days 1-7).",
-              "Go to week 2 (days 8-15).",
-            ],
-            0,
-            0,
-            2,
-            0,
-          ],
-        },
-        {
-          code: 402,
-          indent: 1,
-          parameters: [0, "No, stay."],
-        },
-        {
-          code: 115,
-          indent: 2,
-          parameters: [],
-        },
-        {
-          code: 0,
-          indent: 2,
-          parameters: [],
-        },
-        {
-          code: 402,
-          indent: 1,
-          parameters: [1, "Go to week 1 (days 1-7)."],
-        },
-        week1OptionIntro,
-        ...week1Options,
-        {
-          code: 0,
-          indent: 2,
-          parameters: [],
-        },
-        {
-          code: 402,
-          indent: 1,
-          parameters: [2, "Go to week 2 (days 8-15)."],
-        },
-        week2OptionIntro,
-        ...week2Options,
-        {
-          code: 404,
-          indent: 2,
-          parameters: [],
-        },
-        {
-          code: 0,
-          indent: 2,
-          parameters: [],
-        },
-        {
-          code: 404,
-          indent: 1,
-          parameters: [],
-        },
-        {
-          code: 0,
-          indent: 1,
-          parameters: [],
-        },
-      ];
-
-      const calendarSequence = [
-        {
-          code: 122,
-          indent: 0,
-          parameters: [14, 14, 0, 1, 15],
-        },
-        {
-          code: 122,
-          indent: 0,
-          parameters: [8, 8, 0, 0, 15],
-        },
-        {
-          code: 122,
-          indent: 0,
-          parameters: [8, 8, 2, 1, 15],
-        },
-        {
-          code: 101,
-          indent: 0,
-          parameters: ["", 0, 0, 2, ""],
-        },
-        {
-          code: 401,
-          indent: 0,
-          parameters: ["Only \\V[8] days left..."],
-        },
-        {
-          code: 102,
-          indent: 0,
-          parameters: [["Set current day.", "Ease regrets."], 1, 0, 2, 0],
-        },
-        {
-          code: 402,
-          indent: 0,
-          parameters: [0, "Set current day."],
-        },
-        {
-          code: 122,
-          indent: 1,
-          parameters: [7, 7, 0, 1, 15],
-        },
-        {
-          code: 101,
-          indent: 1,
-          parameters: ["", 0, 0, 2, ""],
-        },
-        {
-          code: 401,
-          indent: 1,
-          parameters: ["Set current day?"],
-        },
-        ...dateOptions,
-        {
-          code: 402,
-          indent: 0,
-          parameters: [1, "Ease regrets."],
-        },
-        {
-          code: 101,
-          indent: 1,
-          parameters: ["", 0, 0, 2, ""],
-        },
-        {
-          code: 401,
-          indent: 1,
-          parameters: ["You think of all that you regret..."],
-        },
-        ...createRegretOptions(),
-        {
-          code: 115,
-          indent: 1,
-          parameters: [],
-        },
-        {
-          code: 0,
-          indent: 1,
-          parameters: [],
-        },
-        {
-          code: 404,
-          indent: 0,
-          parameters: [],
-        },
-        {
-          code: 101,
-          indent: 0,
-          parameters: ["", 0, 0, 2, ""],
-        },
-        {
-          code: 401,
-          indent: 0,
-          parameters: [
-            "You think of everything you have been through so far...",
-          ],
-        },
-        {
-          code: 122,
-          indent: 0,
-          parameters: [8, 8, 0, 1, 15],
-        },
-        {
-          code: 122,
-          indent: 0,
-          parameters: [8, 8, 1, 0, 1],
-        },
-        {
-          code: 111,
-          indent: 0,
-          parameters: [1, 7, 1, 15, 4],
-        },
-        {
-          code: 101,
-          indent: 1,
-          parameters: ["", 0, 0, 2, ""],
-        },
-        {
-          code: 401,
-          indent: 1,
-          parameters: ["You close your eyes and imagine what it will be like "],
-        },
-        {
-          code: 401,
-          indent: 1,
-          parameters: ["on day \\V[8]."],
-        },
-        {
-          code: 0,
-          indent: 1,
-          parameters: [],
-        },
-        {
-          code: 412,
-          indent: 0,
-          parameters: [],
-        },
-        {
-          code: 111,
-          indent: 0,
-          parameters: [1, 7, 1, 15, 3],
-        },
-        {
-          code: 101,
-          indent: 1,
-          parameters: ["", 0, 0, 2, ""],
-        },
-        {
-          code: 401,
-          indent: 1,
-          parameters: [
-            "You close your eyes and remember what it was like on day \\V[8].",
-          ],
-        },
-        {
-          code: 0,
-          indent: 1,
-          parameters: [],
-        },
-        {
-          code: 412,
-          indent: 0,
-          parameters: [],
-        },
-        {
-          code: 122,
-          indent: 0,
-          parameters: [16, 16, 0, 0, 6],
-        },
-        {
-          code: 122,
-          indent: 0,
-          parameters: [17, 17, 0, 0, 0],
-        },
-        {
-          code: 117,
-          indent: 0,
-          parameters: [4],
-        },
-        {
-          code: 117,
-          indent: 0,
-          parameters: [6],
-        },
-        {
-          code: 122,
-          indent: 0,
-          parameters: [8, 8, 0, 0, 15],
-        },
-        {
-          code: 122,
-          indent: 0,
-          parameters: [8, 8, 2, 1, 15],
-        },
-        {
-          code: 101,
-          indent: 0,
-          parameters: ["", 0, 0, 2, ""],
-        },
-        {
-          code: 401,
-          indent: 0,
-          parameters: ["It is now \\V[12]."],
-        },
-        {
-          code: 401,
-          indent: 0,
-          parameters: ["Only \\V[8] days left..."],
-        },
-        {
-          code: 0,
-          indent: 0,
-          parameters: [],
-        },
-      ];
-
-      $dataMap.events[CALENDAR_EVENT_ID].pages[1].list = calendarSequence;
+    for (let date = 0; date < 7; date++) {
+      week1OptionNames.push(createDateChangeOptionName(date));
+      week1Options.push(...createDateChangeOption(date, date, 2));
     }
-  };
-  window.BackInTime = {
-    createCalendarBackInTimeEvent,
-  };
-};
+    const week1OptionIntro = createOptionIntro(week1OptionNames, 2);
 
-BackInTime.applyChanges();
+    const week2OptionNames = [];
+    const week2Options = [];
+
+    for (let date = 7, i = 0; date < 15; date++, i++) {
+      week2OptionNames.push(createDateChangeOptionName(date, i));
+      week2Options.push(...createDateChangeOption(i, date, 2));
+    }
+    const week2OptionIntro = createOptionIntro(week2OptionNames, 2);
+
+    const dateOptions = [
+      {
+        code: 102,
+        indent: 1,
+        parameters: [
+          [
+            "No, stay.",
+            "Go to week 1 (days 1-7).",
+            "Go to week 2 (days 8-15).",
+          ],
+          0,
+          0,
+          2,
+          0,
+        ],
+      },
+      {
+        code: 402,
+        indent: 1,
+        parameters: [0, "No, stay."],
+      },
+      {
+        code: 115,
+        indent: 2,
+        parameters: [],
+      },
+      {
+        code: 0,
+        indent: 2,
+        parameters: [],
+      },
+      {
+        code: 402,
+        indent: 1,
+        parameters: [1, "Go to week 1 (days 1-7)."],
+      },
+      week1OptionIntro,
+      ...week1Options,
+      {
+        code: 0,
+        indent: 2,
+        parameters: [],
+      },
+      {
+        code: 402,
+        indent: 1,
+        parameters: [2, "Go to week 2 (days 8-15)."],
+      },
+      week2OptionIntro,
+      ...week2Options,
+      {
+        code: 404,
+        indent: 2,
+        parameters: [],
+      },
+      {
+        code: 0,
+        indent: 2,
+        parameters: [],
+      },
+      {
+        code: 404,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+    ];
+
+    const calendarSequence = [
+      {
+        code: 122,
+        indent: 0,
+        parameters: [14, 14, 0, 1, 15],
+      },
+      {
+        code: 122,
+        indent: 0,
+        parameters: [8, 8, 0, 0, 15],
+      },
+      {
+        code: 122,
+        indent: 0,
+        parameters: [8, 8, 2, 1, 15],
+      },
+      {
+        code: 101,
+        indent: 0,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 0,
+        parameters: ["Only \\V[8] days left..."],
+      },
+      {
+        code: 102,
+        indent: 0,
+        parameters: [["Set current day.", "Ease regrets."], 1, 0, 2, 0],
+      },
+      {
+        code: 402,
+        indent: 0,
+        parameters: [0, "Set current day."],
+      },
+      {
+        code: 122,
+        indent: 1,
+        parameters: [7, 7, 0, 1, 15],
+      },
+      {
+        code: 101,
+        indent: 1,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 1,
+        parameters: ["Set current day?"],
+      },
+      ...dateOptions,
+      {
+        code: 402,
+        indent: 0,
+        parameters: [1, "Ease regrets."],
+      },
+      {
+        code: 101,
+        indent: 1,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 1,
+        parameters: ["You think of all that you regret..."],
+      },
+      ...createRegretOptions(),
+      {
+        code: 115,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 404,
+        indent: 0,
+        parameters: [],
+      },
+      {
+        code: 101,
+        indent: 0,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 0,
+        parameters: ["You think of everything you have been through so far..."],
+      },
+      {
+        code: 122,
+        indent: 0,
+        parameters: [8, 8, 0, 1, 15],
+      },
+      {
+        code: 122,
+        indent: 0,
+        parameters: [8, 8, 1, 0, 1],
+      },
+      {
+        code: 111,
+        indent: 0,
+        parameters: [1, 7, 1, 15, 4],
+      },
+      {
+        code: 101,
+        indent: 1,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 1,
+        parameters: ["You close your eyes and imagine what it will be like "],
+      },
+      {
+        code: 401,
+        indent: 1,
+        parameters: ["on day \\V[8]."],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 412,
+        indent: 0,
+        parameters: [],
+      },
+      {
+        code: 111,
+        indent: 0,
+        parameters: [1, 7, 1, 15, 3],
+      },
+      {
+        code: 101,
+        indent: 1,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 1,
+        parameters: [
+          "You close your eyes and remember what it was like on day \\V[8].",
+        ],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 412,
+        indent: 0,
+        parameters: [],
+      },
+      {
+        code: 122,
+        indent: 0,
+        parameters: [16, 16, 0, 0, 6],
+      },
+      {
+        code: 122,
+        indent: 0,
+        parameters: [17, 17, 0, 0, 0],
+      },
+      {
+        code: 117,
+        indent: 0,
+        parameters: [4],
+      },
+      {
+        code: 117,
+        indent: 0,
+        parameters: [6],
+      },
+      {
+        code: 122,
+        indent: 0,
+        parameters: [8, 8, 0, 0, 15],
+      },
+      {
+        code: 122,
+        indent: 0,
+        parameters: [8, 8, 2, 1, 15],
+      },
+      {
+        code: 101,
+        indent: 0,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 0,
+        parameters: ["It is now \\V[12]."],
+      },
+      {
+        code: 401,
+        indent: 0,
+        parameters: ["Only \\V[8] days left..."],
+      },
+      {
+        code: 0,
+        indent: 0,
+        parameters: [],
+      },
+    ];
+
+    $dataMap.events[CALENDAR_EVENT_ID].pages[1].list = calendarSequence;
+  }
+};

@@ -104,6 +104,7 @@ InsertAPItems.insertRecruit = function (name) {
     InsertAPItems.insertItem(661, "item", 3); // steel marbles
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
     setSybilMajorStory(60);
+    $gamePlayer.sophieAcquired = true; // setting this in case player loses her
   }
   if (name === "Phillippe") {
     sSw(319, true); // phillippeRecovered = on

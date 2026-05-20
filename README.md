@@ -29,11 +29,10 @@ Creates an event activated by the calendar in the player's bedroom that undoes e
 - [x] Ability to bring Ernest back to life if he has been killed by the player
 - [x] Ability to return Ernest's quest back to active state if player missed the chance to enter rat hell
 - [x] Ability to artifically raise the masked shadow's disposition if the player completed its quest without meeting the minimum to recruit it to the apartment
-- [ ] Ability to unblock Charan's basement room if the player reached the earthquake event without opening the second entrance (WIP, possibly bugged)
-- [ ] Ability to manually trigger Lyle recruitment if player completed his quest without meeting the recruitment requirements (WIP, currently bugged)
+- [x] Ability to unblock Charan's basement room if the player reached the earthquake event without opening the second entrance
 - [x] Ability to bring Lyle back to life and turn him non-hostile if player previously attacked + killed him
 - [x] Ability to return Sophie to the apartment if the player kicked her out / gave her to the imposter lady instead of Harriet
-- [ ] Ability to bring Jeanne back to life if killed by player
+- [x] Ability to bring Jeanne back to life if killed by player
 
 ## UpdateMissableEvents.js
 
@@ -98,7 +97,7 @@ Goes through the game's events to remove everything that explicitly grants an it
 - [x] Update roach events to not grant items and display randomized item name
 - [x] Update drawer loot events to not grant items and display randomized item name
 - [x] Update landlord couch loot events to not grant items and display randomized item name
-- [ ] Update safe loot events to not grant items and display randomized item name
+- [x] Update safe loot events to not grant items and display randomized item name
 - [x] Update first aid box events to not grant items and display randomized item name
 - [x] Update bathroom cabinet events to not grant items and display randomized item name
 

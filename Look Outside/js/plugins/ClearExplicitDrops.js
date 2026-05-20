@@ -10,7 +10,7 @@
 
 var ClearExplicitDrops = ClearExplicitDrops || {};
 
-ClearExplicitDrops.buildConditions = function (selfSwitch) {
+ClearExplicitDrops.buildConditions = function (selfSwitch, switch1) {
   let conditions = {
     actorId: 1,
     actorValid: false,
@@ -31,6 +31,13 @@ ClearExplicitDrops.buildConditions = function (selfSwitch) {
       ...conditions,
       selfSwitchCh: selfSwitch,
       selfSwitchValid: true,
+    };
+  }
+  if (switch1) {
+    conditions = {
+      ...conditions,
+      switch1Id: switch1,
+      switch1Valid: true,
     };
   }
   return conditions;
@@ -108,6 +115,31 @@ ClearExplicitDrops.applyDatamapClears = function (lastLoadedMapId) {
     }
   }
   updateStartingArms();
+};
+
+// if an event has a basic item drop + get message structure
+// we can do it easily here
+
+//codes:
+//126 = item drop
+//127
+//128
+ClearExplicitDrops.basicEventDropClear = function (
+  evPageList,
+  code,
+  keyWord,
+  itemId,
+) {
+  evPageList = evPageList.filter((listItem) => listItem.code !== code);
+
+  const itemGetMessageIndex = evPageList.findIndex(
+    (listItem) =>
+      listItem.code == 401 && listItem.parameters[0].includes(keyWord),
+  );
+  if (itemGetMessageIndex !== -1) {
+    ev.pages[0].list[itemGetMessageIndex].parameters[0] =
+      `Find ${LookOutsideAPClient.getItemName(itemId)}.`;
+  }
 };
 
 ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
@@ -524,29 +556,70 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
 
   function clearJeanneLaundry() {
     if (lastLoadedMapId === 69 && ev.id === 65) {
-      //TODO
+      const filteredList = ev.pages[0].list.filter((listItem) => {
+        return listItem.code !== 126; // dont add laundry to inventory
+      });
+
+      filteredList
+        .filter(
+          (listItem) =>
+            listItem.code === 401 &&
+            listItem.parameters[0].contains("Jeanne's clothes."),
+        )
+        .forEach((listItem) => {
+          listItem.parameters[0] = listItem.parameters[0].replace(
+            "Jeanne's clothes",
+            LookOutsideAPClient.getItemName("LAUNDRY_JEANNES_LAUNDRY"),
+          );
+        });
+      ev.pages[0].list = filteredList;
     }
   }
+  clearJeanneLaundry();
 
   function clearLandlordCache() {
     if (lastLoadedMapId === 180 && ev.id === 15) {
       // remove dollar coin item drop
-      ev.pages[0].list = ev.pages[0].list.filter(
-        (listItem) => listItem.code !== 126,
+      ClearExplicitDrops.basicEventDropClear(
+        ev.pages[0].list,
+        126,
+        "Dollar Coin",
+        "LL_DINING_SECRET_CACHE",
       );
-
-      const itemGetMessageIndex = ev.pages[0].list.findIndex(
-        (listItem) =>
-          listItem.code == 401 &&
-          listItem.parameters[0].includes("Dollar Coin"),
-      );
-      if (itemGetMessageIndex !== -1) {
-        ev.pages[0].list[itemGetMessageIndex].parameters[0] =
-          `Find ${LookOutsideAPClient.getItemName("LL_DINING_SECRET_CACHE")}.`;
-      }
     }
   }
   clearLandlordCache();
+
+  // all the basement key drops
+  // only check if player already has basement key
+  // so we need them to check a custom switch instead
+  function fixBasementKeyConditions() {
+    const basementKeyMappings = [
+      [184, 1],
+      [204, 22],
+      [206, 13],
+    ];
+    if (
+      basementKeyMappings.find(
+        (mapping) => lastLoadedMapId == mapping[0] && ev.id == mapping[1],
+      )
+    ) {
+      ev.page[1].conditions = buildConditions(null, LL_BASEMENT_KEY_SWITCH);
+    }
+  }
+  fixBasementKeyConditions();
+
+  function clearErnestCheeseStash() {
+    if (lastLoadedMapId === 309 && ev.id === 19) {
+      ClearExplicitDrops.basicEventDropClear(
+        ev.pages[0].list,
+        126,
+        "Cheese",
+        "ERNEST_CHEESE",
+      );
+    }
+  }
+  clearErnestCheeseStash();
 };
 
 ClearExplicitDrops.clearAllEnemiesDrops = function () {
