@@ -3046,6 +3046,9 @@ const DRAWER_ITEM_OVERRIDES = {
       "$gameSelfSwitches.setValue([300, 5, 'A'], true)",
     ],
   },
+  214: {
+    3: ["LL_WEST_DRAWER", "$gameSelfSwitches.setValue([214, 3, 'A'], true)"],
+  },
 };
 
 // only the landlord's couch is searchable

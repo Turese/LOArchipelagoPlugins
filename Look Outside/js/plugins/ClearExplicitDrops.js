@@ -611,7 +611,7 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
       [206, 13],
     ];
     if (
-      basementKeyMappings.find(
+      basementKeyMappings.includes(
         (mapping) => lastLoadedMapId == mapping[0] && ev.id == mapping[1],
       )
     ) {
@@ -663,6 +663,21 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
     }
   }
   clearSadipedePrize();
+
+  function clearRaftaLetter() {
+    if (lastLoadedMapId === 94 && ev.id === 9) {
+      ev.pages[0].list = ClearExplicitDrops.itemDropClear(
+        ev.pages[0].list,
+        126,
+      );
+      ev.pages[0].list = messageReplacement(
+        ev.pages[0].list,
+        "Love Letter",
+        "F1_LETTER_FROM_RAFTA",
+      );
+    }
+  }
+  clearRaftaLetter();
 };
 
 ClearExplicitDrops.clearAllEnemiesDrops = function () {
@@ -845,6 +860,17 @@ ClearExplicitDrops.clearTroopsDrops = function () {
     $dataTroops[479].pages[0].list = jeanneTroopList;
   }
   clearJeannePrizeEvent();
+
+  function makeNestorWait() {
+    let nestorTroopList = JsonEx.makeDeepCopy(originalTroops[40].pages[0].list);
+    nestorTroopList.find(
+      (listItem) =>
+        listItem.code === 102 &&
+        listItem.parameters[0][0] == "Hand over love letter.",
+    ).parameters[0][0] = `<<[!v[150]=3]>>Hand over love letter.`;
+    $dataTroops[40].pages[0].list = nestorTroopList;
+  }
+  makeNestorWait();
 };
 
 let commonEventsUpdated = false;
