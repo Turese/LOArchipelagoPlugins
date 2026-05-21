@@ -16,13 +16,16 @@ The lamp moves out into the open after juicebox arrives.
 
 Creates an event activated by the calendar in the player's bedroom that undoes events that may block the player from future actions.
 
-### Features: 
+### Features:
+
 - [x] Ability to set current day 1-15
-- [ ] Ability to bring Joel back to life when he's been killed by the player
+- [x] Ability to bring Joel back to life when he's been killed by the player
 - [x] Ability to bring Mutt back to life when he's been killed by the player
+- [x] Ability to bring Papineau back to life when he's been killed by the player
 - [x] Ability to bring Eugene back to life when he's been killed by the player
 - [x] Ability to take back telling Jasper to send the astronomers to the roof for endgame
-- [ ] Ability to take back sending individual astronomers to the roof for endgame
+- [x] Ability to take back sending individual astronomers to the roof for endgame
+- [x] Ability to take back killing sadipede
 - [x] Ability to reset the player's houseplant's health if it was neglected
 - [x] Ability to reset progress on Hellen's quest if player missed a day
 - [x] Ability to bring the astronomers back to life when any one of them have been killed
@@ -44,9 +47,8 @@ Updates overworld events so that events missed by the player can be retried.
 - [x] Make presence of overworld potential recruit encounters separate from their presence in player apartment (Lyle, Audrey, Aster, Leigh, Roaches, Joel, Papineau, Ernest) // todo: joel & papineau & ernest
 - [x] Updates apartment 13 to give player drop as soon as they have rat baby item, no sacrifice required
 - [x] Updates tooth family members to spawn in upgraded forms even if they've been killed prior
-- [ ] Make Audrey recruit unmissable (infinite advice cans, remove disposition check)
+- [x] Make Audrey recruit unmissable (infinite advice cans, remove disposition check)
 - [ ] Make Joel recruit unmissable (remove disposition check)
-- [ ] Force player to kill every hydra part individually (killing body won't give all checks)
 - [ ] Update Eugene's bookcase so it never becomes blocked by Nestor
 - [ ] Update Grasshopper so it never despawns after Leigh's quest ends
 - [ ] Update Piranhaman so piranhas always spawn whether or not he is killed
@@ -101,7 +103,6 @@ Goes through the game's events to remove everything that explicitly grants an it
 - [x] Update first aid box events to not grant items and display randomized item name
 - [x] Update bathroom cabinet events to not grant items and display randomized item name
 
-
 ## GoHome.js
 
 Adds the option for the player to teleport home from anywhere, necessary for situations where player enters an area where they can't back out from (the roof, Landlord's apartment phase 2, etc)
@@ -142,7 +143,7 @@ New menu option in main menu + pause menu where player inputs AP slot name + ser
 
 Introduces functionality to make the AP experience the same no matter what difficulty mode the player chooses.
 
-- [ ] Mass-update items on the ground that are hidden on certain difficulty settings so they either always or never appear (WIP -  currently forces easy mode items)
+- [ ] Mass-update items on the ground that are hidden on certain difficulty settings so they either always or never appear (WIP - currently forces easy mode items)
 - [ ] Mass-update enemies that don't spawn on certain difficulty settings so they either always or never appear
 - [x] Force save everywhere and autosave to be active in all difficulties
 

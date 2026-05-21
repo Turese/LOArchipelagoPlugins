@@ -57,6 +57,9 @@ BackInTime.fixAstronomersKilled = function () {
 
 BackInTime.fixLockedInOfferings = function () {
   sSw(206, false); // lastOfferingGood = OFF
+  sSw(1148, false); // asterLeft = OFF
+  sSw(1149, false); // aureliusLeft = OFF
+  sSw(1150, false); // berylLeft = OFF
 };
 
 BackInTime.fixErnestTooLate = function () {
@@ -68,7 +71,14 @@ BackInTime.fixErnestKilled = function () {
   sSw(789, false); // ErnestDead = OFF
 };
 
-BackInTime.fixJoelKilled = function () {};
+BackInTime.fixJoelKilled = function () {
+  sVr(107, 6); // joelstate = 6
+  $gameSelfSwitches.setValue([32, 7, "A"], false); // joel dead = off
+};
+
+BackInTime.isJoelDead = function () {
+  return !!$gameSelfSwitches._data[[32, 7, "A"].toString()];
+};
 
 BackInTime.fixHellenQuest = function () {
   sSw(1086, false); // MissedHellenWatering = OFF
@@ -100,8 +110,195 @@ BackInTime.isSteveDead = function () {
   return !!$gameSelfSwitches._data[[79, 17, "C"].toString()];
 };
 
+BackInTime.isSadipedeDead = function () {
+  return !!$gameSelfSwitches._data[[457, 1, "C"].toString()];
+};
+
+BackInTime.fixSadipedeKilled = function () {
+  $gameSelfSwitches.setValue([457, 1, "C"], false); // sadipede dead = off
+};
+
+const BEDROOM_MAP_ID = 2;
+const CALENDAR_EVENT_ID = 16;
+
+// refresh to recalculate the rconditions
+BackInTime.refreshEvent = function () {
+  BackInTime.createCalendarBackInTimeEvent(BEDROOM_MAP_ID);
+  $gameMap._events[CALENDAR_EVENT_ID] = new Game_Event(
+    $gameMap.mapId(),
+    CALENDAR_EVENT_ID,
+  );
+  const event = $gameMap.event(CALENDAR_EVENT_ID);
+
+  event.refresh();
+};
+
+// checks if any astronomers have left to the roof
+BackInTime.haveAnyAstronomersLeft = function () {
+  return gSw(1148) || gSw(1149) || gSw(1150) || gSw(206);
+};
+
 BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
   const regretTemplates = {
+    papineauDead: {
+      rName: "(([!s[169]]))Papineau.",
+      rFunction: "BackInTime.fixPapKilled",
+      rText: [
+        {
+          code: 101,
+          indent: 2,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "You think of Papineau. You know you murdered him and all but you",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "but you wish he didn't have to be so dead about it. You close your eyes",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["and vow to do better..."],
+        },
+        {
+          code: 101,
+          indent: 2,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "Actually, is he dead? You might have made that part up.",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "In fact, you feel as though he's healthier than ever right",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["now."],
+        },
+      ],
+    },
+    joelDead: {
+      rCondition: BackInTime.isJoelDead,
+      rFunction: "BackInTime.fixJoelKilled",
+      rText: [
+        {
+          code: 101,
+          indent: 2,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "You think of Joel. He was just a kid, did you really have",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["to attack him? You close your eyes and vow to do"],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["better in the future..."],
+        },
+        {
+          code: 101,
+          indent: 2,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "Actually, is he dead? You might have hallucinated that.",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["In fact, you feel like you should run over and check"],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["on him right now."],
+        },
+      ],
+    },
+    sadipedeDead: {
+      rCondition: BackInTime.isSadipedeDead,
+      rName: "Marc-André.",
+      rFunction: "BackInTime.fixSadipedeKilled",
+      rText: [
+        {
+          code: 101,
+          indent: 2,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "You think of Marc-andré. All he wanted was to kill you.",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "Was that too much to ask? You close your eyes and vow to",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["be more generous in the future..."],
+        },
+        {
+          code: 101,
+          indent: 2,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "Actually, is he dead? You might have made that part up.",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "In fact, you feel like you should run back to the elevator and",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["let him kill you right now."],
+        },
+      ],
+    },
     steveDead: {
       rCondition: BackInTime.isSteveDead,
       rName: "Steve.",
@@ -459,7 +656,8 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
       ],
     },
     lockedInOffering: {
-      rName: "(([!s[206]]))The offerings.",
+      rCondition: BackInTime.haveAnyAstronomersLeft,
+      rName: "The offerings.",
       rFunction: "BackInTime.fixLockedInOfferings",
       rText: [
         {
@@ -470,9 +668,7 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
         {
           code: 401,
           indent: 2,
-          parameters: [
-            "You think of the offerings. You told Jasper you were ready,",
-          ],
+          parameters: ["You think of the offerings. You said you were ready,"],
         },
         {
           code: 401,
@@ -495,14 +691,14 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
           code: 401,
           indent: 2,
           parameters: [
-            "There's nothing wrong with going back and asking him again,",
+            "There's nothing wrong with going back and asking the astronomers again,",
           ],
         },
         {
           code: 401,
           indent: 2,
           parameters: [
-            "is there? In fact, you feel as though he may have forgotten",
+            "is there? In fact, you feel as though they may have forgotten",
           ],
         },
         {
@@ -926,7 +1122,7 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
       {
         code: 355,
         indent: 2,
-        parameters: [`${rFunction}();`],
+        parameters: [`${rFunction}(); BackInTime.refreshEvent();`],
       },
       {
         code: 0,
@@ -935,9 +1131,6 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
       },
     ];
   }
-
-  const BEDROOM_MAP_ID = 2;
-  const CALENDAR_EVENT_ID = 16;
 
   const createRegretOptions = function () {
     const regretsList = Object.keys(regretTemplates);
@@ -950,7 +1143,6 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
     regretsList.forEach((regretName) => {
       const options = regretTemplates[regretName];
       if (!options.rCondition || options.rCondition()) {
-        console.log(regretName, options.rName);
         regretNames.push(options.rName);
         regretCases.push(...createRegret(index, regretName));
         index++;

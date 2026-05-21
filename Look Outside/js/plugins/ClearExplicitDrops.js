@@ -123,23 +123,33 @@ ClearExplicitDrops.applyDatamapClears = function (lastLoadedMapId) {
 //codes:
 //126 = item drop
 //127
-//128
-ClearExplicitDrops.basicEventDropClear = function (
-  evPageList,
-  code,
+//128 = armor
+ClearExplicitDrops.itemDropClear = function (originalList, code) {
+  return originalList.filter((listItem) => listItem.code !== code);
+};
+
+ClearExplicitDrops.deleteMessage = function (originalList, keyWord) {
+  return originalList.filter(
+    (listItem) =>
+      !(listItem.code == 401 && listItem.parameters[0].includes(keyWord)),
+  );
+};
+
+ClearExplicitDrops.messageReplacement = function (
+  originalList,
   keyWord,
   itemId,
 ) {
-  evPageList = evPageList.filter((listItem) => listItem.code !== code);
-
-  const itemGetMessageIndex = evPageList.findIndex(
+  const newList = JsonEx.makeDeepCopy(originalList);
+  const itemGetMessageIndex = newList.findIndex(
     (listItem) =>
       listItem.code == 401 && listItem.parameters[0].includes(keyWord),
   );
   if (itemGetMessageIndex !== -1) {
-    ev.pages[0].list[itemGetMessageIndex].parameters[0] =
+    newList[itemGetMessageIndex].parameters[0] =
       `Find ${LookOutsideAPClient.getItemName(itemId)}.`;
   }
+  return newList;
 };
 
 ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
@@ -580,11 +590,12 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
   function clearLandlordCache() {
     if (lastLoadedMapId === 180 && ev.id === 15) {
       // remove dollar coin item drop
-      ClearExplicitDrops.basicEventDropClear(
+
+      ev.pages[0].list = itemDropClear(ev.pages[0].list, 126);
+      ev.pages[0].list = messageReplacement(
         ev.pages[0].list,
-        126,
         "Dollar Coin",
-        "LL_DINING_SECRET_CACHE",
+        "LL_SECRET_DINING_CACHE",
       );
     }
   }
@@ -611,15 +622,47 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
 
   function clearErnestCheeseStash() {
     if (lastLoadedMapId === 309 && ev.id === 19) {
-      ClearExplicitDrops.basicEventDropClear(
+      ev.pages[0].list = itemDropClear(ev.pages[0].list, 126);
+      ev.pages[0].list = messageReplacement(
         ev.pages[0].list,
-        126,
         "Cheese",
         "ERNEST_CHEESE",
       );
     }
   }
   clearErnestCheeseStash();
+
+  function clearRoachQuestPrize() {
+    if (lastLoadedMapId === 3 && ev.id === 121) {
+      ev.pages[2].list = itemDropClear(ev.pages[2].list, 128);
+
+      ev.pages[2].list = messageReplacement(
+        ev.pages[2].list,
+        "Official Sash",
+        "APT_33_ROACH_QUEST",
+      );
+
+      ev.pages[2].list = messageReplacement(
+        ev.pages[2].list,
+        "Papier",
+        "APT_33_ROACH_QUEST",
+      );
+    }
+  }
+  clearRoachQuestPrize();
+
+  function clearSadipedePrize() {
+    if (lastLoadedMapId === 457 && ev.id === 1) {
+      ev.pages[3].list = itemDropClear(ev.pages[3].list, 126);
+
+      ev.pages[3].list = messageReplacement(
+        ev.pages[3].list,
+        "is now following you around",
+        "F4_SADIPEDE_COMBAT_LOSS",
+      );
+    }
+  }
+  clearSadipedePrize();
 };
 
 ClearExplicitDrops.clearAllEnemiesDrops = function () {
@@ -637,6 +680,7 @@ let originalTroops;
 ClearExplicitDrops.clearTroopsDrops = function () {
   if (!troopsUpdated) {
     originalTroops = JsonEx.makeDeepCopy($dataTroops);
+    troopsUpdated = true;
   }
 
   function clearPierreGifts() {
@@ -801,11 +845,16 @@ ClearExplicitDrops.clearTroopsDrops = function () {
     $dataTroops[479].pages[0].list = jeanneTroopList;
   }
   clearJeannePrizeEvent();
-
-  troopsUpdated = true;
 };
 
+let commonEventsUpdated = false;
+let originalCommonEvents;
 ClearExplicitDrops.clearCommonEventDrops = function () {
+  if (!commonEventsUpdated) {
+    originalCommonEvents = JsonEx.makeDeepCopy($dataCommonEvents);
+    commonEventsUpdated = true;
+  }
+
   // clear out game skill drops from common events
   // todo: don't call this if user unchecks randomizing game skills
   const gameSkillMapping = {};
@@ -836,9 +885,10 @@ ClearExplicitDrops.clearCommonEventDrops = function () {
     };
 
     for (let i = 21; i <= 39; i++) {
-      $dataCommonEvents[i].list = $dataCommonEvents[i].list.filter(
+      $dataCommonEvents[i].list = originalCommonEvents[i].list.filter(
         (listItem) => listItem.code !== 318,
       );
+
       if (
         $gamePlayer &&
         $gamePlayer.slotData &&
@@ -872,7 +922,9 @@ ClearExplicitDrops.clearCommonEventDrops = function () {
 
   // fix up explicit recruitments phillippe's remains and the rat baby thing home
   function clearReturnHomePhillippeRatbaby() {
-    const returnHomeEventList = $dataCommonEvents[3].list;
+    const returnHomeEventList = JsonEx.makeDeepCopy(
+      originalCommonEvents[3].list,
+    );
 
     const ratBabyInCheckIndex = returnHomeEventList.findIndex(
       (listItem) => listItem.code == 111 && listItem.parameters[1] == 365,
@@ -927,6 +979,7 @@ ClearExplicitDrops.clearCommonEventDrops = function () {
           endClearIndex - startClearIndex,
           ...newRatBabyListBlock,
         );
+        $dataCommonEvents[3].list = returnHomeEventList;
       }
     }
 
@@ -977,6 +1030,25 @@ ClearExplicitDrops.clearCommonEventDrops = function () {
   }
   clearAudreyShop();
 
-  // both smooches / photos item exchanges
-  function clearLyleTrades() {}
+  function clearCarPrizeEvent() {
+    console.log(originalCommonEvents.length);
+    let carEventList = originalCommonEvents[60].list;
+    // clear out shotgun/ammo drop and announcement
+    carEventList = ClearExplicitDrops.itemDropClear(carEventList, 126);
+    carEventList = ClearExplicitDrops.itemDropClear(carEventList, 128);
+
+    // delete item description
+    carEventList = ClearExplicitDrops.deleteMessage(
+      carEventList,
+      "a shotgun and ammo inside",
+    );
+
+    // clear out announcement
+    $dataCommonEvents[60].list = ClearExplicitDrops.messageReplacement(
+      carEventList,
+      "Shotgun",
+      "B_CAR_TRUNK",
+    );
+  }
+  clearCarPrizeEvent();
 };

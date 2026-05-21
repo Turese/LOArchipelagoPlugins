@@ -39,12 +39,6 @@ LookOutsideAPClient.applyOverrides = function () {
     _loadMapData.call(this, mapId);
   };
 
-  const _onDatabaseLoaded = Scene_Boot.prototype.onDatabaseLoaded;
-  Scene_Boot.prototype.onDatabaseLoaded = function () {
-    _onDatabaseLoaded.call(this);
-    ClearExplicitDrops.clearTroopsDrops();
-  };
-
   // check other mods' custom images all together
   const shouldOverrideImage = function (url) {
     if (Unarmed.shouldOverrideImage(url)) return true;
@@ -109,7 +103,12 @@ LookOutsideAPClient.applyOverrides = function () {
       ClearExplicitDrops.clearAllEnemiesDrops();
     }
     if (object === $dataCommonEvents) {
+      // this wont have the correct names, but will still clear the event out 
       ClearExplicitDrops.clearCommonEventDrops();
+    }
+    if (object === $dataTroops) {
+      // this wont have the correct names, but will still clear the event out 
+      ClearExplicitDrops.clearTroopsDrops();
     }
     _dataManagerOnLoad.call(this, object);
   };
@@ -292,6 +291,8 @@ LookOutsideAPClient.gameLoadedAPSetup = async function (slotData) {
   await LookOutsideAPClient.initializeLocationNames();
   LookOutsideAPClient.updateItems();
   LookOutsideAPClient.updateDeathLink(slotData);
+  ClearExplicitDrops.clearTroopsDrops();
+  ClearExplicitDrops.clearCommonEventDrops();
 };
 
 const resetClient = async function () {
@@ -345,7 +346,6 @@ LookOutsideAPClient.startAPClient = async function (deathLink) {
     args.password = password;
   }
 
-  // todo: what to do when you change login location?
   if (!client.authenticated) {
     connecting = true;
     connectionTimerFrames = null;

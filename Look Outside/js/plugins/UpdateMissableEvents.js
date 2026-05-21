@@ -149,6 +149,15 @@ UpdateMissableEvents.applyEventUpdates = function (lastLoadedMapId, ev) {
   }
   forceRecruitsToStay();
 
+  function fixMaskShadeSpawns() {
+    // make stumbling shade on f4 spawn immediately
+    // instead of be triggered by old tape
+    if (lastLoadedMapId == 451 && ev.id == 7) {
+      ev.pages[0].conditions = ClearExplicitDrops.buildConditions();
+    }
+  }
+  fixMaskShadeSpawns();
+
   // make it so grasshopper doesnt leave after leighs quest
   function permaGrasshopper() {
     // remove page 4 of its event on floor 2 (7) event 60
