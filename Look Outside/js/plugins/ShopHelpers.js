@@ -764,12 +764,21 @@ ShopHelpers.getF3VendingMachineList = function (
 
 // about the same as before, but - forces 1 item each of her randomized items, and 999 advice cans
 // also maxes dispo when you help her restock so she can always be recruited after
-ShopHelpers.getAudreyVendingMachineList = function (
-  colaName,
-  lemonSodaName,
-  orangeSodaName,
-  juiceName,
-) {
+ShopHelpers.getAudreyVendingMachineList = function () {
+  const colaName = LookOutsideAPClient.getItemName("AUDREY_VENDING_COLA", true);
+  const lemonSodaName = LookOutsideAPClient.getItemName(
+    "AUDREY_VENDING_LEMON",
+    true,
+  );
+  const orangeSodaName = LookOutsideAPClient.getItemName(
+    "AUDREY_VENDING_ORANGE",
+    true,
+  );
+  const juiceName = LookOutsideAPClient.getItemName(
+    "AUDREY_VENDING_JUICE",
+    true,
+  );
+
   return [
     {
       code: 121,
@@ -3176,18 +3185,677 @@ ShopHelpers.getAudreyVendingMachineList = function (
   ];
 };
 
-ShopHelpers.getEmmanuelList = function () {
+ShopHelpers.getEmmanuelList = function () {};
 
-}
+ShopHelpers.getRatHoleList = function () {};
 
-ShopHelpers.getRatHoleList = function () {
-  
-}
+ShopHelpers.getCandyMachineList = function () {
+  return [
+    {
+      code: 111,
+      indent: 0,
+      parameters: [1, 756, 0, 0, 0],
+    },
+    {
+      code: 101,
+      indent: 1,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 1,
+      parameters: ["An empty candy machine."],
+    },
+    {
+      code: 115,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 0,
+      parameters: [],
+    },
+    {
+      code: 101,
+      indent: 0,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 0,
+      parameters: [
+        "A candy machine. Weird candy you've never heard of is inside.",
+      ],
+    },
+    {
+      code: 401,
+      indent: 0,
+      parameters: ["It only takes \\C[14]quarters."],
+    },
+    {
+      code: 111,
+      indent: 0,
+      parameters: [8, 107],
+      collapsed: true,
+    },
+    {
+      code: 122,
+      indent: 1,
+      parameters: [7, 7, 0, 3, 0, 107, 0],
+    },
+    {
+      code: 101,
+      indent: 1,
+      parameters: ["", 0, 0, 1, ""],
+    },
+    {
+      code: 401,
+      indent: 1,
+      parameters: ["Will you buy some candy?"],
+    },
+    {
+      code: 401,
+      indent: 1,
+      parameters: ["(\\C[3]\\V[7]\\C[0] quarters left.)"],
+    },
+    {
+      code: 102,
+      indent: 1,
+      parameters: [["Buy candy.", "Leave."], -1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [0, "Buy candy."],
+    },
+    {
+      code: 118,
+      indent: 2,
+      parameters: ["buycandy"],
+    },
+    {
+      code: 250,
+      indent: 2,
+      parameters: [
+        {
+          name: "VendingMachine_coinIn",
+          volume: 90,
+          pitch: 100,
+          pan: 0,
+        },
+      ],
+    },
+    {
+      code: 126,
+      indent: 2,
+      parameters: [107, 1, 0, 1],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [756, 756, 0, 0, 0],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 1, ""],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [
+        `Receive ${LookOutsideAPClient.getItemName("GF_CANDY_MACHINE_MERCHANT")}.`,
+      ],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [1, "Leave."],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 411,
+      indent: 0,
+      parameters: [],
+    },
+    {
+      code: 101,
+      indent: 1,
+      parameters: ["", 0, 0, 1, ""],
+    },
+    {
+      code: 401,
+      indent: 1,
+      parameters: ["You have no quarters."],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 0,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 0,
+      parameters: [],
+    },
+  ];
+};
+
+ShopHelpers.getCoffeeMachineMessage = function () {
+  // it is inserted into the page at indent 2
+  return [
+    {
+      code: 355,
+      indent: 2,
+      parameters: ["$gameSelfSwitches.setValue([47, 43, 'A'], true)"],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [
+        `Get ${LookOutsideAPClient.getItemName("GF_COFFEE_MACHINE_MERCHANT")}.`,
+      ],
+    },
+    {
+      code: 119,
+      indent: 2,
+      parameters: ["cashback"],
+    },
+  ];
+};
 
 ShopHelpers.getOozeMachineList = function () {
-  
-}
+  const shadowBladeName = LookOutsideAPClient.getItemName(
+    "B_OOZE_MACHINE_MERCHANT_1",
+    true,
+  );
+  const shadowMaskName = LookOutsideAPClient.getItemName(
+    "B_OOZE_MACHINE_MERCHANT_2",
+    true,
+  );
+  const blackBootsName = LookOutsideAPClient.getItemName(
+    "B_OOZE_MACHINE_MERCHANT_3",
+    true,
+  );
+  const midnightSuitName = LookOutsideAPClient.getItemName(
+    "B_OOZE_MACHINE_MERCHANT_4",
+    true,
+  );
+  const shadowRingName = LookOutsideAPClient.getItemName(
+    "B_OOZE_MACHINE_MERCHANT_5",
+    true,
+  );
 
-ShopHelpers.getOozeMachineList = function () {
-  
-}
+  return [
+    {
+      code: 101,
+      indent: 0,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 0,
+      parameters: ["A vending machine. It sells items for Black Ooze."],
+    },
+    {
+      code: 118,
+      indent: 0,
+      parameters: ["machineTop"],
+    },
+    {
+      code: 122,
+      indent: 0,
+      parameters: [6, 6, 0, 3, 0, 148, 0],
+    },
+    {
+      code: 101,
+      indent: 0,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 0,
+      parameters: ["What will you buy? You have \\V[6] Black Ooze."],
+    },
+    {
+      code: 102,
+      indent: 0,
+      parameters: [
+        [
+          `<<[i[148]<2]>>(([s[${BLACK_OOZE_SHADOW_BLADE}]]))${shadowBladeName} (2 ooze)`,
+          `<<[i[148]<3]>>(([s[1230]]))${shadowMaskName} (3 ooze)`,
+          `<<[i[148]<4]>>(([s[1231]]))${blackBootsName} (4 ooze)`,
+          `<<[i[148]<5]>>(([s[1232]]))${midnightSuitName} (5 ooze)`,
+          `<<[i[148]<6]>>(([s[1233]]))${shadowRingName} (6 ooze)`,
+          "Never mind.",
+        ],
+        -1,
+        0,
+        2,
+        0,
+      ],
+    },
+    {
+      code: 402,
+      indent: 0,
+      parameters: [
+        0,
+        `<<[i[148]<2]>>(([s[${BLACK_OOZE_SHADOW_BLADE}]]))${shadowBladeName} (2 ooze)`,
+      ],
+    },
+    {
+      code: 101,
+      indent: 1,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 1,
+      parameters: [`Pay 2 Ooze for ${shadowBladeName}?`],
+    },
+    {
+      code: 102,
+      indent: 1,
+      parameters: [["Trade!", "Never mind."], 1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 126,
+      indent: 2,
+      parameters: [148, 1, 0, 2],
+    },
+    {
+      code: 121,
+      indent: 2,
+      parameters: [BLACK_OOZE_SHADOW_BLADE, BLACK_OOZE_SHADOW_BLADE, 0],
+    },
+    {
+      code: 119,
+      indent: 2,
+      parameters: ["machineTop"],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [1, "Never mind."],
+    },
+    {
+      code: 119,
+      indent: 2,
+      parameters: ["trade"],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 0,
+      parameters: [1, `<<[i[148]<3]>>(([s[1230]]))${shadowMaskName} (3 ooze)`],
+    },
+    {
+      code: 101,
+      indent: 1,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 1,
+      parameters: [`Pay 3 Ooze for ${shadowMaskName}?`],
+    },
+    {
+      code: 102,
+      indent: 1,
+      parameters: [["Trade!", "Never mind."], 1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 126,
+      indent: 2,
+      parameters: [148, 1, 0, 3],
+    },
+    {
+      code: 121,
+      indent: 2,
+      parameters: [1230, 1230, 0],
+    },
+    {
+      code: 119,
+      indent: 2,
+      parameters: ["machineTop"],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [1, "Never mind."],
+      collapsed: true,
+    },
+    {
+      code: 119,
+      indent: 2,
+      parameters: ["trade"],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 0,
+      parameters: [2, `<<[i[148]<4]>>(([s[1231]]))${blackBootsName} (4 ooze)`],
+    },
+    {
+      code: 101,
+      indent: 1,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 1,
+      parameters: [`Pay 4 Ooze for ${blackBootsName}?`],
+    },
+    {
+      code: 102,
+      indent: 1,
+      parameters: [["Trade!", "Never mind."], 1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 126,
+      indent: 2,
+      parameters: [148, 1, 0, 4],
+    },
+    {
+      code: 121,
+      indent: 2,
+      parameters: [1231, 1231, 0],
+    },
+    {
+      code: 119,
+      indent: 2,
+      parameters: ["machineTop"],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [1, "Never mind."],
+    },
+    {
+      code: 119,
+      indent: 2,
+      parameters: ["trade"],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 0,
+      parameters: [
+        3,
+        `<<[i[148]<5]>>(([s[1232]]))${midnightSuitName} (5 ooze)`,
+      ],
+    },
+    {
+      code: 101,
+      indent: 1,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 1,
+      parameters: [`Pay 5 Ooze for ${midnightSuitName}?`],
+    },
+    {
+      code: 102,
+      indent: 1,
+      parameters: [["Trade!", "Never mind."], 1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 126,
+      indent: 2,
+      parameters: [148, 1, 0, 5],
+    },
+    {
+      code: 121,
+      indent: 2,
+      parameters: [1232, 1232, 0],
+    },
+    {
+      code: 119,
+      indent: 2,
+      parameters: ["machineTop"],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [1, "Never mind."],
+    },
+    {
+      code: 119,
+      indent: 2,
+      parameters: ["trade"],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 0,
+      parameters: [4, `<<[i[148]<6]>>(([s[1233]]))${shadowRingName} (6 ooze)`],
+    },
+    {
+      code: 101,
+      indent: 1,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 1,
+      parameters: [`Pay 6 Ooze for ${shadowRingName}?`],
+    },
+    {
+      code: 102,
+      indent: 1,
+      parameters: [["Trade!", "Never mind."], 1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 126,
+      indent: 2,
+      parameters: [148, 1, 0, 6],
+    },
+    {
+      code: 121,
+      indent: 2,
+      parameters: [1233, 1233, 0],
+    },
+    {
+      code: 119,
+      indent: 2,
+      parameters: ["machineTop"],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [1, "Never mind."],
+    },
+    {
+      code: 119,
+      indent: 2,
+      parameters: ["leave"],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 0,
+      parameters: [5, "Never mind."],
+    },
+    {
+      code: 119,
+      indent: 1,
+      parameters: ["leave"],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 0,
+      parameters: [],
+    },
+    {
+      code: 118,
+      indent: 0,
+      parameters: ["leave"],
+    },
+    {
+      code: 0,
+      indent: 0,
+      parameters: [],
+    },
+  ];
+};

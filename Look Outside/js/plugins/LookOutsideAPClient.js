@@ -145,6 +145,7 @@ LookOutsideAPClient.applyOverrides = function () {
       " drank too much black ooze.",
       " stepped into the sea of worms.", // marshall stage 2
       " isn't making it to the ritual.",
+      " hugged the Fred Who Bites.",
     ];
 
     if (client.authenticated) {

@@ -231,6 +231,10 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     ],
   },
 
+  66: {
+    4: ["GF_OFFICE_VODKA", "$gameSelfSwitches.setValue([66, 4, 'A'], true)"],
+  },
+
   33: {
     7: [
       "APT_32_CHILD_BEDROOM_BASEBALL_CAP",
@@ -1238,7 +1242,10 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   },
 
   237: {
-    9: ["FRED_HAT_ROOM_HAT", "$gameSelfSwitches.setValue([237, 9, 'A'], true)"],
+    9: [
+      "FRED_HAT_ROOM_HAT",
+      "$gameSelfSwitches.setValue([237, 9, 'C'], true); sVr(314, 4);",
+    ],
   },
 
   119: {
@@ -1695,6 +1702,8 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     6: ["LL_BATHROOM_SOAP", "$gameSelfSwitches.setValue([63, 6, 'A'], true)"],
   },
 
+  130: { 11: ["LL_BASEMENT_KEY", `sSw(${LL_BASEMENT_KEY_SWITCH}, true);`] },
+
   204: {
     22: ["LL_BASEMENT_KEY", `sSw(${LL_BASEMENT_KEY_SWITCH}, true);`],
   },
@@ -1965,6 +1974,10 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   },
 
   240: {
+    18: [
+      "LL_SMALL_TENT_RIFLE_BULLETS",
+      "$gameSelfSwitches.setValue([240, 18, 'A'], true)",
+    ],
     21: [
       "LL_SAPPER_PISTOL_BULLETS",
       "$gameSelfSwitches.setValue([240, 21, 'A'], true)",
@@ -2853,7 +2866,12 @@ const FRIDGE_ITEM_OVERRIDES = {
   204: { 4: ["LL_FRIDGE", "sSw(354, true);"] },
   205: { 4: ["LL_FRIDGE", "sSw(354, true);"] },
   130: { 17: ["LL_FRIDGE", "sSw(354, true);"] },
-  207: { 11: ["LL_FRIDGE", "sSw(354, true);"] },
+  207: {
+    11: [
+      "LL_BATTLEFIELD_FRIDGE",
+      "$gameSelfSwitches.setValue([207, 11, 'A'], true)",
+    ],
+  },
 };
 
 const FIRST_AID_BOX_ITEM_OVERRIDES = {
@@ -2954,6 +2972,9 @@ const ROACH_ITEM_OVERRIDES = {
   },
   239: {
     9: "TRUE_FRED_CLOSET_ROACH",
+  },
+  66: {
+    3: "GF_OFFICE_ROACH",
   },
   59: {
     3: "MUTT_STORAGE_ROACH_1",
@@ -3314,6 +3335,7 @@ UpdateEventContent.overrideOverworldPickups = function (currentMapId) {
     // some items have different pages for whatever reason
     if (name == "APT_13_DISC" || name === "B_UTILITY_JANITOR_KEYRING")
       pageIndex = 1;
+
     // the rose/other item from the masked shadow is a special case because
     // it's the only pickup that has multiple event pages
     // overriding only the first possible page here
@@ -3321,6 +3343,9 @@ UpdateEventContent.overrideOverworldPickups = function (currentMapId) {
     if (name === "F3_MASKED_SHADOW_GIFT") {
       pageIndex = 3;
       prefix = "A gift from the masked shadow? ...";
+    }
+    if (name === "FRED_HAT_ROOM_HAT") {
+      pageIndex = 3;
     }
 
     const isTrap = LookOutsideAPClient.isLocationTrap(name);

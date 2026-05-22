@@ -66,9 +66,10 @@ ClearExplicitDrops.applyDatamapClears = function (lastLoadedMapId) {
           indent: 1,
           // foughtwoundedman = true; allows hallway encounters
           // self switch ensures stairwell door never allows early papineau
+          // and also sets number of freds to 10 here so player doesnt have to speak to faceless
           parameters: [
             `sSw(94, true); $gameSelfSwitches.setValue([27, 8, 'B'], true); $gameSelfSwitches.setValue([27, 7, 'B'], true); sSw(${TRUE_SWITCH_ID}, true);
-    sSw(${FALSE_SWITCH_ID}, false);`,
+    sSw(${FALSE_SWITCH_ID}, false); sVr(306, 10);`,
           ],
         });
       }
@@ -122,7 +123,7 @@ ClearExplicitDrops.applyDatamapClears = function (lastLoadedMapId) {
 
 //codes:
 //126 = item drop
-//127
+//127 = weapon
 //128 = armor
 ClearExplicitDrops.itemDropClear = function (originalList, code) {
   return originalList.filter((listItem) => listItem.code !== code);
@@ -370,6 +371,33 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
   }
   clearF3HallwayVendingMachineEvent();
 
+  function clearCoffeeMachineEvent() {
+    if (lastLoadedMapId === 47 && ev.id === 43) {
+      if (ev.pages.length < 2) {
+        const coffeeGrantIndex = ev.pages[0].list.findIndex(
+          (listItem) => listItem.code == 126 && listItem.parameters[0] == 41,
+        );
+        if (coffeeGrantIndex) {
+          ev.pages[0].list.splice(
+            coffeeGrantIndex,
+            1,
+            ...ShopHelpers.getCoffeeMachineMessage(),
+          );
+        }
+
+        // adds new noninteractable page for when player
+        // has already bought coffee
+        ev.pages.push({
+          ...EMPTY_PAGE,
+          conditions: ClearExplicitDrops.buildConditions("A"),
+          image: ev.pages[0].image,
+        });
+      }
+      console.log(ev.pages);
+    }
+  }
+  clearCoffeeMachineEvent();
+
   function clearElevatorFreakEvent() {
     // the elevator access switch is also used to tell whether the freak is dead; lets change it to a self switch
     if (lastLoadedMapId === 74 && ev.id === 3) {
@@ -591,8 +619,11 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
     if (lastLoadedMapId === 180 && ev.id === 15) {
       // remove dollar coin item drop
 
-      ev.pages[0].list = itemDropClear(ev.pages[0].list, 126);
-      ev.pages[0].list = messageReplacement(
+      ev.pages[0].list = ClearExplicitDrops.itemDropClear(
+        ev.pages[0].list,
+        126,
+      );
+      ev.pages[0].list = ClearExplicitDrops.messageReplacement(
         ev.pages[0].list,
         "Dollar Coin",
         "LL_SECRET_DINING_CACHE",
@@ -605,25 +636,27 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
   // only check if player already has basement key
   // so we need them to check a custom switch instead
   function fixBasementKeyConditions() {
-    const basementKeyMappings = [
-      [184, 1],
-      [204, 22],
-      [206, 13],
-    ];
     if (
-      basementKeyMappings.includes(
-        (mapping) => lastLoadedMapId == mapping[0] && ev.id == mapping[1],
-      )
+      (lastLoadedMapId == 184 && ev.id == 1) ||
+      (lastLoadedMapId == 204 && ev.id == 22) ||
+      (lastLoadedMapId == 206 && ev.id == 13) ||
+      (lastLoadedMapId == 130 && ev.id == 11)
     ) {
-      ev.page[1].conditions = buildConditions(null, LL_BASEMENT_KEY_SWITCH);
+      ev.pages[1].conditions = ClearExplicitDrops.buildConditions(
+        null,
+        LL_BASEMENT_KEY_SWITCH,
+      );
     }
   }
   fixBasementKeyConditions();
 
   function clearErnestCheeseStash() {
     if (lastLoadedMapId === 309 && ev.id === 19) {
-      ev.pages[0].list = itemDropClear(ev.pages[0].list, 126);
-      ev.pages[0].list = messageReplacement(
+      ev.pages[0].list = ClearExplicitDrops.itemDropClear(
+        ev.pages[0].list,
+        126,
+      );
+      ev.pages[0].list = ClearExplicitDrops.messageReplacement(
         ev.pages[0].list,
         "Cheese",
         "ERNEST_CHEESE",
@@ -634,15 +667,18 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
 
   function clearRoachQuestPrize() {
     if (lastLoadedMapId === 3 && ev.id === 121) {
-      ev.pages[2].list = itemDropClear(ev.pages[2].list, 128);
+      ev.pages[2].list = ClearExplicitDrops.itemDropClear(
+        ev.pages[2].list,
+        128,
+      );
 
-      ev.pages[2].list = messageReplacement(
+      ev.pages[2].list = ClearExplicitDrops.messageReplacement(
         ev.pages[2].list,
         "Official Sash",
         "APT_33_ROACH_QUEST",
       );
 
-      ev.pages[2].list = messageReplacement(
+      ev.pages[2].list = ClearExplicitDrops.messageReplacement(
         ev.pages[2].list,
         "Papier",
         "APT_33_ROACH_QUEST",
@@ -653,9 +689,12 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
 
   function clearSadipedePrize() {
     if (lastLoadedMapId === 457 && ev.id === 1) {
-      ev.pages[3].list = itemDropClear(ev.pages[3].list, 126);
+      ev.pages[3].list = ClearExplicitDrops.itemDropClear(
+        ev.pages[3].list,
+        126,
+      );
 
-      ev.pages[3].list = messageReplacement(
+      ev.pages[3].list = ClearExplicitDrops.messageReplacement(
         ev.pages[3].list,
         "is now following you around",
         "F4_SADIPEDE_COMBAT_LOSS",
@@ -670,7 +709,7 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
         ev.pages[0].list,
         126,
       );
-      ev.pages[0].list = messageReplacement(
+      ev.pages[0].list = ClearExplicitDrops.messageReplacement(
         ev.pages[0].list,
         "Love Letter",
         "F1_LETTER_FROM_RAFTA",
@@ -678,6 +717,34 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
     }
   }
   clearRaftaLetter();
+
+  function clearOozeMachine() {
+    if (lastLoadedMapId === 50 && ev.id === 12) {
+      // blank conditions; remove danger req
+      ev.pages[0].conditions = ClearExplicitDrops.buildConditions();
+
+      ev.pages[0].list = ShopHelpers.getOozeMachineList();
+    }
+  }
+  clearOozeMachine();
+
+  function clearDeadFredDrops() {
+    // facetaker
+    if (lastLoadedMapId == 96 && ev.id == 12) {
+      ev.pages.forEach((page) => {
+        // canvas carry bag and torn off face
+        page.list = ClearExplicitDrops.itemDropClear(page.list, 126);
+        page.list ==
+          ClearExplicitDrops.deleteMessage(page.list, "Canvas Carry Bag");
+        page.list == ClearExplicitDrops.deleteMessage(page.list, "Face");
+      });
+    }
+    // toxic fred
+    /*if () {
+
+    }*/
+  }
+  clearDeadFredDrops();
 };
 
 ClearExplicitDrops.clearAllEnemiesDrops = function () {
@@ -835,6 +902,7 @@ ClearExplicitDrops.clearTroopsDrops = function () {
   function clearJeannePrizeEvent() {
     // clear out elixir prize
     // clear out 50 dollar prize
+    // make sure we dont clear out the laundry removal
     let jeanneTroopList = JsonEx.makeDeepCopy(
       originalTroops[479],
     ).pages[0].list.filter(
@@ -844,18 +912,18 @@ ClearExplicitDrops.clearTroopsDrops = function () {
     );
 
     // the elixir prize for killing all the hydras
-    jeanneTroopList.find(
-      (listItem) =>
-        listItem.code === 401 && listItem.parameters[0].contains("Elixir"),
-    ).parameters[0] =
-      `Receive ${LookOutsideAPClient.getItemName("APT_20_HYDRA_HEADS")}.`;
+    jeanneTroopList = ClearExplicitDrops.messageReplacement(
+      jeanneTroopList,
+      "Elixir",
+      "APT_20_HYDRA_HEADS",
+    );
 
     // the 50 dollar prize for returning laundry
-    jeanneTroopList.find(
-      (listItem) =>
-        listItem.code === 401 && listItem.parameters[0].contains("$50!"),
-    ).parameters[0] =
-      `Receive ${LookOutsideAPClient.getItemName("APT_20_HYDRA_LAUNDRY")}.`;
+    jeanneTroopList = ClearExplicitDrops.messageReplacement(
+      jeanneTroopList,
+      "$50!",
+      "APT_20_HYDRA_LAUNDRY",
+    );
 
     $dataTroops[479].pages[0].list = jeanneTroopList;
   }
@@ -871,6 +939,154 @@ ClearExplicitDrops.clearTroopsDrops = function () {
     $dataTroops[40].pages[0].list = nestorTroopList;
   }
   makeNestorWait();
+
+  function clearSapperDrop() {
+    let sapperTroopList = JsonEx.makeDeepCopy(
+      originalTroops[293].pages[0].list,
+    );
+
+    // dont delete the sapper trade, but do delete the initial 2 sapper gift
+    sapperTroopList = sapperTroopList.filter(
+      (listItem) => listItem.code !== 126 && listItem.parameters[3] == 2,
+    );
+
+    sapperTroopList = ClearExplicitDrops.messageReplacement(
+      sapperTroopList,
+      "give you two of these",
+      "LL_SAPPER_GIFT_FROM_SAPPER",
+    );
+
+    $dataTroops[293].pages[0].list = sapperTroopList;
+  }
+  clearSapperDrop();
+
+  function clearMinesweeperDrop() {
+    let minesweeperTroopList = JsonEx.makeDeepCopy(
+      originalTroops[294].pages[0].list,
+    );
+
+    // metal detector and tame landmine drops
+    minesweeperTroopList = ClearExplicitDrops.itemDropClear(
+      minesweeperTroopList,
+      127,
+    );
+    minesweeperTroopList = ClearExplicitDrops.itemDropClear(
+      minesweeperTroopList,
+      126,
+    );
+
+    minesweeperTroopList = ClearExplicitDrops.messageReplacement(
+      minesweeperTroopList,
+      "Metal Detector",
+      "LL_MINESWEEPER_GIFT",
+    );
+
+    minesweeperTroopList = ClearExplicitDrops.messageReplacement(
+      minesweeperTroopList,
+      "Tame Landmine",
+      "LL_MINESWEEPER_12_MINE_PRIZE",
+    );
+
+    $dataTroops[294].pages[0].list = minesweeperTroopList;
+  }
+  clearMinesweeperDrop();
+
+  function clearJasperGifts() {
+    let jasperTroopList = JsonEx.makeDeepCopy(
+      originalTroops[124].pages[0].list,
+    );
+
+    // remove only choice drops
+    jasperTroopList = jasperTroopList.filter(
+      (listItem) =>
+        !(listItem.code === 126 && listItem.parameters[0] == 384) && // jaspers key
+        !(listItem.code === 126 && listItem.parameters[0] == 314) && // roof access key
+        !(listItem.code === 128 && listItem.parameters[0] == 23), // dark robes
+    );
+
+    // do telescope separately because it needs a special switch
+    const telescopeIndex = jasperTroopList.findIndex(
+      (listItem) => listItem.code === 126 && listItem.parameters[0] == 387,
+    );
+    if (telescopeIndex !== -1) {
+      jasperTroopList.splice(telescopeIndex, 1, {
+        code: 355,
+        indent: jasperTroopList[telescopeIndex].indent,
+        parameters: [`sSw(${GF_OFFICE_JASPER_FIX_TELESCOPE_SWITCH}, true)`],
+      });
+    }
+
+    jasperTroopList = ClearExplicitDrops.messageReplacement(
+      jasperTroopList,
+      "Roof Access Key",
+      "GF_OFFICE_JASPER_GIFT_OFFERING",
+    );
+    jasperTroopList = ClearExplicitDrops.messageReplacement(
+      jasperTroopList,
+      "Stained Key",
+      "GF_OFFICE_JASPERS_KEY",
+    );
+    jasperTroopList = ClearExplicitDrops.messageReplacement(
+      jasperTroopList,
+      "Telescope",
+      "GF_OFFICE_JASPER_FIX_TELESCOPE",
+    );
+    $dataTroops[124].pages[0].list = jasperTroopList;
+  }
+  clearJasperGifts();
+
+  function clearFakeFredGifts() {
+    let faceTakerTroopList = JsonEx.makeDeepCopy(
+      originalTroops[327].pages[0].list,
+    );
+
+    // dont set the deadfred count when you speak to him first because
+    // you could undo progress
+    faceTakerTroopList = faceTakerTroopList.filter(
+      (listItem) => !(listItem.code == 122 && listItem.parameters[0] == 306),
+    );
+
+    // clear all item drops
+    faceTakerTroopList = ClearExplicitDrops.itemDropClear(
+      faceTakerTroopList,
+      126,
+    );
+    // clear armor drop
+    faceTakerTroopList = ClearExplicitDrops.itemDropClear(
+      faceTakerTroopList,
+      128,
+    );
+
+    faceTakerTroopList = ClearExplicitDrops.deleteMessage(
+      faceTakerTroopList,
+      "Paint Palette",
+    );
+    faceTakerTroopList = ClearExplicitDrops.deleteMessage(
+      faceTakerTroopList,
+      "Canvas Carry Bag",
+    );
+    faceTakerTroopList = ClearExplicitDrops.deleteMessage(
+      faceTakerTroopList,
+      "Turpentine",
+    );
+    faceTakerTroopList = ClearExplicitDrops.deleteMessage(
+      faceTakerTroopList,
+      "First Aid Kit",
+    );
+
+    $dataTroops[327].pages[0].list = faceTakerTroopList;
+  }
+  clearFakeFredGifts();
+
+  function updateToxicFredEncounter() {
+    const soldRageQuote = "\C[5]\{\{\{You\.\. FUCKING\.\.\C[10] \{\{\{S\.O\.L\.D\}\}\}\.\.\C[5]  me?!?!"
+    const randoRageQuote = "\C[5]\{\{\{You FUCKING\C[10] \{\{\{RANDOMIZED\}\}\}\.\.\C[5]  me?!?!"
+
+    
+  }
+
+  function clearFinalFredGifts() {}
+  clearFinalFredGifts();
 };
 
 let commonEventsUpdated = false;
@@ -1030,34 +1246,16 @@ ClearExplicitDrops.clearCommonEventDrops = function () {
   clearReturnHomePhillippeRatbaby();
 
   function clearAudreyShop() {
-    const colaName = LookOutsideAPClient.getItemName(
-      "AUDREY_VENDING_COLA",
-      true,
-    );
-    const lemonSodaName = LookOutsideAPClient.getItemName(
-      "AUDREY_VENDING_LEMON",
-      true,
-    );
-    const orangeSodaName = LookOutsideAPClient.getItemName(
-      "AUDREY_VENDING_ORANGE",
-      true,
-    );
-    const juiceName = LookOutsideAPClient.getItemName(
-      "AUDREY_VENDING_JUICE",
-      true,
-    );
-
-    $dataCommonEvents[216].list = ShopHelpers.getAudreyVendingMachineList(
-      colaName,
-      lemonSodaName,
-      orangeSodaName,
-      juiceName,
-    );
+    $dataCommonEvents[216].list = ShopHelpers.getAudreyVendingMachineList();
   }
   clearAudreyShop();
 
+  function clearCandyMachine() {
+    $dataCommonEvents[219].list = ShopHelpers.getCandyMachineList();
+  }
+  clearCandyMachine();
+
   function clearCarPrizeEvent() {
-    console.log(originalCommonEvents.length);
     let carEventList = originalCommonEvents[60].list;
     // clear out shotgun/ammo drop and announcement
     carEventList = ClearExplicitDrops.itemDropClear(carEventList, 126);

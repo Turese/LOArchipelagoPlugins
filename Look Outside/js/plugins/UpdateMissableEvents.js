@@ -8,6 +8,58 @@
  * @help
  */
 
+const EMPTY_PAGE = {
+  conditions: {
+    actorId: 1,
+    actorValid: false,
+    itemId: 1,
+    itemValid: false,
+    selfSwitchCh: "A",
+    selfSwitchValid: false,
+    switch1Id: 1,
+    switch1Valid: false,
+    switch2Id: 1,
+    switch2Valid: false,
+    variableId: 1,
+    variableValid: false,
+    variableValue: 0,
+  },
+  directionFix: false,
+  image: {
+    characterIndex: 0,
+    characterName: "",
+    direction: 2,
+    pattern: 0,
+    tileId: 0,
+  },
+  list: [
+    {
+      code: 0,
+      indent: 0,
+      parameters: [],
+    },
+  ],
+  moveFrequency: 3,
+  moveRoute: {
+    list: [
+      {
+        code: 0,
+        parameters: [],
+      },
+    ],
+    repeat: true,
+    skippable: false,
+    wait: false,
+  },
+  moveSpeed: 3,
+  moveType: 0,
+  priorityType: 0,
+  stepAnime: false,
+  through: false,
+  trigger: 0,
+  walkAnime: true,
+};
+
 var UpdateMissableEvents = UpdateMissableEvents || {};
 
 UpdateMissableEvents.applyEventUpdates = function (lastLoadedMapId, ev) {
@@ -152,8 +204,28 @@ UpdateMissableEvents.applyEventUpdates = function (lastLoadedMapId, ev) {
   function fixMaskShadeSpawns() {
     // make stumbling shade on f4 spawn immediately
     // instead of be triggered by old tape
+
     if (lastLoadedMapId == 451 && ev.id == 7) {
       ev.pages[0].conditions = ClearExplicitDrops.buildConditions();
+    }
+    // writhing shade --- needs to not erase itself
+    if (lastLoadedMapId == 380 && ev.id == 2) {
+      const eraseIndex = ev.pages[2].list.findIndex(
+        (listEntry) => listEntry.code === 214,
+      );
+      if (eraseIndex !== -1) {
+        ev.pages[2].list[eraseIndex] = {
+          code: 355,
+          indent: ev.pages[2].list[eraseIndex].indent,
+          parameters: ["$gameSelfSwitches.setValue([380, 2, 'D'], true)"],
+        };
+      }
+      if (ev.pages.length < 5) {
+        ev.pages.push({
+          ...EMPTY_PAGE,
+          conditions: ClearExplicitDrops.buildConditions("D"),
+        });
+      }
     }
   }
   fixMaskShadeSpawns();
