@@ -111,11 +111,37 @@ BackInTime.isSteveDead = function () {
 };
 
 BackInTime.isSadipedeDead = function () {
-  return !!$gameSelfSwitches._data[[457, 1, "C"].toString()];
+  return $gameSelfSwitches._data[[457, 1, "C"].toString()];
 };
 
 BackInTime.fixSadipedeKilled = function () {
   $gameSelfSwitches.setValue([457, 1, "C"], false); // sadipede dead = off
+};
+
+BackInTime.areFriendlyFireRatsKilled = function () {
+  if (!$gamePlayer.slotData || !$gamePlayer.slotData.rusty_crown) return false; // dont need to revive rats if no rusty crown locations
+  if (!$gameParty.hasItem($dataArmors[42], true)) return false // no rusty crown - dont present option
+  if (gSw(506)) return true; //bigRatAmbushDead - burrito rat and friends
+  if (gSw(650)) return true; //rat guardians - the ones that sell you cheese
+  if ($gameSelfSwitches._data[[106, 11, "C"].toString()]) return true; // rat freak - gives you sword
+  if (gSw(501)) return true; // pipeRoomRats - the one with the secret shop
+
+  return false;
+};
+
+BackInTime.fixFriendlyRatsKilled = function () {
+  sSw(506, false);
+  sSw(650, false);
+  delete $gameSelfSwitches._data[[106, 11, "C"].toString()];
+  sSw(501, false);
+};
+
+BackInTime.isTrueFredDead = function () {
+  return $gameSelfSwitches._data[[239, 6, "C"].toString()];
+};
+
+BackInTime.fixTrueFredKilled = function () {
+  delete $gameSelfSwitches._data[[239, 6, "C"].toString()]; // delete the dead true fred
 };
 
 const BEDROOM_MAP_ID = 2;
@@ -140,6 +166,112 @@ BackInTime.haveAnyAstronomersLeft = function () {
 
 BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
   const regretTemplates = {
+    trueFredDead: {
+      rCondition: BackInTime.isTrueFredDead,
+      rFunction: "BackInTime.fixTrueFredKilled",
+      rName: "Fred.",
+      rText: [
+        {
+          code: 101,
+          indent: 2,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["You think of that Fred from the closet. You think you"],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "may have been mistaken as to which Fred was the real one. You",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "You close your eyes and vow to be more conscientious...",
+          ],
+        },
+        {
+          code: 101,
+          indent: 2,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["Actually, did you kill him? You couldn't have."],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "In fact, you feel as though he's healthier than ever right",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["now."],
+        },
+      ],
+    },
+    ratsDead: {
+      rCondition: BackInTime.areFriendlyFireRatsKilled,
+      rName: "Rats.",
+      rFunction: "BackInTime.fixFriendlyRatsKilled",
+      rText: [
+        {
+          code: 101,
+          indent: 2,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["You think of the rats on the first floor. You wish you hadn't"],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            " killed so many before becoming the new rat king.",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "You close your eyes and imagine your rat kingdom...",
+          ],
+        },
+        {
+          code: 101,
+          indent: 2,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["Actually, there were plenty of rats, what's killing one"],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: [
+            "or two? In fact, you feel as though new ones have arrived to",
+          ],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["take the dead ones' places already."],
+        },
+      ]
+    },
     papineauDead: {
       rName: "(([!s[169]]))Papineau.",
       rFunction: "BackInTime.fixPapKilled",
