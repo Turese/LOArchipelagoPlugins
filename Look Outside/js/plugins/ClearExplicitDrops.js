@@ -393,7 +393,6 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
           image: ev.pages[0].image,
         });
       }
-      console.log(ev.pages);
     }
   }
   clearCoffeeMachineEvent();
@@ -778,6 +777,25 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
     }
   }
   clearDeadFredDrops();
+
+    function clearLeighQuest() {
+    if (lastLoadedMapId == 434 && ev.id == 1) {
+      // clear martin's ring
+      ev.pages[0].list = ClearExplicitDrops.itemDropClear(ev.pages[0].list, 128);
+      ev.pages[0].list = ClearExplicitDrops.itemDropClear(ev.pages[0].list, 318); // clear skill grants
+      ev.pages[0].list = ClearExplicitDrops.messageReplacement(
+        ev.pages[0].list,
+        "Martin's Ring",
+        "LEIGH_APARTMENT_READ_NOTE",
+      );
+      ev.pages[0].list = ClearExplicitDrops.messageReplacement(
+        ev.pages[0].list,
+        "much more dangerous",
+        "LEIGH_APARTMENT_READ_NOTE",
+      );
+    }
+  }
+  clearLeighQuest();
 };
 
 ClearExplicitDrops.clearAllEnemiesDrops = function () {
@@ -943,7 +961,6 @@ ClearExplicitDrops.clearTroopsDrops = function () {
         listEntry.code == 355 &&
         listEntry.parameters[0] == "setSybilMajorStory(51);",
     );
-    console.log(asterRecruitIndex);
     if (asterRecruitIndex !== -1)
       asterTroopList[asterRecruitIndex].parameters[0] =
         "$gameSelfSwitches.setValue([7, 14, 'D'], true); BattleManager.abort();";

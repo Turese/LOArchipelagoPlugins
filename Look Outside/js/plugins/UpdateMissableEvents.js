@@ -85,11 +85,6 @@ UpdateMissableEvents.applyEventUpdates = function (lastLoadedMapId, ev) {
   }
   fixElevatorButtons();
 
-  // remove leighs gun sale from hardmode dialogue
-  function fixLeighGunSale() {
-    //TODO: IMPLEMENT
-  }
-
   // update page 2 of the apt 21 key event to trigger grinning beast if you walk over it
   function leighRematch() {
     if (lastLoadedMapId === 7 && ev.id === 1) {
@@ -244,9 +239,11 @@ UpdateMissableEvents.applyEventUpdates = function (lastLoadedMapId, ev) {
 
   // make it so grasshopper doesnt leave after leighs quest
   function permaGrasshopper() {
-    // remove page 4 of its event on floor 2 (7) event 60
-    //TODO: IMPLEMENT
+    if (lastLoadedMapId == 7 && ev.id == 60) {
+      if (ev.pages.length > 4) ev.pages.splice(3, 1);
+    }
   }
+  permaGrasshopper();
 
   // allows each tooth family phase to spawn even if theyve been killed in another form
   function fixToothFamilySpawnTriggers() {
@@ -287,15 +284,6 @@ UpdateMissableEvents.applyEventUpdates = function (lastLoadedMapId, ev) {
     }
   }
   fixToothFamilySpawnTriggers();
-
-  // audreys disposition requirements are met instantly if you give the key
-  // gives her infinite advice cans
-  // updates her to spawn even if recruited
-  function fixAudreyRecruitMechanics() {
-    //TODO: IMPLEMENT
-    // room 92 event 111 page 6
-    // replace with custom flag check
-  }
 
   // allows wiggly fred to spawn in the fred apt even if he lives in your fridge
   function fixWigglyFredRecruitMechanics() {}
