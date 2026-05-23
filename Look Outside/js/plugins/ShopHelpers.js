@@ -890,7 +890,7 @@ ShopHelpers.getAudreyVendingMachineList = function () {
       parameters: [
         [
           "Add more coins.",
-          "(([v[755]<8;s[380]]))Examine the machine.",
+          "(([v[755]<8;[v[755]>11]))Examine the machine.",
           "Leave.",
         ],
         -1,
@@ -1094,7 +1094,7 @@ ShopHelpers.getAudreyVendingMachineList = function () {
     {
       code: 402,
       indent: 1,
-      parameters: [1, "(([v[755]<8;s[380]]))Examine the machine."],
+      parameters: [1, `(([v[755]<8;v[755]>10]))Examine the machine.`],
     },
     {
       code: 118,

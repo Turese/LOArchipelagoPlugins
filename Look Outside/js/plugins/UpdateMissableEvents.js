@@ -155,21 +155,7 @@ UpdateMissableEvents.applyEventUpdates = function (lastLoadedMapId, ev) {
   }
   leighWillWait();
 
-  const recruitLeaveCondition = {
-    actorId: 1,
-    actorValid: false,
-    itemId: 1,
-    itemValid: false,
-    selfSwitchCh: "D",
-    selfSwitchValid: true,
-    switch1Id: 1,
-    switch1Valid: false,
-    switch2Id: 1,
-    switch2Valid: false,
-    variableId: 1,
-    variableValid: false,
-    variableValue: 0,
-  };
+  const recruitLeaveCondition = ClearExplicitDrops.buildConditions("D");
   // for overworld recruits; the switch that makes them leave their spots
   // if recruited is replaced with self switch D
   function forceRecruitsToStay() {
@@ -185,13 +171,33 @@ UpdateMissableEvents.applyEventUpdates = function (lastLoadedMapId, ev) {
 
     // aster
     if (lastLoadedMapId == 7 && ev.id == 14) {
-      ev.pages[4].conditions = recruitLeaveCondition;
+      // he cant leave until he is recruited because he's needed for offerings
+      ev.pages[4].conditions = {
+        ...ev.pages[4].conditions,
+        ...{ selfSwitchCh: "D", selfSwitchValid: true },
+      };
     }
 
     // audrey
-    if (lastLoadedMapId == 92 && ev.id == 111) {
-      if (ev.pages.length >= 7) {
-        ev.pages.splice(5, 1);
+    if (lastLoadedMapId == 92) {
+      if (ev.id == 111) {
+        if (ev.pages.length >= 7) {
+          ev.pages.splice(5, 1);
+        }
+      }
+      if (ev.id == 113) {
+        // page that sets audrey events
+        // also disabled on recruit
+        if (ev.pages.length >= 2) {
+          ev.pages.splice(1, 1);
+        }
+      }
+      if (ev.id == 114) {
+        // page that sets audrey pose when player gets close
+        // also disabled on recruit
+        if (ev.pages.length >= 2) {
+          ev.pages.splice(1, 1);
+        }
       }
     }
 
@@ -209,7 +215,11 @@ UpdateMissableEvents.applyEventUpdates = function (lastLoadedMapId, ev) {
       ev.pages[0].conditions = ClearExplicitDrops.buildConditions();
     }
     // writhing shade --- needs to not erase itself
-    if (lastLoadedMapId == 380 && ev.id == 2) {
+    // same with moaning shade
+    if (
+      (lastLoadedMapId == 380 && ev.id == 2) ||
+      (lastLoadedMapId == 401 && ev.id == 6)
+    ) {
       const eraseIndex = ev.pages[2].list.findIndex(
         (listEntry) => listEntry.code === 214,
       );
@@ -217,7 +227,9 @@ UpdateMissableEvents.applyEventUpdates = function (lastLoadedMapId, ev) {
         ev.pages[2].list[eraseIndex] = {
           code: 355,
           indent: ev.pages[2].list[eraseIndex].indent,
-          parameters: ["$gameSelfSwitches.setValue([380, 2, 'D'], true)"],
+          parameters: [
+            `$gameSelfSwitches.setValue([${lastLoadedMapId}, ${ev.id}, 'D'], true)`,
+          ],
         };
       }
       if (ev.pages.length < 5) {

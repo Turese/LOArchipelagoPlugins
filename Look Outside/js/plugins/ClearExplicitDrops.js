@@ -703,6 +703,16 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
   }
   clearSadipedePrize();
 
+  // the key in the darkroom vanishes when lyle is recruited
+  function fixDarkRoomItem() {
+    if (lastLoadedMapId == 112 && ev.id == 14) {
+      if (ev.pages.length >= 2) {
+        ev.pages.splice(1, 1);
+      }
+    }
+  }
+  fixDarkRoomItem();
+
   function clearRaftaLetter() {
     if (lastLoadedMapId === 94 && ev.id === 9) {
       ev.pages[0].list = ClearExplicitDrops.itemDropClear(
@@ -739,10 +749,33 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
         page.list == ClearExplicitDrops.deleteMessage(page.list, "Face");
       });
     }
-    // toxic fred
-    /*if () {
-
-    }*/
+    // toxic fred/paintlings/hat stained key drops
+    if (
+      (lastLoadedMapId == 217 && ev.id == 8) ||
+      (lastLoadedMapId == 217 && ev.id == 7) ||
+      (lastLoadedMapId == 236 && ev.id == 16) ||
+      (lastLoadedMapId == 236 && ev.id == 18) ||
+      (lastLoadedMapId == 236 && ev.id == 19) ||
+      (lastLoadedMapId == 42 && ev.id == 6) ||
+      (lastLoadedMapId == 237 && ev.id == 14) ||
+      (lastLoadedMapId == 119 && ev.id == 13)
+    ) {
+      ev.pages.forEach((page) => {
+        page.list = ClearExplicitDrops.itemDropClear(page.list, 126);
+        // some drops have different capitalization
+        page.list = ClearExplicitDrops.deleteMessage(page.list, "Stained key");
+      });
+    }
+    // true fred; his state gets reset when you kill him
+    if (lastLoadedMapId == 239 && ev.id == 6) {
+      ev.pages.forEach((page) => {
+        // dont let his state get set to 99
+        page.list = page.list.filter(
+          (listItem) =>
+            !(listItem.code == 122 && listItem.parameters[0] == 300),
+        );
+      });
+    }
   }
   clearDeadFredDrops();
 };
@@ -898,6 +931,25 @@ ClearExplicitDrops.clearTroopsDrops = function () {
     );
   }
   clearRoachesRecruitmentEvent();
+
+  function clearAsterRecruitmentEvent() {
+    const asterTroopList = JsonEx.makeDeepCopy(originalTroops[121]).pages[0]
+      .list;
+
+    // when recruiting, the sybilmajorstory is the very first that's set, so we can use that
+    // to bypass the recruiting process
+    const asterRecruitIndex = asterTroopList.findIndex(
+      (listEntry) =>
+        listEntry.code == 355 &&
+        listEntry.parameters[0] == "setSybilMajorStory(51);",
+    );
+    console.log(asterRecruitIndex);
+    if (asterRecruitIndex !== -1)
+      asterTroopList[asterRecruitIndex].parameters[0] =
+        "$gameSelfSwitches.setValue([7, 14, 'D'], true); BattleManager.abort();";
+    $dataTroops[121].pages[0].list = asterTroopList;
+  }
+  clearAsterRecruitmentEvent();
 
   function clearJeannePrizeEvent() {
     // clear out elixir prize
@@ -1079,13 +1131,127 @@ ClearExplicitDrops.clearTroopsDrops = function () {
   clearFakeFredGifts();
 
   function updateToxicFredEncounter() {
-    const soldRageQuote = "\C[5]\{\{\{You\.\. FUCKING\.\.\C[10] \{\{\{S\.O\.L\.D\}\}\}\.\.\C[5]  me?!?!"
-    const randoRageQuote = "\C[5]\{\{\{You FUCKING\C[10] \{\{\{RANDOMIZED\}\}\}\.\.\C[5]  me?!?!"
+    const soldRageQuote =
+      "\\C[5]\\{\\{\\{You\\.\\. FUCKING\\.\\.\\C[10] \\{\\{\\{S\\.O\\.L\\.D\\}\\}\\}\\.\\.\\C[5]  me?!?!";
+    const randoRageList = [
+      {
+        code: 101,
+        indent: 4,
+        parameters: ["", 0, 0, 2, "Frederic"],
+      },
+      {
+        code: 401,
+        indent: 4,
+        parameters: ["\\C[5]\\{\\{\\{You\\.\\. FUCKING\\.\\.\\"],
+      },
+      {
+        code: 401,
+        indent: 4,
+        parameters: [
+          "\\{\\{\\{\\C[10] \\{\\{\\{RANDOMIZED\\}\\}\\}\\.\\.\\C[5]  me?!?!",
+        ],
+      },
+    ];
 
-    
+    let toxicTroopList = JsonEx.makeDeepCopy(originalTroops[332].pages[0].list);
+
+    const soldIntroRageIndex = toxicTroopList.findIndex(
+      (listItem) =>
+        listItem.code == 401 && listItem.parameters[0] == soldRageQuote,
+    );
+    if (soldIntroRageIndex !== -1) {
+      toxicTroopList.splice(soldIntroRageIndex, 1, ...randoRageList);
+    }
+
+    toxicTroopList.forEach((listItem) => {
+      if (listItem.code == 401 && listItem.parameters[0].includes("sell"))
+        listItem.parameters[0] = listItem.parameters[0].replace(
+          "sell",
+          "randomize",
+        );
+    });
+
+    toxicTroopList.find(
+      (listItem) =>
+        listItem.code == 102 &&
+        listItem.parameters[0][1] == "What do you mean? Sold you?",
+    ).parameters[0][1] = "What do you mean? Randomized?";
+
+    $dataTroops[332].pages[0].list = toxicTroopList;
+
+    let toxicTroopList2 = JsonEx.makeDeepCopy(
+      originalTroops[332].pages[1].list,
+    );
+
+    let page2RageIndex = toxicTroopList2.findIndex(
+      (listItem) =>
+        listItem.code == 401 && listItem.parameters[0].includes("SELLING"),
+    );
+
+    if (page2RageIndex !== -1)
+      toxicTroopList2[page2RageIndex].parameters[0] = toxicTroopList2[
+        page2RageIndex
+      ].parameters[0] =
+        "I'm going to do\\C[10] THIS\\C[0] to you. For\\C[10] RANDOMIZING\\C[0] me. You little \\C[10]SHIT.";
+
+    $dataTroops[332].pages[1].list = toxicTroopList2;
   }
+  updateToxicFredEncounter();
 
-  function clearFinalFredGifts() {}
+  function clearFinalFredGifts() {
+    // main fred is done in his gift clear, the rest are here
+    let tumorList = JsonEx.makeDeepCopy(originalTroops[328].pages[0].list);
+
+    //clear tumorlumps
+    ClearExplicitDrops.itemDropClear(tumorList, 126);
+    ClearExplicitDrops.deleteMessage(tumorList, "Tumor Lumps");
+
+    $dataTroops[328].pages[0].list = tumorList;
+
+    // wiggly moves into your house
+    // overnight, so we'll block his gift there
+
+    let fredBiteList = JsonEx.makeDeepCopy(originalTroops[330].pages[0].list);
+
+    // clear rage armor (armor) drop
+    ClearExplicitDrops.itemDropClear(fredBiteList, 128);
+    ClearExplicitDrops.deleteMessage(fredBiteList, "Rage Armor");
+
+    $dataTroops[330].pages[0].list = fredBiteList;
+
+    let angelFredList = JsonEx.makeDeepCopy(originalTroops[331].pages[0].list);
+
+    // clear strange feather (armor) drop
+    ClearExplicitDrops.itemDropClear(angelFredList, 128);
+    // it gets no announcement, so no deleteMessage call needed
+
+    // keeping angel fred's cash bribe intact because it's funny
+
+    $dataTroops[331].pages[0].list = angelFredList;
+
+    // toxic gift doesnt work since it requires hat trick
+    // and not a cowboy hat is not in the pool; skipping the clear for him
+
+    let scaredList = JsonEx.makeDeepCopy(originalTroops[333].pages[0].list);
+
+    // clear cowardly boots (armor) drop
+    ClearExplicitDrops.itemDropClear(scaredList, 128);
+    ClearExplicitDrops.deleteMessage(scaredList, "Cowardly Boots");
+
+    $dataTroops[333].pages[0].list = scaredList;
+
+    let brightList = JsonEx.makeDeepCopy(originalTroops[334].pages[0].list);
+
+    //clear medic-in-a-jar
+    ClearExplicitDrops.itemDropClear(brightList, 126);
+    ClearExplicitDrops.deleteMessage(brightList, "Medic-in-a-jar");
+
+    $dataTroops[334].pages[0].list = brightList;
+
+    // skipping shadow fred; he gives nothing
+
+    // keeping main fred's duplications open
+  }
   clearFinalFredGifts();
 };
 
@@ -1130,6 +1296,8 @@ ClearExplicitDrops.clearCommonEventDrops = function () {
       $dataCommonEvents[i].list = originalCommonEvents[i].list.filter(
         (listItem) => listItem.code !== 318,
       );
+
+      if ($gamePlayer) console.log($gamePlayer.slotData);
 
       if (
         $gamePlayer &&

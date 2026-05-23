@@ -8,7 +8,7 @@
  * @help
  */
 
-const LOCATION_ID_MAPPING = {
+const LOCATION_ID_MAPPING = Object.freeze({
   GAME_SKILL_WIZARDS_HELL: 2,
   GAME_SKILL_SUPER_JUMPLAD: 3,
   GAME_SKILL_SUPER_JUMPLAD_3: 4,
@@ -628,6 +628,7 @@ const LOCATION_ID_MAPPING = {
   TRUE_FRED_CLOSET_TURPENTINE_1: 3146,
   TRUE_FRED_CLOSET_TURPENTINE_2: 3147,
   TRUE_FRED_CLOSET_ROACH: 3148,
+  TRUE_FRED_RETURN_FACE: 3149,
   FRED_ALL_COMBAT_VICTORY: 3110,
   APT_12_SHOTGUN_SHELLS: 3201,
   APT_12_PISTOL_BULLETS: 3202,
@@ -1211,11 +1212,11 @@ const LOCATION_ID_MAPPING = {
   HUNDRED_MAWS_COMBAT_VICTORY: 5803,
   CRIMSON_SCOURGE_COMBAT_VICTORY: 5804,
   ELEVATOR_FREAK_COMBAT_VICTORY: 5805,
-};
+});
 
 // if a location becomes unreachable
 // upon granting another, then grant both at once
-const IMPLIED_LOCATIONS = {
+const IMPLIED_LOCATIONS = Object.freeze({
   F2_GRINNING_BEAST_COMBAT_VICTORY: ["F2_GRINNING_BEAST_CHASE_POOL_CUE"],
   APT_32_BATHROOM_RECRUIT_JOEL: ["APT_32_BATHROOM_JOEL_COMBAT_VICTORY"],
   F2_RECRUIT_ASTER: ["F2_ASTER_COMBAT_VICTORY"],
@@ -1227,7 +1228,7 @@ const IMPLIED_LOCATIONS = {
   ],
   //recruit papineau
   //APT_18_HELLEN_QUEST_SHEARS: [""] betrayed hellen combat victory
-};
+});
 
 // custom switch ids (these are unused in the base game as of version 2.3
 // i use 1399 and 1400 in NormalizeDifficulty
@@ -2632,6 +2633,7 @@ SELF_SWITCH_LOCATIONS = {
 
   401: {
     11: { C: "B_PIT_ANGLER_COMBAT_VICTORY" },
+    6: { D: "B_PIT_MOANING_SHADE_COMBAT_VICTORY" },
     7: { A: "B_PIT_WRAPPED_PAINTING" },
     12: { C: "B_PIT_SALAMANDER_COMBAT_VICTORY" },
     8: { C: "B_PIT_BAT_FREAK_COMBAT_VICTORY" },
@@ -3031,6 +3033,7 @@ VARIABLE_LOCATIONS = {
     { relation: "<", value: 2, location: "FRED_NINTH_COMBAT_VICTORY" },
     { relation: "<", value: 1, location: "FRED_ALL_COMBAT_VICTORY" },
   ],
+  300: { relation: ">=", value: 5, location: "TRUE_FRED_RETURN_FACE" },
   194: {
     relation: "=",
     value: 15,
