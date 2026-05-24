@@ -109,6 +109,12 @@ LookOutsideAPClient.applyOverrides = function () {
       // this wont have the correct names, but will still clear the event out 
       EventLogicUpdates.clearTroopsDrops();
     }
+    if (object === $dataItems) {
+      InsertAPItems.renameItems();
+    }
+    if (object === $dataWeapons) {
+      InsertAPItems.renameWeapons();
+    }
     _dataManagerOnLoad.call(this, object);
   };
 

@@ -708,3 +708,14 @@ InsertAPItems.loadCurrentMapImages = function () {
 InsertAPItems.shouldOverrideImage = function (url) {
   return url == "img/characters/GameCarts.png";
 };
+
+// some items have names that need to be fixed
+InsertAPItems.renameItems = function () {
+  $dataItems[336].name = "Incorrect CCTV Recording"; // incorrect recording
+  $dataItems[365].name = "Incorrect Photograph"; // incorrect recording
+}
+
+InsertAPItems.renameWeapons = function () {
+  $dataWeapons[190].name = "Rabu Hammer"; // the name \N[34] Hammer doesn't render
+}
+

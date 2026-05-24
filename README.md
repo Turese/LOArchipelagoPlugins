@@ -45,7 +45,7 @@ Creates an event activated by the calendar in the player's bedroom that undoes e
 
 ### EventLogicUpdates.applyIntroClears
 
-Changes applied on new game start
+Changes applied on new game start.
 
 - [x] updateStartingDrops - clears out 3 starting video games from intro inventory, sets starting switches for randomizer 
 - [x] updateStartingCutscene - speeds up intro cutscene/skips Sybil's intro dialogue
@@ -158,6 +158,7 @@ Updates events that happen during battle scenes.
 - [ ] clearEmmanuelShop
 - [ ] clearKevinShop
 - [ ] clearLyleTrades
+- [ ] clearBenPlayPrizes - clear out gifts from being a good to great playmate with Ben
 
 ### EventLogicUpdates.clearCommonEventDrops
 
@@ -170,6 +171,7 @@ fixes event items granted from common events
 - [x] clearAudreyShop - updates Audrey's vending machine stock to grant randomized items
 - [x] clearAudreyGiftsRecruit - update's Audrey's recruitment event; clears out energy drink gift, and short circuits recruit event to set a switch instead of adding her to party
 - [x] clearCarPrizeEvent - clears out items granted from opening car trunk after using electronic key
+- [x] updateAsterOfferings - fixes how the "correctness" of photograph offerings is calculated, allowing player to have an incorrect and correct photograph at the same time as distinct inventory items
 
 # MassEventUpdates.js
 
@@ -210,6 +212,7 @@ Functionality for inserting any item into the game at any time, necessary for AP
 - [x] Ability to grant any recruit
 - [x] Ability to randomize rat baby growth spurt as "progressive rat baby"
 - [x] Ability to grant custom traps
+- [x] Renames some items to have more descriptive accurate names (differentiates between good and bad offerings, fixes Rabu Hammer's bugged name)
 
 ## MainMenuAPOptions.js
 

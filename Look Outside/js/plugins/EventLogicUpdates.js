@@ -81,7 +81,6 @@ const EMPTY_PAGE = {
   walkAnime: true,
 };
 
-
 EventLogicUpdates.applyIntroClears = function (lastLoadedMapId) {
   // clear out the starting video games from player's inventory
   function updateStartingDrops() {
@@ -764,7 +763,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   function clearglitchElixirDrops() {
     if (lastLoadedMapId === 441 && ev.id === 7) {
       const filteredList = EventLogicUpdates.itemDropClear(
-        event.pages[0].list,
+        ev.pages[0].list,
         126,
       );
 
@@ -772,8 +771,9 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
         (listItem) =>
           listItem.code === 401 && listItem.parameters[0].contains("Elixir"),
       );
-      if (messageIndex) {
-        filteredList.parameters[0] = `You ha v e rec ei v ed ${LookOutsideAPClient.getItemName("GLITCH_W_GLITCH_ELIXIR")}.`;
+      if (messageIndex !== -1) {
+        filteredList[messageIndex].parameters[0] =
+          `You ha v e rec ei v ed ${LookOutsideAPClient.getItemName("GLITCH_W_GLITCH_ELIXIR")}.`;
       }
       ev.pages[0].list = filteredList;
     }
@@ -792,7 +792,8 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
           listItem.parameters[0].contains("AAAAAAAAAAAAAAAAAAAAAAAAAMBROS"),
       );
       if (messageIndex !== -1) {
-        filteredList.parameters[0] = `You \C[5]fi\C[20]nd ${LookOutsideAPClient.getItemName("GLITCH_SW_AMBROSE")}.`;
+        filteredList[messageIndex].parameters[0] =
+          `You \C[5]fi\C[20]nd ${LookOutsideAPClient.getItemName("GLITCH_SW_AMBROSE")}.`;
       }
       ev.pages[0].list = filteredList;
     }
@@ -1635,6 +1636,9 @@ EventLogicUpdates.clearTroopsDrops = function () {
 
   function clearLyleTrades() {}
   clearLyleTrades();
+
+  function clearBenPlayPrizes() {}
+  clearBenPlayPrizes();
 };
 
 let commonEventsUpdated = false;
@@ -1830,7 +1834,7 @@ EventLogicUpdates.clearCommonEventDrops = function () {
   clearAudreyGiftsRecruit();
 
   function clearCarPrizeEvent() {
-    let carEventList = originalCommonEvents[60].list;
+    let carEventList = JsonEx.makeDeepCopy(originalCommonEvents[60].list);
     // clear out shotgun/ammo drop and announcement
     carEventList = EventLogicUpdates.itemDropClear(carEventList, 126);
     carEventList = EventLogicUpdates.itemDropClear(carEventList, 128);
@@ -1849,4 +1853,143 @@ EventLogicUpdates.clearCommonEventDrops = function () {
     );
   }
   clearCarPrizeEvent();
+
+  // since incorrect and correct photos are different items,
+  // set the photo index here
+  function updateAsterOfferings() {
+    const asterOfferingAcceptEventList = JsonEx.makeDeepCopy(
+      originalCommonEvents[264].list,
+    );
+    // add a condition for incorrect photograph - item 365
+    // update condition for correct photograph - item 340
+
+    const regularPhotoCheckIndex = asterOfferingAcceptEventList.findIndex(
+      (listItem) => listItem.code == "111" && listItem.parameters[3] == 340,
+    );
+
+    if (regularPhotoCheckIndex != -1) {
+      // update case for correct photograph
+      asterOfferingAcceptEventList.splice(regularPhotoCheckIndex, 0, {
+        code: 355,
+        indent: asterOfferingAcceptEventList[regularPhotoCheckIndex].indent + 1,
+        parameters: ["sVr(245, 12);"], // ensures that the photograph is of the visitor
+      });
+
+      // add case for 365
+      asterOfferingAcceptEventList.splice(
+        regularPhotoCheckIndex - 1,
+        0,
+        ...[
+          {
+            code: 111,
+            indent: 0,
+            parameters: [1, 42, 0, 365, 0],
+            collapsed: true,
+          },
+
+          {
+            code: 355,
+            indent: 1,
+            parameters: ["sVr(245, 0);"], // photo of nothing
+          },
+          {
+            code: 101,
+            indent: 1,
+            parameters: ["Portrait_Cultists", 0, 0, 2, "Aster"],
+          },
+          {
+            code: 401,
+            indent: 1,
+            parameters: ["A photo envelope... does this hold the image of the"],
+          },
+          {
+            code: 401,
+            indent: 1,
+            parameters: ["Visitor? Very well. \\C[03]We will take this."],
+          },
+          {
+            code: 122,
+            indent: 1,
+            parameters: [36, 36, 1, 0, 1],
+          },
+          {
+            code: 122,
+            indent: 1,
+            parameters: [593, 593, 0, 0, 365],
+          },
+          {
+            code: 121,
+            indent: 1,
+            parameters: [213, 213, 0],
+          },
+          {
+            code: 126,
+            indent: 1,
+            parameters: [365, 1, 0, 1],
+          },
+          {
+            code: 121,
+            indent: 1,
+            parameters: [39, 39, 0],
+          },
+          {
+            code: 0,
+            indent: 1,
+            parameters: [],
+          },
+          {
+            code: 412,
+            indent: 0,
+            parameters: [],
+          },
+        ],
+      );
+    }
+
+    $dataCommonEvents[264].list = asterOfferingAcceptEventList;
+
+    const asterOfferingReturnEventList = JsonEx.makeDeepCopy(
+      originalCommonEvents[265].list,
+    );
+
+    asterOfferingReturnEventList.splice(
+      1,
+      0,
+      ...[
+        {
+          code: 111,
+          indent: 0,
+          parameters: [1, 593, 0, 365, 0],
+        },
+        {
+          code: 121,
+          indent: 1,
+          parameters: [213, 213, 1],
+        },
+        {
+          code: 122,
+          indent: 1,
+          parameters: [36, 36, 2, 0, 1],
+        },
+        {
+          code: 101,
+          indent: 1,
+          parameters: ["", 2, 0, 1, ""],
+        },
+        {
+          code: 401,
+          indent: 1,
+          parameters: ["You receive \\C[3]{Incorrect Photograph}\\C[0]."],
+        },
+        {
+          code: 0,
+          indent: 1,
+          parameters: [],
+        },
+      ],
+    );
+
+    $dataCommonEvents[265].list = asterOfferingReturnEventList;
+  }
+  updateAsterOfferings();
 };
