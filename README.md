@@ -25,7 +25,7 @@ Creates an event activated by the calendar in the player's bedroom that undoes e
 - [x] Ability to bring Eugene back to life when he's been killed by the player
 - [x] Ability to take back telling Jasper to send the astronomers to the roof for endgame
 - [x] Ability to take back sending individual astronomers to the roof for endgame
-- [x] Ability to take back killing sadipede
+- [x] Ability to bring Sadipede back to life if killed by the player
 - [x] Ability to reset the player's houseplant's health if it was neglected
 - [x] Ability to reset progress on Hellen's quest if player missed a day
 - [x] Ability to bring the astronomers back to life when any one of them have been killed
@@ -36,6 +36,10 @@ Creates an event activated by the calendar in the player's bedroom that undoes e
 - [x] Ability to bring Lyle back to life and turn him non-hostile if player previously attacked + killed him
 - [x] Ability to return Sophie to the apartment if the player kicked her out / gave her to the imposter lady instead of Harriet
 - [x] Ability to bring Jeanne back to life if killed by player
+- [x] Ability to bring the true Fred back to life if killed by the player
+- [x] Ability to bring the friendly Rats back to life if killed by the player + player now has Rusted Crown
+- [x] Ability to bring Steve back to life if killed by the player
+- [ ] Ability to bring Tickle back to life if killed by the player
 
 ## UpdateMissableEvents.js
 
@@ -54,45 +58,139 @@ Updates overworld events so that events missed by the player can be retried.
 - [ ] Update Piranhaman so piranhas always spawn whether or not he is killed
 - [ ] Come up with the other cases...
 
-## ClearExplicitDrops.js
+## EventLogicUpdates.js
 
-Goes through the game's events to remove everything that explicitly grants an item to the player
+### EventLogicUpdates.applyDatamapClears
 
-- [x] Clear out explicit recruit activation from bringing Phillippe/Rat Baby home
-- [x] Clear out starting arms + inventory from opening cutscene (currently only clearing games)
-- [x] Delete gun sale from leigh
-- [x] Clear out recruitment from leigh
-- [x] Speed up opening cutscene (maybe find a better file for this one?)
-- [x] Clear out bookshelf screamatorium event
-- [x] Clear out wounded neighbor knife stealing event
-- [x] Clear out f3 hallway planter spare key
-- [x] Clear out masked shadow tongue gift
-- [x] Clear out masked shadow recruitment
-- [x] Clear out masked shadow hallway gift (wip, custom sprite won't render due to sprite facing the wrong direction)
-- [x] Clear out elevator access granted from killing elevator freak
-- [x] Clear out glitch world gifts (ambrose, 99 glitch elixir)
-- [ ] Clear out event for Audrey to find specific items from bosses (bonus - add ability for them to be manually triggerable by the player and recorded in state)
-- [x] Clear out rusted crown gift from rat king event
-- [ ] Clear out keys dropped by the bug people living in the basement apartments in hard mode
-- [x] Clear out dark room key award for killing Lyle
-- [x] Clear out rewards granted for helping Jeanne
-- [ ] Clear out door encounter gifts
-- [x] Clear out gifts from Pierre in his room (clown drawing, clown outfit)
-- [x] Clear out prizes from completing Leigh's quest
-- [x] Clear out prizes from completing Roach's quest
-- [x] Clear out typewrither manuscript drop
-- [x] Clear out item upgrade from interacting with typewriter with loose manuscript
-- [x] Clear out item exchange when using the telescope in Edwin's apartment
-- [ ] Clear out item exchange when using the projector with void disc / photo paper
-- [ ] Clear out ability to acquire more photo paper
-- [ ] Clear out item exchange when giving lyle / using darkroom on exposed paper
-- [ ] Clear out item exchange when using any tape on recorder
-- [x] Clear out painter's key reward from killing every part of Toxic Fred
-- [x] Clear out all explicit Fred rewards (final Fred rewards and intermediate rewards from the facetaker)
-- [x] Clear out gift from Jasper upon locking in offerings
-- [ ] Come up with the other cases...
+A couple changes applied when datamap is loaded instead of individual event loads
 
-# UpdateEventContent.js
+- [x] updateStartingDrops - clears out 3 starting video games from intro inventory, sets starting switches for randomizer 
+- [x] updateStartingCutscene - speeds up intro cutscene/skips Sybil's intro dialogue
+- [x] updateStartingArms - removes player's arms at the start of the game so they can be granted according to item drops/YAML settings
+
+### EventLogicUpdates.applyEventUpdates
+
+Goes through the game's in-map events to remove everything that explicitly grants an item to the player.
+
+- [x] fixWoundedManDoor - removes door logic that locks player out of the intro fight when they have no equipment on explorer and survivor mode
+- [x] fixElevatorButtons - allows player to travel to floor 4 without needing to play the elevator game first
+- [x] leighRematch - if the player didn't defeat the grinning beast after picking up the apt. 21 key location, allows them to retrigger the chase sequence by standing where the item once was
+- [x] clearLeighQuest - remove explicit ring or skill drop from reading Martin's note
+- [x] permaGrasshopper - allows grasshopper to still be fought after finishing Leigh's quest
+- [x] leighWillWait - if player doesn't recruit Leigh immediately after defeating the grinning beast, she will still wait in her apartment
+- [x] forceRecruitsToStay - make recruit presence in the overworld independent of their presence in the player's apartment/party
+    - [x] Leigh will leave after player finishes the recruitment dialogue
+    - [ ] Lyle will leave after player finishes the trade sequence
+    - [x] Aster will only leave after player finishes the recruitment dialogue AND has Aster in their apartment, so they're never blocked from offerings
+    - [x] Audrey will only leave after player player finishes the recruitment quest dialogue AND has Audrey in their apartment, so they're never blocked from vending machine purchases
+    - [ ] Joel will only leave after player finishes the recruitment dialogue
+    - [ ] Papineau will only leave after player finishes the recruitment dialogue
+- [x] fixMaskShadeSpawns - 
+    - [x] Stumbling shade on f4 will spawn immediately instead of only when player has Old Tape in their inventory
+    - [x] Writhing Shade and Moaning Shade (Landlord Apt and Basement Pit) will track their own death state with a self switch instead of self-deleting, so it's easier to track them as locations
+- [x] fixToothFamilySpawnTriggers - Allows the tooth family's further mutated forms (day 5 and day 9) to appear even if they've been slain in an earlier form
+    - [ ] Clint (bugged, day 5 appears at the same time as day 2-4 form)
+    - [x] Joel
+    - [x] Madison
+    - [x] Ben
+- [ ] fixWigglyFredRecruitMechanics - allows Wiggly Fred to appear in the Fred apartment even if he is already in the player's fridge
+- [ ] fixPiranhaLogic - Force Piranha guy to always explode into Piranhas even if player killed him
+- [ ] unblockEugeneBookcase - Force Eugene's bookcase to never become blocked by Nestor
+- [x] clearScreamitorumEvent - Remove explicit game item drop from player's bookcase
+- [x] clearWoundedManKnifeEvent - Remove explicit knife item drop from wounded neighbor battle
+- [x] clearTelescopeEvent - Remove explicit item exchange (void and negative disc) from the telescope in Edwin's apartment
+- [ ] clearSecurityEvent - Remove explicit item exchange (vhs tapes and cinnamon) from the security room recording event; don't allow player to record anything but the correct footage
+- [ ] clearProjectorEvent - Remove explicit item exchange (photo paper -> exposed paper) from the projector in Vincent's apartment
+- [x] clearF3HallwayPlanterEvent - Remove item drop from hallway planter when Lyle is in player's apartment; allows player to check for it multiple times
+- [x] clearF3HallwayVendingMachineEvent - remove item drops from F3 hallway vending machine; places unique locations in all items
+- [x] clearCoffeeMachineEvent - removes coffee drop from ground floor coffee machine and replaces it with location check; only allows it to be used once
+- [x] clearCandyMachine - removes candy drop from ground floor candy machine and replaces it with location check; only allows it to be used once
+- [x] clearElevatorFreakEvent - unlink the elevator freak's death with elevator access. 
+    - [ ] Unlink the elevator freak's death with the blackout event (possibly bugged?)
+- [x] clearRatKingCrown - clear rusted crown drop from rat king's defeated dialogue
+- [ ] clearBasementKeyDrops - clear key drops from the hard mode versions of the enemies in basement floor apartment's B1 and B2
+- [x] clearglitchElixirDrops - clear glitch elixir x99 gift from NPC in glitch world
+- [x] clearAmbroseDrops - clear ambrose item grants from Ambrose NPC in glitch world
+- [x] clearTypewritherDrop - clear loose manuscript drop from typewrither's defeated dialogue
+- [x] clearManuscriptCompletion - clear manuscript completion switch flip from interacting with the typewriter in the writer's apartment with loose manuscript
+- [x] clearCribDrop - prevent rat baby thing from following/joining the player when interacting with the crib in the rat infested apartment
+- [x] clearShutterbugDrop - clear dark room key drop from lyle's defeated dialogue
+- [x] clearJeanneLaundry - clear explicit laundry item drop from interacting with the full washer in the laundromat
+- [x] clearLandlordCache - clear explicit coin item drop from the cache in the landlord's dining room
+- [ ] clearLandlordDigSpot - clear explicit item drop from the hole in the landlord warzone
+- [x] fixBasementKeyConditions - fix the basement key location in the landlord's apartment; it no longer checks if the player has the basement key item to decide if it's been picked up
+- [x] clearErnestCheeseStash - remove explicit cheese drop from interacting with the hidden chest in Ernest's hideout
+- [x] clearRoachQuestPrize - remove item drops from solving the roach schism
+- [x] clearSadipedePrize - remove Marc-Andre item drop from the sadipede post-battle dialogue
+- [x] fixDarkRoomItem - allow apt 33 key location to stay on floor of darkroom even when lyle has been recruited
+- [x] clearRaftaLetter - remove explicit letter item grant after giving pen and paper to rafta
+- [x] clearOozeMachine - replace all explicit item sales from ooze machine in basement to replace them with locations; allow player to interact with it at any danger level
+- [x] clearDeadFredDrops - remove item drops from killing the facetaker; remove key drops from killing toxic fred or any of his offshoots
+- [x] fixRoxieRoomItemDoubleEntry - fix logic that gives separate item entries in regular/hardmode to the items in the basement sewer room with roxie the dog so they can be randomized
+- [x] clearGrateLever - unjoin the sewer grates going down from the player pulling the level in the boiler beast room
+- [ ] clearAudreyBossDrops - remove explicit item drops from having audrey in the party when defeating certain bosses; allows locations to be triggered when returning to the dead bodies later with Audrey
+- [ ] returnTickle - allow player to place tickle back on the boiler tendril to continue interfacing with his shop
+- [ ] fixLaughingMoldSpawn - allow player to interact with laughing mold even after defeating the spore princess
+- [ ] clearBlackoutIrisKey - clear iris key drop from the hole in the parking garage
+- [ ] clearRatFreakGift - clear out sword given by the rat freak when player wears the rusty crown
+- [ ] clearBurritoRatGift - clear out burrito given by the rat in the rat den when player wears the rusty crown
+- [ ] clearComatusYoga - clear yoga skill grant from interacting with comatus after defeating him
+- [ ] clearHellenQuestPrizes - clear out explicit item gifts from Hellen's quest
+
+### EventLogicUpdates.clearAllEnemiesDrops
+
+Removes every single combat item drop from the game
+
+### EventLogicUpdates.clearTroopsDrops
+
+Updates events that happen during battle scenes.
+
+- [x] clearPierreGifts - clear gifts granted during clown therapy with pierre - clown drawing and clown armor
+- [x] clearMaskedShadowEncounters - updates masked shadow encounters
+    - [x] removes switch that makes the shadow stop spawning after the player attacks it
+    - [x] removes explicit item drop from the tongue gift event
+    - [x] fixes the chosen item during the rose gift event for easier randomization
+    - [x] Removes switch set that places masked shadow in the player's apartment after they don't embrace it in their bedroom
+- [x] clearLeighRecruitmentEvent - short circuits the recruitment event to set a switch instead of attempting to add Leigh to the party; skips the one-time only gun sale from hardmode dialogue
+- [ ] clearJoelRecruitmentEvent - short circuits the recruitment event for Joel to set a switch instead of attempt to add him to the party. clears out door knob gift from battle
+- [x] clearRoachesRecruitmentEvent - clears out switch set that recruits roaches when player sees them in their bathroom
+- [x] clearAsterRecruitmentEvent - short circuits the recruitment event for Aster to set a switch instead of attempt to add him to the party
+- [ ] clearPapineauRecruitmentEvent - short circuits the recruitment event for Papineau to set a switch instead of attempt to add him to the party
+- [x] clearJeannePrizeEvent - clear out elixir prize for killing all hydra heads and 50 dollar reward for returning laundry
+- [x] fixNestorLetterLogic - don't allow player to give letter to Nestor before finishing Rafta's letter writing quest
+- [x] clearSapperDrop - clear gift for interacting with the sapper in the landlord warzone for the first time
+- [x] clearMinesweeperDrop - clear gift for interacting with the minesweeper in the landlord warzone for the first time, clear out tame landmine prize for 12 mines turned in
+- [x] clearJasperGifts - clear out items granted by jasper
+    - [x] clear out robes and roof key gift for submitting enough offerings
+    - [x] clear out explicit item exchange (broken telescope - telescope)
+    - [x] clear out explicit stained key item gift from the promise advancement event
+- [x] clearFakeFredGifts - clear out gifts granted by the facetaker for progress in the amount of Freds killed
+- [x] updateToxicFredEncounter - adds some humorous dialogue to the toxic fred encounter in the event the player got the fake hat location before talking to him
+- [x] clearFinalFredGifts - clears out explicit gift drops from all freds when they're the final one
+- [ ] clearSpiderHuskGift - updates Spider Husk logic
+    - [ ] make it impossible for player to offend Spider Husk and exit the dialogue early
+    - [ ] clear out beating heart given by the Spider Husk in Mutt's shop
+- [ ] clearTickleShop - update tickle's shop so that locations are granted instead of items
+    - [ ] clear out Tickle's gifts (blood clot bombs and drawing)
+- [ ] clearEmmanuelShop
+- [ ] clearKevinShop
+- [ ] clearLyleTrades
+
+### EventLogicUpdates.clearCommonEventDrops
+
+fixes event items granted from common events
+
+- [x] clearGameSkills - clears game skill drops (or, if player has removed them from the pool via YAML option, grants them after only 1 play of each game)
+- [ ] clearNewDayEvent - clear out rat baby growth spurt when it reaches lvl 12 and a day has passed
+- [ ] clearSleepEvent - clear out Wiggly Fred moving into player's fridge if he is the last Fred standing
+- [x] clearReturnHomePhillippeRatbaby - removes recruitment switch flips from bringing home Phillippe's remains / Rat Baby Thing; sets location checks instead
+- [x] clearAudreyShop - updates Audrey's vending machine stock to grant randomized items
+- [x] clearAudreyGiftsRecruit - update's Audrey's recruitment event; clears out energy drink gift, and short circuits recruit event to set a switch instead of adding her to party
+- [x] clearCarPrizeEvent - clears out items granted from opening car trunk after using electronic key
+
+# MassEventUpdates.js
+
+For event updates that are not unique; mass-updates of different item drop types
 
 - [x] Update item events to not grant items and display randomized item name
 - [x] Update trash can events to not grant items and display randomized item name
@@ -128,7 +226,7 @@ Functionality for inserting any item into the game at any time, necessary for AP
 - [x] Ability to grant pre-defined resource packs (money + items)
 - [x] Ability to grant any recruit
 - [x] Ability to randomize rat baby growth spurt as "progressive rat baby"
-- [x] Ability to grant custom traps (reduce Sam's maintenance stats, add random status ailments to party)
+- [x] Ability to grant custom traps
 
 ## MainMenuAPOptions.js
 
@@ -161,7 +259,7 @@ Intended main entry point to other plugins.
 
 ## ConnectionStatus.js
 
-- [x] display and count down to automatic reconnection
+- [x] display status and count down to automatic reconnection
 
 ## Misc goals / goals with no dedicated file
 

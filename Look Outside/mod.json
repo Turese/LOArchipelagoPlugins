@@ -50,9 +50,14 @@
       "target": "js/plugins/ToothHelpers.js"
     },
     {
-      "source": "js/plugins/ClearExplicitDrops.js",
-      "target": "js/plugins/ClearExplicitDrops.js"
+      "source": "js/plugins/EventLogicUpdates.js",
+      "target": "js/plugins/EventLogicUpdates.js"
     },
+    {
+      "source": "js/plugins/MassEventUpdates.js",
+      "target": "js/plugins/MassEventUpdates.js"
+    },
+
     {
       "source": "js/plugins/GoHome.js",
       "target": "js/plugins/GoHome.js"
@@ -80,10 +85,6 @@
     {
       "source": "js/plugins/Unarmed.js",
       "target": "js/plugins/Unarmed.js"
-    },
-    {
-      "source": "js/plugins/UpdateMissableEvents.js",
-      "target": "js/plugins/UpdateMissableEvents.js"
     },
     {
       "source": "img/enemies/Reflections/MM_sam1_MissingBotharm.png",
@@ -211,9 +212,15 @@
       "parameters": {}
     },
     {
-      "name": "ClearExplicitDrops",
+      "name": "EventLogicUpdates",
       "status": true,
-      "description": "Clears item drops from the game",
+      "description": "Updates unique event logic",
+      "parameters": {}
+    },
+    {
+      "name": "MassEventUpdates",
+      "status": true,
+      "description": "Bulk operations on game events",
       "parameters": {}
     },
     {
@@ -250,12 +257,6 @@
       "name": "Unarmed",
       "status": true,
       "description": "Unarmed and Dangerous: Play as Sam with no arms!",
-      "parameters": {}
-    },
-    {
-      "name": "UpdateMissableEvents",
-      "status": true,
-      "description": "Removes events that lock player out of locations",
       "parameters": {}
     }
   ]

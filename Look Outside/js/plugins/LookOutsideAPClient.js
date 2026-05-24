@@ -69,8 +69,7 @@ LookOutsideAPClient.applyOverrides = function () {
 
     if (!ev) return ev;
 
-    ClearExplicitDrops.applyEventClears(this._mapId, ev);
-    UpdateMissableEvents.applyEventUpdates(this._mapId, ev);
+    EventLogicUpdates.applyEventUpdates(this._mapId, ev);
 
     return ev;
   };
@@ -87,8 +86,8 @@ LookOutsideAPClient.applyOverrides = function () {
   Game_Map.prototype.setup = function (mapId) {
     BackInTime.createCalendarBackInTimeEvent(mapId);
     BlackoutLamp.createLampBlackoutEvent(mapId);
-    ClearExplicitDrops.applyDatamapClears(mapId);
-    UpdateEventContent.overrideAllPickups(mapId);
+    EventLogicUpdates.applyDatamapClears(mapId);
+    MassEventUpdates.overrideAllPickups(mapId);
 
     _Game_Map_setup.call(this, mapId);
   };
@@ -96,19 +95,19 @@ LookOutsideAPClient.applyOverrides = function () {
   const _dataManagerOnLoad = DataManager.onLoad;
   DataManager.onLoad = function (object) {
     if (object === $dataMap) {
-      UpdateEventContent.overrideAllPickups(lastLoadedMapId);
-      ClearExplicitDrops.applyDatamapClears(lastLoadedMapId);
+      MassEventUpdates.overrideAllPickups(lastLoadedMapId);
+      EventLogicUpdates.applyDatamapClears(lastLoadedMapId);
     }
     if (object === $dataEnemies) {
-      ClearExplicitDrops.clearAllEnemiesDrops();
+      EventLogicUpdates.clearAllEnemiesDrops();
     }
     if (object === $dataCommonEvents) {
       // this wont have the correct names, but will still clear the event out 
-      ClearExplicitDrops.clearCommonEventDrops();
+      EventLogicUpdates.clearCommonEventDrops();
     }
     if (object === $dataTroops) {
       // this wont have the correct names, but will still clear the event out 
-      ClearExplicitDrops.clearTroopsDrops();
+      EventLogicUpdates.clearTroopsDrops();
     }
     _dataManagerOnLoad.call(this, object);
   };
@@ -299,8 +298,8 @@ LookOutsideAPClient.gameLoadedAPSetup = async function (slotData) {
   await LookOutsideAPClient.initializeLocationNames();
   LookOutsideAPClient.updateItems();
   LookOutsideAPClient.updateDeathLink(slotData);
-  ClearExplicitDrops.clearTroopsDrops();
-  ClearExplicitDrops.clearCommonEventDrops();
+  EventLogicUpdates.clearTroopsDrops();
+  EventLogicUpdates.clearCommonEventDrops();
 };
 
 const resetClient = async function () {

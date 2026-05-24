@@ -1,6 +1,6 @@
 /**
  * @target MZ
- * @name UpdateEventContent
+ * @name MassEventUpdates
  * @plugindesc Updates overworld generic drops to have archipelago-specific text and images
  * @authors 0palite
  * @version 1.0
@@ -3130,7 +3130,7 @@ const SAFE_ITEM_OVERRIDES = {
   },
 };
 
-var UpdateEventContent = UpdateEventContent || {};
+var MassEventUpdates = MassEventUpdates || {};
 
 const OBSERVATORY_TRASH_ENDING = [
   {
@@ -3183,7 +3183,7 @@ const OBSERVATORY_TRASH_ENDING = [
   },
 ];
 
-UpdateEventContent.overrideOverworldPickups = function (currentMapId) {
+MassEventUpdates.overrideOverworldPickups = function (currentMapId) {
   function getAPItemPickupList(script, itemName, prefix = "") {
     return [
       {
@@ -3412,7 +3412,7 @@ UpdateEventContent.overrideOverworldPickups = function (currentMapId) {
   });
 };
 
-UpdateEventContent.overrideTrashSearchPickups = function (currentMapId) {
+MassEventUpdates.overrideTrashSearchPickups = function (currentMapId) {
   function getAPTrashSearchPickupList(script, itemName) {
     return [
       {
@@ -3474,7 +3474,7 @@ UpdateEventContent.overrideTrashSearchPickups = function (currentMapId) {
   }
 };
 
-UpdateEventContent.overrideFridgePickups = function (currentMapId) {
+MassEventUpdates.overrideFridgePickups = function (currentMapId) {
   function getAPFridgePickupList(script, itemName) {
     return [
       {
@@ -3638,7 +3638,7 @@ UpdateEventContent.overrideFridgePickups = function (currentMapId) {
   }
 };
 
-UpdateEventContent.overrideFirstAidBoxPickups = function (currentMapId) {
+MassEventUpdates.overrideFirstAidBoxPickups = function (currentMapId) {
   function getFirstAidBoxPickupList(script, itemName) {
     return [
       {
@@ -3718,7 +3718,7 @@ UpdateEventContent.overrideFirstAidBoxPickups = function (currentMapId) {
   }
 };
 
-UpdateEventContent.overrideMirrorPickups = function (currentMapId) {
+MassEventUpdates.overrideMirrorPickups = function (currentMapId) {
   function getMirrorPickupList(script, itemName) {
     return [
       {
@@ -3796,7 +3796,7 @@ UpdateEventContent.overrideMirrorPickups = function (currentMapId) {
   }
 };
 
-UpdateEventContent.overrideRoachPickups = function (currentMapId) {
+MassEventUpdates.overrideRoachPickups = function (currentMapId) {
   const eventsToOverride = ROACH_ITEM_OVERRIDES[currentMapId];
   if (eventsToOverride) {
     Object.keys(eventsToOverride).forEach((eventId) => {
@@ -3809,7 +3809,7 @@ UpdateEventContent.overrideRoachPickups = function (currentMapId) {
   }
 };
 
-UpdateEventContent.overrideDrawerPickups = function (currentMapId) {
+MassEventUpdates.overrideDrawerPickups = function (currentMapId) {
   function getDrawerPickupList(itemName, script) {
     return [
       {
@@ -3867,7 +3867,7 @@ UpdateEventContent.overrideDrawerPickups = function (currentMapId) {
   }
 };
 
-UpdateEventContent.overrideCouchPickups = function (currentMapId) {
+MassEventUpdates.overrideCouchPickups = function (currentMapId) {
   const eventToOverride = COUCH_ITEM_OVERRIDES[currentMapId];
   if (eventToOverride) {
     $dataMap.events[eventToOverride].pages[0].list = [
@@ -3912,7 +3912,7 @@ UpdateEventContent.overrideCouchPickups = function (currentMapId) {
   }
 };
 
-UpdateEventContent.overrideSafePickups = function (currentMapId) {
+MassEventUpdates.overrideSafePickups = function (currentMapId) {
   function getSafeItemPickupList(itemName) {
     return [
       {
@@ -3993,14 +3993,14 @@ UpdateEventContent.overrideSafePickups = function (currentMapId) {
   }
 };
 
-UpdateEventContent.overrideAllPickups = function (currentMapId) {
-  UpdateEventContent.overrideOverworldPickups(currentMapId);
-  UpdateEventContent.overrideTrashSearchPickups(currentMapId);
-  UpdateEventContent.overrideFridgePickups(currentMapId);
-  UpdateEventContent.overrideFirstAidBoxPickups(currentMapId);
-  UpdateEventContent.overrideMirrorPickups(currentMapId);
-  UpdateEventContent.overrideRoachPickups(currentMapId);
-  UpdateEventContent.overrideDrawerPickups(currentMapId);
-  UpdateEventContent.overrideCouchPickups(currentMapId);
-  UpdateEventContent.overrideSafePickups(currentMapId);
+MassEventUpdates.overrideAllPickups = function (currentMapId) {
+  MassEventUpdates.overrideOverworldPickups(currentMapId);
+  MassEventUpdates.overrideTrashSearchPickups(currentMapId);
+  MassEventUpdates.overrideFridgePickups(currentMapId);
+  MassEventUpdates.overrideFirstAidBoxPickups(currentMapId);
+  MassEventUpdates.overrideMirrorPickups(currentMapId);
+  MassEventUpdates.overrideRoachPickups(currentMapId);
+  MassEventUpdates.overrideDrawerPickups(currentMapId);
+  MassEventUpdates.overrideCouchPickups(currentMapId);
+  MassEventUpdates.overrideSafePickups(currentMapId);
 };
