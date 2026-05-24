@@ -176,9 +176,11 @@ UpdateMissableEvents.applyEventUpdates = function (lastLoadedMapId, ev) {
     // audrey
     if (lastLoadedMapId == 92) {
       if (ev.id == 111) {
-        if (ev.pages.length >= 7) {
-          ev.pages.splice(5, 1);
-        }
+        ev.pages[5].conditions = {
+          // same as aster, she needs to be reachable at all times
+          ...ev.pages[5].conditions,
+          ...{ selfSwitchCh: "D", selfSwitchValid: true },
+        };
       }
       if (ev.id == 113) {
         // page that sets audrey events

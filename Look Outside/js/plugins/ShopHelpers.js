@@ -890,7 +890,7 @@ ShopHelpers.getAudreyVendingMachineList = function () {
       parameters: [
         [
           "Add more coins.",
-          "(([v[755]<8;[v[755]>11]))Examine the machine.",
+          "(([v[755]<8;v[755]>10]))Examine the machine.",
           "Leave.",
         ],
         -1,
@@ -3185,10 +3185,6 @@ ShopHelpers.getAudreyVendingMachineList = function () {
   ];
 };
 
-ShopHelpers.getEmmanuelList = function () {};
-
-ShopHelpers.getRatHoleList = function () {};
-
 ShopHelpers.getCandyMachineList = function () {
   return [
     {
@@ -3859,3 +3855,11 @@ ShopHelpers.getOozeMachineList = function () {
     },
   ];
 };
+
+ShopHelpers.getTickleTradeList = function () {
+
+}
+
+ShopHelpers.getEmmanuelTradeList = function () {};
+
+ShopHelpers.getRatHoleTradeList = function () {};

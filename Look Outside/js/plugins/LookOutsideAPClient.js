@@ -134,12 +134,19 @@ LookOutsideAPClient.applyOverrides = function () {
     // we can still fit some fun references
     const DEATH_LINK_PHRASES = [
       " looked outside.",
+      " looked outside.",
+      " looked outside.", // make the main one slightly more common
+      " has broken every bone in their body!", // curse of broken bones
+      " is dEAD", // glitch death,
+      " has become a mass of wriggling limbs!", // mutation during true final ending
+      "'s mask is cracked...", // indigo mask
+      " is catatonic...", // monty's status
       " saw it... Did you?", // wounded neighbor quote
       " broke the promise.",
       " has transformed into something horrible.", //examining ben quote
       " is slain!", // enemy battle death message
       "'s party was defeated.", // player battle death message
-      " has been remade.", // spine?
+      " has been remade.", // spine
       " has been given the ultimate smooch.", // visitor smooch mode
       " was tricked by a hat.", // toxic fred
       " drank too much black ooze.",

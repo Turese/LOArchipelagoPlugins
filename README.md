@@ -50,7 +50,7 @@ Updates overworld events so that events missed by the player can be retried.
 - [x] Make Audrey recruit unmissable (infinite advice cans, remove disposition check)
 - [ ] Make Joel recruit unmissable (remove disposition check)
 - [ ] Update Eugene's bookcase so it never becomes blocked by Nestor
-- [ ] Update Grasshopper so it never despawns after Leigh's quest ends
+- [x] Update Grasshopper so it never despawns after Leigh's quest ends
 - [ ] Update Piranhaman so piranhas always spawn whether or not he is killed
 - [ ] Come up with the other cases...
 
@@ -74,12 +74,12 @@ Goes through the game's events to remove everything that explicitly grants an it
 - [ ] Clear out event for Audrey to find specific items from bosses (bonus - add ability for them to be manually triggerable by the player and recorded in state)
 - [x] Clear out rusted crown gift from rat king event
 - [ ] Clear out keys dropped by the bug people living in the basement apartments in hard mode
-- [ ] Clear out dark room key award for killing Lyle
+- [x] Clear out dark room key award for killing Lyle
 - [x] Clear out rewards granted for helping Jeanne
 - [ ] Clear out door encounter gifts
 - [x] Clear out gifts from Pierre in his room (clown drawing, clown outfit)
-- [ ] Clear out prizes from completing Leigh's quest
-- [ ] Clear out prizes from completing Roach's quest
+- [x] Clear out prizes from completing Leigh's quest
+- [x] Clear out prizes from completing Roach's quest
 - [x] Clear out typewrither manuscript drop
 - [x] Clear out item upgrade from interacting with typewriter with loose manuscript
 - [x] Clear out item exchange when using the telescope in Edwin's apartment
@@ -87,9 +87,9 @@ Goes through the game's events to remove everything that explicitly grants an it
 - [ ] Clear out ability to acquire more photo paper
 - [ ] Clear out item exchange when giving lyle / using darkroom on exposed paper
 - [ ] Clear out item exchange when using any tape on recorder
-- [ ] Clear out painter's key reward from killing every part of Toxic Fred
-- [ ] Clear out all explicit Fred rewards (final Fred rewards and intermediate rewards from the facetaker)
-- [ ] Clear out gift from Jasper upon locking in offerings
+- [x] Clear out painter's key reward from killing every part of Toxic Fred
+- [x] Clear out all explicit Fred rewards (final Fred rewards and intermediate rewards from the facetaker)
+- [x] Clear out gift from Jasper upon locking in offerings
 - [ ] Come up with the other cases...
 
 # UpdateEventContent.js
@@ -173,5 +173,5 @@ Intended main entry point to other plugins.
 ## Fun flavor text additions
 
 - [ ] Custom mirror guilt-trip dialogue that’s archipelago based
-- [ ] Custom toxic fred dialogue for picking up the randomized item in cowboy hat's place
+- [x] Custom toxic fred dialogue for picking up the randomized item in cowboy hat's place
 - [ ] If Ernest is in your party he chimes in to warn you if an item is a trap

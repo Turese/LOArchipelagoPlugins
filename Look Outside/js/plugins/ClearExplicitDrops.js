@@ -778,11 +778,17 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
   }
   clearDeadFredDrops();
 
-    function clearLeighQuest() {
+  function clearLeighQuest() {
     if (lastLoadedMapId == 434 && ev.id == 1) {
       // clear martin's ring
-      ev.pages[0].list = ClearExplicitDrops.itemDropClear(ev.pages[0].list, 128);
-      ev.pages[0].list = ClearExplicitDrops.itemDropClear(ev.pages[0].list, 318); // clear skill grants
+      ev.pages[0].list = ClearExplicitDrops.itemDropClear(
+        ev.pages[0].list,
+        128,
+      );
+      ev.pages[0].list = ClearExplicitDrops.itemDropClear(
+        ev.pages[0].list,
+        318,
+      ); // clear skill grants
       ev.pages[0].list = ClearExplicitDrops.messageReplacement(
         ev.pages[0].list,
         "Martin's Ring",
@@ -796,6 +802,28 @@ ClearExplicitDrops.applyEventClears = function (lastLoadedMapId, ev) {
     }
   }
   clearLeighQuest();
+
+  function fixRoxieRoomItemDoubleEntry() {
+    // two of the items in roxie's room in the sewers have two separate pages
+    // since theyre different items on hard mode
+    // we will delete the second entries
+    if (lastLoadedMapId == 259 && (ev.id == 3 || ev.id == 17)) {
+      if (ev.pages.length > 2) {
+        ev.pages.splice(1, 1);
+      }
+    }
+  }
+  fixRoxieRoomItemDoubleEntry();
+
+  function clearGrateLever() {
+    if (lastLoadedMapId == 256 && ev.id == 3) {
+      ev.pages[1].list = ClearExplicitDrops.itemDropClear(
+        ev.pages[1].list,
+        111, // = set switch
+      );
+    }
+  }
+  clearGrateLever();
 };
 
 ClearExplicitDrops.clearAllEnemiesDrops = function () {
@@ -998,16 +1026,35 @@ ClearExplicitDrops.clearTroopsDrops = function () {
   }
   clearJeannePrizeEvent();
 
-  function makeNestorWait() {
+  function fixNestorLetterLogic() {
     let nestorTroopList = JsonEx.makeDeepCopy(originalTroops[40].pages[0].list);
+    // dont allow player to hand over letter before rafta has written it
     nestorTroopList.find(
       (listItem) =>
         listItem.code === 102 &&
         listItem.parameters[0][0] == "Hand over love letter.",
-    ).parameters[0][0] = `<<[!v[150]=3]>>Hand over love letter.`;
+    ).parameters[0][0] = `<<[!v[282]=3]>>Hand over love letter.`;
+
+    const turnInLetterIndex = nestorTroopList.findIndex(
+      (listItem) => listItem.code === 126,
+    );
+    // make nestor go to rafta even if you dont make a good case
+    // filter out all places where we set nestorstate and then force state = 10 (he goes to rafta)
+    nestorTroopList = nestorTroopList.filter(
+      (listItem) => !(listItem.code == 122 && listItem.parameters[0] == 281),
+    );
+    if (turnInLetterIndex) {
+      nestorTroopList.splice(turnInLetterIndex, 0, {
+        code: 355,
+        indent: nestorTroopList[turnInLetterIndex].indent,
+        parameters: ["sVr(281, 10);"],
+      });
+    }
+
     $dataTroops[40].pages[0].list = nestorTroopList;
   }
-  makeNestorWait();
+
+  fixNestorLetterLogic();
 
   function clearSapperDrop() {
     let sapperTroopList = JsonEx.makeDeepCopy(
@@ -1434,6 +1481,37 @@ ClearExplicitDrops.clearCommonEventDrops = function () {
     $dataCommonEvents[216].list = ShopHelpers.getAudreyVendingMachineList();
   }
   clearAudreyShop();
+
+  function clearAudreyGiftsRecruit() {
+    let audreyEventList = JsonEx.makeDeepCopy(originalCommonEvents[217].list);
+
+    // like aster, we can use the sybil story script to find where her recruitment code starts
+    const audreyRecruitIndex = audreyEventList.findIndex(
+      (listEntry) =>
+        listEntry.code == 355 &&
+        listEntry.parameters[0] == "setSybilMajorStory(64);",
+    );
+    if (audreyRecruitIndex !== -1)
+      audreyEventList[audreyRecruitIndex].parameters[0] =
+        "$gameSelfSwitches.setValue([92, 111, 'D'], true); this.command115();";
+
+    audreyEventList.find(
+      (listItem) =>
+        listItem.code == 102 &&
+        listItem.parameters[0][5] == "(([s[380]]))Need a place to stay?",
+    ).parameters[0][5] = "(([v[755]<10]))Need a place to stay?";
+
+    // clear out energy drink drop
+    audreyEventList = ClearExplicitDrops.itemDropClear(audreyEventList, 126);
+    audreyEventList = ClearExplicitDrops.messageReplacement(
+      audreyEventList,
+      "Energy Drink",
+      "F1_AUDREY_RESTOCK",
+    );
+
+    $dataCommonEvents[217].list = audreyEventList;
+  }
+  clearAudreyGiftsRecruit();
 
   function clearCandyMachine() {
     $dataCommonEvents[219].list = ShopHelpers.getCandyMachineList();
