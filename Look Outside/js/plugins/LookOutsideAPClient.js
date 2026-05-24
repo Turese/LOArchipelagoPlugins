@@ -86,7 +86,7 @@ LookOutsideAPClient.applyOverrides = function () {
   Game_Map.prototype.setup = function (mapId) {
     BackInTime.createCalendarBackInTimeEvent(mapId);
     BlackoutLamp.createLampBlackoutEvent(mapId);
-    EventLogicUpdates.applyDatamapClears(mapId);
+    EventLogicUpdates.applyIntroClears(mapId);
     MassEventUpdates.overrideAllPickups(mapId);
 
     _Game_Map_setup.call(this, mapId);
@@ -96,7 +96,7 @@ LookOutsideAPClient.applyOverrides = function () {
   DataManager.onLoad = function (object) {
     if (object === $dataMap) {
       MassEventUpdates.overrideAllPickups(lastLoadedMapId);
-      EventLogicUpdates.applyDatamapClears(lastLoadedMapId);
+      EventLogicUpdates.applyIntroClears(lastLoadedMapId);
     }
     if (object === $dataEnemies) {
       EventLogicUpdates.clearAllEnemiesDrops();

@@ -41,28 +41,11 @@ Creates an event activated by the calendar in the player's bedroom that undoes e
 - [x] Ability to bring Steve back to life if killed by the player
 - [ ] Ability to bring Tickle back to life if killed by the player
 
-## UpdateMissableEvents.js
-
-Updates overworld events so that events missed by the player can be retried.
-
-- [x] door to wounded neighbor's bathroom no longer blocks an unarmed player like on explorer/survivor
-- [x] Update trigger for grinning beast chase so it can be retried
-- [x] Allow player to recruit Leigh even if they walked away after defeating the grinning beast
-- [x] Make presence of overworld potential recruit encounters separate from their presence in player apartment (Lyle, Audrey, Aster, Leigh, Roaches, Joel, Papineau, Ernest) // todo: joel & papineau & ernest
-- [x] Updates apartment 13 to give player drop as soon as they have rat baby item, no sacrifice required
-- [x] Updates tooth family members to spawn in upgraded forms even if they've been killed prior
-- [x] Make Audrey recruit unmissable (infinite advice cans, remove disposition check)
-- [ ] Make Joel recruit unmissable (remove disposition check)
-- [ ] Update Eugene's bookcase so it never becomes blocked by Nestor
-- [x] Update Grasshopper so it never despawns after Leigh's quest ends
-- [ ] Update Piranhaman so piranhas always spawn whether or not he is killed
-- [ ] Come up with the other cases...
-
 ## EventLogicUpdates.js
 
-### EventLogicUpdates.applyDatamapClears
+### EventLogicUpdates.applyIntroClears
 
-A couple changes applied when datamap is loaded instead of individual event loads
+Changes applied on new game start
 
 - [x] updateStartingDrops - clears out 3 starting video games from intro inventory, sets starting switches for randomizer 
 - [x] updateStartingCutscene - speeds up intro cutscene/skips Sybil's intro dialogue

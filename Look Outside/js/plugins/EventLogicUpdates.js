@@ -82,7 +82,7 @@ const EMPTY_PAGE = {
 };
 
 
-EventLogicUpdates.applyDatamapClears = function (lastLoadedMapId) {
+EventLogicUpdates.applyIntroClears = function (lastLoadedMapId) {
   // clear out the starting video games from player's inventory
   function updateStartingDrops() {
     // filter out the explicit video game drops from the starting room
