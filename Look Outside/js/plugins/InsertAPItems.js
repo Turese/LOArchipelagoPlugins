@@ -654,7 +654,7 @@ InsertAPItems.insertTrap = function (itemId) {
       break;
     case 5: // depression
       if (gVr(26) < -10) sVr(26, gVr(26) - 10);
-      else sVr(26, -10);
+      else sVr(26, -10); g
       $gameTemp.reserveCommonEvent(14);
       break;
     case 6: // anxiety

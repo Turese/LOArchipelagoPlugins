@@ -70,6 +70,7 @@ LookOutsideAPClient.applyOverrides = function () {
     if (!ev) return ev;
 
     EventLogicUpdates.applyEventUpdates(this._mapId, ev);
+    BackInTime.createClockTimeEvent(lastLoadedMapId, ev);
 
     return ev;
   };
@@ -339,6 +340,7 @@ const ALL_ROOF_ENDINGS = [
   "mask",
   "xinAmon",
   "eternalFate",
+  "trueFinal",
 ];
 
 const ALL_ENDINGS = [
@@ -349,6 +351,7 @@ const ALL_ENDINGS = [
   "mask",
   "xinAmon",
   "eternalFate",
+  "trueFinal",
   "unity",
   "wordsOfPower",
   "noGoingBack",
@@ -357,12 +360,13 @@ const ALL_ENDINGS = [
 LookOutsideAPClient.checkMapForEnding = function (lastLoadedMapId) {
   if (!$gamePlayer) return; // no endings if player isnt playing
   let endingIds = [];
-  if (lastLoadedMapId == 262) {
-    // beforesky; the perfect ritual before you meet the visitor
+  if (lastLoadedMapId == 260) {
+    // spaceapproach; the perfect ritual map before you meet the visitor
     endingIds = ["ritual", "perfectRitual"];
   } else if (lastLoadedMapId == 165) {
-    //promise
     endingIds = ["ritual", "perfectRitual", "promise"];
+  } else if (lastLoadedMapId == 340) {
+    endingIds = ["ritual", "perfectRitual", "trueFinal"];
   } else if (lastLoadedMapId == 176) {
     endingIds = ["xinAmon"];
   } else if (lastLoadedMapId == 170) {
@@ -440,6 +444,18 @@ LookOutsideAPClient.checkGoal = function () {
     }
   }
   if (goal == 6) {
+    // unity
+    if (reachedEndings["unity"]) {
+      LookOutsideAPClient.submitGoal();
+    }
+  }
+  if (goal == 7) {
+    // true final
+    if (reachedEndings["trueFinal"]) {
+      LookOutsideAPClient.submitGoal();
+    }
+  }
+  if (goal == 8) {
     // all roof
     if (ALL_ROOF_ENDINGS.every((ending) => reachedEndings[ending])) {
       LookOutsideAPClient.submitGoal();

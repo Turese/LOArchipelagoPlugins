@@ -120,7 +120,7 @@ BackInTime.fixSadipedeKilled = function () {
 
 BackInTime.areFriendlyFireRatsKilled = function () {
   if (!$gamePlayer.slotData || !$gamePlayer.slotData.rusty_crown) return false; // dont need to revive rats if no rusty crown locations
-  if (!$gameParty.hasItem($dataArmors[42], true)) return false // no rusty crown - dont present option
+  if (!$gameParty.hasItem($dataArmors[42], true)) return false; // no rusty crown - dont present option
   if (gSw(506)) return true; //bigRatAmbushDead - burrito rat and friends
   if (gSw(650)) return true; //rat guardians - the ones that sell you cheese
   if ($gameSelfSwitches._data[[106, 11, "C"].toString()]) return true; // rat freak - gives you sword
@@ -232,21 +232,19 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
         {
           code: 401,
           indent: 2,
-          parameters: ["You think of the rats on the first floor. You wish you hadn't"],
-        },
-        {
-          code: 401,
-          indent: 2,
           parameters: [
-            " killed so many before becoming the new rat king.",
+            "You think of the rats on the first floor. You wish you hadn't",
           ],
         },
         {
           code: 401,
           indent: 2,
-          parameters: [
-            "You close your eyes and imagine your rat kingdom...",
-          ],
+          parameters: [" killed so many before becoming the new rat king."],
+        },
+        {
+          code: 401,
+          indent: 2,
+          parameters: ["You close your eyes and imagine your rat kingdom..."],
         },
         {
           code: 101,
@@ -256,7 +254,9 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
         {
           code: 401,
           indent: 2,
-          parameters: ["Actually, there were plenty of rats, what's killing one"],
+          parameters: [
+            "Actually, there were plenty of rats, what's killing one",
+          ],
         },
         {
           code: 401,
@@ -270,7 +270,7 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
           indent: 2,
           parameters: ["take the dead ones' places already."],
         },
-      ]
+      ],
     },
     papineauDead: {
       rName: "(([!s[169]]))Papineau.",
@@ -1610,5 +1610,405 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
     ];
 
     $dataMap.events[CALENDAR_EVENT_ID].pages[1].list = calendarSequence;
+  }
+};
+
+BackInTime.createClockTimeEvent = function (lastLoadedMapId, ev) {
+  if (lastLoadedMapId == 3 && ev.id == 12) {
+    ev.pages[0].list = [
+      {
+        code: 101,
+        indent: 0,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 0,
+        parameters: ["It is \\V[12]."],
+      },
+      {
+        code: 102,
+        indent: 0,
+        parameters: [
+          [
+            "(([!s[990]]))Start the pendulum.",
+            "(([s[990]]))Stop the pendulum.",
+            "Set current time.",
+            "Leave it be.",
+          ],
+          3,
+          3,
+          2,
+          0,
+        ],
+      },
+      {
+        code: 402,
+        indent: 0,
+        parameters: [0, "(([!s[990]]))Start the pendulum."],
+      },
+      {
+        code: 121,
+        indent: 1,
+        parameters: [990, 990, 1],
+      },
+      {
+        code: 357,
+        indent: 1,
+        parameters: [
+          "MUSH_Audio_Engine",
+          "StopBgs",
+          "Stop BGS",
+          {
+            Channel: "1",
+            FadeOut: "0",
+          },
+        ],
+      },
+      {
+        code: 657,
+        indent: 1,
+        parameters: ["Channel = 1"],
+      },
+      {
+        code: 657,
+        indent: 1,
+        parameters: ["Fade Out = 0"],
+      },
+      {
+        code: 357,
+        indent: 1,
+        parameters: [
+          "MUSH_Audio_Engine",
+          "AddSpacialBgs",
+          "Add Spacial BGS",
+          {
+            Filename: "TickTock",
+            Pitch: "100",
+            Channel: "1",
+            Dynamic: "false",
+            MaxVolume: "90",
+            Radius: "20",
+            Strength: "100",
+            Pan: "Origin Expand",
+            PanSt: "3",
+            PanLd: "12",
+          },
+        ],
+      },
+      {
+        code: 657,
+        indent: 1,
+        parameters: ["Filename = TickTock"],
+      },
+      {
+        code: 657,
+        indent: 1,
+        parameters: ["Pitch = 100"],
+      },
+      {
+        code: 657,
+        indent: 1,
+        parameters: ["Channel = 1"],
+      },
+      {
+        code: 657,
+        indent: 1,
+        parameters: ["Dynamic = false"],
+      },
+      {
+        code: 657,
+        indent: 1,
+        parameters: ["Max Volume = 90"],
+      },
+      {
+        code: 657,
+        indent: 1,
+        parameters: ["Radius = 20"],
+      },
+      {
+        code: 657,
+        indent: 1,
+        parameters: ["Strength = 100"],
+      },
+      {
+        code: 657,
+        indent: 1,
+        parameters: ["Pan Type = Origin Expand"],
+      },
+      {
+        code: 657,
+        indent: 1,
+        parameters: ["Pan Start Distance = 3"],
+      },
+      {
+        code: 657,
+        indent: 1,
+        parameters: ["Pan Length Distance = 12"],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 402,
+        indent: 0,
+        parameters: [1, "(([s[990]]))Stop the pendulum."],
+      },
+      {
+        code: 121,
+        indent: 1,
+        parameters: [990, 990, 0],
+      },
+      {
+        code: 357,
+        indent: 1,
+        parameters: [
+          "MUSH_Audio_Engine",
+          "StopBgs",
+          "Stop BGS",
+          {
+            Channel: "1",
+            FadeOut: "0",
+          },
+        ],
+      },
+      {
+        code: 657,
+        indent: 1,
+        parameters: ["Channel = 1"],
+      },
+      {
+        code: 657,
+        indent: 1,
+        parameters: ["Fade Out = 0"],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 402,
+        indent: 0,
+        parameters: [2, "Set current time."],
+      },
+      {
+        code: 102,
+        indent: 1,
+        parameters: [
+          [
+            "Advance an hour.",
+            "Jump to midnight.",
+            "Jump to 7AM.",
+            "Jump to 11AM.",
+            "Jump to 3PM.",
+            "Jump to 7PM.",
+            "Jump to 11PM.",
+            "Never mind.",
+          ],
+          7,
+          7,
+          2,
+          0,
+        ],
+      },
+      {
+        code: 402,
+        indent: 1,
+        parameters: [0, "Advance an hour."],
+      },
+      {
+        code: 122,
+        indent: 2,
+        parameters: [19, 19, 0, 0, 60],
+      },
+      {
+        code: 0,
+        indent: 2,
+        parameters: [],
+      },
+      {
+        code: 402,
+        indent: 1,
+        parameters: [1, "Jump to midnight."],
+      },
+      {
+        code: 122,
+        indent: 2,
+        parameters: [16, 16, 0, 0, 0],
+      },
+      {
+        code: 122,
+        indent: 2,
+        parameters: [17, 17, 0, 0, 0],
+      },
+      {
+        code: 0,
+        indent: 2,
+        parameters: [],
+      },
+      {
+        code: 402,
+        indent: 1,
+        parameters: [2, "Jump to 7AM."],
+      },
+      {
+        code: 122,
+        indent: 2,
+        parameters: [16, 16, 0, 0, 7],
+      },
+      {
+        code: 122,
+        indent: 2,
+        parameters: [17, 17, 0, 0, 0],
+      },
+      {
+        code: 0,
+        indent: 2,
+        parameters: [],
+      },
+      {
+        code: 402,
+        indent: 1,
+        parameters: [3, "Jump to 11AM."],
+      },
+      {
+        code: 122,
+        indent: 2,
+        parameters: [16, 16, 0, 0, 11],
+      },
+      {
+        code: 122,
+        indent: 2,
+        parameters: [17, 17, 0, 0, 0],
+      },
+      {
+        code: 0,
+        indent: 2,
+        parameters: [],
+      },
+      {
+        code: 402,
+        indent: 1,
+        parameters: [4, "Jump to 3PM."],
+      },
+      {
+        code: 122,
+        indent: 2,
+        parameters: [16, 16, 0, 0, 15],
+      },
+      {
+        code: 122,
+        indent: 2,
+        parameters: [17, 17, 0, 0, 0],
+      },
+      {
+        code: 0,
+        indent: 2,
+        parameters: [],
+      },
+      {
+        code: 402,
+        indent: 1,
+        parameters: [5, "Jump to 7PM."],
+      },
+      {
+        code: 122,
+        indent: 2,
+        parameters: [16, 16, 0, 0, 19],
+      },
+      {
+        code: 122,
+        indent: 2,
+        parameters: [17, 17, 0, 0, 0],
+      },
+      {
+        code: 0,
+        indent: 2,
+        parameters: [],
+      },
+      {
+        code: 402,
+        indent: 1,
+        parameters: [6, "Jump to 11PM."],
+      },
+      {
+        code: 122,
+        indent: 2,
+        parameters: [16, 16, 0, 0, 23],
+      },
+      {
+        code: 122,
+        indent: 2,
+        parameters: [17, 17, 0, 0, 0],
+      },
+      {
+        code: 0,
+        indent: 2,
+        parameters: [],
+      },
+      {
+        code: 402,
+        indent: 1,
+        parameters: [7, "Never mind."],
+      },
+      {
+        code: 115,
+        indent: 2,
+        parameters: [],
+      },
+      {
+        code: 0,
+        indent: 2,
+        parameters: [],
+      },
+      {
+        code: 404,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 402,
+        indent: 0,
+        parameters: [3, "Leave it be."],
+      },
+      {
+        code: 115,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 404,
+        indent: 0,
+        parameters: [],
+      },
+      {
+        code: 117,
+        indent: 0,
+        parameters: [4],
+      },
+      {
+        code: 117,
+        indent: 0,
+        parameters: [7],
+      },
+      {
+        code: 0,
+        indent: 0,
+        parameters: [],
+      },
+    ];
   }
 };

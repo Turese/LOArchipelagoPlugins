@@ -16,6 +16,8 @@ The lamp moves out into the open after juicebox arrives.
 
 Creates an event activated by the calendar in the player's bedroom that undoes events that may block the player from future actions.
 
+Creates an event activated by the clock in the player's living room that allows players to adjust the current time of day.
+
 ### Features:
 
 - [x] Ability to set current day 1-15
@@ -40,6 +42,7 @@ Creates an event activated by the calendar in the player's bedroom that undoes e
 - [x] Ability to bring the friendly Rats back to life if killed by the player + player now has Rusted Crown
 - [x] Ability to bring Steve back to life if killed by the player
 - [ ] Ability to bring Tickle back to life if killed by the player
+- [ ] Ability to bring Emmanuel back to life if killed by the player
 
 ## EventLogicUpdates.js
 
