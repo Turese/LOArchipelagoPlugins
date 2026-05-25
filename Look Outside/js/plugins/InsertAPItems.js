@@ -633,27 +633,33 @@ InsertAPItems.insertResourcePack = function (itemId) {
 InsertAPItems.insertTrap = function (itemId) {
   switch (itemId) {
     case 1: // hunger
-      sVr(24, Math.min(gVr(24), 0));
+      if (gVr(24) < -10) sVr(24, gVr(24) - 10);
+      else sVr(24, -10);
       $gameTemp.reserveCommonEvent(14);
       break;
     case 2: // exhausted
-      sVr(23, Math.min(gVr(23), 0));
+      if (gVr(23) < -10) sVr(23, gVr(23) - 10);
+      else sVr(23, -10);
       $gameTemp.reserveCommonEvent(14);
       break;
     case 3: // lonely
-      sVr(21, Math.min(gVr(21), 0));
+      if (gVr(21) < -10) sVr(21, gVr(21) - 10);
+      else sVr(21, -10);
       $gameTemp.reserveCommonEvent(14);
       break;
     case 4: // smelly
-      sVr(25, Math.min(gVr(25), 0));
+      if (gVr(25) < -10) sVr(25, gVr(25) - 10);
+      else sVr(25, -10);
       $gameTemp.reserveCommonEvent(14);
       break;
     case 5: // depression
-      sVr(26, Math.min(gVr(26), 0));
+      if (gVr(26) < -10) sVr(26, gVr(26) - 10);
+      else sVr(26, -10);
       $gameTemp.reserveCommonEvent(14);
       break;
     case 6: // anxiety
-      sVr(22, Math.min(gVr(22), 0));
+      if (gVr(22) < -10) sVr(22, gVr(22) - 10);
+      else sVr(22, -10);
       $gameTemp.reserveCommonEvent(14);
       break;
     case 7: // max danger
