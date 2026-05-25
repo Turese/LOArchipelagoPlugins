@@ -85,8 +85,8 @@ Goes through the game's in-map events to remove everything that explicitly grant
 - [x] clearScreamitorumEvent - Remove explicit game item drop from player's bookcase
 - [x] clearWoundedManKnifeEvent - Remove explicit knife item drop from wounded neighbor battle
 - [x] clearTelescopeEvent - Remove explicit item exchange (void and negative disc) from the telescope in Edwin's apartment
-- [ ] clearSecurityEvent - Remove explicit item exchange (vhs tapes and cinnamon) from the security room recording event; don't allow player to record anything but the correct footage
-- [ ] clearProjectorEvent - Remove explicit item exchange (photo paper -> exposed paper) from the projector in Vincent's apartment
+- [x] clearSecurityEvent - Remove explicit item exchange (vhs tapes and cinnamon) from the security room recording event; don't allow player to record anything but the correct footage
+- [x] clearProjectorEvent - Remove explicit item exchange (photo paper -> exposed paper) from the projector in Vincent's apartment
 - [x] clearF3HallwayPlanterEvent - Remove item drop from hallway planter when Lyle is in player's apartment; allows player to check for it multiple times
 - [x] clearF3HallwayVendingMachineEvent - remove item drops from F3 hallway vending machine; places unique locations in all items
 - [x] clearCoffeeMachineEvent - removes coffee drop from ground floor coffee machine and replaces it with location check; only allows it to be used once

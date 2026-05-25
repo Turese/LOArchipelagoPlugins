@@ -1229,7 +1229,9 @@ const IMPLIED_LOCATIONS = Object.freeze({
     "ERNEST_COMBAT_VICTORY",
     "ERNEST_COLONEL_COMBAT_VICTORY",
   ],
-  B1_BATHROOM_FOOT_WORM_COMBAT_VICTORY: ["GF_MENS_BATHROOM_MARSHALL_COMBAT_VICTORY"]
+  B1_BATHROOM_FOOT_WORM_COMBAT_VICTORY: [
+    "GF_MENS_BATHROOM_MARSHALL_COMBAT_VICTORY",
+  ],
   //recruit papineau
   //APT_18_HELLEN_QUEST_SHEARS: [""] betrayed hellen combat victory
 });
@@ -1243,6 +1245,7 @@ const APT_31_TELESCOPE_DISC_EXPOSURE_SWITCH = 1398;
 const APT_37_PHOTO_PAPER_EXPOSURE_SWITCH = 1397;
 const BLACK_OOZE_SHADOW_BLADE = 1229; // this is also unused ingame
 const GF_OFFICE_JASPER_FIX_TELESCOPE_SWITCH = 1393;
+const APT_37_PROJECTOR_ROOM_PHOTO_SWITCH = 1392;
 
 // setting every recruitment check to self switch D on their own event?
 
@@ -2525,7 +2528,7 @@ SELF_SWITCH_LOCATIONS = {
   },
 
   243: {
-    12: { C: "SEWER_NE_FLOATING_CORPSE_COMBAT_VICTORY" }
+    12: { C: "SEWER_NE_FLOATING_CORPSE_COMBAT_VICTORY" },
   },
 
   256: {
@@ -2773,6 +2776,7 @@ SELF_SWITCH_LOCATIONS = {
     31: { C: "SECURITY_CINNAMON_COMBAT_VICTORY" },
     51: { A: "SECURITY_CASH" },
     30: { A: "SECURITY_TRASH" },
+    3: { C: "SECURITY_CORRECT_RECORDING" },
   },
 
   77: {
@@ -3047,7 +3051,7 @@ VARIABLE_LOCATIONS = {
     value: 15,
     location: "FRED_DARK_ROOM_CORRECT_PAINTING",
   },
-  755: { relation: '=', value: 12, location: "F1_AUDREY_RESTOCK"},
+  755: { relation: "=", value: 12, location: "F1_AUDREY_RESTOCK" },
   869: [
     { relation: ">=", value: 18, location: "APT_18_HELLEN_QUEST_FRUIT" },
     { relation: ">=", value: 100, location: "APT_18_HELLEN_QUEST_SHEARS" },
@@ -3272,5 +3276,6 @@ SWITCH_LOCATIONS = {
   1233: "B_OOZE_MACHINE_MERCHANT_5",
   206: "GF_OFFICE_JASPER_GIFT_OFFERING",
   [GF_OFFICE_JASPER_FIX_TELESCOPE_SWITCH]: "GF_OFFICE_JASPER_FIX_TELESCOPE",
-  1198: "SEWER_W_SLUGMAN_COMBAT_VICTORY" // this switch is for when you smooch him in smooch mode
+  [APT_37_PROJECTOR_ROOM_PHOTO_SWITCH]: "APT_37_PROJECTOR_ROOM_PHOTO",
+  1198: "SEWER_W_SLUGMAN_COMBAT_VICTORY", // this switch is for when you smooch him in smooch mode
 };

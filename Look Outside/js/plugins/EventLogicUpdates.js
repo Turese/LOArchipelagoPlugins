@@ -178,6 +178,7 @@ EventLogicUpdates.messageReplacement = function (
   originalList,
   keyWord,
   itemId,
+  introword = "Find",
 ) {
   const newList = JsonEx.makeDeepCopy(originalList);
   const itemGetMessageIndex = newList.findIndex(
@@ -186,7 +187,7 @@ EventLogicUpdates.messageReplacement = function (
   );
   if (itemGetMessageIndex !== -1) {
     newList[itemGetMessageIndex].parameters[0] =
-      `Find ${LookOutsideAPClient.getItemName(itemId)}.`;
+      `${introword} ${LookOutsideAPClient.getItemName(itemId)}.`;
   }
   return newList;
 };
@@ -595,10 +596,115 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   }
   clearTelescopeEvent();
 
-  function clearSecurityEvent() {}
+  function clearSecurityEvent() {
+    if (lastLoadedMapId == 78) {
+      if (ev.id == 31) {
+        // panopticon / chair event
+        // dont take or give back guinea pig
+        ev.pages.forEach(
+          (page) =>
+            (page.list = EventLogicUpdates.itemDropClear(page.list, 126)),
+        );
+      }
+      if (ev.id == 3) {
+        // vhs event
+
+        // dont take players tape when recording
+        ev.pages[0].list = EventLogicUpdates.itemDropClear(
+          ev.pages[0].list,
+          126,
+        );
+
+        // on page 0, dont allow player to record unless it's the correct feed
+
+        ev.pages[0].list.forEach((listItem) => {
+          // the game prompts the player twice
+          // since they can also record over a cctv
+          if (
+            listItem.code === 102 &&
+            listItem.parameters[0][0].includes("Yes.")
+          )
+            listItem.parameters[0][0] = `<<[!v[158]=8]>>Yes.`;
+        });
+
+        ev.pages[2].list = EventLogicUpdates.itemDropClear(
+          ev.pages[2].list,
+          126,
+        );
+        ev.pages[2].list = EventLogicUpdates.messageReplacement(
+          ev.pages[2].list,
+          "CCTV Recording",
+          "SECURITY_CORRECT_RECORDING",
+          "Get",
+        );
+
+        // change the self switch b set to c and disable the event
+        const selfSwitchIndex = ev.pages[2].list.findIndex(
+          (listItem) => listItem.code == 123,
+        );
+
+        if (selfSwitchIndex !== -1) {
+          ev.pages[2].list[selfSwitchIndex] = {
+            code: 355,
+            indent: ev.pages[2].list[selfSwitchIndex].indent,
+            parameters: ['$gameSelfSwitches.setValue([78, 3, "C"], true);'],
+          };
+        }
+
+        if (ev.pages.length < 4) {
+          ev.pages.push({
+            ...ev.pages[2],
+            list: EMPTY_PAGE.list,
+            conditions: EventLogicUpdates.buildConditions("C"),
+          });
+        }
+        console.log(ev.pages);
+      }
+    }
+  }
   clearSecurityEvent();
 
-  function clearProjectorEvent() {}
+  function clearProjectorEvent() {
+    if (lastLoadedMapId === 38 && ev.id === 8) {
+      // page 1 is projector head down / turned off
+      let projectorList = ev.pages[1].list;
+
+      // replace the exposed paper grant with switch set
+      const getPhotoPaperIndex = projectorList.findIndex(
+        (listItem) => listItem.code == 126 && listItem.parameters[0] == 339,
+      );
+      if (getPhotoPaperIndex !== -1) {
+        projectorList.splice(getPhotoPaperIndex, 1, {
+          code: 355,
+          indent: projectorList[getPhotoPaperIndex].indent,
+          parameters: [`sSw(${APT_37_PROJECTOR_ROOM_PHOTO_SWITCH}, true);`],
+        });
+      }
+      // clear out the part where it takes your photo paper
+      projectorList = EventLogicUpdates.itemDropClear(projectorList, 126);
+
+      // make sure we dont update what's on the photograph when doing this
+      projectorList = projectorList.filter(
+        (listItem) => !(listItem.code == 122 && listItem.parameters[0] == 245),
+      );
+
+      // the first instance should be when player placed photo paper
+      projectorList.find(
+        (listItem) =>
+          listItem.code === 102 &&
+          listItem.parameters[0][0].includes("Switch it on."),
+      ).parameters[0][0] = `<<[!v[256]=12]>>Switch it on.`;
+
+      //v[256] = 12 means the projector socket has the negative disc
+      projectorList = EventLogicUpdates.messageReplacement(
+        projectorList,
+        "Exposed Paper",
+        "APT_37_PROJECTOR_ROOM_PHOTO",
+        "Get",
+      );
+      ev.pages[1].list = projectorList;
+    }
+  }
   clearProjectorEvent();
 
   function clearF3HallwayPlanterEvent() {
@@ -610,13 +716,11 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
         (listItem) => listItem.code === 111, // if condition at start
       ).parameters[1] = "B";
 
-      const keyAnnouncement = ev.pages[0].list.find(
-        (listItem) =>
-          listItem.code === 401 &&
-          listItem.parameters[0].contains("Apartment 33 Key"),
+      ev.pages[0].list = EventLogicUpdates.messageReplacement(
+        ev.pages[0].list,
+        "Apartment 33 Key",
+        "F3_PLANTER_KEY",
       );
-      if (keyAnnouncement)
-        keyAnnouncement.parameters[0] = `Receive ${LookOutsideAPClient.getItemName("F3_PLANTER_KEY")}.`;
 
       // change the item that sets the event self switch to A
       // this works because the success case is the very first one in the list

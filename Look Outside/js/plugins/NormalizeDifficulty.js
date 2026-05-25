@@ -198,7 +198,7 @@ NormalizeDifficulty.applyChanges = function () {
       forceHardModeEvents(object);
     }
     if (object === $dataTroops) {
-      addHardmodeSpawnsToTroops(object);
+      //addHardmodeSpawnsToTroops(object);
     }
     if (object === $dataCommonEvents) {
       forceHardmodeFridgeFightLogic(object);
