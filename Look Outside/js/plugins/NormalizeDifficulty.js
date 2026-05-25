@@ -189,10 +189,6 @@ NormalizeDifficulty.applyChanges = function () {
       this.addCommand(TextManager.save, "save", true);
     }
   };
-  const _onMapLoaded = Scene_Map.prototype.onMapLoaded;
-  Scene_Map.prototype.onMapLoaded = function () {
-    _onMapLoaded.call(this);
-  };
 
   const _dataManagerOnLoad = DataManager.onLoad;
   DataManager.onLoad = function (object) {

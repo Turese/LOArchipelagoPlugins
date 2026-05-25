@@ -246,6 +246,9 @@ Intended main entry point to other plugins.
 - [x] Receive starting inventory
 - [x] Send location checks
 - [x] Send and receive death links
+- [x] Send goal completion
+    - [x] Store information on goal completion in case player is offline and send goal completion again on reconnecting to server
+- [x] Store which endings have been reached in save file
 
 ## ConnectionStatus.js
 

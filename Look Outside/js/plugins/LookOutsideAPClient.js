@@ -81,6 +81,12 @@ LookOutsideAPClient.applyOverrides = function () {
     _createCharacters.call(this);
   };
 
+  const _onMapLoaded = Scene_Map.prototype.onMapLoaded;
+  Scene_Map.prototype.onMapLoaded = function () {
+    _onMapLoaded.call(this);
+    LookOutsideAPClient.checkMapForEnding($gameMap.mapId());
+  };
+
   // todo: find out why i need some things to happen in both setup and onload`
   const _Game_Map_setup = Game_Map.prototype.setup;
   Game_Map.prototype.setup = function (mapId) {
@@ -191,6 +197,7 @@ LookOutsideAPClient.initializeItemIndex = function () {
 
 LookOutsideAPClient.initializeSlotData = function (slotData) {
   if (!$gamePlayer) return;
+  if (!slotData) return $gamePlayer.slotData;
   return ($gamePlayer.slotData = slotData);
 };
 
@@ -303,8 +310,156 @@ LookOutsideAPClient.initializeLocationObject = function () {
   return $gamePlayer.reachedLocations;
 };
 
+LookOutsideAPClient.initializeReachedEndings = function () {
+  if (!$gamePlayer.reachedEndings) {
+    $gamePlayer.reachedEndings = {};
+  }
+  return $gamePlayer.reachedEndings;
+};
+
+/*
+endingIds:
+
+ritual (any failed ritual)
+perfectRitual (any ritual with 4 good offerings, not including screaming skies)
+screamingSkies (run from E4)
+mask (4 mask offerings)
+xinAmon (3 good offerings and a guinea pig)
+eternalFate (anything shy of xin-amon or failing to defeat xin-amon)
+unity (read the note)
+wordsOfPower (give in to the crossword queen)
+
+*/
+
+const ALL_ROOF_ENDINGS = [
+  "ritual",
+  "perfectRitual",
+  "screamingSkies",
+  "promise",
+  "mask",
+  "xinAmon",
+  "eternalFate",
+];
+
+const ALL_ENDINGS = [
+  "ritual",
+  "perfectRitual",
+  "screamingSkies",
+  "promise",
+  "mask",
+  "xinAmon",
+  "eternalFate",
+  "unity",
+  "wordsOfPower",
+  "noGoingBack",
+];
+
+LookOutsideAPClient.checkMapForEnding = function (lastLoadedMapId) {
+  if (!$gamePlayer) return; // no endings if player isnt playing
+  let endingIds = [];
+  if (lastLoadedMapId == 262) {
+    // beforesky; the perfect ritual before you meet the visitor
+    endingIds = ["ritual", "perfectRitual"];
+  } else if (lastLoadedMapId == 165) {
+    //promise
+    endingIds = ["ritual", "perfectRitual", "promise"];
+  } else if (lastLoadedMapId == 176) {
+    endingIds = ["xinAmon"];
+  } else if (lastLoadedMapId == 170) {
+    endingIds = ["ritual"];
+  } else if (lastLoadedMapId == 172) {
+    endingIds = ["noGoingBack"];
+  } else if (lastLoadedMapId == 173) {
+    endingIds = ["screamingSkies"];
+  } else if (lastLoadedMapId == 175) {
+    endingIds = ["eternalFate"];
+  } else if (lastLoadedMapId == 171) {
+    endingIds = ["unity"];
+  } else if (lastLoadedMapId == 174) {
+    endingIds = ["mask"];
+  } else if (lastLoadedMapId == 431) {
+    endingIds = ["wordsOfPower"];
+  }
+  if (endingIds.length) LookOutsideAPClient.saveEndingReached(endingIds);
+};
+
+// save information to the save file about which ending has been reached
+LookOutsideAPClient.saveEndingReached = async function (endingIds) {
+  const reachedEndings = LookOutsideAPClient.initializeReachedEndings();
+
+  endingIds.forEach((endingId) => {
+    if (!ALL_ENDINGS.find((ending) => ending == endingId))
+      throw new Error("UNRECOGNIZED ENDING");
+    reachedEndings[endingId] = true;
+  });
+
+  LookOutsideAPClient.checkGoal();
+
+  if (!$gameSystem) return;
+  const saveId = $gameSystem.savefileId();
+  const saveName = DataManager.makeSavename(saveId);
+  StorageManager.loadObject(saveName).then((saveContents) => {
+    saveContents.player.reachedEndings = reachedEndings;
+    StorageManager.saveObject(saveName, saveContents);
+  });
+};
+
+LookOutsideAPClient.checkGoal = function () {
+  const reachedEndings = LookOutsideAPClient.initializeReachedEndings();
+  const slotData = LookOutsideAPClient.initializeSlotData();
+  if (!slotData || !reachedEndings) return;
+  const goal = slotData["goal"];
+  if (goal == 0) {
+    // any partial ritual ending
+    if (reachedEndings["ritual"]) {
+      LookOutsideAPClient.submitGoal();
+    }
+  }
+  if (goal == 1) {
+    // any perfect ritual ending
+    if (reachedEndings["perfectRitual"]) {
+      LookOutsideAPClient.submitGoal();
+    }
+  }
+  if (goal == 3) {
+    // promise
+    if (reachedEndings["promise"]) {
+      LookOutsideAPClient.submitGoal();
+    }
+  }
+  if (goal == 4) {
+    // mask
+    if (reachedEndings["mask"]) {
+      LookOutsideAPClient.submitGoal();
+    }
+  }
+  if (goal == 5) {
+    // xin-amon
+    if (reachedEndings["xinAmon"]) {
+      LookOutsideAPClient.submitGoal();
+    }
+  }
+  if (goal == 6) {
+    // all roof
+    if (ALL_ROOF_ENDINGS.every((ending) => reachedEndings[ending])) {
+      LookOutsideAPClient.submitGoal();
+    }
+  }
+  if (goal == 7) {
+    // all
+    if (ALL_ENDINGS.every((ending) => reachedEndings[ending])) {
+      LookOutsideAPClient.submitGoal();
+    }
+  }
+};
+
+LookOutsideAPClient.submitGoal = function () {
+  if (client.authenticated) client.goal();
+};
+
 LookOutsideAPClient.gameLoadedAPSetup = async function (slotData) {
   LookOutsideAPClient.initializeSlotData(slotData);
+  LookOutsideAPClient.checkGoal();
   LookOutsideAPClient.makeSlotDataChanges();
   LookOutsideAPClient.initializeItemIndex();
   LookOutsideAPClient.reportLocations();
