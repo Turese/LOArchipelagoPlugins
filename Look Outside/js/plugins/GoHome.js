@@ -36,6 +36,7 @@ GoHome.applyChanges = function () {
     $gameScreen.changeWeather("none", 0, 0);
     // fadeout bgm 1 second
     AudioManager.fadeOutBgm(1);
+    $gameScreen.startTint([0, 0, 0, 0], 60);
 
     if (gSw(1107)) {
       sSw(1107, false) // InMeatWorld = OFF

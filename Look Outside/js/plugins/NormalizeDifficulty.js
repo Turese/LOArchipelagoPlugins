@@ -163,9 +163,15 @@ NormalizeDifficulty.applyChanges = function () {
     }
   }
 
-  function forceStairwellPoolCue(ev, lastLoadedMapId) {
+  function forceHardmodePositiveItems(ev, lastLoadedMapId) {
+    // some items self-hide when hardmode = true
+
     if (lastLoadedMapId == 30 && ev.id == 10 && ev.pages.length == 3) {
-      ev.pages.splice(2, 1); // this is the only location that explicitly checks hardmode = true
+      ev.pages.splice(2, 1); // stairwell pool cue
+    }
+
+    if (lastLoadedMapId == 97 && ev.id == 6 && ev.pages.length == 3) {
+      ev.pages.splice(2, 1); // turpentine in fred's studio
     }
   }
 
@@ -210,7 +216,7 @@ NormalizeDifficulty.applyChanges = function () {
     if (!ev) return ev;
 
     forceHardModeBeastChaseItems(ev, lastLoadedMapId);
-    forceStairwellPoolCue(ev, lastLoadedMapId);
+    forceHardmodePositiveItems(ev, lastLoadedMapId);
 
     return ev;
   };

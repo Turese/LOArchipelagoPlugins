@@ -214,6 +214,10 @@ Functionality for inserting any item into the game at any time, necessary for AP
 - [x] Ability to grant custom traps
 - [x] Renames some items to have more descriptive accurate names (differentiates between good and bad offerings, fixes Rabu Hammer's bugged name)
 
+also included for lack of a better file
+
+- [x] Gives Joel the ability to unequip and equip the various Fuzzy items in his weapon slot
+
 ## MainMenuAPOptions.js
 
 New menu option in main menu + pause menu where player inputs AP slot name + server name + password

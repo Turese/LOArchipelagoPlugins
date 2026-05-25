@@ -713,9 +713,40 @@ InsertAPItems.shouldOverrideImage = function (url) {
 InsertAPItems.renameItems = function () {
   $dataItems[336].name = "Incorrect CCTV Recording"; // incorrect recording
   $dataItems[365].name = "Incorrect Photograph"; // incorrect recording
-}
+};
 
 InsertAPItems.renameWeapons = function () {
   $dataWeapons[190].name = "Rabu Hammer"; // the name \N[34] Hammer doesn't render
-}
+};
 
+InsertAPItems.updateClasses = function () {
+  // set teeth child to equip fuzzy type weapons
+  const teethChild = $dataClasses[6];
+
+  const weaponTypeIndex = teethChild.traits.findIndex(
+    (trait) => trait.code == Game_BattlerBase.TRAIT_EQUIP_WTYPE,
+  );
+  // make joel only able to equip fuzzy
+  teethChild.traits[weaponTypeIndex].dataId = 6;
+};
+
+InsertAPItems.updateWeapontypes = function () {
+  // add fuzzy as the 7th weapon type
+  $dataSystem.weaponTypes.push("Fuzzy");
+};
+
+InsertAPItems.fixFuzzyLock = function () {
+  const fuzzies = [91, 171, 172, 173, 174, 175, 91];
+  // fuzzy, fuzzy's remains, repaired fuzzy, mangled fuzzy, renegade fuzzy, worm fuzzy, fluff ball
+  function clearEquipLock(weapon) {
+    weapon.traits = weapon.traits.filter(
+      (trait) => trait.code !== Game_BattlerBase.TRAIT_EQUIP_LOCK,
+    );
+  }
+
+  fuzzies.forEach((fuzzyId) => {
+    const fuzzy = $dataWeapons[fuzzyId];
+    clearEquipLock(fuzzy);
+    fuzzy.wtypeId = 6;
+  });
+};

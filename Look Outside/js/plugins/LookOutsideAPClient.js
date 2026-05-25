@@ -102,11 +102,11 @@ LookOutsideAPClient.applyOverrides = function () {
       EventLogicUpdates.clearAllEnemiesDrops();
     }
     if (object === $dataCommonEvents) {
-      // this wont have the correct names, but will still clear the event out 
+      // this wont have the correct names, but will still clear the event out
       EventLogicUpdates.clearCommonEventDrops();
     }
     if (object === $dataTroops) {
-      // this wont have the correct names, but will still clear the event out 
+      // this wont have the correct names, but will still clear the event out
       EventLogicUpdates.clearTroopsDrops();
     }
     if (object === $dataItems) {
@@ -114,6 +114,13 @@ LookOutsideAPClient.applyOverrides = function () {
     }
     if (object === $dataWeapons) {
       InsertAPItems.renameWeapons();
+      InsertAPItems.fixFuzzyLock();
+    }
+    if (object === $dataClasses) {
+      InsertAPItems.updateClasses();
+    }
+    if (object === $dataSystem) {
+      InsertAPItems.updateWeapontypes();
     }
     _dataManagerOnLoad.call(this, object);
   };
