@@ -122,6 +122,7 @@ Goes through the game's in-map events to remove everything that explicitly grant
 - [ ] clearBurritoRatGift - clear out burrito given by the rat in the rat den when player wears the rusty crown
 - [ ] clearComatusYoga - clear yoga skill grant from interacting with comatus after defeating him
 - [ ] clearHellenQuestPrizes - clear out explicit item gifts from Hellen's quest
+- [x] clearSecretDoorLockout - the door at the base of the stairwell won't lock you out on first open, and will tell you what large shades you have yet to slay
 
 ### EventLogicUpdates.clearAllEnemiesDrops
 

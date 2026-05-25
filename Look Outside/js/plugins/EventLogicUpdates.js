@@ -81,6 +81,451 @@ const EMPTY_PAGE = {
   walkAnime: true,
 };
 
+const SECRET_DOOR_LIST = [
+  {
+    code: 122,
+    indent: 0,
+    parameters: [1, 1, 0, 3, 7, 1, 0],
+  },
+  {
+    code: 111,
+    indent: 0,
+    parameters: [1, 1, 0, 1, 0],
+  },
+  {
+    code: 101,
+    indent: 1,
+    parameters: ["", 0, 0, 2, ""],
+  },
+  {
+    code: 401,
+    indent: 1,
+    parameters: [
+      "There is a door here. You can barely make it out in the dark.",
+    ],
+  },
+  {
+    code: 102,
+    indent: 1,
+    parameters: [["Open it.", "Leave it."], 1, 0, 2, 0],
+  },
+  {
+    code: 402,
+    indent: 1,
+    parameters: [0, "Open it."],
+  },
+  {
+    code: 122,
+    indent: 2,
+    parameters: [2, 2, 0, 4, "chkKey();"],
+  },
+  {
+    code: 111,
+    indent: 2,
+    parameters: [1, 2, 0, 5, 0],
+  },
+  {
+    code: 101,
+    indent: 3,
+    parameters: ["", 0, 0, 2, ""],
+  },
+  {
+    code: 401,
+    indent: 3,
+    parameters: ["As you put your hand on the handle, you feel your blood"],
+  },
+  {
+    code: 401,
+    indent: 3,
+    parameters: ["freeze in your veins."],
+  },
+  {
+    code: 401,
+    indent: 3,
+    parameters: ["Your every survival instinct screams at you not to open it."],
+  },
+  {
+    code: 102,
+    indent: 3,
+    parameters: [["Leave it.", "Open it."], 1, 0, 2, 0],
+  },
+  {
+    code: 402,
+    indent: 3,
+    parameters: [0, "Leave it."],
+  },
+  {
+    code: 0,
+    indent: 4,
+    parameters: [],
+  },
+  {
+    code: 402,
+    indent: 3,
+    parameters: [1, "Open it."],
+  },
+  {
+    code: 122,
+    indent: 4,
+    parameters: [160, 160, 3, 0, 2],
+  },
+  {
+    code: 101,
+    indent: 4,
+    parameters: ["", 0, 0, 2, ""],
+  },
+  {
+    code: 401,
+    indent: 4,
+    parameters: ["You open the door."],
+  },
+  {
+    code: 201,
+    indent: 4,
+    parameters: [0, 324, 11, 30, 0, 0],
+  },
+  {
+    code: 0,
+    indent: 4,
+    parameters: [],
+  },
+  {
+    code: 404,
+    indent: 3,
+    parameters: [],
+  },
+  {
+    code: 0,
+    indent: 3,
+    parameters: [],
+  },
+  {
+    code: 411,
+    indent: 2,
+    parameters: [],
+  },
+  {
+    code: 111,
+    indent: 3,
+    parameters: [1, 2, 0, 0, 0],
+  },
+  {
+    code: 101,
+    indent: 4,
+    parameters: ["", 0, 0, 2, ""],
+  },
+  {
+    code: 401,
+    indent: 4,
+    parameters: ["It won't open."],
+  },
+  {
+    code: 401,
+    indent: 4,
+    parameters: ["There are five dark stains on the door."],
+  },
+  {
+    code: 0,
+    indent: 4,
+    parameters: [],
+  },
+  {
+    code: 412,
+    indent: 3,
+    parameters: [],
+  },
+  {
+    code: 111,
+    indent: 3,
+    parameters: [1, 2, 0, 1, 0],
+  },
+  {
+    code: 101,
+    indent: 4,
+    parameters: ["", 0, 0, 2, ""],
+  },
+  {
+    code: 401,
+    indent: 4,
+    parameters: ["It won't open."],
+  },
+  {
+    code: 401,
+    indent: 4,
+    parameters: ["There are four dark stains on the door."],
+  },
+  {
+    code: 0,
+    indent: 4,
+    parameters: [],
+  },
+  {
+    code: 412,
+    indent: 3,
+    parameters: [],
+  },
+  {
+    code: 111,
+    indent: 3,
+    parameters: [1, 2, 0, 2, 0],
+  },
+  {
+    code: 101,
+    indent: 4,
+    parameters: ["", 0, 0, 2, ""],
+  },
+  {
+    code: 401,
+    indent: 4,
+    parameters: ["It won't open."],
+  },
+  {
+    code: 401,
+    indent: 4,
+    parameters: ["There are three dark stains on the door."],
+  },
+  {
+    code: 0,
+    indent: 4,
+    parameters: [],
+  },
+  {
+    code: 412,
+    indent: 3,
+    parameters: [],
+  },
+  {
+    code: 111,
+    indent: 3,
+    parameters: [1, 2, 0, 3, 0],
+  },
+  {
+    code: 101,
+    indent: 4,
+    parameters: ["", 0, 0, 2, ""],
+  },
+  {
+    code: 401,
+    indent: 4,
+    parameters: ["It won't open."],
+  },
+  {
+    code: 401,
+    indent: 4,
+    parameters: ["There are two dark stains on the door."],
+  },
+  {
+    code: 0,
+    indent: 4,
+    parameters: [],
+  },
+  {
+    code: 412,
+    indent: 3,
+    parameters: [],
+  },
+  {
+    code: 111,
+    indent: 3,
+    parameters: [1, 2, 0, 4, 0],
+  },
+  {
+    code: 101,
+    indent: 4,
+    parameters: ["", 0, 0, 2, ""],
+  },
+  {
+    code: 401,
+    indent: 4,
+    parameters: ["It won't open."],
+  },
+  {
+    code: 401,
+    indent: 4,
+    parameters: ["There is a dark stain on the door."],
+  },
+  {
+    code: 0,
+    indent: 4,
+    parameters: [],
+  },
+  {
+    code: 412,
+    indent: 3,
+    parameters: [],
+  },
+  {
+    code: 111,
+    indent: 3,
+    parameters: [0, 610, 1],
+  },
+  {
+    code: 101,
+    indent: 4,
+    parameters: ["", 0, 0, 2, ""],
+  },
+  {
+    code: 401,
+    indent: 4,
+    parameters: ["One dark stain resembles the number 3."],
+  },
+  {
+    code: 0,
+    indent: 4,
+    parameters: [],
+  },
+  {
+    code: 412,
+    indent: 3,
+    parameters: [],
+  },
+  {
+    code: 111,
+    indent: 3,
+    parameters: [0, 611, 1],
+  },
+  {
+    code: 101,
+    indent: 4,
+    parameters: ["", 0, 0, 2, ""],
+  },
+  {
+    code: 401,
+    indent: 4,
+    parameters: ["One dark stain resembles the number 2."],
+  },
+  {
+    code: 0,
+    indent: 4,
+    parameters: [],
+  },
+  {
+    code: 412,
+    indent: 3,
+    parameters: [],
+  },
+  {
+    code: 111,
+    indent: 3,
+    parameters: [0, 612, 1],
+  },
+  {
+    code: 101,
+    indent: 4,
+    parameters: ["", 0, 0, 2, ""],
+  },
+  {
+    code: 401,
+    indent: 4,
+    parameters: ["One dark stain resembles the number 1."],
+  },
+  {
+    code: 0,
+    indent: 4,
+    parameters: [],
+  },
+  {
+    code: 412,
+    indent: 3,
+    parameters: [],
+  },
+  {
+    code: 111,
+    indent: 3,
+    parameters: [0, 613, 1],
+  },
+  {
+    code: 101,
+    indent: 4,
+    parameters: ["", 0, 0, 2, ""],
+  },
+  {
+    code: 401,
+    indent: 4,
+    parameters: ["One dark stain resembles the letter G."],
+  },
+  {
+    code: 0,
+    indent: 4,
+    parameters: [],
+  },
+  {
+    code: 412,
+    indent: 3,
+    parameters: [],
+  },
+  {
+    code: 111,
+    indent: 3,
+    parameters: [0, 614, 1],
+  },
+  {
+    code: 101,
+    indent: 4,
+    parameters: ["", 0, 0, 2, ""],
+  },
+  {
+    code: 401,
+    indent: 4,
+    parameters: ["One dark stain resembles the letter B."],
+  },
+  {
+    code: 0,
+    indent: 4,
+    parameters: [],
+  },
+  {
+    code: 412,
+    indent: 3,
+    parameters: [],
+  },
+  {
+    code: 0,
+    indent: 3,
+    parameters: [],
+  },
+  {
+    code: 412,
+    indent: 2,
+    parameters: [],
+  },
+  {
+    code: 0,
+    indent: 2,
+    parameters: [],
+  },
+  {
+    code: 402,
+    indent: 1,
+    parameters: [1, "Leave it."],
+  },
+  {
+    code: 0,
+    indent: 2,
+    parameters: [],
+  },
+  {
+    code: 404,
+    indent: 1,
+    parameters: [],
+  },
+  {
+    code: 0,
+    indent: 1,
+    parameters: [],
+  },
+  {
+    code: 412,
+    indent: 0,
+    parameters: [],
+  },
+  {
+    code: 0,
+    indent: 0,
+    parameters: [],
+  },
+];
+
 EventLogicUpdates.applyIntroClears = function (lastLoadedMapId) {
   // clear out the starting video games from player's inventory
   function updateStartingDrops() {
@@ -1224,6 +1669,13 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
 
   function clearHellenQuestPrizes() {}
   clearHellenQuestPrizes();
+
+  function clearSecretDoorLockout() {
+    if (lastLoadedMapId === 30 && ev.id === 6) {
+      ev.pages[2].list = SECRET_DOOR_LIST;
+    }
+  }
+  clearSecretDoorLockout();
 };
 
 EventLogicUpdates.clearAllEnemiesDrops = function () {
