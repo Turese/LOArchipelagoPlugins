@@ -2271,8 +2271,12 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
       "FUNGUS_DEPTHS_MUSHROOM_12",
       "$gameSelfSwitches.setValue([127, 32, 'A'], true)",
     ],
-    31: [
+    55: [
       "FUNGUS_DEPTHS_MUSHROOM_13",
+      "$gameSelfSwitches.setValue([127, 55, 'A'], true)",
+    ],
+    31: [
+      "FUNGUS_DEPTHS_MUSHROOM_COMATUS",
       "$gameSelfSwitches.setValue([127, 31, 'A'], true)",
     ],
   },

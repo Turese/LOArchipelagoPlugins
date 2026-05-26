@@ -115,6 +115,8 @@ Goes through the game's in-map events to remove everything that explicitly grant
 - [x] clearDeadFredDrops - remove item drops from killing the facetaker; remove key drops from killing toxic fred or any of his offshoots
 - [x] clearKOTDDrop - remove All-Seeing 8 Ball drop from after defeating the KOTD
 - [x] fixRoxieRoomItemDoubleEntry - fix logic that gives separate item entries in regular/hardmode to the items in the basement sewer room with roxie the dog so they can be randomized
+- [x] clearPhilDelusionDrops - delete Phillippe's Remains item granted from believing in Phillippe
+- [x] fungusWithoutSporeMother - allows players to interact with the laughing mold and 'free' the various fungus mimics even if spore mother has been defeated
 - [x] clearGrateLever - unjoin the sewer grates going down from the player pulling the level in the boiler beast room
 - [ ] clearAudreyBossDrops - remove explicit item drops from having audrey in the party when defeating certain bosses; allows locations to be triggered when returning to the dead bodies later with Audrey
 - [ ] returnTickle - allow player to place tickle back on the boiler tendril to continue interfacing with his shop
@@ -146,6 +148,8 @@ Updates events that happen during battle scenes.
 - [x] clearAsterRecruitmentEvent - short circuits the recruitment event for Aster to set a switch instead of attempt to add him to the party
 - [x] clearSpiderRecruitmentEvent - makes it so spider always thinks the player is pathetic enough to attack no matter what they answer to its questions; short circuits the recruitment event to set a self-switch instead
 - [x] clearPapineauRecruitmentEvent - short circuits the recruitment event for Papineau to set a switch instead of attempt to add him to the party
+- [x] clearPhillippeRecruitmentEvent - prevents Phillippe from following the player when freed in the fungus lair
+- [x] clearFungusMimicGifts - clears out fake fungus items the mimics give you upon rescuing them
 - [x] clearJeannePrizeEvent - clear out elixir prize for killing all hydra heads and 50 dollar reward for returning laundry
 - [x] fixNestorLetterLogic - don't allow player to give letter to Nestor before finishing Rafta's letter writing quest
 - [x] clearSapperDrop - clear gift for interacting with the sapper in the landlord warzone for the first time

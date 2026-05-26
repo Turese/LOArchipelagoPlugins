@@ -107,6 +107,7 @@ InsertAPItems.insertRecruit = function (name) {
     $gamePlayer.sophieAcquired = true; // setting this in case player loses her
   }
   if (name === "Phillippe") {
+    sSw(499, true); // phillippeRecovered = on
     sSw(319, true); // phillippeRecovered = on
     if (gVr(633) <= 24) sVr(633, 24); // philGrowth to max
     // replaces dust cloud with spore cloud

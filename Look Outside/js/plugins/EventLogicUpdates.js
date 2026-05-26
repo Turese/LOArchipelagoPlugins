@@ -547,11 +547,12 @@ EventLogicUpdates.applyIntroClears = function (lastLoadedMapId) {
         startingpage.list.push({
           code: 355,
           indent: 1,
+          // gotsupplies = true; prevents fungus guys from giving you supplies at the entrance to the lair
           // foughtwoundedman = true; allows hallway encounters
           // self switch ensures stairwell door never allows early papineau
           // and also sets number of freds to 10 here so player doesnt have to speak to faceless
           parameters: [
-            `sSw(94, true); $gameSelfSwitches.setValue([27, 8, 'B'], true); $gameSelfSwitches.setValue([27, 7, 'B'], true); sSw(${TRUE_SWITCH_ID}, true);
+            `sSw(493, true); sSw(94, true); $gameSelfSwitches.setValue([27, 8, 'B'], true); $gameSelfSwitches.setValue([27, 7, 'B'], true); sSw(${TRUE_SWITCH_ID}, true);
     sSw(${FALSE_SWITCH_ID}, false); sVr(306, 10);`,
           ],
         });
@@ -612,6 +613,21 @@ EventLogicUpdates.itemDropClear = function (originalList, code) {
   return originalList.filter((listItem) => listItem.code !== code);
 };
 
+EventLogicUpdates.itemDropReplaceScript = function (
+  originalList,
+  code,
+  script,
+) {
+  const index = originalList.findIndex((listItem) => listItem.code == code);
+  if (index != -1) {
+    originalList[index] = {
+      code: 355,
+      indent: originalList[index].indent,
+      parameters: [script],
+    };
+  }
+};
+
 EventLogicUpdates.deleteMessage = function (originalList, keyWord) {
   return originalList.filter(
     (listItem) =>
@@ -626,14 +642,13 @@ EventLogicUpdates.messageReplacement = function (
   introword = "Find",
 ) {
   const newList = JsonEx.makeDeepCopy(originalList);
-  const itemGetMessageIndex = newList.findIndex(
-    (listItem) =>
-      listItem.code == 401 && listItem.parameters[0].includes(keyWord),
-  );
-  if (itemGetMessageIndex !== -1) {
-    newList[itemGetMessageIndex].parameters[0] =
-      `${introword} ${LookOutsideAPClient.getItemName(itemId)}.`;
-  }
+
+  newList.forEach((listItem) => {
+    if (listItem.code == 401 && listItem.parameters[0].includes(keyWord)) {
+      listItem.parameters[0] = `${introword} ${LookOutsideAPClient.getItemName(itemId)}.`;
+    }
+  });
+
   return newList;
 };
 
@@ -1125,7 +1140,6 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
             conditions: EventLogicUpdates.buildConditions("C"),
           });
         }
-        console.log(ev.pages);
       }
     }
   }
@@ -1660,6 +1674,66 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   }
   clearKOTDDrop();
 
+  function clearPhilDelusionDrops() {
+    if (
+      (lastLoadedMapId == 188 && ev.id == 2) ||
+      (lastLoadedMapId == 127 && ev.id == 2)
+    ) {
+      const index = lastLoadedMapId == 188 ? 0 : 1;
+      ev.pages[index].list = EventLogicUpdates.itemDropClear(
+        ev.pages[index].list,
+        126,
+      );
+      ev.pages[index].list = EventLogicUpdates.messageReplacement(
+        ev.pages[index].list,
+        "Phillippe's Remains",
+        "FUNGUS_PHILLIPPE_COMBAT_VICTORY",
+        "Receive",
+      );
+    }
+  }
+  clearPhilDelusionDrops();
+
+  function fungusWithoutSporeMother() {
+    // allows the various fungus combat encounters to continue after killing spore mother
+    // skipping spore guardian because we're modifying it's spore mother dead check page in clearAudreyBossDrops
+
+    if (lastLoadedMapId == 187) {
+      if (ev.id == 26) {
+        // make laughing mold nonmissable
+        const conditions = ev.pages[8].conditions;
+        ev.pages[8] = {
+          ...ev.pages[5],
+          conditions,
+        };
+        if (ev.pages.length < 11) {
+          // push finished states to the front
+          ev.pages.push(ev.pages[6]);
+          ev.pages.push(ev.pages[7]);
+        }
+      }
+
+      // these are all the visuals for the trapped fungus people
+      if (
+        ev.id == 3 ||
+        ev.id == 5 ||
+        ev.id == 6 ||
+        ev.id == 21 ||
+        ev.id == 23 ||
+        ev.id == 19 ||
+        ev.id == 14
+      ) {
+        if (ev.pages.length > 2) ev.pages.splice(2, 1);
+      }
+
+      // these are the battle triggers for the trapped fungus people
+      if (ev.id == 15 || ev.id == 16 || ev.id == 7 || ev.id == 22) {
+        if (ev.pages.length > 1) ev.pages.splice(1, 1);
+      }
+    }
+  }
+  fungusWithoutSporeMother();
+
   function fixRoxieRoomItemDoubleEntry() {
     // two of the items in roxie's room in the sewers have two separate pages
     // since theyre different items on hard mode
@@ -1685,7 +1759,85 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   function returnTickle() {}
   returnTickle();
 
-  function clearAudreyBossDrops() {}
+  function clearAudreyBossDrops() {
+    function updateDeadPage(page, locationId) {
+      page.trigger = 0;
+      page.list = [
+        {
+          code: 111,
+          indent: 0,
+          parameters: [4, 22, 0],
+        },
+        {
+          code: 101,
+          indent: 1,
+          parameters: ["", 13, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 1,
+          parameters: ["Audrey looks through the corpse\\..\\..\\.."],
+        },
+        {
+          code: 101,
+          indent: 1,
+          parameters: ["", 13, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 1,
+          parameters: [
+            `She has found ${LookOutsideAPClient.getItemName(locationId)}`,
+          ],
+        },
+        {
+          code: 123,
+          indent: 1,
+          parameters: ["D", 0],
+        },
+        {
+          code: 0,
+          indent: 1,
+          parameters: [],
+        },
+        {
+          code: 412,
+          indent: 0,
+          parameters: [],
+        },
+        {
+          code: 0,
+          indent: 0,
+          parameters: [],
+        },
+      ];
+    }
+
+    // spore guardian
+    if (lastLoadedMapId == 127 && ev.id == 3) {
+      for (let i = 0; i < 2; i++) {
+        EventLogicUpdates.itemDropReplaceScript(
+          ev.pages[i].list,
+          128,
+          "$gameSelfSwitches.setValue([127, 3, 'D'], true)",
+        );
+        ev.pages[i].list = EventLogicUpdates.messageReplacement(
+          ev.pages[i].list,
+          "Fungus Fibers",
+          "FUNGUS_SPORE_GUARDIAN_AUDREY_LOOT",
+          "She has found",
+        );
+      }
+      const deadPage = ev.pages[3];
+      updateDeadPage(ev.pages[3]);
+      // override the page that checks if spore mother is dead because we want to remove that condition anyway
+      ev.pages[4] = {
+        ...EMPTY_PAGE,
+        conditions: EventLogicUpdates.buildConditions("D"),
+        image: deadPage.image,
+      };
+    }
+  }
   clearAudreyBossDrops();
 
   function fixLaughingMoldSpawn() {}
@@ -1948,6 +2100,91 @@ EventLogicUpdates.clearTroopsDrops = function () {
     $dataTroops[22].pages[0].list = papineauTroopList;
   }
   clearPapineauRecruitmentEvent();
+
+  function clearPhillippeRecruitmentEvent() {
+    const phillippeTroopList = JsonEx.makeDeepCopy(
+      originalTroops[350].pages[1].list,
+    );
+    // dont let the player bring him along
+
+    const rootIndex = phillippeTroopList.findIndex(
+      (listItem) => listItem.code == 118 && listItem.parameters[0] == "root",
+    );
+
+    if (rootIndex !== -1) {
+      const rootIndent = phillippeTroopList[rootIndex].indent;
+      phillippeTroopList.splice(
+        rootIndex,
+        0,
+        ...[
+          {
+            code: 101,
+            indent: rootIndent,
+            parameters: ["Portrait_NPCs", 3, 0, 2, "Phillippe"],
+          },
+          {
+            code: 401,
+            indent: rootIndent,
+            parameters: ["I'll wait at the exit. Please be careful..."],
+          },
+          {
+            code: 119,
+            indent: rootIndent,
+            parameters: ["leave"],
+          },
+        ],
+      );
+    }
+
+    $dataTroops[350].pages[1].list = phillippeTroopList;
+  }
+  clearPhillippeRecruitmentEvent();
+
+  function clearFungusMimicGifts() {
+    let jeanPierreGiftList = JsonEx.makeDeepCopy(
+      originalTroops[347].pages[1].list,
+    );
+
+    jeanPierreGiftList = EventLogicUpdates.itemDropClear(
+      jeanPierreGiftList,
+      127,
+    );
+    jeanPierreGiftList = EventLogicUpdates.messageReplacement(
+      jeanPierreGiftList,
+      "Greatsword",
+      "FUNGUS_JEAN_P_RESCUE_COMBAT_VICTORY",
+      "Receive",
+    );
+
+    $dataTroops[347].pages[1].list = jeanPierreGiftList;
+
+    let sylvainGiftList = JsonEx.makeDeepCopy(
+      originalTroops[348].pages[1].list,
+    );
+
+    sylvainGiftList = EventLogicUpdates.itemDropClear(sylvainGiftList, 128);
+    sylvainGiftList = EventLogicUpdates.messageReplacement(
+      sylvainGiftList,
+      "Elegant Cap",
+      "FUNGUS_SYLVAIN_RESCUE_COMBAT_VICTORY",
+      "Receive",
+    );
+
+    $dataTroops[348].pages[1].list = sylvainGiftList;
+
+    let claireGiftList = JsonEx.makeDeepCopy(originalTroops[349].pages[1].list);
+
+    claireGiftList = EventLogicUpdates.itemDropClear(claireGiftList, 128);
+    claireGiftList = EventLogicUpdates.messageReplacement(
+      claireGiftList,
+      "Ornate Breastplate",
+      "FUNGUS_CLAIRE_RESCUE_COMBAT_VICTORY",
+      "Receive",
+    );
+
+    $dataTroops[349].pages[1].list = claireGiftList;
+  }
+  clearFungusMimicGifts();
 
   function clearJeannePrizeEvent() {
     // clear out elixir prize

@@ -275,6 +275,7 @@ const TRAP_MAPPINGS = [
 LookOutsideAPClient.initializeLocationNames = async function () {
   locations = Object.values(LOCATION_ID_MAPPING);
   let locationMapping = {};
+  if (!$gamePlayer.LOCATION_NAME_MAPPING) $gamePlayer.LOCATION_NAME_MAPPING = locationMapping;
 
   if (client?.authenticated)
     for (const l of locations) {
@@ -300,8 +301,8 @@ LookOutsideAPClient.initializeLocationNames = async function () {
           locationMapping[l] = mapping;
         }
       });
+      $gamePlayer.LOCATION_NAME_MAPPING = locationMapping;
     }
-  $gamePlayer.LOCATION_NAME_MAPPING = locationMapping;
 };
 
 LookOutsideAPClient.initializeLocationObject = function () {
@@ -549,6 +550,9 @@ LookOutsideAPClient.startAPClient = async function (deathLink) {
       .catch((e) => {
         connecting = false;
         console.error(e);
+        if ($gamePlayer && $gamePlayer.slotData) {
+          LookOutsideAPClient.gameLoadedAPSetup($gamePlayer.slotData);
+        }
         disconnectedMessage = e.message;
       });
   } else {
@@ -584,7 +588,8 @@ LookOutsideAPClient.watchLocations = function () {
     if (SELF_SWITCH_LOCATIONS[roomId]) {
       if (SELF_SWITCH_LOCATIONS[roomId][eventId]) {
         const locationId = SELF_SWITCH_LOCATIONS[roomId][eventId][switchId];
-        if (locationId) console.log("SETTING SELF SWITCH LOCATION: ", locationId);
+        if (locationId)
+          console.log("SETTING SELF SWITCH LOCATION: ", locationId);
         if (locationId) {
           LookOutsideAPClient.setLocation(LOCATION_ID_MAPPING[locationId]);
         }
