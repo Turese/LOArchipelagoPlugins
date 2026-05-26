@@ -536,7 +536,7 @@ EventLogicUpdates.applyIntroClears = function (lastLoadedMapId) {
       if (startingRoomEvent) {
         const startingpage = startingRoomEvent.pages[0];
         const newList = startingpage.list.filter((listItem) => {
-          if (listItem.code === 126)
+          if (listItem.code === ITEM_CODE)
             // remove the explicit drops of the 3 video games
             // the starting food and soap and toothpaste can stay
             return ![413, 417, 421].includes(listItem.parameters[0]);
@@ -604,6 +604,10 @@ EventLogicUpdates.applyIntroClears = function (lastLoadedMapId) {
 
 // if an event has a basic item drop + get message structure
 // we can do it easily here
+
+const ITEM_CODE = 126;
+const WEAPON_CODE = 127;
+const ARMOR_CODE = 128;
 
 //codes:
 //126 = item drop
@@ -731,7 +735,10 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   function clearLeighQuest() {
     if (lastLoadedMapId == 434 && ev.id == 1) {
       // clear martin's ring
-      ev.pages[0].list = EventLogicUpdates.itemDropClear(ev.pages[0].list, 128);
+      ev.pages[0].list = EventLogicUpdates.itemDropClear(
+        ev.pages[0].list,
+        ARMOR_CODE,
+      );
       ev.pages[0].list = EventLogicUpdates.itemDropClear(ev.pages[0].list, 318); // clear skill grants
       ev.pages[0].list = EventLogicUpdates.messageReplacement(
         ev.pages[0].list,
@@ -940,7 +947,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
       const filteredList = screamatoriumEvent.pages[0].list.filter(
         (listItem) => {
           if (listItem.code === 122) return listItem.parameters[0] !== 41; // don't set video game count var=41
-          return listItem.code !== 126; // dont add screamatorium to inventory
+          return listItem.code !== ITEM_CODE; // dont add screamatorium to inventory
         },
       );
 
@@ -963,8 +970,10 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
 
   function clearWoundedManKnifeEvent() {
     if (lastLoadedMapId === 24 && ev.id === 3) {
-      const filteredList = ev.pages[1].list.filter(
-        (listItem) => listItem.code !== 127, // dont add knife to inventory
+      // dont add knife to inventory
+      const filteredList = EventLogicUpdates.itemDropClear(
+        ev.pages[1].list,
+        WEAPON_CODE,
       );
 
       const messageListItem = filteredList.filter(
@@ -1024,11 +1033,12 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
 
       // remove the explicit deletion of void disc from inventory
       const filteredList = darkTelescopeRoomPage.list.filter(
-        (listItem) => listItem.code !== 126 || listItem.parameters[0] !== 331, // remove the explicit removal of void disc
+        (listItem) =>
+          listItem.code !== ITEM_CODE || listItem.parameters[0] !== 331, // remove the explicit removal of void disc
       );
 
       const negativeDiscGrantEventIndex = filteredList.findIndex(
-        (listItem) => listItem.code === 126,
+        (listItem) => listItem.code === ITEM_CODE,
       );
       // instead of grant item, set custom check switch
       if (negativeDiscGrantEventIndex !== -1) {
@@ -1085,7 +1095,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
         // dont take or give back guinea pig
         ev.pages.forEach(
           (page) =>
-            (page.list = EventLogicUpdates.itemDropClear(page.list, 126)),
+            (page.list = EventLogicUpdates.itemDropClear(page.list, ITEM_CODE)),
         );
       }
       if (ev.id == 3) {
@@ -1094,7 +1104,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
         // dont take players tape when recording
         ev.pages[0].list = EventLogicUpdates.itemDropClear(
           ev.pages[0].list,
-          126,
+          ITEM_CODE,
         );
 
         // on page 0, dont allow player to record unless it's the correct feed
@@ -1111,7 +1121,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
 
         ev.pages[2].list = EventLogicUpdates.itemDropClear(
           ev.pages[2].list,
-          126,
+          ITEM_CODE,
         );
         ev.pages[2].list = EventLogicUpdates.messageReplacement(
           ev.pages[2].list,
@@ -1152,7 +1162,8 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
 
       // replace the exposed paper grant with switch set
       const getPhotoPaperIndex = projectorList.findIndex(
-        (listItem) => listItem.code == 126 && listItem.parameters[0] == 339,
+        (listItem) =>
+          listItem.code == ITEM_CODE && listItem.parameters[0] == 339,
       );
       if (getPhotoPaperIndex !== -1) {
         projectorList.splice(getPhotoPaperIndex, 1, {
@@ -1162,7 +1173,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
         });
       }
       // clear out the part where it takes your photo paper
-      projectorList = EventLogicUpdates.itemDropClear(projectorList, 126);
+      projectorList = EventLogicUpdates.itemDropClear(projectorList, ITEM_CODE);
 
       // make sure we dont update what's on the photograph when doing this
       projectorList = projectorList.filter(
@@ -1210,8 +1221,9 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
         "B";
 
       // filter out explicit apartment 33 key drop
-      ev.pages[0].list = ev.pages[0].list.filter(
-        (listItem) => listItem.code !== 126,
+      ev.pages[0].list = EventLogicUpdates.itemDropClear(
+        ev.pages[0].list,
+        ITEM_CODE,
       );
     }
   }
@@ -1262,7 +1274,8 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
     if (lastLoadedMapId === 47 && ev.id === 43) {
       if (ev.pages.length < 2) {
         const coffeeGrantIndex = ev.pages[0].list.findIndex(
-          (listItem) => listItem.code == 126 && listItem.parameters[0] == 41,
+          (listItem) =>
+            listItem.code == ITEM_CODE && listItem.parameters[0] == 41,
         );
         if (coffeeGrantIndex) {
           ev.pages[0].list.splice(
@@ -1315,7 +1328,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
     if (lastLoadedMapId === 92 && ev.id === 45) {
       // clear out rusty crown drop
       ev.pages[2].list = ev.pages[2].list.filter(
-        (pageItem) => pageItem.code !== 128,
+        (pageItem) => pageItem.code !== ARMOR_CODE,
       );
 
       // change message for both bow and non bow cases
@@ -1349,7 +1362,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
     if (lastLoadedMapId === 441 && ev.id === 7) {
       const filteredList = EventLogicUpdates.itemDropClear(
         ev.pages[0].list,
-        126,
+        ITEM_CODE,
       );
 
       const messageIndex = filteredList.findIndex(
@@ -1367,9 +1380,11 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
 
   function clearAmbroseDrops() {
     if (lastLoadedMapId === 442 && ev.id === 9) {
-      const filteredList = ev.pages[0].list.filter(
-        (listItem) => listItem.code !== 126, // dont add ambrose bits to inventory
-      );
+      let filteredList = EventLogicUpdates.itemDropClear(
+        ev.pages[0],
+        ITEM_CODE,
+      ); // ambrose parts
+      filteredList = EventLogicUpdates.itemDropClear(ev.pages[0], ARMOR_CODE); // ambroses pipe
 
       const messageIndex = filteredList.findIndex(
         (listItem) =>
@@ -1391,7 +1406,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
       // item drops on first 2 pages
       for (let i = 0; i <= 1; i++) {
         ev.pages[i].list = ev.pages[i].list.filter(
-          (listItem) => ![126, 101, 401].includes(listItem.code),
+          (listItem) => ![ITEM_CODE, 101, 401].includes(listItem.code),
         );
       }
     }
@@ -1479,7 +1494,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
       // all first 3 event states have the drop
       for (let i = 0; i <= 2; i++) {
         ev.pages[i].list = ev.pages[i].list.filter(
-          (listItem) => listItem.code !== 126 && listItem.code !== 401,
+          (listItem) => listItem.code !== ITEM_CODE && listItem.code !== 401,
         );
       }
     }
@@ -1488,22 +1503,17 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
 
   function clearJeanneLaundry() {
     if (lastLoadedMapId === 69 && ev.id === 65) {
-      const filteredList = ev.pages[0].list.filter((listItem) => {
-        return listItem.code !== 126; // dont add laundry to inventory
-      });
+      // dont add laundry to inventory
+      let filteredList = EventLogicUpdates.itemDropClear(
+        ev.pages[0].list,
+        ITEM_CODE,
+      );
+      filteredList = EventLogicUpdates.messageReplacement(
+        filteredList,
+        "Jeanne's clothes",
+        "LAUNDRY_JEANNES_LAUNDRY",
+      );
 
-      filteredList
-        .filter(
-          (listItem) =>
-            listItem.code === 401 &&
-            listItem.parameters[0].contains("Jeanne's clothes."),
-        )
-        .forEach((listItem) => {
-          listItem.parameters[0] = listItem.parameters[0].replace(
-            "Jeanne's clothes",
-            LookOutsideAPClient.getItemName("LAUNDRY_JEANNES_LAUNDRY"),
-          );
-        });
       ev.pages[0].list = filteredList;
     }
   }
@@ -1513,7 +1523,10 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
     if (lastLoadedMapId === 180 && ev.id === 15) {
       // remove dollar coin item drop
 
-      ev.pages[0].list = EventLogicUpdates.itemDropClear(ev.pages[0].list, 126);
+      ev.pages[0].list = EventLogicUpdates.itemDropClear(
+        ev.pages[0].list,
+        ITEM_CODE,
+      );
       ev.pages[0].list = EventLogicUpdates.messageReplacement(
         ev.pages[0].list,
         "Dollar Coin",
@@ -1545,7 +1558,10 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
 
   function clearErnestCheeseStash() {
     if (lastLoadedMapId === 309 && ev.id === 19) {
-      ev.pages[0].list = EventLogicUpdates.itemDropClear(ev.pages[0].list, 126);
+      ev.pages[0].list = EventLogicUpdates.itemDropClear(
+        ev.pages[0].list,
+        ITEM_CODE,
+      );
       ev.pages[0].list = EventLogicUpdates.messageReplacement(
         ev.pages[0].list,
         "Cheese",
@@ -1557,7 +1573,10 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
 
   function clearRoachQuestPrize() {
     if (lastLoadedMapId === 3 && ev.id === 121) {
-      ev.pages[2].list = EventLogicUpdates.itemDropClear(ev.pages[2].list, 128);
+      ev.pages[2].list = EventLogicUpdates.itemDropClear(
+        ev.pages[2].list,
+        ARMOR_CODE,
+      );
 
       ev.pages[2].list = EventLogicUpdates.messageReplacement(
         ev.pages[2].list,
@@ -1576,7 +1595,10 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
 
   function clearSadipedePrize() {
     if (lastLoadedMapId === 457 && ev.id === 1) {
-      ev.pages[3].list = EventLogicUpdates.itemDropClear(ev.pages[3].list, 126);
+      ev.pages[3].list = EventLogicUpdates.itemDropClear(
+        ev.pages[3].list,
+        ITEM_CODE,
+      );
 
       ev.pages[3].list = EventLogicUpdates.messageReplacement(
         ev.pages[3].list,
@@ -1599,7 +1621,10 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
 
   function clearRaftaLetter() {
     if (lastLoadedMapId === 94 && ev.id === 9) {
-      ev.pages[0].list = EventLogicUpdates.itemDropClear(ev.pages[0].list, 126);
+      ev.pages[0].list = EventLogicUpdates.itemDropClear(
+        ev.pages[0].list,
+        ITEM_CODE,
+      );
       ev.pages[0].list = EventLogicUpdates.messageReplacement(
         ev.pages[0].list,
         "Love Letter",
@@ -1624,7 +1649,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
     if (lastLoadedMapId == 96 && ev.id == 12) {
       ev.pages.forEach((page) => {
         // canvas carry bag and torn off face
-        page.list = EventLogicUpdates.itemDropClear(page.list, 126);
+        page.list = EventLogicUpdates.itemDropClear(page.list, ITEM_CODE);
         page.list ==
           EventLogicUpdates.deleteMessage(page.list, "Canvas Carry Bag");
         page.list == EventLogicUpdates.deleteMessage(page.list, "Face");
@@ -1642,7 +1667,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
       (lastLoadedMapId == 119 && ev.id == 13)
     ) {
       ev.pages.forEach((page) => {
-        page.list = EventLogicUpdates.itemDropClear(page.list, 126);
+        page.list = EventLogicUpdates.itemDropClear(page.list, ITEM_CODE);
         // some drops have different capitalization
         page.list = EventLogicUpdates.deleteMessage(page.list, "Stained key");
       });
@@ -1663,7 +1688,10 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   function clearKOTDDrop() {
     if (lastLoadedMapId == 460 && ev.id == 15) {
       // clear all-seeing-8-ball drop
-      ev.pages[2].list = EventLogicUpdates.itemDropClear(ev.pages[2].list, 126);
+      ev.pages[2].list = EventLogicUpdates.itemDropClear(
+        ev.pages[2].list,
+        ITEM_CODE,
+      );
       ev.pages[2].list = EventLogicUpdates.messageReplacement(
         ev.pages[2].list,
         "All-Seeing",
@@ -1682,7 +1710,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
       const index = lastLoadedMapId == 188 ? 0 : 1;
       ev.pages[index].list = EventLogicUpdates.itemDropClear(
         ev.pages[index].list,
-        126,
+        ITEM_CODE,
       );
       ev.pages[index].list = EventLogicUpdates.messageReplacement(
         ev.pages[index].list,
@@ -1697,6 +1725,24 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   function fungusWithoutSporeMother() {
     // allows the various fungus combat encounters to continue after killing spore mother
     // skipping spore guardian because we're modifying it's spore mother dead check page in clearAudreyBossDrops
+
+    if (lastLoadedMapId == 188) {
+      // triggers for phillippe/rodrigue rescue fight
+      if (ev.id == 5 || ev.id == 6 || ev.id == 13 || ev.id == 14) {
+        if (ev.pages.length > 1) ev.pages.splice(1, 1);
+      }
+
+      // visuals for trapped phillippe/rodrigue
+      if (
+        ev.id == 3 ||
+        ev.id == 9 ||
+        ev.id == 10 ||
+        ev.id == 11 ||
+        ev.id == 12
+      ) {
+        if (ev.pages.length > 2) ev.pages.splice(2, 1);
+      }
+    }
 
     if (lastLoadedMapId == 187) {
       if (ev.id == 26) {
@@ -1818,7 +1864,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
       for (let i = 0; i < 2; i++) {
         EventLogicUpdates.itemDropReplaceScript(
           ev.pages[i].list,
-          128,
+          ARMOR_CODE,
           "$gameSelfSwitches.setValue([127, 3, 'D'], true)",
         );
         ev.pages[i].list = EventLogicUpdates.messageReplacement(
@@ -1892,23 +1938,26 @@ EventLogicUpdates.clearTroopsDrops = function () {
     const pierreTroop = JsonEx.makeDeepCopy(originalTroops[19]);
 
     // first, remove explicit clown drawing gift
-    let clownDrawingList = pierreTroop.pages[0].list.filter(
-      (listItem) => listItem.code !== 126,
+    let clownDrawingList = EventLogicUpdates.itemDropClear(
+      pierreTroop.pages[0].list,
+      ITEM_CODE,
     );
 
     // then rename to randomized item
-    clownDrawingList.find(
-      (listItem) =>
-        listItem.code === 401 &&
-        listItem.parameters[0].contains("Clown Drawing"),
-    ).parameters[0] =
-      `Receive ${LookOutsideAPClient.getItemName("APT_38_PIERRE_CLOWN_DRAWING")}.`;
+
+    clownDrawingList = EventLogicUpdates.messageReplacement(
+      clownDrawingList,
+      "Clown Drawing",
+      "APT_38_PIERRE_CLOWN_DRAWING",
+      "Receive",
+    );
 
     $dataTroops[19].pages[0].list = clownDrawingList;
 
-    // remove clown wig gift (128 is an armors drop)
-    let clownWigList = pierreTroop.pages[5].list.filter(
-      (listItem) => listItem.code !== 128,
+    // remove clown wig gift
+    let clownWigList = EventLogicUpdates.itemDropClear(
+      pierreTroop.pages[5].list,
+      ARMOR_CODE,
     );
 
     // then rename to randomized item
@@ -1930,21 +1979,24 @@ EventLogicUpdates.clearTroopsDrops = function () {
 
     let maskedShadowTroopList = maskedShadowTroop.pages[0].list;
 
-    maskedShadowTroopList = maskedShadowTroopList.filter(
-      (page) => page.code !== 126,
+    maskedShadowTroopList = EventLogicUpdates.itemDropClear(
+      maskedShadowTroopList,
+      ITEM_CODE,
     );
 
-    maskedShadowTroopList.find(
-      (listItem) =>
-        listItem.code === 401 && listItem.parameters[0].contains("a tongue"),
-    ).parameters[0] =
-      `and appears to be... a ${LookOutsideAPClient.getItemName("MASKED_SHADOW_TONGUE")}.`;
+    maskedShadowTroopList = EventLogicUpdates.messageReplacement(
+      maskedShadowTroopList,
+      "a tongue",
+      "MASKED_SHADOW_TONGUE",
+      "and appears to be... a",
+    );
 
-    maskedShadowTroopList.find(
-      (listItem) =>
-        listItem.code === 401 && listItem.parameters[0].contains("Tongue"),
-    ).parameters[0] =
-      `You receive a ${LookOutsideAPClient.getItemName("MASKED_SHADOW_TONGUE")}.`;
+    maskedShadowTroopList = EventLogicUpdates.messageReplacement(
+      maskedShadowTroopList,
+      "{Tongue}",
+      "MASKED_SHADOW_TONGUE",
+      "You receive a",
+    );
 
     // dont want player to refuse it, so i'll set 'refuse it' to be grayed
     // out on a condition guaranteed to be true (current shadow interaction = 5 i.e. this one)
@@ -2147,7 +2199,7 @@ EventLogicUpdates.clearTroopsDrops = function () {
 
     jeanPierreGiftList = EventLogicUpdates.itemDropClear(
       jeanPierreGiftList,
-      127,
+      WEAPON_CODE,
     );
     jeanPierreGiftList = EventLogicUpdates.messageReplacement(
       jeanPierreGiftList,
@@ -2162,7 +2214,10 @@ EventLogicUpdates.clearTroopsDrops = function () {
       originalTroops[348].pages[1].list,
     );
 
-    sylvainGiftList = EventLogicUpdates.itemDropClear(sylvainGiftList, 128);
+    sylvainGiftList = EventLogicUpdates.itemDropClear(
+      sylvainGiftList,
+      ARMOR_CODE,
+    );
     sylvainGiftList = EventLogicUpdates.messageReplacement(
       sylvainGiftList,
       "Elegant Cap",
@@ -2174,7 +2229,10 @@ EventLogicUpdates.clearTroopsDrops = function () {
 
     let claireGiftList = JsonEx.makeDeepCopy(originalTroops[349].pages[1].list);
 
-    claireGiftList = EventLogicUpdates.itemDropClear(claireGiftList, 128);
+    claireGiftList = EventLogicUpdates.itemDropClear(
+      claireGiftList,
+      ARMOR_CODE,
+    );
     claireGiftList = EventLogicUpdates.messageReplacement(
       claireGiftList,
       "Ornate Breastplate",
@@ -2195,7 +2253,7 @@ EventLogicUpdates.clearTroopsDrops = function () {
     ).pages[0].list.filter(
       (listItem) =>
         listItem.code !== 125 ||
-        !(listItem.code === 126 && listItem.parameters[0] == 16),
+        !(listItem.code === ITEM_CODE && listItem.parameters[0] == 16),
     );
 
     // the elixir prize for killing all the hydras
@@ -2226,7 +2284,7 @@ EventLogicUpdates.clearTroopsDrops = function () {
     ).parameters[0][0] = `<<[!v[282]=3]>>Hand over love letter.`;
 
     const turnInLetterIndex = nestorTroopList.findIndex(
-      (listItem) => listItem.code === 126,
+      (listItem) => listItem.code === ITEM_CODE,
     );
     // make nestor go to rafta even if you dont make a good case
     // filter out all places where we set nestorstate and then force state = 10 (he goes to rafta)
@@ -2253,7 +2311,7 @@ EventLogicUpdates.clearTroopsDrops = function () {
 
     // dont delete the sapper trade, but do delete the initial 2 sapper gift
     sapperTroopList = sapperTroopList.filter(
-      (listItem) => listItem.code !== 126 && listItem.parameters[3] == 2,
+      (listItem) => listItem.code !== ITEM_CODE && listItem.parameters[3] == 2,
     );
 
     sapperTroopList = EventLogicUpdates.messageReplacement(
@@ -2274,11 +2332,11 @@ EventLogicUpdates.clearTroopsDrops = function () {
     // metal detector and tame landmine drops
     minesweeperTroopList = EventLogicUpdates.itemDropClear(
       minesweeperTroopList,
-      127,
+      WEAPON_CODE,
     );
     minesweeperTroopList = EventLogicUpdates.itemDropClear(
       minesweeperTroopList,
-      126,
+      ITEM_CODE,
     );
 
     minesweeperTroopList = EventLogicUpdates.messageReplacement(
@@ -2305,9 +2363,9 @@ EventLogicUpdates.clearTroopsDrops = function () {
     // remove only choice drops
     jasperTroopList = jasperTroopList.filter(
       (listItem) =>
-        !(listItem.code === 126 && listItem.parameters[0] == 384) && // jaspers key
-        !(listItem.code === 126 && listItem.parameters[0] == 314) && // roof access key
-        !(listItem.code === 128 && listItem.parameters[0] == 23), // dark robes
+        !(listItem.code === ITEM_CODE && listItem.parameters[0] == 384) && // jaspers key
+        !(listItem.code === ITEM_CODE && listItem.parameters[0] == 314) && // roof access key
+        !(listItem.code === ITEM_CODE && listItem.parameters[0] == 23), // dark robes
     );
 
     // do telescope separately because it needs a special switch
@@ -2355,12 +2413,12 @@ EventLogicUpdates.clearTroopsDrops = function () {
     // clear all item drops
     faceTakerTroopList = EventLogicUpdates.itemDropClear(
       faceTakerTroopList,
-      126,
+      ITEM_CODE,
     );
     // clear armor drop
     faceTakerTroopList = EventLogicUpdates.itemDropClear(
       faceTakerTroopList,
-      128,
+      ARMOR_CODE,
     );
 
     faceTakerTroopList = EventLogicUpdates.deleteMessage(
@@ -2457,7 +2515,7 @@ EventLogicUpdates.clearTroopsDrops = function () {
     let tumorList = JsonEx.makeDeepCopy(originalTroops[328].pages[0].list);
 
     //clear tumorlumps
-    EventLogicUpdates.itemDropClear(tumorList, 126);
+    EventLogicUpdates.itemDropClear(tumorList, ITEM_CODE);
     EventLogicUpdates.deleteMessage(tumorList, "Tumor Lumps");
 
     $dataTroops[328].pages[0].list = tumorList;
@@ -2468,7 +2526,7 @@ EventLogicUpdates.clearTroopsDrops = function () {
     let fredBiteList = JsonEx.makeDeepCopy(originalTroops[330].pages[0].list);
 
     // clear rage armor (armor) drop
-    EventLogicUpdates.itemDropClear(fredBiteList, 128);
+    EventLogicUpdates.itemDropClear(fredBiteList, ARMOR_CODE);
     EventLogicUpdates.deleteMessage(fredBiteList, "Rage Armor");
 
     $dataTroops[330].pages[0].list = fredBiteList;
@@ -2476,7 +2534,7 @@ EventLogicUpdates.clearTroopsDrops = function () {
     let angelFredList = JsonEx.makeDeepCopy(originalTroops[331].pages[0].list);
 
     // clear strange feather (armor) drop
-    EventLogicUpdates.itemDropClear(angelFredList, 128);
+    EventLogicUpdates.itemDropClear(angelFredList, ARMOR_CODE);
     // it gets no announcement, so no deleteMessage call needed
 
     // keeping angel fred's cash bribe intact because it's funny
@@ -2489,7 +2547,7 @@ EventLogicUpdates.clearTroopsDrops = function () {
     let scaredList = JsonEx.makeDeepCopy(originalTroops[333].pages[0].list);
 
     // clear cowardly boots (armor) drop
-    EventLogicUpdates.itemDropClear(scaredList, 128);
+    EventLogicUpdates.itemDropClear(scaredList, ARMOR_CODE);
     EventLogicUpdates.deleteMessage(scaredList, "Cowardly Boots");
 
     $dataTroops[333].pages[0].list = scaredList;
@@ -2497,7 +2555,7 @@ EventLogicUpdates.clearTroopsDrops = function () {
     let brightList = JsonEx.makeDeepCopy(originalTroops[334].pages[0].list);
 
     //clear medic-in-a-jar
-    EventLogicUpdates.itemDropClear(brightList, 126);
+    EventLogicUpdates.itemDropClear(brightList, ITEM_CODE);
     EventLogicUpdates.deleteMessage(brightList, "Medic-in-a-jar");
 
     $dataTroops[334].pages[0].list = brightList;
@@ -2648,7 +2706,7 @@ EventLogicUpdates.clearCommonEventDrops = function () {
             parameters: ["into your home."],
           },
           {
-            code: 126,
+            code: ITEM_CODE,
             indent: 4,
             parameters: [5, 1, 0, 1],
           },
@@ -2708,7 +2766,10 @@ EventLogicUpdates.clearCommonEventDrops = function () {
     ).parameters[0][5] = "(([v[755]<10]))Need a place to stay?";
 
     // clear out energy drink drop
-    audreyEventList = EventLogicUpdates.itemDropClear(audreyEventList, 126);
+    audreyEventList = EventLogicUpdates.itemDropClear(
+      audreyEventList,
+      ITEM_CODE,
+    );
     audreyEventList = EventLogicUpdates.messageReplacement(
       audreyEventList,
       "Energy Drink",
@@ -2722,8 +2783,8 @@ EventLogicUpdates.clearCommonEventDrops = function () {
   function clearCarPrizeEvent() {
     let carEventList = JsonEx.makeDeepCopy(originalCommonEvents[60].list);
     // clear out shotgun/ammo drop and announcement
-    carEventList = EventLogicUpdates.itemDropClear(carEventList, 126);
-    carEventList = EventLogicUpdates.itemDropClear(carEventList, 128);
+    carEventList = EventLogicUpdates.itemDropClear(carEventList, ITEM_CODE);
+    carEventList = EventLogicUpdates.itemDropClear(carEventList, ARMOR_CODE);
 
     // delete item description
     carEventList = EventLogicUpdates.deleteMessage(
@@ -2809,7 +2870,7 @@ EventLogicUpdates.clearCommonEventDrops = function () {
             parameters: [213, 213, 0],
           },
           {
-            code: 126,
+            code: ITEM_CODE,
             indent: 1,
             parameters: [365, 1, 0, 1],
           },

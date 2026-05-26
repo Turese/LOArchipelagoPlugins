@@ -275,7 +275,8 @@ const TRAP_MAPPINGS = [
 LookOutsideAPClient.initializeLocationNames = async function () {
   locations = Object.values(LOCATION_ID_MAPPING);
   let locationMapping = {};
-  if (!$gamePlayer.LOCATION_NAME_MAPPING) $gamePlayer.LOCATION_NAME_MAPPING = locationMapping;
+  if (!$gamePlayer.LOCATION_NAME_MAPPING)
+    $gamePlayer.LOCATION_NAME_MAPPING = locationMapping;
 
   if (client?.authenticated)
     for (const l of locations) {
