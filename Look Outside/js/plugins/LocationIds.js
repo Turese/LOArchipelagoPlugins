@@ -2886,6 +2886,14 @@ SELF_SWITCH_LOCATIONS = {
     1: { A: "F4_OLD_TAPE" },
   },
 
+  325: {
+    5: { D: "STAIRS_CRAWLING_SHADE_COMBAT_VICTORY" },
+  },
+
+  326: {
+    4: { A: "STAIRS_SPIDER_RECRUIT" },
+  },
+
   30: {
     10: {
       A: "STAIRWELL_POOL_CUE",

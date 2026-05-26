@@ -800,6 +800,17 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
       }
     }
 
+    // spider
+    // make spider leave after player recruits it
+    if (lastLoadedMapId == 326 && ev.id == 4) {
+      if (ev.pages.length < 2) {
+        ev.pages.push({
+          ...EMPTY_PAGE,
+          conditions: EventLogicUpdates.buildConditions("A"),
+        });
+      }
+    }
+
     //joel
 
     //papineau
@@ -813,11 +824,17 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
     if (lastLoadedMapId == 451 && ev.id == 7) {
       ev.pages[0].conditions = EventLogicUpdates.buildConditions();
     }
+    // crawling shade sets its own self switch to D right away for no reason
+    if (lastLoadedMapId == 325 && ev.id == 5) {
+      ev.pages[0].list = EMPTY_PAGE.list;
+    }
     // writhing shade --- needs to not erase itself
     // same with moaning shade
+    // and crawling shade from spider's stairs
     if (
       (lastLoadedMapId == 380 && ev.id == 2) ||
-      (lastLoadedMapId == 401 && ev.id == 6)
+      (lastLoadedMapId == 401 && ev.id == 6) ||
+      (lastLoadedMapId == 325 && ev.id == 5)
     ) {
       const eraseIndex = ev.pages[2].list.findIndex(
         (listEntry) => listEntry.code === 214,
@@ -827,7 +844,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
           code: 355,
           indent: ev.pages[2].list[eraseIndex].indent,
           parameters: [
-            `$gameSelfSwitches.setValue([${lastLoadedMapId}, ${ev.id}, 'D'], true)`,
+            `$gameSelfSwitches.setValue([${lastLoadedMapId}, ${ev.id}, 'D'], true);`,
           ],
         };
       }
@@ -1673,6 +1690,10 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   function clearSecretDoorLockout() {
     if (lastLoadedMapId === 30 && ev.id === 6) {
       ev.pages[2].list = SECRET_DOOR_LIST;
+      if (ev.pages.length > 5) {
+        ev.pages.splice(3, 1);
+        // remove page that says there was never a door
+      }
     }
   }
   clearSecretDoorLockout();
@@ -1813,7 +1834,7 @@ EventLogicUpdates.clearTroopsDrops = function () {
         code: 355,
         indent: 1,
         parameters: [
-          "$gameSelfSwitches.setValue([93, 3, 'D'], true); BattleManager.abort();",
+          "$gameSelfSwitches.setValue([93, 3, 'D'], true); BattleManager.abort(); this.command115();",
         ],
       };
     $dataTroops[34].pages[0].list = leighTroopList;
@@ -1848,10 +1869,44 @@ EventLogicUpdates.clearTroopsDrops = function () {
     );
     if (asterRecruitIndex !== -1)
       asterTroopList[asterRecruitIndex].parameters[0] =
-        "$gameSelfSwitches.setValue([7, 14, 'D'], true); BattleManager.abort();";
+        "$gameSelfSwitches.setValue([7, 14, 'D'], true); BattleManager.abort(); this.command115();";
     $dataTroops[121].pages[0].list = asterTroopList;
   }
   clearAsterRecruitmentEvent();
+
+  function clearSpiderRecruitmentEvent() {
+    const spiderInterviewList = JsonEx.makeDeepCopy(
+      originalTroops[359].pages[1].list,
+    );
+
+    // find where pity is initialized to 0 and set it to 99
+    spiderInterviewList.find(
+      (listItem) => listItem.code == 122 && listItem.parameters[0] == 787,
+    ).parameters[4] = 99;
+
+    $dataTroops[359].pages[1].list = spiderInterviewList;
+
+    const spiderRecruitList = JsonEx.makeDeepCopy(
+      originalTroops[359].pages[5].list,
+    );
+
+    const spiderRecruitIndex = spiderRecruitList.findIndex(
+      (listItem) => listItem.code == 121 && listItem.parameters[0] == 375,
+    );
+
+    if (spiderRecruitIndex !== -1) {
+      spiderRecruitList[spiderRecruitIndex] = {
+        code: 355,
+        indent: 0,
+        parameters: [
+          `$gameSelfSwitches.setValue([326, 4, 'A'], true); BattleManager.abort(); this.command115();`,
+        ],
+      };
+    }
+
+    $dataTroops[359].pages[5].list = spiderRecruitList;
+  }
+  clearSpiderRecruitmentEvent();
 
   function clearPapineauRecruitmentEvent() {}
   clearPapineauRecruitmentEvent();

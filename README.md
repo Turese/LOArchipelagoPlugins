@@ -71,9 +71,10 @@ Goes through the game's in-map events to remove everything that explicitly grant
     - [x] Audrey will only leave after player player finishes the recruitment quest dialogue AND has Audrey in their apartment, so they're never blocked from vending machine purchases
     - [ ] Joel will only leave after player finishes the recruitment dialogue
     - [ ] Papineau will only leave after player finishes the recruitment dialogue
+    - [x] Spider will leave after player defeats it in combat; player can return to spider's room whenever
 - [x] fixMaskShadeSpawns - 
     - [x] Stumbling shade on f4 will spawn immediately instead of only when player has Old Tape in their inventory
-    - [x] Writhing Shade and Moaning Shade (Landlord Apt and Basement Pit) will track their own death state with a self switch instead of self-deleting, so it's easier to track them as locations
+    - [x] Writhing Shade, Moaning Shade, and Crawling Shade (Landlord Apt, Basement Pit, under the stairs respectively) will track their own death state with a self switch instead of self-deleting, so it's easier to track them as locations
 - [x] fixToothFamilySpawnTriggers - Allows the tooth family's further mutated forms (day 5 and day 9) to appear even if they've been slain in an earlier form
     - [ ] Clint (bugged, day 5 appears at the same time as day 2-4 form)
     - [x] Joel
@@ -142,6 +143,7 @@ Updates events that happen during battle scenes.
 - [ ] clearJoelRecruitmentEvent - short circuits the recruitment event for Joel to set a switch instead of attempt to add him to the party. clears out door knob gift from battle
 - [x] clearRoachesRecruitmentEvent - clears out switch set that recruits roaches when player sees them in their bathroom
 - [x] clearAsterRecruitmentEvent - short circuits the recruitment event for Aster to set a switch instead of attempt to add him to the party
+- [x] clearSpiderRecruitmentEvent - makes it so spider always thinks the player is pathetic enough to attack no matter what they answer to its questions; short circuits the recruitment event to set a self-switch instead
 - [ ] clearPapineauRecruitmentEvent - short circuits the recruitment event for Papineau to set a switch instead of attempt to add him to the party
 - [x] clearJeannePrizeEvent - clear out elixir prize for killing all hydra heads and 50 dollar reward for returning laundry
 - [x] fixNestorLetterLogic - don't allow player to give letter to Nestor before finishing Rafta's letter writing quest

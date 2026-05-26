@@ -584,6 +584,7 @@ LookOutsideAPClient.watchLocations = function () {
     if (SELF_SWITCH_LOCATIONS[roomId]) {
       if (SELF_SWITCH_LOCATIONS[roomId][eventId]) {
         const locationId = SELF_SWITCH_LOCATIONS[roomId][eventId][switchId];
+        console.log("SETTING SELF SWITCH LOCATION: ", locationId);
         if (locationId) {
           LookOutsideAPClient.setLocation(LOCATION_ID_MAPPING[locationId]);
         }
