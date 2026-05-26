@@ -118,7 +118,15 @@ Goes through the game's in-map events to remove everything that explicitly grant
 - [x] clearPhilDelusionDrops - delete Phillippe's Remains item granted from believing in Phillippe
 - [x] fungusWithoutSporeMother - allows players to interact with the laughing mold and 'free' the various fungus mimics even if spore mother has been defeated
 - [x] clearGrateLever - unjoin the sewer grates going down from the player pulling the level in the boiler beast room
-- [ ] clearAudreyBossDrops - remove explicit item drops from having audrey in the party when defeating certain bosses; allows locations to be triggered when returning to the dead bodies later with Audrey
+- [x] clearAudreyBossDrops - remove explicit item drops from having audrey in the party when defeating certain bosses; allows locations to be triggered when returning to the dead bodies later with Audrey
+    - [x] Hellride (demon plating)
+    - [x] Cop Car (chrome finish)
+    - [x] Tank (cope cage)
+    - [x] APC (tank tracks)
+    - [x] Trench digger (tank guns)
+    - [x] Shrimp Knight (jousting lance)
+    - [x] Taxidermy (rhino hide)
+    - [x] Spore Guardian (fungus fibers)
 - [ ] returnTickle - allow player to place tickle back on the boiler tendril to continue interfacing with his shop
 - [ ] fixLaughingMoldSpawn - allow player to interact with laughing mold even after defeating the spore princess
 - [ ] clearBlackoutIrisKey - clear iris key drop from the hole in the parking garage

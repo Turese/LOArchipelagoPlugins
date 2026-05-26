@@ -1806,7 +1806,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   returnTickle();
 
   function clearAudreyBossDrops() {
-    function updateDeadPage(page, locationId) {
+    function updateDeadPage(page, locationId, script) {
       page.trigger = 0;
       page.list = [
         {
@@ -1833,14 +1833,20 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
           code: 401,
           indent: 1,
           parameters: [
-            `She has found ${LookOutsideAPClient.getItemName(locationId)}`,
+            `She has found ${LookOutsideAPClient.getItemName(locationId)}.`,
           ],
         },
-        {
-          code: 123,
-          indent: 1,
-          parameters: ["D", 0],
-        },
+        script
+          ? {
+              code: 355,
+              indent: 1,
+              parameters: [script],
+            }
+          : {
+              code: 123,
+              indent: 1,
+              parameters: ["D", 0],
+            },
         {
           code: 0,
           indent: 1,
@@ -1859,6 +1865,201 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
       ];
     }
 
+    // hellride
+    if (lastLoadedMapId == 86 && ev.id == 14) {
+      EventLogicUpdates.itemDropReplaceScript(
+        ev.pages[3].list,
+        ARMOR_CODE,
+        `$gameSelfSwitches.setValue([86, 14, 'C'], true)`,
+      );
+      ev.pages[3].list = EventLogicUpdates.messageReplacement(
+        ev.pages[3].list,
+        "Demon Plating",
+        "B_CAR_HELLRIDE_AUDREY_LOOT",
+        "She has found",
+      );
+      const deadPage = ev.pages[4];
+      updateDeadPage(
+        deadPage,
+        "B_CAR_HELLRIDE_AUDREY_LOOT",
+        `$gameSelfSwitches.setValue([86, 14, 'C'], true)`,
+      );
+      if (ev.pages.length < 6) {
+        ev.pages.push({
+          ...EMPTY_PAGE,
+          conditions: EventLogicUpdates.buildConditions("C"),
+          image: deadPage.image,
+        });
+      }
+    }
+
+    // cop car
+    if (lastLoadedMapId == 86 && ev.id == 58) {
+      EventLogicUpdates.itemDropReplaceScript(
+        ev.pages[3].list,
+        ARMOR_CODE,
+        `$gameSelfSwitches.setValue([86, 58, 'C'], true)`,
+      );
+      ev.pages[3].list = EventLogicUpdates.messageReplacement(
+        ev.pages[3].list,
+        "Chrome Finish",
+        "B_CAR_COP_CAR_AUDREY_LOOT",
+        "She has found",
+      );
+      const deadPage = ev.pages[5];
+      updateDeadPage(
+        deadPage,
+        "B_CAR_COP_CAR_AUDREY_LOOT",
+        `$gameSelfSwitches.setValue([86, 58, 'C'], true)`,
+      );
+      if (ev.pages.length < 7) {
+        ev.pages.push({
+          ...EMPTY_PAGE,
+          conditions: EventLogicUpdates.buildConditions("C"),
+          image: deadPage.image,
+        });
+      }
+    }
+
+    // tank
+    if (lastLoadedMapId == 233 && ev.id == 11) {
+      EventLogicUpdates.itemDropReplaceScript(
+        ev.pages[2].list,
+        ARMOR_CODE,
+        `$gameSelfSwitches.setValue([233, 11, 'C'], true)`,
+      );
+      ev.pages[2].list = EventLogicUpdates.messageReplacement(
+        ev.pages[2].list,
+        "Cope Cage",
+        "LL_MEMORIAL_TANK_AUDREY_LOOT",
+        "She has found",
+      );
+      const deadPage = ev.pages[4];
+      updateDeadPage(
+        deadPage,
+        "LL_MEMORIAL_TANK_AUDREY_LOOT",
+        `$gameSelfSwitches.setValue([233, 11, 'C'], true)`,
+      );
+      if (ev.pages.length < 6) {
+        ev.pages.push({
+          ...EMPTY_PAGE,
+          conditions: EventLogicUpdates.buildConditions("C"),
+          image: deadPage.image,
+        });
+      }
+    }
+
+    // APC
+    if (lastLoadedMapId == 207 && ev.id == 22) {
+      EventLogicUpdates.itemDropReplaceScript(
+        ev.pages[3].list,
+        ARMOR_CODE,
+        `sSw(${LL_BATTLEFIELD_APC_AUDREY_LOOT_SWITCH}, true)`,
+      );
+      ev.pages[3].list = EventLogicUpdates.messageReplacement(
+        ev.pages[3].list,
+        "Tank Tracks",
+        "LL_BATTLEFIELD_APC_AUDREY_LOOT",
+        "She has found",
+      );
+
+      const deadPage = ev.pages[5];
+      updateDeadPage(
+        deadPage,
+        "LL_BATTLEFIELD_APC_AUDREY_LOOT",
+        `sSw(${LL_BATTLEFIELD_APC_AUDREY_LOOT_SWITCH}, true);`,
+      );
+      if (ev.pages.length < 7) {
+        ev.pages.push({
+          ...EMPTY_PAGE,
+          conditions: EventLogicUpdates.buildConditions(
+            undefined,
+            LL_BATTLEFIELD_APC_AUDREY_LOOT_SWITCH,
+          ),
+          image: deadPage.image,
+        });
+      }
+    }
+
+    // trench digger
+    // this ones weird because the battle trigger and the dead body are 2 different events
+    if (lastLoadedMapId == 130 && ev.id == 9) {
+      EventLogicUpdates.itemDropReplaceScript(
+        ev.pages[1].list,
+        ARMOR_CODE,
+        `$gameSelfSwitches.setValue([130, 2, 'D'], true);`,
+      );
+      ev.pages[1].list = EventLogicUpdates.messageReplacement(
+        ev.pages[1].list,
+        "Tank Guns",
+        "LL_TRENCH_DIGGER_AUDREY_LOOT",
+        "She has found",
+      );
+    }
+    if (lastLoadedMapId == 130 && ev.id == 2) {
+      const deadPage = ev.pages[6];
+      updateDeadPage(deadPage, "LL_TRENCH_DIGGER_AUDREY_LOOT");
+      if (ev.pages.length < 8) {
+        ev.pages.push({
+          ...EMPTY_PAGE,
+          conditions: EventLogicUpdates.buildConditions("D"),
+          image: deadPage.image,
+        });
+      }
+    }
+
+    // shrimp knight
+    if (lastLoadedMapId == 152 && ev.id == 6) {
+      for (let i = 0; i < 2; i++) {
+        EventLogicUpdates.itemDropReplaceScript(
+          ev.pages[i].list,
+          ARMOR_CODE,
+          "$gameSelfSwitches.setValue([152, 6, 'D'], true)",
+        );
+        ev.pages[i].list = EventLogicUpdates.messageReplacement(
+          ev.pages[i].list,
+          "Jousting Lance",
+          "APT_28_SHRIMP_KNIGHT_AUDREY_LOOT",
+          "She has found",
+        );
+        const deadPage = ev.pages[3];
+        updateDeadPage(deadPage, "APT_28_SHRIMP_KNIGHT_AUDREY_LOOT");
+        if (ev.pages.length < 5) {
+          ev.pages.push({
+            ...EMPTY_PAGE,
+            conditions: EventLogicUpdates.buildConditions("D"),
+            image: deadPage.image,
+          });
+        }
+      }
+    }
+
+    // taxidermy
+    if (lastLoadedMapId == 270 && ev.id == 6) {
+      for (let i = 1; i < 3; i++) {
+        EventLogicUpdates.itemDropReplaceScript(
+          ev.pages[i].list,
+          ARMOR_CODE,
+          "$gameSelfSwitches.setValue([270, 6, 'D'], true)",
+        );
+        ev.pages[i].list = EventLogicUpdates.messageReplacement(
+          ev.pages[i].list,
+          "Leather Skin",
+          "APT_30_TAXIDERMY_AUDREY_LOOT",
+          "She has found",
+        );
+        const deadPage = ev.pages[4];
+        updateDeadPage(deadPage, "APT_30_TAXIDERMY_AUDREY_LOOT");
+        if (ev.pages.length < 6) {
+          ev.pages.push({
+            ...EMPTY_PAGE,
+            conditions: EventLogicUpdates.buildConditions("D"),
+            image: deadPage.image,
+          });
+        }
+      }
+    }
+
     // spore guardian
     if (lastLoadedMapId == 127 && ev.id == 3) {
       for (let i = 0; i < 2; i++) {
@@ -1875,7 +2076,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
         );
       }
       const deadPage = ev.pages[3];
-      updateDeadPage(ev.pages[3]);
+      updateDeadPage(deadPage, "FUNGUS_SPORE_GUARDIAN_AUDREY_LOOT");
       // override the page that checks if spore mother is dead because we want to remove that condition anyway
       ev.pages[4] = {
         ...EMPTY_PAGE,

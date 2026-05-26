@@ -3136,6 +3136,9 @@ const SAFE_ITEM_OVERRIDES = {
   258: {
     17: "SEWER_SW_SAFE_ITEM",
   },
+  275: {
+    7: "APT_30_NE_SAFE",
+  },
 };
 
 var MassEventUpdates = MassEventUpdates || {};

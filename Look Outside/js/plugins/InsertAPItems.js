@@ -108,7 +108,7 @@ InsertAPItems.insertRecruit = function (name) {
   }
   if (name === "Phillippe") {
     sSw(499, true); // phillippeRecovered = on
-    sSw(319, true); // phillippeRecovered = on
+    sSw(319, true); // philHome = on
     if (gVr(633) <= 24) sVr(633, 24); // philGrowth to max
     // replaces dust cloud with spore cloud
     const philActor = $gameActors.actor(26);
