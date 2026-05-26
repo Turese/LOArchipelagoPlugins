@@ -584,7 +584,7 @@ LookOutsideAPClient.watchLocations = function () {
     if (SELF_SWITCH_LOCATIONS[roomId]) {
       if (SELF_SWITCH_LOCATIONS[roomId][eventId]) {
         const locationId = SELF_SWITCH_LOCATIONS[roomId][eventId][switchId];
-        console.log("SETTING SELF SWITCH LOCATION: ", locationId);
+        if (locationId) console.log("SETTING SELF SWITCH LOCATION: ", locationId);
         if (locationId) {
           LookOutsideAPClient.setLocation(LOCATION_ID_MAPPING[locationId]);
         }
@@ -598,6 +598,8 @@ LookOutsideAPClient.watchLocations = function () {
 
     if (SWITCH_LOCATIONS[switchId]) {
       const locationId = SWITCH_LOCATIONS[switchId];
+      if (locationId) console.log("SETTING SWITCH LOCATION: ", locationId);
+
       if (locationId && value) {
         // make sure the switch is set to true
         LookOutsideAPClient.setLocation(LOCATION_ID_MAPPING[locationId]);
@@ -641,6 +643,7 @@ LookOutsideAPClient.watchLocations = function () {
           return;
       }
       const locationId = LOCATION_ID_MAPPING[location];
+      if (locationId) console.log("SETTING VAR LOCATION: ", locationId);
       LookOutsideAPClient.setLocation(locationId);
     }
 

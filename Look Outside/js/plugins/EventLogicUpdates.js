@@ -753,8 +753,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   leighWillWait();
 
   const recruitLeaveCondition = EventLogicUpdates.buildConditions("D");
-  // for overworld recruits; the switch that makes them leave their spots
-  // if recruited is replaced with self switch D
+  // for overworld recruits; the switch that makes them leave their spots is replaced with their check switch
   function forceRecruitsToStay() {
     // leigh
     if (lastLoadedMapId == 93 && ev.id == 3) {
@@ -814,6 +813,12 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
     //joel
 
     //papineau
+    if (lastLoadedMapId == 60 && ev.id == 9) {
+      if (ev.pages.length > 4) {
+        ev.pages.splice(2, 1); // remove page that checks for recruited papineau
+        // switch 783 (removePapineau) can be used instead
+      }
+    }
   }
   forceRecruitsToStay();
 
@@ -1641,6 +1646,20 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   }
   clearDeadFredDrops();
 
+  function clearKOTDDrop() {
+    if (lastLoadedMapId == 460 && ev.id == 15) {
+      // clear all-seeing-8-ball drop
+      ev.pages[2].list = EventLogicUpdates.itemDropClear(ev.pages[2].list, 126);
+      ev.pages[2].list = EventLogicUpdates.messageReplacement(
+        ev.pages[2].list,
+        "All-Seeing",
+        "GF_KOTD_COMBAT_VICTORY",
+        "Get",
+      );
+    }
+  }
+  clearKOTDDrop();
+
   function fixRoxieRoomItemDoubleEntry() {
     // two of the items in roxie's room in the sewers have two separate pages
     // since theyre different items on hard mode
@@ -1908,7 +1927,26 @@ EventLogicUpdates.clearTroopsDrops = function () {
   }
   clearSpiderRecruitmentEvent();
 
-  function clearPapineauRecruitmentEvent() {}
+  function clearPapineauRecruitmentEvent() {
+    const papineauTroopList = JsonEx.makeDeepCopy(
+      originalTroops[22].pages[0],
+    ).list;
+
+    const papineauRecruitIndex = papineauTroopList.findIndex(
+      (listItem) => listItem.code == 121 && listItem.parameters[0] == 378,
+    );
+
+    if (papineauRecruitIndex !== -1) {
+      papineauTroopList[papineauRecruitIndex] = {
+        code: 355,
+        indent: papineauTroopList[papineauRecruitIndex].indent,
+        parameters: [
+          `sSw(783, true); BattleManager.abort(); this.command115();`,
+        ],
+      };
+    }
+    $dataTroops[22].pages[0].list = papineauTroopList;
+  }
   clearPapineauRecruitmentEvent();
 
   function clearJeannePrizeEvent() {

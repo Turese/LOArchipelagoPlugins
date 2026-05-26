@@ -2976,6 +2976,10 @@ const ROACH_ITEM_OVERRIDES = {
   66: {
     3: "GF_OFFICE_ROACH",
   },
+  60: {
+    7: "GF_JANITOR_NORTH_ROACH_1",
+    8: "GF_JANITOR_NORTH_ROACH_2",
+  },
   59: {
     3: "MUTT_STORAGE_ROACH_1",
     4: "MUTT_STORAGE_ROACH_2",

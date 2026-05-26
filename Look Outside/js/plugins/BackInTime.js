@@ -30,7 +30,7 @@ BackInTime.fixSophieGone = function () {
 };
 
 BackInTime.fixPapKilled = function () {
-  sSw(169, true); // killedpapineau = OFF
+  sSw(169, false); // killedpapineau = OFF
 };
 
 BackInTime.fixLyleKilled = function () {
@@ -292,13 +292,13 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
           code: 401,
           indent: 2,
           parameters: [
-            "but you wish he didn't have to be so dead about it. You close your eyes",
+            "but you wish he didn't have to be so dead about it. You close your",
           ],
         },
         {
           code: 401,
           indent: 2,
-          parameters: ["and vow to do better..."],
+          parameters: ["eyes and vow to do better..."],
         },
         {
           code: 101,

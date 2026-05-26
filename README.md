@@ -70,7 +70,7 @@ Goes through the game's in-map events to remove everything that explicitly grant
     - [x] Aster will only leave after player finishes the recruitment dialogue AND has Aster in their apartment, so they're never blocked from offerings
     - [x] Audrey will only leave after player player finishes the recruitment quest dialogue AND has Audrey in their apartment, so they're never blocked from vending machine purchases
     - [ ] Joel will only leave after player finishes the recruitment dialogue
-    - [ ] Papineau will only leave after player finishes the recruitment dialogue
+    - [x] Papineau will only leave after player finishes the recruitment dialogue
     - [x] Spider will leave after player defeats it in combat; player can return to spider's room whenever
 - [x] fixMaskShadeSpawns - 
     - [x] Stumbling shade on f4 will spawn immediately instead of only when player has Old Tape in their inventory
@@ -113,6 +113,7 @@ Goes through the game's in-map events to remove everything that explicitly grant
 - [x] clearRaftaLetter - remove explicit letter item grant after giving pen and paper to rafta
 - [x] clearOozeMachine - replace all explicit item sales from ooze machine in basement to replace them with locations; allow player to interact with it at any danger level
 - [x] clearDeadFredDrops - remove item drops from killing the facetaker; remove key drops from killing toxic fred or any of his offshoots
+- [x] clearKOTDDrop - remove All-Seeing 8 Ball drop from after defeating the KOTD
 - [x] fixRoxieRoomItemDoubleEntry - fix logic that gives separate item entries in regular/hardmode to the items in the basement sewer room with roxie the dog so they can be randomized
 - [x] clearGrateLever - unjoin the sewer grates going down from the player pulling the level in the boiler beast room
 - [ ] clearAudreyBossDrops - remove explicit item drops from having audrey in the party when defeating certain bosses; allows locations to be triggered when returning to the dead bodies later with Audrey
@@ -144,7 +145,7 @@ Updates events that happen during battle scenes.
 - [x] clearRoachesRecruitmentEvent - clears out switch set that recruits roaches when player sees them in their bathroom
 - [x] clearAsterRecruitmentEvent - short circuits the recruitment event for Aster to set a switch instead of attempt to add him to the party
 - [x] clearSpiderRecruitmentEvent - makes it so spider always thinks the player is pathetic enough to attack no matter what they answer to its questions; short circuits the recruitment event to set a self-switch instead
-- [ ] clearPapineauRecruitmentEvent - short circuits the recruitment event for Papineau to set a switch instead of attempt to add him to the party
+- [x] clearPapineauRecruitmentEvent - short circuits the recruitment event for Papineau to set a switch instead of attempt to add him to the party
 - [x] clearJeannePrizeEvent - clear out elixir prize for killing all hydra heads and 50 dollar reward for returning laundry
 - [x] fixNestorLetterLogic - don't allow player to give letter to Nestor before finishing Rafta's letter writing quest
 - [x] clearSapperDrop - clear gift for interacting with the sapper in the landlord warzone for the first time
