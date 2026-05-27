@@ -50,6 +50,10 @@
       "target": "js/plugins/ToothHelpers.js"
     },
     {
+      "source": "js/plugins/DoorHelpers.js",
+      "target": "js/plugins/DoorHelpers.js"
+    },
+    {
       "source": "js/plugins/EventLogicUpdates.js",
       "target": "js/plugins/EventLogicUpdates.js"
     },
@@ -209,6 +213,12 @@
       "name": "ToothHelpers",
       "status": true,
       "description": "helper function for overriding tooth family events",
+      "parameters": {}
+    },
+    {
+      "name": "DoorHelpers",
+      "status": true,
+      "description": "Helper functions for tracking door encounter locations",
       "parameters": {}
     },
     {

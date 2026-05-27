@@ -18,7 +18,7 @@ UnarmedAndDangerous.applyChanges = function () {
   const MISSING_RIGHT_ARM_SUFFIX = "_MissingRightarm";
   const MISSING_LEFT_ARM_SUFFIX = "_MissingLeftarm";
   const MISSING_BOTH_ARM_SUFFIX = "_MissingBotharm";
-  const MISSING_ARM_SLOT_NAME = "Gnawed Off";
+  const MISSING_ARM_SLOT_NAME = "Randomized";
 
   const ARM_VARIABLE_ID = 187;
   const MISSING_NO_ARM_VALUE = 0;
@@ -1267,12 +1267,14 @@ UnarmedAndDangerous.applyChanges = function () {
   const _actorSlotName = Window_StatusBase.prototype.actorSlotName;
   Window_StatusBase.prototype.actorSlotName = function (actor, index) {
     const defaultSlotName = _actorSlotName.call(this, actor, index);
-    if (
-      actor._actorId == 1 &&
-      gVr(ARM_VARIABLE_ID) == MISSING_BOTH_ARM_VALUE &&
-      (index == 0 || index == 1)
-    ) {
-      return MISSING_ARM_SLOT_NAME;
+    if (actor._actorId == SAM_ACTOR_ID) {
+      const armStatus = gVr(ARM_VARIABLE_ID);
+      if (
+        (armStatus == MISSING_BOTH_ARM_VALUE && (index == 0 || index == 1)) ||
+        (armStatus == MISSING_LEFT_ARM_VALUE && index == 1) ||
+        (armStatus == MISSING_RIGHT_ARM_VALUE && index == 0)
+      )
+        return MISSING_ARM_SLOT_NAME;
     }
     return defaultSlotName;
   };
@@ -1363,6 +1365,7 @@ UnarmedAndDangerous.applyChanges = function () {
 
   const _canEquipWeapon = Game_BattlerBase.prototype.canEquipWeapon;
   Game_BattlerBase.prototype.canEquipWeapon = function (item) {
+    const armStatus = gVr(ARM_VARIABLE_ID);
     if (
       this._actorId == SAM_ACTOR_ID &&
       gVr(ARM_VARIABLE_ID) == MISSING_BOTH_ARM_VALUE
@@ -1376,9 +1379,10 @@ UnarmedAndDangerous.applyChanges = function () {
 
   const _canEquipArmor = Game_BattlerBase.prototype.canEquipArmor;
   Game_BattlerBase.prototype.canEquipArmor = function (item) {
+    const armStatus = gVr(ARM_VARIABLE_ID);
     if (
       this._actorId == SAM_ACTOR_ID &&
-      gVr(ARM_VARIABLE_ID) == MISSING_BOTH_ARM_VALUE &&
+      armStatus == MISSING_BOTH_ARM_VALUE &&
       (item.atypeId == 5 || item.atypeId == 6 || item.atypeId == 7)
     ) {
       // Ash can't have his shotgun either

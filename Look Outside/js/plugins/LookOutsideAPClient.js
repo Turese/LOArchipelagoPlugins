@@ -139,6 +139,32 @@ LookOutsideAPClient.applyOverrides = function () {
     _extractSaveContents.call(this, contents);
   };
 
+  // any of these could play for any game over, but
+  // we can still fit some fun references
+  const DEATH_LINK_PHRASES = [
+    " looked outside.",
+    " looked outside.",
+    " looked outside.", // make the main one slightly more common
+    " has broken every bone in their body!", // curse of broken bones
+    " is dEAD", // glitch death,
+    " has become a mass of wriggling limbs!", // mutation during true final ending
+    "'s mask is cracked...", // indigo mask
+    " is catatonic...", // monty's status
+    " saw it... Did you?", // wounded neighbor quote
+    " broke the promise.",
+    " has transformed into something horrible.", //examining ben quote
+    " is slain!", // enemy battle death message
+    "'s party was defeated.", // player battle death message
+    " was defeated.", // solo game over
+    " has been remade.", // spine
+    " has been given the ultimate smooch.", // visitor smooch mode
+    " was tricked by a hat.", // toxic fred
+    " drank too much black ooze.",
+    " stepped into the sea of worms.", // marshall stage 2
+    " isn't making it to the ritual.",
+    " hugged the Fred Who Bites.",
+  ];
+
   const _Scene_GameoverStart = Scene_Gameover.prototype.start;
   Scene_Gameover.prototype.start = function () {
     _Scene_GameoverStart.call(this);
@@ -148,31 +174,6 @@ LookOutsideAPClient.applyOverrides = function () {
       gettingDeathLink = false;
       return;
     }
-
-    // any of these could play for any game over, but
-    // we can still fit some fun references
-    const DEATH_LINK_PHRASES = [
-      " looked outside.",
-      " looked outside.",
-      " looked outside.", // make the main one slightly more common
-      " has broken every bone in their body!", // curse of broken bones
-      " is dEAD", // glitch death,
-      " has become a mass of wriggling limbs!", // mutation during true final ending
-      "'s mask is cracked...", // indigo mask
-      " is catatonic...", // monty's status
-      " saw it... Did you?", // wounded neighbor quote
-      " broke the promise.",
-      " has transformed into something horrible.", //examining ben quote
-      " is slain!", // enemy battle death message
-      "'s party was defeated.", // player battle death message
-      " has been remade.", // spine
-      " has been given the ultimate smooch.", // visitor smooch mode
-      " was tricked by a hat.", // toxic fred
-      " drank too much black ooze.",
-      " stepped into the sea of worms.", // marshall stage 2
-      " isn't making it to the ritual.",
-      " hugged the Fred Who Bites.",
-    ];
 
     if (client.authenticated) {
       const playerName = client.players.self.alias;
@@ -184,6 +185,7 @@ LookOutsideAPClient.applyOverrides = function () {
 
       const phrase = `${playerName}${message}`;
 
+      console.log("SENDING DEATH LINK: ", phrase);
       client.deathLink.sendDeathLink(playerName, phrase);
     }
   };
@@ -571,13 +573,27 @@ LookOutsideAPClient.reportLocations = function () {
     client.check(...Object.keys(reachedLocations).map(Number));
 };
 
-LookOutsideAPClient.setLocation = function (locationId) {
+LookOutsideAPClient.setLocation = function (locationName) {
+  const locationId = LOCATION_ID_MAPPING[locationName];
+  if (!locationId) return;
   const reachedLocations = LookOutsideAPClient.initializeLocationObject();
   if (!reachedLocations[locationId]) {
     reachedLocations[locationId] = true;
   }
+  if (IMPLIED_LOCATIONS[locationName]) {
+    for (impliedLocation of IMPLIED_LOCATIONS[locationName]) {
+      reachedLocations[LOCATION_ID_MAPPING[impliedLocation]] = true;
+    }
+  }
   LookOutsideAPClient.reportLocations();
 };
+
+LookOutsideAPClient.isLocationSet = function (locationName) {
+  const reachedLocations = LookOutsideAPClient.initializeLocationObject();
+
+  return !!reachedLocations[LOCATION_ID_MAPPING[locationName]]
+}
+
 
 LookOutsideAPClient.watchLocations = function () {
   _setSelfSwitchValue = Game_SelfSwitches.prototype.setValue;
@@ -592,7 +608,7 @@ LookOutsideAPClient.watchLocations = function () {
         if (locationId)
           console.log("SETTING SELF SWITCH LOCATION: ", locationId);
         if (locationId) {
-          LookOutsideAPClient.setLocation(LOCATION_ID_MAPPING[locationId]);
+          LookOutsideAPClient.setLocation(locationId);
         }
       }
     }
@@ -608,14 +624,7 @@ LookOutsideAPClient.watchLocations = function () {
 
       if (locationId && value) {
         // make sure the switch is set to true
-        LookOutsideAPClient.setLocation(LOCATION_ID_MAPPING[locationId]);
-        if (IMPLIED_LOCATIONS[locationId]) {
-          for (impliedLocationId of IMPLIED_LOCATIONS[locationId]) {
-            LookOutsideAPClient.setLocation(
-              LOCATION_ID_MAPPING[impliedLocationId],
-            );
-          }
-        }
+        LookOutsideAPClient.setLocation(locationId);
       }
     }
   };
@@ -648,9 +657,8 @@ LookOutsideAPClient.watchLocations = function () {
           throw new Error("ERROR: CAN'T FIND RELATION ON SWITCH");
           return;
       }
-      const locationId = LOCATION_ID_MAPPING[location];
-      if (locationId) console.log("SETTING VAR LOCATION: ", locationId);
-      LookOutsideAPClient.setLocation(locationId);
+      if (location) console.log("SETTING VAR LOCATION: ", location);
+      LookOutsideAPClient.setLocation(location);
     }
 
     if (Array.isArray(variableMapping)) {

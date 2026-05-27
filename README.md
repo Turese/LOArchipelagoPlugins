@@ -58,6 +58,8 @@ Changes applied on new game start.
 
 Goes through the game's in-map events to remove everything that explicitly grants an item to the player.
 
+- [ ] doorEncounterPicker (WIP) - update the tester event that forces door encounters to be usable and AP friendly
+- [x] Updates the door event to, when the player kills whatever the current door encounter is, to check that location
 - [x] fixWoundedManDoor - removes door logic that locks player out of the intro fight when they have no equipment on explorer and survivor mode
 - [x] fixElevatorButtons - allows player to travel to floor 4 without needing to play the elevator game first
 - [x] leighRematch - if the player didn't defeat the grinning beast after picking up the apt. 21 key location, allows them to retrigger the chase sequence by standing where the item once was
@@ -179,6 +181,16 @@ Updates events that happen during battle scenes.
 - [ ] clearLyleTrades
 - [ ] clearBenPlayPrizes - clear out gifts from being a good to great playmate with Ben
 
+## EventLogicUpdates.clearDoorEncounterDrops
+
+Troops updates for door encounters specifically; separated only for organizational purposes
+
+- [x] clearPierreDoorMail - clears the Old Mail item Pierre gives the player when arriving after their first conversation
+- [x] clearSophieDoorRecruit 
+- [x] clearHellenDoorRecruit
+- [x] clearXariaMontgomeryDoorRecruit
+
+
 ### EventLogicUpdates.clearCommonEventDrops
 
 fixes event items granted from common events
@@ -191,6 +203,8 @@ fixes event items granted from common events
 - [x] clearAudreyGiftsRecruit - update's Audrey's recruitment event; clears out energy drink gift, and short circuits recruit event to set a switch instead of adding her to party
 - [x] clearCarPrizeEvent - clears out items granted from opening car trunk after using electronic key
 - [x] updateAsterOfferings - fixes how the "correctness" of photograph offerings is calculated, allowing player to have an incorrect and correct photograph at the same time as distinct inventory items
+- [ ] lockpicksNeverBreak - make lockpicks never break
+- [ ] kaeleyLovesLockpicks - make Kaeley not get mad when player picks locks in her game
 
 # MassEventUpdates.js
 

@@ -2719,6 +2719,10 @@ const TRASH_CAN_ITEM_OVERRIDES = {
     17: ["RAT_APT_TRASH", "$gameSelfSwitches.setValue([100, 17, 'A'], true)"],
   },
 
+  98: {
+    9: ["AURELIUS_TRASH", "$gameSelfSwitches.setValue([98, 9, 'A'], true)"],
+  },
+
   54: {
     31: [
       "GF_MENS_BATHROOM_TRASH",

@@ -327,6 +327,7 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
       ],
     },
     joelDead: {
+      rName: "Joel.",
       rCondition: BackInTime.isJoelDead,
       rFunction: "BackInTime.fixJoelKilled",
       rText: [
@@ -991,7 +992,7 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
       ],
     },
     eugeneKilled: {
-      rName: "(([!s[789]]))Eugene.",
+      rName: "(([!s[168]]))Eugene.",
       rFunction: "BackInTime.fixEugeneKilled",
       rText: [
         {
@@ -1153,7 +1154,7 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
       ],
     },
     jeanneMutated: {
-      rName: "(([s[746];v[583]>=20]))Jeanne.",
+      rName: "(([s[746];v[583]<20]))Jeanne.",
       rFunction: "BackInTime.revertJeannePhase",
       rText: [
         {

@@ -540,7 +540,8 @@ EventLogicUpdates.applyIntroClears = function (lastLoadedMapId) {
             // remove the explicit drops of the 3 video games
             // the starting food and soap and toothpaste can stay
             return ![413, 417, 421].includes(listItem.parameters[0]);
-          if (listItem.code === 122) return listItem.parameters[0] !== 41; // don't set video game count var=41 either
+          if (listItem.code === SET_VAR_CODE)
+            return listItem.parameters[0] !== 41; // don't set video game count var=41 either
           return listItem.code !== 230; // remove the 60 frame waits for good measure
         });
         startingpage.list = newList;
@@ -608,6 +609,8 @@ EventLogicUpdates.applyIntroClears = function (lastLoadedMapId) {
 const ITEM_CODE = 126;
 const WEAPON_CODE = 127;
 const ARMOR_CODE = 128;
+const SET_SWITCH_CODE = 121;
+const SET_VAR_CODE = 122;
 
 //codes:
 //126 = item drop
@@ -657,6 +660,37 @@ EventLogicUpdates.messageReplacement = function (
 };
 
 EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
+  function doorEncounterPicker() {
+    if (lastLoadedMapId == 3 && ev.id == 17) {
+      ev.pages[0].conditions = EventLogicUpdates.buildConditions();
+    }
+  }
+  doorEncounterPicker();
+
+  function doorCombatChecker() {
+    if (lastLoadedMapId == 3 && ev.id == 9) {
+      // 601 - the if condition if the player won the previous encounter
+      const winEncounterIndex = ev.pages[1].list.findIndex(
+        (listItem) => listItem.code == 601,
+      );
+      // this can run on dataMap multiple times, so we need to
+      // ensure we don't add multiple calls
+      const processVictory = ev.pages[1].list.find(
+        (listItem) =>
+          listItem.code == 355 &&
+          listItem.parameters[0] == "DoorHelpers.processDoorVictory();",
+      );
+      if (winEncounterIndex !== -1 && !processVictory) {
+        ev.pages[1].list.splice(winEncounterIndex, 0, {
+          code: 355,
+          indent: ev.pages[1].list[winEncounterIndex].indent + 1,
+          parameters: ["DoorHelpers.processDoorVictory();"],
+        });
+      }
+    }
+  }
+  doorCombatChecker();
+
   function fixWoundedManDoor() {
     if (lastLoadedMapId === 23 && ev.id === 40) {
       ev.pages[1].conditions = ev.pages[0].conditions;
@@ -767,7 +801,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
     if (lastLoadedMapId == 186) {
       if (ev.id == 5 || ev.id == 3 || ev.id == 2) {
         ev.pages[0].list = ev.pages[0].list.filter(
-          (listEntry) => listEntry.code !== 121,
+          (listEntry) => listEntry.code !== SET_SWITCH_CODE,
         );
       }
     }
@@ -946,7 +980,8 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
       const screamatoriumEvent = ev;
       const filteredList = screamatoriumEvent.pages[0].list.filter(
         (listItem) => {
-          if (listItem.code === 122) return listItem.parameters[0] !== 41; // don't set video game count var=41
+          if (listItem.code === SET_VAR_CODE)
+            return listItem.parameters[0] !== 41; // don't set video game count var=41
           return listItem.code !== ITEM_CODE; // dont add screamatorium to inventory
         },
       );
@@ -1043,7 +1078,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
       // instead of grant item, set custom check switch
       if (negativeDiscGrantEventIndex !== -1) {
         filteredList[negativeDiscGrantEventIndex] = {
-          code: 121,
+          code: SET_SWITCH_CODE,
           indent: 2,
           parameters: [
             APT_31_TELESCOPE_DISC_EXPOSURE_SWITCH,
@@ -1177,7 +1212,8 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
 
       // make sure we dont update what's on the photograph when doing this
       projectorList = projectorList.filter(
-        (listItem) => !(listItem.code == 122 && listItem.parameters[0] == 245),
+        (listItem) =>
+          !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 245),
       );
 
       // the first instance should be when player placed photo paper
@@ -1306,7 +1342,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
     // the elevator access switch is also used to tell whether the freak is dead; lets change it to a self switch
     if (lastLoadedMapId === 74 && ev.id === 3) {
       victorySwitchIdx = ev.pages[0].list.findIndex(
-        (listItem) => listItem.code == 121,
+        (listItem) => listItem.code == SET_SWITCH_CODE,
       );
       if (victorySwitchIdx !== -1) {
         ev.pages[0].list[victorySwitchIdx] = {
@@ -1318,7 +1354,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
       }
       // also clear out the power outage effect; player should trigger this manually
       ev.pages[0].list = ev.pages[0].list.filter(
-        (listItem) => !(listItem.code == 122 && parameters[0] == 736),
+        (listItem) => !(listItem.code == SET_VAR_CODE && parameters[0] == 736),
       );
     }
   }
@@ -1418,7 +1454,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
     if (lastLoadedMapId === 118 && ev.id === 5) {
       // remove where it sets the manuscriptfull switch
       const completeManuscriptIndex = ev.pages[0].list.findIndex(
-        (listItem) => listItem.code == 121,
+        (listItem) => listItem.code == SET_SWITCH_CODE,
       );
       if (completeManuscriptIndex !== -1) {
         ev.pages[0].list[completeManuscriptIndex] = {
@@ -1448,7 +1484,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
     if (lastLoadedMapId === 101 && ev.id === 5) {
       // find where it sets the switch ratChasePrime
       const ratChaseTriggerIndex = ev.pages[0].list.findIndex(
-        (listItem) => listItem.code == 121,
+        (listItem) => listItem.code == SET_SWITCH_CODE,
       );
 
       if (ratChaseTriggerIndex !== -1) {
@@ -1572,7 +1608,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   clearErnestCheeseStash();
 
   function clearRoachQuestPrize() {
-    if (lastLoadedMapId === 3 && ev.id === 121) {
+    if (lastLoadedMapId === 3 && ev.id === SET_SWITCH_CODE) {
       ev.pages[2].list = EventLogicUpdates.itemDropClear(
         ev.pages[2].list,
         ARMOR_CODE,
@@ -1678,7 +1714,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
         // dont let his state get set to 99
         page.list = page.list.filter(
           (listItem) =>
-            !(listItem.code == 122 && listItem.parameters[0] == 300),
+            !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 300),
         );
       });
     }
@@ -2135,6 +2171,8 @@ EventLogicUpdates.clearTroopsDrops = function () {
     troopsUpdated = true;
   }
 
+  EventLogicUpdates.clearDoorEncounterDrops();
+
   function clearPierreGifts() {
     const pierreTroop = JsonEx.makeDeepCopy(originalTroops[19]);
 
@@ -2208,13 +2246,15 @@ EventLogicUpdates.clearTroopsDrops = function () {
 
     // remove the explicit recruit check variable setting
     maskedShadowTroopList = maskedShadowTroopList.filter(
-      (listItem) => !(listItem.code == 121 && listItem.parameters[0] === 27),
+      (listItem) =>
+        !(listItem.code == SET_SWITCH_CODE && listItem.parameters[0] === 27),
     );
 
     // set chosen gift to always be 1 to make it
     // easier to overwrite that event as well
     const shadowGiftPickingIndex = maskedShadowTroopList.findIndex(
-      (listItem) => listItem.code === 122 && listItem.parameters[0] === 155,
+      (listItem) =>
+        listItem.code === SET_VAR_CODE && listItem.parameters[0] === 155,
     );
 
     if (shadowGiftPickingIndex !== -1)
@@ -2228,7 +2268,7 @@ EventLogicUpdates.clearTroopsDrops = function () {
 
     // for good measure im removing the code that makes shadow stop coming around when you attack it
     $dataTroops[18].pages[1].list = maskedShadowTroop.pages[1].list.filter(
-      (listItem) => listItem.code !== 121,
+      (listItem) => listItem.code !== SET_SWITCH_CODE,
     );
   }
   clearMaskedShadowEncounters();
@@ -2251,7 +2291,8 @@ EventLogicUpdates.clearTroopsDrops = function () {
 
     // make the recruit option hit self switch instead, and then end there.
     const leighRecruitIndex = leighTroopList.findIndex(
-      (listEntry) => listEntry.code == 121 && listEntry.parameters[0] == 34,
+      (listEntry) =>
+        listEntry.code == SET_SWITCH_CODE && listEntry.parameters[0] == 34,
     );
     if (leighRecruitIndex !== -1)
       leighTroopList[leighRecruitIndex] = {
@@ -2275,7 +2316,8 @@ EventLogicUpdates.clearTroopsDrops = function () {
     // clear out the part that sets roaches as a recruit;
     // we can already use roach event >= 40 as the location check
     $dataTroops[279].pages[0].list = roachTroopList.filter(
-      (listEntry) => !(listEntry.code == 121 && listEntry.parameters[0] == 249),
+      (listEntry) =>
+        !(listEntry.code == SET_SWITCH_CODE && listEntry.parameters[0] == 249),
     );
   }
   clearRoachesRecruitmentEvent();
@@ -2305,7 +2347,8 @@ EventLogicUpdates.clearTroopsDrops = function () {
 
     // find where pity is initialized to 0 and set it to 99
     spiderInterviewList.find(
-      (listItem) => listItem.code == 122 && listItem.parameters[0] == 787,
+      (listItem) =>
+        listItem.code == SET_VAR_CODE && listItem.parameters[0] == 787,
     ).parameters[4] = 99;
 
     $dataTroops[359].pages[1].list = spiderInterviewList;
@@ -2315,7 +2358,8 @@ EventLogicUpdates.clearTroopsDrops = function () {
     );
 
     const spiderRecruitIndex = spiderRecruitList.findIndex(
-      (listItem) => listItem.code == 121 && listItem.parameters[0] == 375,
+      (listItem) =>
+        listItem.code == SET_SWITCH_CODE && listItem.parameters[0] == 375,
     );
 
     if (spiderRecruitIndex !== -1) {
@@ -2338,7 +2382,8 @@ EventLogicUpdates.clearTroopsDrops = function () {
     ).list;
 
     const papineauRecruitIndex = papineauTroopList.findIndex(
-      (listItem) => listItem.code == 121 && listItem.parameters[0] == 378,
+      (listItem) =>
+        listItem.code == SET_SWITCH_CODE && listItem.parameters[0] == 378,
     );
 
     if (papineauRecruitIndex !== -1) {
@@ -2490,7 +2535,8 @@ EventLogicUpdates.clearTroopsDrops = function () {
     // make nestor go to rafta even if you dont make a good case
     // filter out all places where we set nestorstate and then force state = 10 (he goes to rafta)
     nestorTroopList = nestorTroopList.filter(
-      (listItem) => !(listItem.code == 122 && listItem.parameters[0] == 281),
+      (listItem) =>
+        !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 281),
     );
     if (turnInLetterIndex) {
       nestorTroopList.splice(turnInLetterIndex, 0, {
@@ -2608,7 +2654,8 @@ EventLogicUpdates.clearTroopsDrops = function () {
     // dont set the deadfred count when you speak to him first because
     // you could undo progress
     faceTakerTroopList = faceTakerTroopList.filter(
-      (listItem) => !(listItem.code == 122 && listItem.parameters[0] == 306),
+      (listItem) =>
+        !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 306),
     );
 
     // clear all item drops
@@ -2786,6 +2833,93 @@ EventLogicUpdates.clearTroopsDrops = function () {
   clearBenPlayPrizes();
 };
 
+EventLogicUpdates.clearDoorEncounterDrops = function () {
+  function clearPierreDoorMail() {
+    let pierreTroopList = JsonEx.makeDeepCopy(originalTroops[80].pages[0].list);
+
+    // replace mail drop
+    pierreTroopList = EventLogicUpdates.messageReplacement(
+      pierreTroopList,
+      "Old Mail",
+      "DOOR_PIERRE_GIFT",
+      "Receive",
+    );
+    pierreTroopList = EventLogicUpdates.itemDropClear(
+      pierreTroopList,
+      ITEM_CODE,
+    );
+    $dataTroops[80].pages[0].list = pierreTroopList;
+  }
+  clearPierreDoorMail();
+
+  function clearGenericDoorRecruit(index) {
+    const recruitTroopList = JsonEx.makeDeepCopy(
+      originalTroops[index].pages[0].list,
+    );
+
+    // the first thing recruiting does is add 1 to the people in apt count; overwrite this part
+    const addRecruitCountIndex = recruitTroopList.findIndex(
+      (listItem) =>
+        listItem.code == SET_VAR_CODE && listItem.parameters[0] == 37,
+    );
+    if (addRecruitCountIndex !== -1)
+      recruitTroopList[addRecruitCountIndex] = {
+        code: 355,
+        indent: recruitTroopList[addRecruitCountIndex].indent,
+        parameters: [
+          "sSw(24, false); DoorHelpers.processDoorRecruit(); BattleManager.abort(); this.command115();",
+        ],
+      };
+    $dataTroops[index].pages[0].list = recruitTroopList;
+  }
+
+  function clearSophieDoorRecruit() {
+    clearGenericDoorRecruit(63);
+  }
+  clearSophieDoorRecruit();
+  function clearHellenDoorRecruit() {
+    clearGenericDoorRecruit(58);
+  }
+  clearHellenDoorRecruit();
+  function clearDanDoorRecruit() {
+    clearGenericDoorRecruit(56);
+  }
+  clearDanDoorRecruit();
+
+  // xaria and montgomery are different; the code sets either goth state or their recruit switch,
+  // and has multiple dialogue options
+  function clearXariaMontgomeryDoorRecruit() {
+    const gothTroopList = JsonEx.makeDeepCopy(originalTroops[60].pages[0].list);
+
+    for (let i = 0; i < gothTroopList.length; i++) {
+      const listItem = gothTroopList[i];
+      // adding them to apt
+      if (listItem.code == SET_SWITCH_CODE && listItem.parameters[0] == 363) {
+        gothTroopList[i] = {
+          code: 355,
+          indent: listItem.indent,
+          parameters: [
+            "sSw(24, false); DoorHelpers.processDoorRecruit(); BattleManager.abort(); this.command115();",
+          ],
+        };
+      }
+      // sets gothState
+      if (listItem.code == SET_VAR_CODE && listItem.parameters[0] == 298) {
+        gothTroopList[i] = {
+          code: 355,
+          indent: listItem.indent,
+          parameters: [
+            "sSw(24, false); DoorHelpers.processDoorRecruit(); BattleManager.abort(); this.command115();",
+          ],
+        };
+      }
+    }
+
+    $dataTroops[60].pages[0].list = gothTroopList;
+  }
+  clearXariaMontgomeryDoorRecruit();
+};
+
 let commonEventsUpdated = false;
 let originalCommonEvents;
 EventLogicUpdates.clearCommonEventDrops = function () {
@@ -2930,7 +3064,8 @@ EventLogicUpdates.clearCommonEventDrops = function () {
         APT_33_RECRUIT_PHILLIPPE_SWITCH;
 
     const philHomeSetIndex = returnHomeEventList.findIndex(
-      (listItem) => listItem.code == 121 && listItem.parameters[0] == 499,
+      (listItem) =>
+        listItem.code == SET_SWITCH_CODE && listItem.parameters[0] == 499,
     );
     if (philHomeSetIndex !== -1) {
       // code 121 includes switch on first and second index
@@ -3140,4 +3275,10 @@ EventLogicUpdates.clearCommonEventDrops = function () {
     $dataCommonEvents[265].list = asterOfferingReturnEventList;
   }
   updateAsterOfferings();
+
+  function lockpicksNeverBreak() {}
+  lockpicksNeverBreak();
+
+  function kaeleyLovesLockpicks() {}
+  kaeleyLovesLockpicks();
 };

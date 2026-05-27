@@ -590,7 +590,6 @@ class DeathLinkManager extends EventBasedManager {
       throw new UnauthenticatedError("Cannot send death links before connecting and authenticating.");
     }
     if (!this.enabled) {
-      console.log(this.enabled)
       return;
     }
     this.#lastDeath = Math.ceil(Date.now() / 1000);
