@@ -565,6 +565,9 @@ EventLogicUpdates.initializeAPVariables = function () {
   interactionArray[4] = 4; // finished with joel's interactions
 
   sVr(397, interactionArray);
+
+  // re-setup door encounters with slot data
+  setupDoorEncounters();
 };
 
 EventLogicUpdates.applyIntroClears = function (lastLoadedMapId) {
@@ -707,6 +710,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
       DoorHelpers.setRemainingEncounterVars();
       ev.pages[0].conditions = EventLogicUpdates.buildConditions();
       ev.pages[0].list = DoorHelpers.buildEncounterPickerEventPage();
+      ev.pages[0].directionFix = true;
     }
   }
   doorEncounterPicker();

@@ -20,6 +20,10 @@ Creates an event activated by the calendar in the player's bedroom that undoes e
 
 Creates an event activated by the clock in the player's living room that allows players to adjust the current time of day.
 
+## DoorHelpers.js
+
+Manages tracking what door encounters player already has locations for; resets encounter pool regularly, and adds an event to the player's livingroom allowing them to summon any specific encounter to the door so long as they don't have all the locations for that encounter.
+
 ### Features:
 
 - [x] Ability to set current day 1-15

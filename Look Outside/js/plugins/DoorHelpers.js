@@ -181,9 +181,12 @@ var DoorHelpers = DoorHelpers || {};
 DoorHelpers.playerNeedsEncounter = function (encounterId) {
   // player should always have access to the merchants
   if (PERMA_ALLOWED_IDS.has(encounterId)) return true;
-  if ($gamePlayer) return true;
+  if (!$gamePlayer) return true;
   const slotData = $gamePlayer.slotData;
-  // if (!slotdata.randomize_door_encounters) return false;
+  if (!slotData) return true;
+
+  console.log(slotData);
+  //if (!slotData.randomize_door_encounters) return false;
   const combatToCheck = slotData.friendly_fire
     ? DOOR_ENCOUNTER_VICTORY_MAPPING
     : DOOR_REGULAR_ENCOUNTER_VICTORY_MAPPING;
@@ -217,6 +220,7 @@ DoorHelpers.playerNeedsEncounter = function (encounterId) {
 DoorHelpers.processDoorVictory = function () {
   const currentCombatVictory = gVr(51);
   const locationId = DOOR_ENCOUNTER_VICTORY_MAPPING[currentCombatVictory];
+  console.log("Processing door victory: ", locationId);
 
   if (!locationId) {
     console.warn(
@@ -225,6 +229,8 @@ DoorHelpers.processDoorVictory = function () {
     return;
   }
   LookOutsideAPClient.setLocation(locationId);
+  // resetup door encounters based on what player needs checks for
+  setupDoorEncounters();
   // gives a check after defeating the current door encounter
 };
 
@@ -240,6 +246,8 @@ DoorHelpers.processDoorRecruit = function () {
     return;
   }
   LookOutsideAPClient.setLocation(locationId);
+  // resetup door encounters based on what player needs checks for
+  setupDoorEncounters();
   // gives a check after defeating the current door encounter
 };
 
@@ -264,10 +272,11 @@ DoorHelpers.processDoorEvent = function (index = 0) {
   }
 
   LookOutsideAPClient.setLocation(doorEvents[index]);
+  // resetup door encounters based on what player needs checks for
+  setupDoorEncounters();
 };
 
 DoorHelpers.buildEncounterOptions = function (encounterArray) {
-  console.log(encounterArray);
   const createOption = (option, index) => {
     return [
       {
@@ -405,7 +414,11 @@ DoorHelpers.buildEncounterPickerEventPage = function () {
       code: 102,
       indent: 0,
       parameters: [
-        ["Normal encounter.", "Cursed encounter.", "No."],
+        [
+          `<<[v[${REMAINING_REGULAR_VAR}]=0]>>Normal encounter.`,
+          `<<[v[${REMAINING_CURSED_VAR}]=0]>>Cursed encounter.`,
+          "No.",
+        ],
         2,
         2,
         2,
@@ -415,13 +428,19 @@ DoorHelpers.buildEncounterPickerEventPage = function () {
     {
       code: 402,
       indent: 0,
-      parameters: [0, "Normal encounter."],
+      parameters: [0, `<<[v[${REMAINING_REGULAR_VAR}]=0]>>Normal encounter.`],
     },
     {
       code: 102,
       indent: 1,
       parameters: [
-        ["Traders.", "Rare Traders.", "Recruits.", "General.", "Never mind."],
+        [
+          `<<[v[${REMAINING_DOOR_TRADERS_VAR}]=0]>>Traders.`,
+          `<<[v[${REMAINING_DOOR_RARE_TRADERS_VAR}]=0]>>Rare Traders.`,
+          `<<[v[${REMAINING_DOOR_RECRUITS_VAR}]=0]>>Recruits.`,
+          `<<[v[${REMAINING_DOOR_GENERAL_VAR}]=0]>>General.`,
+          "Never mind.",
+        ],
         4,
         4,
         2,
@@ -431,25 +450,28 @@ DoorHelpers.buildEncounterPickerEventPage = function () {
     {
       code: 402,
       indent: 1,
-      parameters: [0, "Traders."],
+      parameters: [0, `<<[v[${REMAINING_DOOR_TRADERS_VAR}]=0]>>Traders.`],
     },
     ...DoorHelpers.buildEncounterOptions(remainingDoorTraderArray),
     {
       code: 402,
       indent: 1,
-      parameters: [1, "Rare Traders."],
+      parameters: [
+        1,
+        `<<[v[${REMAINING_DOOR_RARE_TRADERS_VAR}]=0]>>Rare Traders.`,
+      ],
     },
     ...DoorHelpers.buildEncounterOptions(remainingDoorRareTraderArray),
     {
       code: 402,
       indent: 1,
-      parameters: [2, "Recruits."],
+      parameters: [2, `<<[v[${REMAINING_DOOR_RECRUITS_VAR}]=0]>>Recruits.`],
     },
     ...DoorHelpers.buildEncounterOptions(remainingDoorRecruitArray),
     {
       code: 402,
       indent: 1,
-      parameters: [3, "General."],
+      parameters: [3, `<<[v[${REMAINING_DOOR_GENERAL_VAR}]=0]>>General.`],
     },
     ...DoorHelpers.buildEncounterOptions(remainingDoorGeneralArray),
     {
@@ -480,16 +502,16 @@ DoorHelpers.buildEncounterPickerEventPage = function () {
     {
       code: 402,
       indent: 0,
-      parameters: [1, "Cursed encounter."],
+      parameters: [1, `<<[v[${REMAINING_CURSED_VAR}]=0]>>Cursed encounter.`],
     },
     {
       code: 102,
       indent: 1,
       parameters: [
         [
-          "Cursed Traders.",
-          "Cursed general.",
-          "Cursed Recruits.",
+          `<<[v[${REMAINING_DOOR_CURSED_TRADERS_VAR}]=0]>>Cursed Traders.`,
+          `<<[v[${REMAINING_DOOR_CURSED_GENERAL_VAR}]=0]>>Cursed general.`,
+          `<<[v[${REMAINING_DOOR_CURSED_RECRUITS_VAR}]=0]>>Cursed Recruits.`,
           "Never mind.",
         ],
         3,
@@ -501,19 +523,28 @@ DoorHelpers.buildEncounterPickerEventPage = function () {
     {
       code: 402,
       indent: 1,
-      parameters: [0, "Cursed Traders."],
+      parameters: [
+        0,
+        `<<[v[${REMAINING_DOOR_CURSED_TRADERS_VAR}]=0]>>Cursed Traders.`,
+      ],
     },
     ...DoorHelpers.buildEncounterOptions(remainingDoorCursedTraderArray),
     {
       code: 402,
       indent: 1,
-      parameters: [1, "Cursed general."],
+      parameters: [
+        1,
+        `<<[v[${REMAINING_DOOR_CURSED_GENERAL_VAR}]=0]>>Cursed general.`,
+      ],
     },
     ...DoorHelpers.buildEncounterOptions(remainingDoorCursedGeneralArray),
     {
       code: 402,
       indent: 1,
-      parameters: [2, "Cursed Recruits."],
+      parameters: [
+        2,
+        `<<[v[${REMAINING_DOOR_CURSED_RECRUITS_VAR}]=0]>>Cursed Recruits.`,
+      ],
     },
     ...DoorHelpers.buildEncounterOptions(remainingDoorCursedRecruitArray),
     {
@@ -577,4 +608,67 @@ DoorHelpers.buildEncounterPickerEventPage = function () {
       parameters: [],
     },
   ];
+};
+
+// override the setup function from bunchastuff
+setupDoorEncounters = function () {
+  // the way cursed encounters are set up is a little weird
+  // where we add 200 to the regular encounter id
+  // so im setting it up this way
+
+  sVr(
+    164,
+    shuffleArray(
+      [50, 51, 52, 53, 54, 55].filter(
+        (id) =>
+          DoorHelpers.playerNeedsEncounter(id) ||
+          DoorHelpers.playerNeedsEncounter(id + 200),
+      ),
+    ),
+  );
+  sVr(
+    165,
+    shuffleArray([49, 57, 59, 61, 64, 68, 71, 73]).filter(
+      (id) =>
+        DoorHelpers.playerNeedsEncounter(id) ||
+        DoorHelpers.playerNeedsEncounter(id + 200),
+    ),
+  );
+  sVr(
+    166,
+    shuffleArray(
+      [56, 58, 60, 63].filter(
+        (id) =>
+          DoorHelpers.playerNeedsEncounter(id) ||
+          DoorHelpers.playerNeedsEncounter(id + 200),
+      ),
+    ),
+  );
+  sVr(
+    170,
+    shuffleArray(
+      [56, 58, 60, 63].filter(
+        (id) =>
+          DoorHelpers.playerNeedsEncounter(id) ||
+          DoorHelpers.playerNeedsEncounter(id + 200),
+      ),
+    ),
+  );
+
+  arr = [47, 48, 70, 72]; ///47-Mystery Trader ,48-Curio ,70-Humphrey, 72-Craftsman
+  arr = shuffleArray(arr);
+  sVr(170, arr);
+  sVr(
+    167,
+    [
+      0, 1, 0, 1, 2, 3, 1, 0, 1, 2, 0, 1, 0, 1, 2, 3, 1, 0, 1, 2, 0, 1, 0, 1, 2,
+      3, 1, 0, 1, 2, 0, 1, 0, 1, 2, 3, 1, 0, 1, 2, 0, 1, 0, 1, 2, 3, 1, 0, 1, 2,
+      0, 1, 0, 1, 2, 3, 1, 0, 1, 2, 0, 1, 0, 1, 2,
+    ],
+  );
+
+  sVr(
+    168,
+    [47, 49, 50, 51, 52, 53, 54, 56, 57, 58, 59, 60, 61, 63, 64, 68, 71],
+  );
 };
