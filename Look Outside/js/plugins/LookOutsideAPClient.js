@@ -129,6 +129,12 @@ LookOutsideAPClient.applyOverrides = function () {
     if (object === $dataSystem) {
       InsertAPItems.updateWeapontypes();
     }
+    if (object === $dataSystem) {
+      // increase gameVariables length
+      while ($dataSystem.variables.length <= 1040) {
+        $dataSystem.variables.push("");
+      }
+    }
     _dataManagerOnLoad.call(this, object);
   };
 
@@ -216,12 +222,16 @@ LookOutsideAPClient.updateDeathLink = function (slotData) {
 };
 
 // immediate save file changes according to slot data
-// currently we only have rat baby name
+
 LookOutsideAPClient.makeSlotDataChanges = function () {
   if (!$gamePlayer || !$gamePlayer.slotData) return;
   const slotData = $gamePlayer.slotData;
   if (slotData["rat_baby_name"])
     InsertAPItems.setRatBabyName(slotData["rat_baby_name"]);
+
+  if (slotData["allow_killing_shopkeepers"])
+    sSw(CAN_KILL_SHOPKEEPERS_SWITCH, true);
+  else sSw(CAN_KILL_SHOPKEEPERS_SWITCH, false);
 };
 
 // the games colors for reference:

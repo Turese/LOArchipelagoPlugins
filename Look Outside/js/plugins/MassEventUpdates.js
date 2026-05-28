@@ -1007,7 +1007,7 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   136: {
     7: [
       "APT_28_MIDNIGHT_VALVE",
-      "$gameSelfSwitches.setValue([136, 7, 'A'], true)",
+      "$gameSelfSwitches.setValue([136, 7, 'A'], true); sSw(469, true);", // in-game, having midnight valve activates the piranhas
     ],
   },
 

@@ -8,6 +8,26 @@
  * @help
  */
 
+Game_Variables.prototype.setValue = function (variableId, value) {
+  // new upper limit
+  if (variableId <= 2029 && variableId >= 0) {
+    this._data[variableId] = value;
+    this.onChange();
+  }
+};
+
+const REMAINING_DOOR_TRADERS_VAR = 2021;
+const REMAINING_DOOR_RARE_TRADERS_VAR = 2022;
+const REMAINING_DOOR_RECRUITS_VAR = 2023;
+const REMAINING_DOOR_GENERAL_VAR = 2024;
+
+const REMAINING_DOOR_CURSED_GENERAL_VAR = 2025;
+const REMAINING_DOOR_CURSED_TRADERS_VAR = 2026;
+const REMAINING_DOOR_CURSED_RECRUITS_VAR = 2027;
+
+const REMAINING_REGULAR_VAR = 2028;
+const REMAINING_CURSED_VAR = 2029;
+
 const DOOR_TRADERS = {
   50: "General Trader",
   51: "Food Trader",
@@ -42,22 +62,39 @@ const DOOR_GENERAL = {
   73: "Kind-Faced Man",
 };
 
-const DOOR_CURSED = {
+const DOOR_CURSED_GENERAL = {
   249: "Mad Pie",
   250: "Fly Man",
+  257: "Corrupted Cook",
+  259: "Strange Lady",
+  261: "Cursed William",
+  264: "Warped Priest",
+  271: "Hallway Mimic",
+};
+
+const DOOR_CURSED_TRADERS = {
   251: "Butcher",
   252: "Gun Freak",
   253: "Brute",
   254: "Syringes",
+};
+
+const DOOR_CURSED_RECRUITS = {
   256: "Same Ol' Dan",
-  257: "Corrupted Cook",
   258: "Maniac",
-  259: "Strange Lady",
   260: "Limb Thief",
-  261: "Cursed William",
   263: "Trickster",
-  264: "Warped Priest",
-  271: "Hallway Mimic",
+  268: "Cursed Morton",
+};
+
+const ALL_DOOR_ENCOUNTERS = {
+  ...DOOR_TRADERS,
+  ...DOOR_RARE_TRADERS,
+  ...DOOR_RECRUIT,
+  ...DOOR_GENERAL,
+  ...DOOR_CURSED_GENERAL,
+  ...DOOR_CURSED_TRADERS,
+  ...DOOR_CURSED_RECRUITS,
 };
 
 // 57 is hobbs; i'll always let player increase cooking skill
@@ -135,7 +172,7 @@ const DOOR_ENCOUNTER_EVENT_MAPPING = {
     "DOOR_FATHER_ANDREW_BLESSING",
   ],
   70: ["DOOR_HUMPHREY_DEAL"], // won't be used, but including here for the playerFinishedEncounter check
-  251: ["DOOR_BUTCHER_ITEM"] // won't be used
+  251: ["DOOR_BUTCHER_ITEM"], // won't be used
 };
 
 var DoorHelpers = DoorHelpers || {};
@@ -154,8 +191,7 @@ DoorHelpers.playerNeedsEncounter = function (encounterId) {
   const encounterCombatVictory = combatToCheck[encounterId];
 
   if (encounterCombatVictory) {
-    if (!LookOutsideAPClient.isLocationSet(encounterCombatVictory))
-      return true;
+    if (!LookOutsideAPClient.isLocationSet(encounterCombatVictory)) return true;
   }
 
   const encounterRecruit = DOOR_ENCOUNTER_RECRUIT_MAPPING[encounterId];
@@ -230,4 +266,315 @@ DoorHelpers.processDoorEvent = function (index = 0) {
   LookOutsideAPClient.setLocation(doorEvents[index]);
 };
 
+DoorHelpers.buildEncounterOptions = function (encounterArray) {
+  console.log(encounterArray);
+  const createOption = (option, index) => {
+    return [
+      {
+        code: 402,
+        indent: 2,
+        parameters: [index, ALL_DOOR_ENCOUNTERS[option]],
+      },
+      {
+        code: 122,
+        indent: 3,
+        parameters: [51, 51, 0, 0, option],
+      },
+      {
+        code: 0,
+        indent: 3,
+        parameters: [],
+      },
+    ];
+  };
 
+  return [
+    {
+      code: 102,
+      indent: 2,
+      parameters: [
+        encounterArray.map((option) => ALL_DOOR_ENCOUNTERS[option]),
+        -1,
+        -1,
+        2,
+        0,
+      ],
+    },
+    ...encounterArray.flatMap((option, index) => createOption(option, index)),
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+  ];
+};
+
+DoorHelpers.setRemainingEncounterVars = function () {
+  const remainingDoorTraders = Object.keys(DOOR_TRADERS).filter((id) =>
+    DoorHelpers.playerNeedsEncounter(id),
+  ).length;
+
+  const remainingDoorRareTraders = Object.keys(DOOR_RARE_TRADERS).filter((id) =>
+    DoorHelpers.playerNeedsEncounter(id),
+  ).length;
+
+  const remainingDoorRecruits = Object.keys(DOOR_RECRUIT).filter((id) =>
+    DoorHelpers.playerNeedsEncounter(id),
+  ).length;
+
+  const remainingDoorGeneral = Object.keys(DOOR_GENERAL).filter((id) =>
+    DoorHelpers.playerNeedsEncounter(id),
+  ).length;
+
+  const remainingDoorCursedGeneral = Object.keys(DOOR_CURSED_GENERAL).filter(
+    (id) => DoorHelpers.playerNeedsEncounter(id),
+  ).length;
+
+  const remainingDoorCursedRecruits = Object.keys(DOOR_CURSED_RECRUITS).filter(
+    (id) => DoorHelpers.playerNeedsEncounter(id),
+  ).length;
+
+  const remainingDoorCursedTraders = Object.keys(DOOR_CURSED_TRADERS).filter(
+    (id) => DoorHelpers.playerNeedsEncounter(id),
+  ).length;
+
+  sVr(REMAINING_DOOR_TRADERS_VAR, remainingDoorTraders);
+  sVr(REMAINING_DOOR_RARE_TRADERS_VAR, remainingDoorRareTraders);
+  sVr(REMAINING_DOOR_RECRUITS_VAR, remainingDoorRecruits);
+  sVr(REMAINING_DOOR_GENERAL_VAR, remainingDoorGeneral);
+  sVr(REMAINING_DOOR_CURSED_GENERAL_VAR, remainingDoorCursedGeneral);
+  sVr(REMAINING_DOOR_CURSED_TRADERS_VAR, remainingDoorCursedTraders);
+  sVr(REMAINING_DOOR_CURSED_RECRUITS_VAR, remainingDoorCursedRecruits);
+
+  sVr(
+    REMAINING_REGULAR_VAR,
+    remainingDoorTraders +
+      remainingDoorRareTraders +
+      remainingDoorRecruits +
+      remainingDoorGeneral,
+  );
+  sVr(
+    REMAINING_CURSED_VAR,
+    remainingDoorCursedGeneral +
+      remainingDoorCursedTraders +
+      remainingDoorCursedRecruits,
+  );
+};
+
+DoorHelpers.buildEncounterPickerEventPage = function () {
+  const remainingDoorTraderArray = Object.keys(DOOR_TRADERS).filter((id) =>
+    DoorHelpers.playerNeedsEncounter(id),
+  );
+
+  const remainingDoorRareTraderArray = Object.keys(DOOR_RARE_TRADERS).filter(
+    (id) => DoorHelpers.playerNeedsEncounter(id),
+  );
+
+  const remainingDoorRecruitArray = Object.keys(DOOR_RECRUIT).filter((id) =>
+    DoorHelpers.playerNeedsEncounter(id),
+  );
+
+  const remainingDoorGeneralArray = Object.keys(DOOR_GENERAL).filter((id) =>
+    DoorHelpers.playerNeedsEncounter(id),
+  );
+
+  const remainingDoorCursedGeneralArray = Object.keys(
+    DOOR_CURSED_GENERAL,
+  ).filter((id) => DoorHelpers.playerNeedsEncounter(id));
+
+  const remainingDoorCursedRecruitArray = Object.keys(
+    DOOR_CURSED_RECRUITS,
+  ).filter((id) => DoorHelpers.playerNeedsEncounter(id));
+
+  const remainingDoorCursedTraderArray = Object.keys(
+    DOOR_CURSED_TRADERS,
+  ).filter((id) => DoorHelpers.playerNeedsEncounter(id));
+
+  return [
+    {
+      code: 101,
+      indent: 0,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 0,
+      parameters: ["Summon a door encounter?"],
+    },
+    {
+      code: 102,
+      indent: 0,
+      parameters: [
+        ["Normal encounter.", "Cursed encounter.", "No."],
+        2,
+        2,
+        2,
+        0,
+      ],
+    },
+    {
+      code: 402,
+      indent: 0,
+      parameters: [0, "Normal encounter."],
+    },
+    {
+      code: 102,
+      indent: 1,
+      parameters: [
+        ["Traders.", "Rare Traders.", "Recruits.", "General.", "Never mind."],
+        4,
+        4,
+        2,
+        0,
+      ],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [0, "Traders."],
+    },
+    ...DoorHelpers.buildEncounterOptions(remainingDoorTraderArray),
+    {
+      code: 402,
+      indent: 1,
+      parameters: [1, "Rare Traders."],
+    },
+    ...DoorHelpers.buildEncounterOptions(remainingDoorRareTraderArray),
+    {
+      code: 402,
+      indent: 1,
+      parameters: [2, "Recruits."],
+    },
+    ...DoorHelpers.buildEncounterOptions(remainingDoorRecruitArray),
+    {
+      code: 402,
+      indent: 1,
+      parameters: [3, "General."],
+    },
+    ...DoorHelpers.buildEncounterOptions(remainingDoorGeneralArray),
+    {
+      code: 402,
+      indent: 1,
+      parameters: [4, "Never mind."],
+    },
+    {
+      code: 115,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 0,
+      parameters: [1, "Cursed encounter."],
+    },
+    {
+      code: 102,
+      indent: 1,
+      parameters: [
+        [
+          "Cursed Traders.",
+          "Cursed general.",
+          "Cursed Recruits.",
+          "Never mind.",
+        ],
+        3,
+        3,
+        2,
+        0,
+      ],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [0, "Cursed Traders."],
+    },
+    ...DoorHelpers.buildEncounterOptions(remainingDoorCursedTraderArray),
+    {
+      code: 402,
+      indent: 1,
+      parameters: [1, "Cursed general."],
+    },
+    ...DoorHelpers.buildEncounterOptions(remainingDoorCursedGeneralArray),
+    {
+      code: 402,
+      indent: 1,
+      parameters: [2, "Cursed Recruits."],
+    },
+    ...DoorHelpers.buildEncounterOptions(remainingDoorCursedRecruitArray),
+    {
+      code: 402,
+      indent: 1,
+      parameters: [3, "Never mind."],
+    },
+    {
+      code: 115,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 0,
+      parameters: [2, "I'm good."],
+    },
+    {
+      code: 115,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 0,
+      parameters: [],
+    },
+    {
+      code: 121,
+      indent: 0,
+      parameters: [24, 24, 0],
+    },
+    {
+      code: 117,
+      indent: 0,
+      parameters: [7],
+    },
+    {
+      code: 0,
+      indent: 0,
+      parameters: [],
+    },
+  ];
+};

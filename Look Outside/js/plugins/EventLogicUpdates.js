@@ -557,6 +557,14 @@ EventLogicUpdates.initializeAPVariables = function () {
   sSw(295, true);
   sSw(296, true);
   sSw(297, true);
+
+  // we want rat baby/joel's quest to be finished so it doesn't modify his held item
+  // for some reason, rat baby array is's initialized to len(41), so we'll do that too
+
+  const interactionArray = Array(41).fill(0);
+  interactionArray[4] = 4; // finished with joel's interactions
+
+  sVr(397, interactionArray);
 };
 
 EventLogicUpdates.applyIntroClears = function (lastLoadedMapId) {
@@ -696,7 +704,9 @@ EventLogicUpdates.messageReplacement = function (
 EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   function doorEncounterPicker() {
     if (lastLoadedMapId == 3 && ev.id == 17) {
+      DoorHelpers.setRemainingEncounterVars();
       ev.pages[0].conditions = EventLogicUpdates.buildConditions();
+      ev.pages[0].list = DoorHelpers.buildEncounterPickerEventPage();
     }
   }
   doorEncounterPicker();
@@ -999,13 +1009,6 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
 
   // allows wiggly fred to spawn in the fred apt even if he lives in your fridge
   function fixWigglyFredRecruitMechanics() {}
-
-  // forced piranha guy to never despawn
-  // forces piranhas to always spawn even if piranha guy is dead
-  function fixPiranhaLogic() {
-    // todo: delete page four on piranhaman event page room 133 evt 10
-    // add action that forces piranhasactive to become true no matter what when exiting twilight closet: room 135 event 7
-  }
 
   // don't block bookcase when eugene is posessed by nestor
   function unblockEugeneBookcase() {
@@ -2163,16 +2166,52 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   }
   clearAudreyBossDrops();
 
-  function fixLaughingMoldSpawn() {}
-  fixLaughingMoldSpawn();
-
-  function clearBlackoutIrisKey() {}
+  function clearBlackoutIrisKey() {
+    if (lastLoadedMapId == 86 && ev.id == 106) {
+      ev.pages[3].list = EventLogicUpdates.itemDropClear(
+        ev.pages[3].list,
+        ITEM_CODE,
+      );
+      ev.pages[3].list = EventLogicUpdates.messageReplacement(
+        ev.pages[3].list,
+        "Iris Key",
+        "B_CAR_HOLE_IRIS_KEY",
+        "You find",
+      );
+    }
+  }
   clearBlackoutIrisKey();
 
-  function clearRatFreakGift() {}
+  function clearRatFreakGift() {
+    if (lastLoadedMapId == 106 && ev.id == 11) {
+      ev.pages[3].list = EventLogicUpdates.itemDropClear(
+        ev.pages[3].list,
+        WEAPON_CODE,
+      );
+      ev.pages[3].list = EventLogicUpdates.messageReplacement(
+        ev.pages[3].list,
+        "Rat Claws",
+        "APT_11_RAT_FREAK_GIFT",
+        "You receive",
+      );
+    }
+  }
   clearRatFreakGift();
 
-  function clearBurritoRatGift() {}
+  function clearBurritoRatGift() {
+    if (lastLoadedMapId == 289 && ev.id == 6) {
+      ev.pages[3].list = EventLogicUpdates.itemDropClear(
+        ev.pages[3].list,
+        ITEM_CODE,
+      );
+      ev.pages[3].list = EventLogicUpdates.messageReplacement(
+        ev.pages[3].list,
+        "Burrito",
+        "RAT_LAIR_GIANT_RAT_BURRITO",
+        "Receive",
+      );
+    }
+  }
   clearBurritoRatGift();
 
   function clearComatusYoga() {}

@@ -1,10 +1,12 @@
 # Overview
 
-(WIP) This is the collection of plugins for a Look Outside archipelago randomizer.
+This is a collection of plugins making up the game client for the Look Outside AP randomizer.
 
 Intended to be run with [Zorkats's RPGModder](https://github.com/Zorkats/RPGModder)
 
 Runs with the 2.1 build of [archipelago.js](https://archipelago.js.org/stable/)
+
+Credit to the randomized item sprite goes to crimsonDestroyer on discord.
 
 ## BlackoutLamp.js
 
@@ -43,6 +45,9 @@ Creates an event activated by the clock in the player's living room that allows 
 - [x] Ability to bring Steve back to life if killed by the player
 - [ ] Ability to bring Tickle back to life if killed by the player
 - [ ] Ability to bring Emmanuel back to life if killed by the player
+- [ ] Ability to bring Sybil back to life if killed by the player
+- [ ] Ability to bring Kaeley back to life if killed by the player
+
 
 ## EventLogicUpdates.js
 
@@ -71,19 +76,19 @@ Goes through the game's in-map events to remove everything that explicitly grant
     - [ ] Lyle will leave after player finishes the trade sequence
     - [x] Aster will only leave after player finishes the recruitment dialogue AND has Aster in their apartment, so they're never blocked from offerings
     - [x] Audrey will only leave after player player finishes the recruitment quest dialogue AND has Audrey in their apartment, so they're never blocked from vending machine purchases
-    - [ ] Joel will only leave after player finishes the recruitment dialogue
+    - [x] Joel will only leave after player finishes the recruitment dialogue
     - [x] Papineau will only leave after player finishes the recruitment dialogue
     - [x] Spider will leave after player defeats it in combat; player can return to spider's room whenever
 - [x] fixMaskShadeSpawns - 
     - [x] Stumbling shade on f4 will spawn immediately instead of only when player has Old Tape in their inventory
     - [x] Writhing Shade, Moaning Shade, and Crawling Shade (Landlord Apt, Basement Pit, under the stairs respectively) will track their own death state with a self switch instead of self-deleting, so it's easier to track them as locations
 - [x] fixToothFamilySpawnTriggers - Allows the tooth family's further mutated forms (day 5 and day 9) to appear even if they've been slain in an earlier form
-    - [ ] Clint (bugged, day 5 appears at the same time as day 2-4 form)
+    - [x] Clint
     - [x] Joel
     - [x] Madison
     - [x] Ben
 - [ ] fixWigglyFredRecruitMechanics - allows Wiggly Fred to appear in the Fred apartment even if he is already in the player's fridge
-- [ ] fixPiranhaLogic - Force Piranha guy to always explode into Piranhas even if player killed him
+- [x] Force Piranha guy to always explode into Piranhas even if player killed him (done in MassEventUpdates on the APT_28_MIDNIGHT_VALVE pickup)
 - [ ] unblockEugeneBookcase - Force Eugene's bookcase to never become blocked by Nestor
 - [x] clearScreamitorumEvent - Remove explicit game item drop from player's bookcase
 - [x] clearWoundedManKnifeEvent - Remove explicit knife item drop from wounded neighbor battle
@@ -118,7 +123,7 @@ Goes through the game's in-map events to remove everything that explicitly grant
 - [x] clearKOTDDrop - remove All-Seeing 8 Ball drop from after defeating the KOTD
 - [x] fixRoxieRoomItemDoubleEntry - fix logic that gives separate item entries in regular/hardmode to the items in the basement sewer room with roxie the dog so they can be randomized
 - [x] clearPhilDelusionDrops - delete Phillippe's Remains item granted from believing in Phillippe
-- [x] fungusWithoutSporeMother - allows players to interact with the laughing mold and 'free' the various fungus mimics even if spore mother has been defeated
+- [x] fungusWithoutSporeMother - allows players to interact with the laughing mold and 'free' the various fungus mimics even if spore mother has been defeated. allows player to interact with laughing mold even after defeating the spore mother
 - [x] clearGrateLever - unjoin the sewer grates going down from the player pulling the level in the boiler beast room
 - [x] clearAudreyBossDrops - remove explicit item drops from having audrey in the party when defeating certain bosses; allows locations to be triggered when returning to the dead bodies later with Audrey
     - [x] Hellride (demon plating)
@@ -130,10 +135,9 @@ Goes through the game's in-map events to remove everything that explicitly grant
     - [x] Taxidermy (rhino hide)
     - [x] Spore Guardian (fungus fibers)
 - [ ] returnTickle - allow player to place tickle back on the boiler tendril to continue interfacing with his shop
-- [ ] fixLaughingMoldSpawn - allow player to interact with laughing mold even after defeating the spore princess
-- [ ] clearBlackoutIrisKey - clear iris key drop from the hole in the parking garage
-- [ ] clearRatFreakGift - clear out sword given by the rat freak when player wears the rusty crown
-- [ ] clearBurritoRatGift - clear out burrito given by the rat in the rat den when player wears the rusty crown
+- [x] clearBlackoutIrisKey - clear iris key drop from the hole in the parking garage
+- [x] clearRatFreakGift - clear out sword given by the rat freak when player wears the rusty crown
+- [x] clearBurritoRatGift - clear out burrito given by the rat in the rat den when player wears the rusty crown
 - [ ] clearComatusYoga - clear yoga skill grant from interacting with comatus after defeating him
 - [ ] clearHellenQuestPrizes - clear out explicit item gifts from Hellen's quest
 - [x] clearSecretDoorLockout - the door at the base of the stairwell won't lock you out on first open, and will tell you what large shades you have yet to slay
