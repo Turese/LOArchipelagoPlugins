@@ -67,7 +67,7 @@ Changes applied on new game start.
 
 Goes through the game's in-map events to remove everything that explicitly grants an item to the player.
 
-- [ ] doorEncounterPicker (WIP) - update the tester event that forces door encounters to be usable and AP friendly
+- [x] doorEncounterPicker - update the tester event that forces door encounters to be usable and AP friendly
 - [x] Updates the door event to, when the player kills whatever the current door encounter is, to check that location
 - [x] fixWoundedManDoor - removes door logic that locks player out of the intro fight when they have no equipment on explorer and survivor mode
 - [x] fixElevatorButtons - allows player to travel to floor 4 without needing to play the elevator game first
@@ -145,6 +145,7 @@ Goes through the game's in-map events to remove everything that explicitly grant
 - [ ] clearComatusYoga - clear yoga skill grant from interacting with comatus after defeating him
 - [ ] clearHellenQuestPrizes - clear out explicit item gifts from Hellen's quest
 - [x] clearSecretDoorLockout - the door at the base of the stairwell won't lock you out on first open, and will tell you what large shades you have yet to slay
+- [ ] clear Sybil red key drop
 
 ### EventLogicUpdates.clearAllEnemiesDrops
 
@@ -190,6 +191,7 @@ Updates events that happen during battle scenes.
 - [ ] clearKevinShop
 - [ ] clearLyleTrades
 - [ ] clearBenPlayPrizes - clear out gifts from being a good to great playmate with Ben
+- [ ] clearZacharyChewToy - clear out chew toy Zachary gives you for Roxie
 
 ## EventLogicUpdates.clearDoorEncounterDrops
 
@@ -279,8 +281,8 @@ New menu option in main menu + pause menu where player inputs AP slot name + ser
 
 Introduces functionality to make the AP experience the same no matter what difficulty mode the player chooses.
 
-- [ ] Mass-update items on the ground that are hidden on certain difficulty settings so they either always or never appear (WIP - currently forces easy mode items)
-- [ ] Mass-update enemies that don't spawn on certain difficulty settings so they either always or never appear
+- [x] Mass-update items on the ground that are hidden on certain difficulty settings so they always appear
+- [x] Mass-update enemies that don't spawn on certain difficulty settings so they always appear (WIP - assets for hard mode locked versions of fights still spawn on the ground, but the current difficulty shows up in the battle screen)
 - [x] Force save everywhere and autosave to be active in all difficulties
 
 ## LookOutsideAPClient.js
@@ -304,7 +306,6 @@ Intended main entry point to other plugins.
 
 ## Misc goals / goals with no dedicated file
 
-- [ ] Ability for player to re-trigger already encountered (or any) door encounter
 - [ ] In-game log sharing recent events from tracker
 - [x] Skip intro cutscene
 - [ ] Option to skip confirmation for finding overworld items

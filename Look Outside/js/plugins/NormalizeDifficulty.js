@@ -8,8 +8,6 @@
  * @help
  */
 
-const TRUE_SWITCH_ID = 1399;
-const FALSE_SWITCH_ID = 1400;
 
 var NormalizeDifficulty = NormalizeDifficulty || {};
 

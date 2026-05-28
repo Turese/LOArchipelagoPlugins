@@ -185,7 +185,6 @@ DoorHelpers.playerNeedsEncounter = function (encounterId) {
   const slotData = $gamePlayer.slotData;
   if (!slotData) return true;
 
-  console.log(slotData);
   //if (!slotData.randomize_door_encounters) return false;
   const combatToCheck = slotData.friendly_fire
     ? DOOR_ENCOUNTER_VICTORY_MAPPING
@@ -220,7 +219,6 @@ DoorHelpers.playerNeedsEncounter = function (encounterId) {
 DoorHelpers.processDoorVictory = function () {
   const currentCombatVictory = gVr(51);
   const locationId = DOOR_ENCOUNTER_VICTORY_MAPPING[currentCombatVictory];
-  console.log("Processing door victory: ", locationId);
 
   if (!locationId) {
     console.warn(
@@ -255,7 +253,6 @@ DoorHelpers.processDoorRecruit = function () {
 DoorHelpers.processDoorEvent = function (index = 0) {
   const currentTroop = gVr(51);
   const doorEvents = DOOR_ENCOUNTER_EVENT_MAPPING[currentTroop];
-  console.log(doorEvents, index);
 
   if (!doorEvents) {
     console.warn(

@@ -216,6 +216,7 @@ LookOutsideAPClient.retrieveSlotData = async function () {
 
 // this happens whether or not a save file is loaded
 LookOutsideAPClient.updateDeathLink = function (slotData) {
+  if (!client.authenticated) return;
   if (slotData.death_link) {
     client.deathLink.enableDeathLink();
   } else client.deathLink.disableDeathLink();
@@ -683,13 +684,13 @@ LookOutsideAPClient.watchLocations = function () {
 LookOutsideAPClient.updateItems = function () {
   const items = client.items.received;
   const currIndex = LookOutsideAPClient.initializeItemIndex();
-  for (let i = currIndex + 1; i < items.length; i++) {
+  for (let i = currIndex; i < items.length; i++) {
     const itemId = items[i].id;
-    if (i <= $gamePlayer.APItemsIndex) {
+    if (i < $gamePlayer.APItemsIndex) {
       console.warn(`Item ${i} already received, skipping.`);
       continue;
     }
-    $gamePlayer.APItemsIndex = i;
+    console.log("RECEIVED ITEM: ", items[i]);
     if (itemId < 1000) {
       window.InsertAPItems.insertItem(itemId, "item");
     } else if (itemId < 2000) {
@@ -707,6 +708,7 @@ LookOutsideAPClient.updateItems = function () {
     } else {
       console.warn("ITEMTYPE NYI", itemId);
     }
+    $gamePlayer.APItemsIndex = i + 1;
   }
 };
 

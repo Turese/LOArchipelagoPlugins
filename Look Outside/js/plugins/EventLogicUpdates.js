@@ -1022,14 +1022,10 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   // replace the event message for getting screamatorium from the shelf with the actual drop
   function clearScreamitorumEvent() {
     if (lastLoadedMapId === 3 && ev.id === 88) {
-      const screamatoriumEvent = ev;
-      const filteredList = screamatoriumEvent.pages[0].list.filter(
-        (listItem) => {
-          if (listItem.code === SET_VAR_CODE)
-            return listItem.parameters[0] !== 41; // don't set video game count var=41
-          return listItem.code !== ITEM_CODE; // dont add screamatorium to inventory
-        },
-      );
+
+      // filter out the set var that sets video game count (var 41)
+      let filteredList = ev.pages[0].list.filter((listItem) => !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 41));
+      filteredList = EventLogicUpdates.itemDropClear(filteredList, ITEM_CODE);
 
       filteredList
         .filter(
@@ -3201,7 +3197,7 @@ EventLogicUpdates.clearDoorEncounterDrops = function () {
     // remove all food and medicine drops
     EventLogicUpdates.itemDropReplaceScript(
       andrewList,
-      355,
+      ITEM_CODE,
       "DoorHelpers.processDoorEvent();",
     );
 
