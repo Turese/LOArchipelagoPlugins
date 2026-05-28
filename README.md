@@ -313,4 +313,4 @@ Intended main entry point to other plugins.
 
 - [ ] Custom mirror guilt-trip dialogue that’s archipelago based
 - [x] Custom toxic fred dialogue for picking up the randomized item in cowboy hat's place
-- [ ] If Ernest is in your party he chimes in to warn you if an item is a trap
+- [x] If Ernest is in your party he chimes in to warn you if an item is a trap

@@ -3290,6 +3290,36 @@ MassEventUpdates.overrideOverworldPickups = function (currentMapId) {
         parameters: [`${prefix}Take ${fakeItemName}\\C[0]?`],
       },
       {
+        code: 111,
+        indent: 0,
+        parameters: [4, 11, 0],
+      },
+      {
+        code: 101,
+        indent: 1,
+        parameters: ["Portrait_Recruits2", 0, 0, 2, "Ernest"],
+      },
+      {
+        code: 401,
+        indent: 1,
+        parameters: ["A fed musta' planted this one. I'm sure of it!"],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 412,
+        indent: 0,
+        parameters: [],
+      },
+      {
+        code: 0,
+        indent: 0,
+        parameters: [],
+      },
+      {
         code: 102,
         indent: 0,
         parameters: [["Take it.", "Leave it."], -1, 0, 2, 0],
