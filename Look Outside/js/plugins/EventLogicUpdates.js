@@ -2863,6 +2863,66 @@ EventLogicUpdates.clearTroopsDrops = function () {
   }
   dontStockStuart();
 
+  // you can only buy 1 key and also it's a
+  function clearKaeleyTalk() {
+    let kaeleyList = JsonEx.makeDeepCopy(originalTroops[78].pages[0].list);
+
+    // update her rules speech
+    kaeleyList.forEach((listItem) => {
+      if (
+        listItem.code == 401 &&
+        listItem.parameters[0].includes("Third rule is")
+      ) {
+        listItem.parameters[0] =
+          "Third rule is okay to lock\\.-ck\\.-ck pick this time!\\.\\. Special rule";
+      }
+      if (listItem.code == 401 && listItem.parameters[0].includes("too easy")) {
+        listItem.parameters[0] = "for randomizer only!";
+      }
+    });
+
+    const choiceListItem = kaeleyList.find(
+      (listItem) =>
+        listItem.code === 102 &&
+        listItem.parameters[0].length == 5 &&
+        listItem.parameters[0][2] == "I want to buy a key.",
+    );
+    console.log(choiceListItem);
+
+    if (choiceListItem) {
+      choiceListItem.parameters[0][2] = `<<[s[${APT_38_KAELEY_PURCHASE_SWITCH}]]>>I want to buy a key.`;
+    }
+
+    EventLogicUpdates.itemDropReplaceScript(
+      kaeleyList,
+      ITEM_CODE,
+      `sSw(${APT_38_KAELEY_PURCHASE_SWITCH}, true);`,
+    );
+
+    kaeleyList = EventLogicUpdates.messageReplacement(
+      kaeleyList,
+      "Here, for you!",
+      "APT_38_KAELEY_PURCHASE",
+      "Here,",
+      " for you! Another?",
+    );
+
+    kaeleyList
+      .filter(
+        (listItem) =>
+          listItem.code === 102 &&
+          listItem.parameters.length == 5 &&
+          listItem.parameters[0][0].includes(">>Yes."),
+      )
+      .forEach(
+        (loopChoiceListItem) =>
+          (loopChoiceListItem.parameters[0][0] = `<<[s[${APT_38_KAELEY_PURCHASE_SWITCH}]]>>Yes.`),
+      );
+
+    $dataTroops[78].pages[0].list = kaeleyList;
+  }
+  clearKaeleyTalk();
+
   function updateSpiderHuskEvent() {}
   updateSpiderHuskEvent();
 
@@ -3498,9 +3558,91 @@ EventLogicUpdates.clearCommonEventDrops = function () {
   }
   updateAsterOfferings();
 
-  function lockpicksNeverBreak() {}
+  function lockpicksNeverBreak() {
+    let simpleLocks = JsonEx.makeDeepCopy(originalCommonEvents[184].list);
+
+    // each use has a 15% chance to break the picks
+    // but we can just set it so we're always above that 15%
+
+    EventLogicUpdates.itemDropReplaceScript(
+      simpleLocks,
+      SET_VAR_CODE,
+      "sVr(4, 99);",
+      (listItem) => listItem.parameters[0] == 4,
+    );
+
+    $dataCommonEvents[184].list = simpleLocks;
+  }
   lockpicksNeverBreak();
 
-  function kaeleyLovesLockpicks() {}
+  function kaeleyLovesLockpicks() {
+    $dataCommonEvents[262].list = [
+      {
+        code: 111,
+        indent: 0,
+        parameters: [0, 940, 0],
+      },
+      {
+        code: 111,
+        indent: 1,
+        parameters: [0, 939, 1],
+      },
+      {
+        code: 111,
+        indent: 2,
+        parameters: [1, 946, 0, 0, 0],
+      },
+      {
+        code: 122,
+        indent: 3,
+        parameters: [946, 946, 0, 0, 1],
+      },
+      {
+        code: 101,
+        indent: 3,
+        parameters: ["Portrait_Misc", 30, 0, 2, "Kaeley"],
+      },
+      {
+        code: 401,
+        indent: 3,
+        parameters: ["That's ok-\\.k-\\.kay! This time can be picking game!"],
+      },
+      {
+        code: 0,
+        indent: 3,
+        parameters: [],
+      },
+      {
+        code: 412,
+        indent: 2,
+        parameters: [],
+      },
+      {
+        code: 0,
+        indent: 2,
+        parameters: [],
+      },
+      {
+        code: 412,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 0,
+        indent: 1,
+        parameters: [],
+      },
+      {
+        code: 412,
+        indent: 0,
+        parameters: [],
+      },
+      {
+        code: 0,
+        indent: 0,
+        parameters: [],
+      },
+    ];
+  }
   kaeleyLovesLockpicks();
 };

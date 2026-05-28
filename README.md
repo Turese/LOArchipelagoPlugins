@@ -172,6 +172,7 @@ Updates events that happen during battle scenes.
 - [x] updateToxicFredEncounter - adds some humorous dialogue to the toxic fred encounter in the event the player got the fake hat location before talking to him
 - [x] clearFinalFredGifts - clears out explicit gift drops from all freds when they're the final one
 - [x] dontStockStuart - don't stock audrey's gear in Stuart's basement shop so it can be randomized
+- [x] clearKaeleyTalk - update some Kaeley dialogue and add location check to her key sale
 - [ ] clearSpiderHuskGift - updates Spider Husk logic
     - [ ] make it impossible for player to offend Spider Husk and exit the dialogue early
     - [ ] clear out beating heart given by the Spider Husk in Mutt's shop
@@ -190,6 +191,11 @@ Troops updates for door encounters specifically; separated only for organization
 - [x] clearSophieDoorRecruit 
 - [x] clearHellenDoorRecruit
 - [x] clearXariaMontgomeryDoorRecruit
+- [x] clearHarrietReunited - clear prize from reuniting harried and sophie
+- [x] clearPizzaDelivery - clear pizza drop, update locations for both buying and tipping
+- [x] clearFatherAndrew - clear item drop, update locations for both getting items and blessings
+- [x] clearNobodyItem - clear item drop, replace with location
+- [x] clearWilliamPrizes - clear cash drop, set locations for both ok and great items
 
 
 ### EventLogicUpdates.clearCommonEventDrops
@@ -204,8 +210,8 @@ fixes event items granted from common events
 - [x] clearAudreyGiftsRecruit - update's Audrey's recruitment event; clears out energy drink gift, and short circuits recruit event to set a switch instead of adding her to party
 - [x] clearCarPrizeEvent - clears out items granted from opening car trunk after using electronic key
 - [x] updateAsterOfferings - fixes how the "correctness" of photograph offerings is calculated, allowing player to have an incorrect and correct photograph at the same time as distinct inventory items
-- [ ] lockpicksNeverBreak - make lockpicks never break
-- [ ] kaeleyLovesLockpicks - make Kaeley not get mad when player picks locks in her game
+- [x] lockpicksNeverBreak - make lockpicks never break
+- [x] kaeleyLovesLockpicks - make Kaeley not get mad when player picks locks in her game
 
 # MassEventUpdates.js
 
