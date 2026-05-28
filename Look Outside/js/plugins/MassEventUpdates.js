@@ -2671,6 +2671,13 @@ const TRASH_CAN_ITEM_OVERRIDES = {
     ],
   },
 
+  55: {
+    38: [
+      "GF_WOMENS_BATHROOM_TRASH",
+      "$gameSelfSwitches.setValue([55, 38, 'A'], true)",
+    ],
+  },
+
   352: {
     8: [
       "APT_37_LOCKED_ROOM_TRASH",
@@ -2899,6 +2906,12 @@ const FIRST_AID_BOX_ITEM_OVERRIDES = {
     38: [
       "GF_MENS_BATHROOM_FIRST_AID_BOX",
       "$gameSelfSwitches.setValue([54, 38, 'A'], true)",
+    ],
+  },
+  55: {
+    41: [
+      "GF_WOMENS_BATHROOM_FIRST_AID_BOX",
+      "$gameSelfSwitches.setValue([55, 41, 'A'], true)",
     ],
   },
   257: {

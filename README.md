@@ -171,6 +171,7 @@ Updates events that happen during battle scenes.
 - [x] clearFakeFredGifts - clear out gifts granted by the facetaker for progress in the amount of Freds killed
 - [x] updateToxicFredEncounter - adds some humorous dialogue to the toxic fred encounter in the event the player got the fake hat location before talking to him
 - [x] clearFinalFredGifts - clears out explicit gift drops from all freds when they're the final one
+- [x] dontStockStuart - don't stock audrey's gear in Stuart's basement shop so it can be randomized
 - [ ] clearSpiderHuskGift - updates Spider Husk logic
     - [ ] make it impossible for player to offend Spider Husk and exit the dialogue early
     - [ ] clear out beating heart given by the Spider Husk in Mutt's shop

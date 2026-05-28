@@ -591,9 +591,8 @@ LookOutsideAPClient.setLocation = function (locationName) {
 LookOutsideAPClient.isLocationSet = function (locationName) {
   const reachedLocations = LookOutsideAPClient.initializeLocationObject();
 
-  return !!reachedLocations[LOCATION_ID_MAPPING[locationName]]
-}
-
+  return !!reachedLocations[LOCATION_ID_MAPPING[locationName]];
+};
 
 LookOutsideAPClient.watchLocations = function () {
   _setSelfSwitchValue = Game_SelfSwitches.prototype.setValue;

@@ -8,7 +8,64 @@
  * @help
  */
 
-const MERCHANT_IDS = new Set(47, 48, 49, 50, 51, 52, 53, 54, 55);
+const DOOR_TRADERS = {
+  50: "General Trader",
+  51: "Food Trader",
+  52: "Gun Trader",
+  53: "Sports Trader",
+  54: "Nurse",
+  55: "Gamer",
+};
+
+const DOOR_RARE_TRADERS = {
+  47: "Mystery Trader",
+  48: "Curio Trader",
+  70: "Humphrey",
+  72: "Craftsman",
+};
+
+const DOOR_RECRUIT = {
+  56: "Creep",
+  58: "Maniac",
+  60: "Goth Trouble",
+  63: "Little Menace",
+};
+
+const DOOR_GENERAL = {
+  49: "Pizza Delivery",
+  57: "Cook",
+  59: "Harriet",
+  61: "William",
+  64: "Father Andrew",
+  68: "Morton",
+  71: "Nobody",
+  73: "Kind-Faced Man",
+};
+
+const DOOR_CURSED = {
+  249: "Mad Pie",
+  250: "Fly Man",
+  251: "Butcher",
+  252: "Gun Freak",
+  253: "Brute",
+  254: "Syringes",
+  256: "Same Ol' Dan",
+  257: "Corrupted Cook",
+  258: "Maniac",
+  259: "Strange Lady",
+  260: "Limb Thief",
+  261: "Cursed William",
+  263: "Trickster",
+  264: "Warped Priest",
+  271: "Hallway Mimic",
+};
+
+// 57 is hobbs; i'll always let player increase cooking skill
+const PERMA_ALLOWED_IDS = new Set([
+  ...Object.keys(DOOR_TRADERS),
+  ...Object.keys(DOOR_RARE_TRADERS),
+  57,
+]);
 
 const FRIENDLY_FIRE_VICTORY_MAPPING = {
   47: "DOOR_MYSTERY_TRADER_COMBAT_VICTORY",
@@ -26,6 +83,8 @@ const FRIENDLY_FIRE_VICTORY_MAPPING = {
   59: "DOOR_HARRIET_COMBAT_VICTORY",
   60: "DOOR_GOTHS_COMBAT_VICTORY",
   61: "DOOR_WILLIAM_COMBAT_VICTORY",
+  64: "DOOR_FATHER_ANDREW_COMBAT_VICTORY",
+  72: "SEBASTIAN_COMBAT_VICTORY",
   251: "DOOR_BUTCHER_COMBAT_VICTORY",
   263: "DOOR_TRICKSTER_COMBAT_VICTORY",
 };
@@ -58,16 +117,36 @@ const DOOR_ENCOUNTER_RECRUIT_MAPPING = {
   58: "DOOR_RECRUIT_HELLEN",
   60: "DOOR_RECRUIT_GOTHS",
   63: "DOOR_RECRUIT_SOPHIE",
+  73: "DOOR_RECRUIT_KIND", // won't be used, but including here for the playerFinishedEncounter check
+  68: "DOOR_RECRUIT_MORTON", // won't be used, but including here for the playerFinishedEncounter check
 };
 
-const DOOR_ENCOUNTER_EVENT_MAPPING = {};
+const DOOR_ENCOUNTER_EVENT_MAPPING = {
+  263: ["DOOR_BEFRIEND_TRICKSTER"], // won't be used, but including here for the playerFinishedEncounter check
+  59: ["DOOR_HARRIET_REUNITE"], // won't be used, but including here for the playerFinishedEncounter check
+  49: ["DOOR_PIZZA", "DOOR_PIZZA_TIP"],
+  71: ["DOOR_FREE_ITEM"],
+  61: ["DOOR_WILLIAM_PRIZE_1", "DOOR_WILLIAM_PRIZE_2"], // won't be used, but including here for the playerFinishedEncounter check
+  55: ["DOOR_GAMER_KATANA"],
+  57: ["DOOR_HOBBS_PRIZE"], // won't be used, but including here for the playerFinishedEncounter check
+  64: [
+    "DOOR_FATHER_ANDREW_GIFT",
+    "DOOR_FATHER_ANDREW_DONATION",
+    "DOOR_FATHER_ANDREW_BLESSING",
+  ],
+  70: ["DOOR_HUMPHREY_DEAL"], // won't be used, but including here for the playerFinishedEncounter check
+  251: ["DOOR_BUTCHER_ITEM"] // won't be used
+};
+
+var DoorHelpers = DoorHelpers || {};
 
 // checks if the player has finished everything they needed to do with an encounter
-DoorHelpers.playerFinishedEncounter = function (encounterId) {
+DoorHelpers.playerNeedsEncounter = function (encounterId) {
   // player should always have access to the merchants
-  if (MERCHANT_IDS.has(encounterId)) return false;
-  if ($gamePlayer) return false;
+  if (PERMA_ALLOWED_IDS.has(encounterId)) return true;
+  if ($gamePlayer) return true;
   const slotData = $gamePlayer.slotData;
+  // if (!slotdata.randomize_door_encounters) return false;
   const combatToCheck = slotData.friendly_fire
     ? DOOR_ENCOUNTER_VICTORY_MAPPING
     : DOOR_REGULAR_ENCOUNTER_VICTORY_MAPPING;
@@ -76,13 +155,13 @@ DoorHelpers.playerFinishedEncounter = function (encounterId) {
 
   if (encounterCombatVictory) {
     if (!LookOutsideAPClient.isLocationSet(encounterCombatVictory))
-      return false;
+      return true;
   }
 
   const encounterRecruit = DOOR_ENCOUNTER_RECRUIT_MAPPING[encounterId];
 
   if (encounterRecruit) {
-    if (!LookOutsideAPClient.isLocationSet(encounterRecruit)) return false;
+    if (!LookOutsideAPClient.isLocationSet(encounterRecruit)) return true;
   }
 
   const encounterEvents = DOOR_ENCOUNTER_EVENT_MAPPING[encounterId];
@@ -93,13 +172,11 @@ DoorHelpers.playerFinishedEncounter = function (encounterId) {
         LookOutsideAPClient.isLocationSet(event),
       )
     )
-      return false;
+      return true;
   }
 
-  return true;
+  return false;
 };
-
-var DoorHelpers = DoorHelpers || {};
 
 DoorHelpers.processDoorVictory = function () {
   const currentCombatVictory = gVr(51);
@@ -134,6 +211,7 @@ DoorHelpers.processDoorRecruit = function () {
 DoorHelpers.processDoorEvent = function (index = 0) {
   const currentTroop = gVr(51);
   const doorEvents = DOOR_ENCOUNTER_EVENT_MAPPING[currentTroop];
+  console.log(doorEvents, index);
 
   if (!doorEvents) {
     console.warn(
@@ -150,6 +228,6 @@ DoorHelpers.processDoorEvent = function (index = 0) {
   }
 
   LookOutsideAPClient.setLocation(doorEvents[index]);
-
-  console.log(locationId);
 };
+
+

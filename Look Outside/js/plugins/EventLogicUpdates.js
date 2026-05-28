@@ -526,6 +526,39 @@ const SECRET_DOOR_LIST = [
   },
 ];
 
+EventLogicUpdates.initializeAPVariables = function () {
+  // gotsupplies = true; prevents fungus guys from giving you supplies at the entrance to the lair
+  sSw(493, true);
+
+  // foughtwoundedman = true; allows players to enter vincents apartment right away
+  sSw(94, true);
+
+  // we use these for difficulty normalization
+  sSw(TRUE_SWITCH_ID, true);
+  sSw(FALSE_SWITCH_ID, false);
+
+  // this self switch ensures stairwell door never allows early papineau
+  $gameSelfSwitches.setValue([27, 8, "B"], true);
+  $gameSelfSwitches.setValue([27, 7, "B"], true);
+
+  // set number of freds to 10 here so player doesnt have to speak to faceless
+  sVr(306, 10);
+
+  // acts like the player already bought out the gamer's stock
+  // prevents him from hassling the player when they enter the encounter with
+  // his games already in hand
+  sSw(142, true);
+  sSw(143, true);
+  sSw(144, true);
+  sSw(145, true);
+
+  // same with gun trader
+  sSw(294, true);
+  sSw(295, true);
+  sSw(296, true);
+  sSw(297, true);
+};
+
 EventLogicUpdates.applyIntroClears = function (lastLoadedMapId) {
   // clear out the starting video games from player's inventory
   function updateStartingDrops() {
@@ -548,14 +581,7 @@ EventLogicUpdates.applyIntroClears = function (lastLoadedMapId) {
         startingpage.list.push({
           code: 355,
           indent: 1,
-          // gotsupplies = true; prevents fungus guys from giving you supplies at the entrance to the lair
-          // foughtwoundedman = true; allows hallway encounters
-          // self switch ensures stairwell door never allows early papineau
-          // and also sets number of freds to 10 here so player doesnt have to speak to faceless
-          parameters: [
-            `sSw(493, true); sSw(94, true); $gameSelfSwitches.setValue([27, 8, 'B'], true); $gameSelfSwitches.setValue([27, 7, 'B'], true); sSw(${TRUE_SWITCH_ID}, true);
-    sSw(${FALSE_SWITCH_ID}, false); sVr(306, 10);`,
-          ],
+          parameters: ["EventLogicUpdates.initializeAPVariables();"],
         });
       }
     }
@@ -606,6 +632,7 @@ EventLogicUpdates.applyIntroClears = function (lastLoadedMapId) {
 // if an event has a basic item drop + get message structure
 // we can do it easily here
 
+const CASH_CODE = 125;
 const ITEM_CODE = 126;
 const WEAPON_CODE = 127;
 const ARMOR_CODE = 128;
@@ -624,14 +651,20 @@ EventLogicUpdates.itemDropReplaceScript = function (
   originalList,
   code,
   script,
+  secondaryCondition,
 ) {
-  const index = originalList.findIndex((listItem) => listItem.code == code);
-  if (index != -1) {
-    originalList[index] = {
-      code: 355,
-      indent: originalList[index].indent,
-      parameters: [script],
-    };
+  for (let i = 0; i < originalList.length; i++) {
+    const listItem = originalList[i];
+    if (
+      listItem.code == code &&
+      (secondaryCondition ? secondaryCondition(listItem) : true)
+    ) {
+      originalList[i] = {
+        code: 355,
+        indent: originalList[i].indent,
+        parameters: [script],
+      };
+    }
   }
 };
 
@@ -647,12 +680,13 @@ EventLogicUpdates.messageReplacement = function (
   keyWord,
   itemId,
   introword = "Find",
+  suffix = ".",
 ) {
   const newList = JsonEx.makeDeepCopy(originalList);
 
   newList.forEach((listItem) => {
     if (listItem.code == 401 && listItem.parameters[0].includes(keyWord)) {
-      listItem.parameters[0] = `${introword} ${LookOutsideAPClient.getItemName(itemId)}.`;
+      listItem.parameters[0] = `${introword} ${LookOutsideAPClient.getItemName(itemId)}${suffix}`;
     }
   });
 
@@ -666,6 +700,10 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
     }
   }
   doorEncounterPicker();
+
+  ShopHelpers.gunTraderInitList(lastLoadedMapId, ev); // remove all the special unique guns from his sales list
+  ShopHelpers.gamerInitList(lastLoadedMapId, ev); // remove randomized games from his sales list
+  ShopHelpers.strangeTraderInitList(lastLoadedMapId, ev); // remove randomized currencies and gauntlet key from sales list
 
   function doorCombatChecker() {
     if (lastLoadedMapId == 3 && ev.id == 9) {
@@ -681,7 +719,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
           listItem.parameters[0] == "DoorHelpers.processDoorVictory();",
       );
       if (winEncounterIndex !== -1 && !processVictory) {
-        ev.pages[1].list.splice(winEncounterIndex, 0, {
+        ev.pages[1].list.splice(winEncounterIndex + 1, 0, {
           code: 355,
           indent: ev.pages[1].list[winEncounterIndex].indent + 1,
           parameters: ["DoorHelpers.processDoorVictory();"],
@@ -1538,7 +1576,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   clearShutterbugDrop();
 
   function clearJeanneLaundry() {
-    if (lastLoadedMapId === 69 && ev.id === 65) {
+    if (lastLoadedMapId === 69 && ev.id === 56) {
       // dont add laundry to inventory
       let filteredList = EventLogicUpdates.itemDropClear(
         ev.pages[0].list,
@@ -1548,6 +1586,8 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
         filteredList,
         "Jeanne's clothes",
         "LAUNDRY_JEANNES_LAUNDRY",
+        "This must be Jeanne's",
+        ". Take it?",
       );
 
       ev.pages[0].list = filteredList;
@@ -2814,6 +2854,15 @@ EventLogicUpdates.clearTroopsDrops = function () {
   }
   clearFinalFredGifts();
 
+  function dontStockStuart() {
+    let stuartList = JsonEx.makeDeepCopy(originalTroops[604].pages[0].list);
+
+    // remove the script that fills his shop with audrey gear after he meets audrey
+    stuartList = EventLogicUpdates.itemDropClear(stuartList, 355);
+    $dataTroops[604].pages[0].list = stuartList;
+  }
+  dontStockStuart();
+
   function updateSpiderHuskEvent() {}
   updateSpiderHuskEvent();
 
@@ -2918,6 +2967,179 @@ EventLogicUpdates.clearDoorEncounterDrops = function () {
     $dataTroops[60].pages[0].list = gothTroopList;
   }
   clearXariaMontgomeryDoorRecruit();
+
+  // have to do this with her main apt and door encounter both
+  function clearHarrietReunited() {
+    for (const index of [33, 59]) {
+      let harrietTroopList = JsonEx.makeDeepCopy(
+        originalTroops[index].pages[0].list,
+      );
+
+      // remove all the healing item grants
+      harrietTroopList = EventLogicUpdates.itemDropClear(
+        harrietTroopList,
+        ITEM_CODE,
+      );
+
+      // replace grant message
+      harrietTroopList = EventLogicUpdates.messageReplacement(
+        harrietTroopList,
+        "Elixir",
+        "DOOR_HARRIET_REUNITE",
+        "Receive",
+      );
+
+      $dataTroops[index].pages[0].list = harrietTroopList;
+    }
+  }
+  clearHarrietReunited();
+
+  function clearPizzaDelivery() {
+    let pizzaList = JsonEx.makeDeepCopy(originalTroops[49].pages[0].list);
+
+    pizzaList = EventLogicUpdates.messageReplacement(
+      pizzaList,
+      "Hi, yeah",
+      "DOOR_PIZZA",
+      "Hi, yeah. You order a",
+      "?",
+    );
+
+    pizzaList = EventLogicUpdates.messageReplacement(
+      pizzaList,
+      "Delivery guy.",
+      "DOOR_PIZZA",
+      "Delivery guy. You order a",
+      "?",
+    );
+
+    pizzaList = EventLogicUpdates.messageReplacement(
+      pizzaList,
+      "I got a",
+      "DOOR_PIZZA",
+      "I got a",
+    );
+
+    pizzaList = EventLogicUpdates.messageReplacement(
+      pizzaList,
+      "Get ",
+      "DOOR_PIZZA",
+      "Get",
+    );
+
+    // buying pizza
+    // the pizza is rewarded in a script
+    EventLogicUpdates.itemDropReplaceScript(
+      pizzaList,
+      355,
+      "DoorHelpers.processDoorEvent();",
+      (listItem) => listItem.parameters[0].includes("$gameParty.gainItem"),
+    );
+
+    // make sure pizza tip location is only hit in situations where pizza dispo goes UP (tipping)
+    EventLogicUpdates.itemDropReplaceScript(
+      pizzaList,
+      SET_VAR_CODE,
+      "DoorHelpers.processDoorEvent(1);",
+      (listItem) =>
+        listItem.parameters[0] == 290 && listItem.parameters[2] == 1,
+    );
+
+    $dataTroops[49].pages[0].list = pizzaList;
+  }
+  clearPizzaDelivery();
+
+  function clearFatherAndrew() {
+    let andrewList = JsonEx.makeDeepCopy(originalTroops[64].pages[0].list);
+
+    // remove all food and medicine drops
+    EventLogicUpdates.itemDropReplaceScript(
+      andrewList,
+      355,
+      "DoorHelpers.processDoorEvent();",
+    );
+
+    andrewList = EventLogicUpdates.messageReplacement(
+      andrewList,
+      "Bandages",
+      "DOOR_FATHER_ANDREW_GIFT",
+      "",
+    );
+
+    andrewList = EventLogicUpdates.messageReplacement(
+      andrewList,
+      "Frozen Veggies",
+      "DOOR_FATHER_ANDREW_GIFT",
+      "",
+    );
+
+    //it's dangerous to splice a list while iterating through it but
+    for (let i = 0; i < andrewList.length; i++) {
+      // all cash event codes are for donating money
+      let listItem = andrewList[i];
+      if (listItem.code == CASH_CODE) {
+        andrewList.splice(i + 1, 0, {
+          code: 355,
+          indent: andrewList[i].indent,
+          parameters: ["DoorHelpers.processDoorEvent(1);"],
+        });
+      }
+    }
+
+    $dataTroops[64].pages[0].list = andrewList;
+  }
+  clearFatherAndrew();
+
+  function clearNobodyItem() {
+    let nobodyList = JsonEx.makeDeepCopy(originalTroops[71].pages[0].list);
+
+    nobodyList = EventLogicUpdates.messageReplacement(
+      nobodyList,
+      "You pick up a",
+      "DOOR_FREE_ITEM",
+      "You pick up a",
+      "!",
+    );
+
+    // replace 117 (common event call) to randomItemGet
+    EventLogicUpdates.itemDropReplaceScript(
+      nobodyList,
+      117,
+      "DoorHelpers.processDoorEvent();",
+    );
+
+    $dataTroops[71].pages[0].list = nobodyList;
+  }
+  clearNobodyItem();
+
+  function clearWilliamPrizes() {
+    let williamList = JsonEx.makeDeepCopy(originalTroops[61].pages[0].list);
+
+    williamList = EventLogicUpdates.itemDropClear(williamList, CASH_CODE);
+
+    // replace grant message
+    williamList = EventLogicUpdates.messageReplacement(
+      williamList,
+      "Here... ",
+      "DOOR_WILLIAM_PRIZE_1",
+      "Here... let me give you",
+      " for the help.",
+    );
+
+    // replace grant message
+    williamList = EventLogicUpdates.messageReplacement(
+      williamList,
+      "saved my life",
+      "DOOR_WILLIAM_PRIZE_2",
+      `You might've saved my life. Let me give you \n${LookOutsideAPClient.getItemName("DOOR_WILLIAM_PRIZE_1")} and`,
+      " for the help.",
+    );
+
+    // william gives cash, so we need to replace that
+
+    $dataTroops[61].pages[0].list = williamList;
+  }
+  clearWilliamPrizes();
 };
 
 let commonEventsUpdated = false;
