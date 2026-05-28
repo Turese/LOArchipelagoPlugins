@@ -10,6 +10,8 @@
 
 var ToothHelpers = ToothHelpers || {};
 
+// allow mutated version to spawn even if base is dead; 
+// only remove when player explicitly triggers recruit
 ToothHelpers.JoelPages = [
   {
     conditions: {

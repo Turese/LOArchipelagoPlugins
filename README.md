@@ -153,7 +153,7 @@ Updates events that happen during battle scenes.
     - [x] fixes the chosen item during the rose gift event for easier randomization
     - [x] Removes switch set that places masked shadow in the player's apartment after they don't embrace it in their bedroom
 - [x] clearLeighRecruitmentEvent - short circuits the recruitment event to set a switch instead of attempting to add Leigh to the party; skips the one-time only gun sale from hardmode dialogue
-- [ ] clearJoelRecruitmentEvent - short circuits the recruitment event for Joel to set a switch instead of attempt to add him to the party. clears out door knob gift from battle
+- [x] clearJoelRecruitmentEvent - short circuits the recruitment event for Joel to set a switch instead of attempt to add him to the party. clears out door knob gift from battle
 - [x] clearRoachesRecruitmentEvent - clears out switch set that recruits roaches when player sees them in their bathroom
 - [x] clearAsterRecruitmentEvent - short circuits the recruitment event for Aster to set a switch instead of attempt to add him to the party
 - [x] clearSpiderRecruitmentEvent - makes it so spider always thinks the player is pathetic enough to attack no matter what they answer to its questions; short circuits the recruitment event to set a self-switch instead

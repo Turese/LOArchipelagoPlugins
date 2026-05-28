@@ -2315,8 +2315,9 @@ EventLogicUpdates.clearTroopsDrops = function () {
 
   // clear both the gun sale and the recruitment itself
   function clearLeighRecruitmentEvent() {
-    const leighTroopList = JsonEx.makeDeepCopy(originalTroops[34]).pages[0]
-      .list;
+    const leighTroopList = JsonEx.makeDeepCopy(
+      originalTroops[34].pages[0],
+    ).list;
 
     // make us never hit gun dialogue
     const checkHardModeIndex = leighTroopList.findIndex(
@@ -2346,7 +2347,49 @@ EventLogicUpdates.clearTroopsDrops = function () {
   }
   clearLeighRecruitmentEvent();
 
-  function clearJoelRecruitmentEvent() {}
+  function clearJoelRecruitmentEvent() {
+    const joelTroopList = JsonEx.makeDeepCopy(originalTroops[26].pages[0]).list;
+
+    // no matter what you do, joel super loves you forever
+    // set all joel dispo updates to set it to way over maximum
+    EventLogicUpdates.itemDropReplaceScript(
+      joelTroopList,
+      SET_VAR_CODE,
+      "sVr(106,99);",
+      (listItem) => listItem.parameters[0] == 106,
+    );
+
+    // when recruiting, the sybilmajorstory is the very first that's set, so we can use that
+    // to bypass the recruiting process
+    const joelRecruitIndex = joelTroopList.findIndex(
+      (listEntry) =>
+        listEntry.code == 355 &&
+        listEntry.parameters[0] == "setSybilMajorStory(52);",
+    );
+    if (joelRecruitIndex !== -1)
+      joelTroopList[joelRecruitIndex].parameters[0] =
+        "sSw(784, true); BattleManager.abort(); this.command115();";
+
+    $dataTroops[26].pages[0].list = joelTroopList;
+
+    // after you give him fuzzy, he gives you something
+    let joelFuzzyTroopList = JsonEx.makeDeepCopy(
+      originalTroops[26].pages[1],
+    ).list;
+
+    joelFuzzyTroopList = EventLogicUpdates.itemDropClear(
+      joelFuzzyTroopList,
+      ITEM_CODE,
+    );
+
+    joelFuzzyTroopList = EventLogicUpdates.messageReplacement(
+      joelFuzzyTroopList,
+      "Door Knob",
+      "APT_32_BATHROOM_DOOR_KNOB",
+      "You receive a",
+    );
+    $dataTroops[26].pages[1].list = joelFuzzyTroopList;
+  }
   clearJoelRecruitmentEvent();
 
   function clearRoachesRecruitmentEvent() {

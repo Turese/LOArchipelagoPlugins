@@ -1556,10 +1556,10 @@ SELF_SWITCH_LOCATIONS = {
   },
 
   34: {
-    25: { C: "APT_32_MASTER_BEDROOM_TANK_TOP" },
+    25: { A: "APT_32_MASTER_BEDROOM_TANK_TOP" },
     24: { A: "APT_32_MASTER_BEDROOM_SAFE_ITEM" },
     21: { C: "APT_32_MASTER_BEDROOM_TERATOMA_COMBAT_VICTORY" },
-    28: { C: "APT_32_MASTER_BEDROOM_BALM" },
+    28: { A: "APT_32_MASTER_BEDROOM_BALM" },
     20: { C: "APT_32_MASTER_BEDROOM_MADISON_COMBAT_VICTORY" },
     19: { A: "APT_32_MASTER_BEDROOM_ARMY_FIGURE" },
     32: { A: "APT_32_MASTER_BEDROOM_PURSE" },
@@ -3209,6 +3209,12 @@ VARIABLE_LOCATIONS = {
     relation: ">=",
     value: 3,
     location: "APT_33_LIVING_ROOM_SCREAMATORIUM",
+  },
+
+  107: {
+    relation: "=",
+    value: 8,
+    location: "APT_32_BATHROOM_DOOR_KNOB"
   },
 
   // shutterbugstate
