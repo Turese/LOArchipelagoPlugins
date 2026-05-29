@@ -107,7 +107,7 @@ Goes through the game's in-map events to remove everything that explicitly grant
 - [x] clearElevatorFreakEvent - unlink the elevator freak's death with elevator access. 
     - [ ] Unlink the elevator freak's death with the blackout event (possibly bugged?)
 - [x] clearRatKingCrown - clear rusted crown drop from rat king's defeated dialogue
-- [ ] clearBasementKeyDrops - clear key drops from the hard mode versions of the enemies in basement floor apartment's B1 and B2
+- [x] clearBasementKeyDrops - clear key drops from the hard mode versions of the enemies in basement floor apartment's B1 and B2
 - [x] clearglitchElixirDrops - clear glitch elixir x99 gift from NPC in glitch world
 - [x] clearAmbroseDrops - clear ambrose item grants from Ambrose NPC in glitch world
 - [x] clearTypewritherDrop - clear loose manuscript drop from typewrither's defeated dialogue
@@ -116,7 +116,7 @@ Goes through the game's in-map events to remove everything that explicitly grant
 - [x] clearShutterbugDrop - clear dark room key drop from lyle's defeated dialogue
 - [x] clearJeanneLaundry - clear explicit laundry item drop from interacting with the full washer in the laundromat
 - [x] clearLandlordCache - clear explicit coin item drop from the cache in the landlord's dining room
-- [ ] clearLandlordDigSpot - clear explicit item drop from the hole in the landlord warzone
+- [x] clearLandlordDigSpot - clear explicit item drop from the hole in the landlord warzone
 - [x] fixBasementKeyConditions - fix the basement key location in the landlord's apartment; it no longer checks if the player has the basement key item to decide if it's been picked up
 - [x] clearErnestCheeseStash - remove explicit cheese drop from interacting with the hidden chest in Ernest's hideout
 - [x] clearRoachQuestPrize - remove item drops from solving the roach schism
@@ -143,10 +143,9 @@ Goes through the game's in-map events to remove everything that explicitly grant
 - [x] clearBlackoutIrisKey - clear iris key drop from the hole in the parking garage
 - [x] clearRatFreakGift - clear out sword given by the rat freak when player wears the rusty crown
 - [x] clearBurritoRatGift - clear out burrito given by the rat in the rat den when player wears the rusty crown
-- [x] clearComatusGifts - clear whisperblade gift for defeating comatus and yoga skill grant from interacting with comatus after defeating him
 - [x] clearHellenQuestPrizes - clear out explicit item gifts from Hellen's quest
 - [x] clearSecretDoorLockout - the door at the base of the stairwell won't lock you out on first open, and will tell you what large shades you have yet to slay
-- [x] clear Sybil red key drop
+- [x] clearSybilRedKey - clear Sybil red key drop
 
 ### EventLogicUpdates.clearAllEnemiesDrops
 
@@ -186,14 +185,16 @@ Updates events that happen during battle scenes.
 - [x] clearSpiderHuskGift - updates Spider Husk logic
     - [x] make it impossible for player to offend Spider Husk and exit the dialogue early
     - [x] clear out beating heart given by the Spider Husk in Mutt's shop
-- [ ] clearTickleShop - update tickle's shop so that locations are granted instead of items
-    - [ ] clear out Tickle's gifts (blood clot bombs and drawing)
-- [ ] clearEmmanuelShop
-- [ ] clearKevinShop
+- [x] updateRatHoleShop - update Rat hole shop to have random items
+- [x] updateEmmanuelShop - update Emmanuel's shop to have random items
+- [x] updateTickleShopGift - update Tickle's shop to have random items, clear Tickle's gifts
+- [ ] updateKevinShop - update Kevin's shop to have random items
 - [ ] clearLyleTrades
 - [x] clearBenPlayPrizes - clear out gifts from being a good to great playmate with Ben
 - [x] clearZacharyChewToy - clear out chew toy Zachary gives you for Roxie
-- [ ] clearDavidRewards - clear out rewards David gives you for saving the kids
+- [x] clearDavidRewards - clear out rewards David gives you for saving the kids
+- [x] clearComatusGifts - clear whisperblade gift for defeating comatus and yoga skill grant from interacting with comatus after defeating him
+- [x] clearEnragedHellenDrops - clear gardening shears dropped by overworld hellen after failing her quest
 
 
 ## EventLogicUpdates.clearDoorEncounterDrops

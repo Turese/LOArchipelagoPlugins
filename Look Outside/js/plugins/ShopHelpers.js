@@ -3856,11 +3856,1719 @@ ShopHelpers.getOozeMachineList = function () {
   ];
 };
 
-ShopHelpers.getTickleTradeList = function () {};
+ShopHelpers.getTickleTradeList = function () {
+  const bloodclotBombName = LookOutsideAPClient.getItemName(
+    "SEWER_TICKLE_BLOODCLOT_BOMB",
+    true,
+  );
+  const mosquitoKnifeName = LookOutsideAPClient.getItemName(
+    "SEWER_TICKLE_MOSQUITO_KNIFE",
+    true,
+  );
+  const bloodCapName = LookOutsideAPClient.getItemName(
+    "SEWER_TICKLE_BLOOD_CAP",
+    true,
+  );
+  const vampiricJacketName = LookOutsideAPClient.getItemName(
+    "SEWER_TICKLE_VAMPIRIC_JACKET",
+    true,
+  );
+  const crimsonRingName = LookOutsideAPClient.getItemName(
+    "SEWER_TICKLE_CRIMSON_RING",
+    true,
+  );
 
-ShopHelpers.getEmmanuelTradeList = function () {};
+  return [
+    {
+      code: 102,
+      indent: 1,
+      parameters: [
+        [
+          `(([s[${SEWER_TICKLE_BLOODCLOT_BOMB_SWITCH}]]))${bloodclotBombName} (1 pt)`,
+          `<<[v[560]<2]>>(([s[${SEWER_TICKLE_MOSQUITO_KNIFE_SWITCH}]]))${mosquitoKnifeName} (2 pts)`,
+          `<<[v[560]<4]>>(([s[461]]))${bloodCapName} (4 pts)`,
+          `<<[v[560]<6]>>(([s[462]]))${vampiricJacketName} (6 pts)`,
+          `<<[v[560]<10]>>(([s[463]]))${crimsonRingName} (10 pts)`,
+          "Never mind.",
+        ],
+        -1,
+        0,
+        2,
+        0,
+      ],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [
+        0,
+        `(([s[${SEWER_TICKLE_BLOODCLOT_BOMB_SWITCH}]]))${bloodclotBombName} (1 pt)`,
+      ],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, "Tickle"],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`You want to trade 1 point for ${bloodclotBombName}?`],
+    },
+    {
+      code: 102,
+      indent: 2,
+      parameters: [["Trade!", "Never mind."], -1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [560, 560, 2, 0, 1],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Tickle"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["Here, it's yours!"],
+    },
+    {
+      code: 121,
+      indent: 3,
+      parameters: [
+        SEWER_TICKLE_BLOODCLOT_BOMB_SWITCH,
+        SEWER_TICKLE_BLOODCLOT_BOMB_SWITCH,
+        0,
+      ],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [1, "Never mind."],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Tickle"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["Okay!"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [
+        1,
+        `<<[v[560]<2]>>(([s[${SEWER_TICKLE_MOSQUITO_KNIFE_SWITCH}]]))${mosquitoKnifeName} (2 pts)`,
+      ],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, "Tickle"],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`You want to trade 2 points for ${mosquitoKnifeName}?`],
+    },
+    {
+      code: 102,
+      indent: 2,
+      parameters: [["Trade!", "Never mind."], -1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [560, 560, 2, 0, 2],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Tickle"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["Here, it's yours!"],
+    },
+    {
+      code: 121,
+      indent: 3,
+      parameters: [
+        SEWER_TICKLE_MOSQUITO_KNIFE_SWITCH,
+        SEWER_TICKLE_MOSQUITO_KNIFE_SWITCH,
+        0,
+      ],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [1, "Never mind."],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Tickle"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["Okay!"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [2, `<<[v[560]<4]>>(([s[461]]))${bloodCapName} (4 pts)`],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, "Tickle"],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`You want to trade 4 points for ${bloodCapName}?`],
+    },
+    {
+      code: 102,
+      indent: 2,
+      parameters: [["Trade!", "Never mind."], -1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 128,
+      indent: 3,
+      parameters: [286, 0, 0, 1, false],
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [560, 560, 2, 0, 4],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Tickle"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["Here, it's yours!"],
+    },
+    {
+      code: 121,
+      indent: 3,
+      parameters: [461, 461, 0],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [1, "Never mind."],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Tickle"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["Okay!"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [
+        3,
+        `<<[v[560]<6]>>(([s[462]]))${vampiricJacketName} (6 pts)`,
+      ],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, "Tickle"],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`You want to trade 6 points for ${mosquitoKnifeName}?`],
+    },
+    {
+      code: 102,
+      indent: 2,
+      parameters: [["Trade!", "Never mind."], -1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [560, 560, 2, 0, 6],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Tickle"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["Here, it's yours!"],
+    },
+    {
+      code: 121,
+      indent: 3,
+      parameters: [462, 462, 0],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [1, "Never mind."],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Tickle"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["Okay!"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [4, `<<[v[560]<10]>>(([s[463]]))${crimsonRingName} (10 pts)`],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, "Tickle"],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`You want to trade 10 points for ${crimsonRingName}?`],
+    },
+    {
+      code: 102,
+      indent: 2,
+      parameters: [["Trade!", "Never mind."], -1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [560, 560, 2, 0, 10],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Tickle"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["Here, it's yours! You've been a real friend, buddy!"],
+    },
+    {
+      code: 121,
+      indent: 3,
+      parameters: [463, 463, 0],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [1, "Never mind."],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Tickle"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["Okay!"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [5, "Never mind."],
+    },
+  ];
+};
 
-ShopHelpers.getRatHoleTradeList = function () {};
+ShopHelpers.getEmmanuelTradeList = function () {
+  const nailBombName = LookOutsideAPClient.getItemName(
+    "MUTT_EMMANUEL_MERCHANT_1",
+    true,
+  );
+
+  const misshapenLimbName = LookOutsideAPClient.getItemName(
+    "MUTT_EMMANUEL_MERCHANT_2",
+    true,
+  );
+
+  const elbowPadsName = LookOutsideAPClient.getItemName(
+    "MUTT_EMMANUEL_MERCHANT_3",
+    true,
+  );
+
+  const crownOfFingersName = LookOutsideAPClient.getItemName(
+    "MUTT_EMMANUEL_MERCHANT_4",
+    true,
+  );
+
+  const coatOfArmsName = LookOutsideAPClient.getItemName(
+    "MUTT_EMMANUEL_MERCHANT_5",
+    true,
+  );
+
+  return [
+    {
+      code: 102,
+      indent: 1,
+      parameters: [
+        [
+          `<<[!i[359]]>>(([s[${MUTT_EMMANUEL_MERCHANT_1_SWITCH}]]))${nailBombName} (1 tape)`,
+          `<<[i[359]<2]>>(([s[${MUTT_EMMANUEL_MERCHANT_2_SWITCH}]]))${misshapenLimbName} (2 tapes)`,
+          `<<[i[359]<3]>>(([s[711]]))${elbowPadsName} (3 tapes)`,
+          `<<[i[359]<4]>>(([s[712]]))${crownOfFingersName} (4 tapes)`,
+          `<<[i[359]<6]>>(([s[713]]))${coatOfArmsName} (6 tapes)`,
+          "Never mind.",
+        ],
+        -1,
+        0,
+        2,
+        0,
+      ],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [
+        0,
+        `<<[!i[359]]>>(([s[${MUTT_EMMANUEL_MERCHANT_1_SWITCH}]]))${nailBombName} (1 tape)`,
+      ],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, "Emmanuel"],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`You want to trade 1 tape for ${nailBombName}?`],
+    },
+    {
+      code: 102,
+      indent: 2,
+      parameters: [["Trade!", "Never mind."], -1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 126,
+      indent: 3,
+      parameters: [359, 1, 0, 1],
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [432, 432, 1, 0, 1],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Emmanuel"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["That's a deal! Here you go."],
+    },
+    {
+      code: 121,
+      indent: 3,
+      parameters: [
+        MUTT_EMMANUEL_MERCHANT_1_SWITCH,
+        MUTT_EMMANUEL_MERCHANT_1_SWITCH,
+        0,
+      ],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [1, "Never mind."],
+      collapsed: true,
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Emmanuel"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["That's cool."],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [
+        1,
+        `<<[i[359]<2]>>(([s[${MUTT_EMMANUEL_MERCHANT_2_SWITCH}]]))${misshapenLimbName} (2 tapes)`,
+      ],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, "Emmanuel"],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`You want to trade 2 tapes for ${misshapenLimbName}?`],
+    },
+    {
+      code: 102,
+      indent: 2,
+      parameters: [["Trade!", "Never mind."], -1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [0, "Trade!"],
+      collapsed: true,
+    },
+    {
+      code: 126,
+      indent: 3,
+      parameters: [359, 1, 0, 2],
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [432, 432, 1, 0, 2],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Emmanuel"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["That's a deal! Here you go."],
+    },
+    {
+      code: 121,
+      indent: 3,
+      parameters: [
+        MUTT_EMMANUEL_MERCHANT_2_SWITCH,
+        MUTT_EMMANUEL_MERCHANT_2_SWITCH,
+        0,
+      ],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [1, "Never mind."],
+      collapsed: true,
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Emmanuel"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["That's cool."],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [2, `<<[i[359]<3]>>(([s[711]]))${elbowPadsName} (3 tapes)`],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, "Emmanuel"],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`You want to trade 3 tapes for ${elbowPadsName}?`],
+    },
+    {
+      code: 102,
+      indent: 2,
+      parameters: [["Trade!", "Never mind."], -1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [0, "Trade!"],
+      collapsed: true,
+    },
+    {
+      code: 126,
+      indent: 3,
+      parameters: [359, 1, 0, 3],
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [432, 432, 1, 0, 3],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Emmanuel"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["That's a deal! Here you go."],
+    },
+    {
+      code: 121,
+      indent: 3,
+      parameters: [711, 711, 0],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [1, "Never mind."],
+      collapsed: true,
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Emmanuel"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["That's cool."],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [
+        3,
+        `<<[i[359]<4]>>(([s[712]]))${crownOfFingersName} (4 tapes)`,
+      ],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, "Emmanuel"],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`You want to trade 4 tapes for ${crownOfFingersName}?`],
+    },
+    {
+      code: 102,
+      indent: 2,
+      parameters: [["Trade!", "Never mind."], 1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [0, "Trade!"],
+      collapsed: true,
+    },
+    {
+      code: 126,
+      indent: 3,
+      parameters: [359, 1, 0, 4],
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [432, 432, 1, 0, 4],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Emmanuel"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["That's a deal! Here you go."],
+    },
+    {
+      code: 121,
+      indent: 3,
+      parameters: [712, 712, 0],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [1, "Never mind."],
+      collapsed: true,
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Emmanuel"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["That's cool."],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [4, `<<[i[359]<6]>>(([s[713]]))${coatOfArmsName} (6 tapes)`],
+    },
+    {
+      code: 355,
+      indent: 2,
+      parameters: ['monster_ChangeSpr(0,"Shock");'],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, "Emmanuel"],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`Whoa! You wanna to trade 6 tapes for ${coatOfArmsName}?`],
+    },
+    {
+      code: 102,
+      indent: 2,
+      parameters: [["Trade!", "Never mind."], 1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [0, "Trade!"],
+      collapsed: true,
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [432, 432, 1, 0, 6],
+    },
+    {
+      code: 126,
+      indent: 3,
+      parameters: [359, 1, 0, 6],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Emmanuel"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["That's a deal! Here you go."],
+    },
+    {
+      code: 121,
+      indent: 3,
+      parameters: [713, 713, 0],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [1, "Never mind."],
+      collapsed: true,
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Emmanuel"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["Man..."],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 355,
+      indent: 2,
+      parameters: ['monster_ChangeSpr(0,"Normal");'],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [5, "Never mind."],
+    },
+  ];
+};
+
+ShopHelpers.getRatHoleTradeList = function () {
+  const filthBombName = LookOutsideAPClient.getItemName(
+    "F1_PASSAGE_RAT_HOLE_MERCHANT_1",
+    true,
+  );
+  const ratTailWhipName = LookOutsideAPClient.getItemName(
+    "F1_PASSAGE_RAT_HOLE_MERCHANT_2",
+    true,
+  );
+  const ratTailBeltName = LookOutsideAPClient.getItemName(
+    "F1_PASSAGE_RAT_HOLE_MERCHANT_3",
+    true,
+  );
+  const giantRatSkullName = LookOutsideAPClient.getItemName(
+    "F1_PASSAGE_RAT_HOLE_MERCHANT_4",
+    true,
+  );
+  const filthyRingName = LookOutsideAPClient.getItemName(
+    "F1_PASSAGE_RAT_HOLE_MERCHANT_5",
+    true,
+  );
+
+  return [
+    {
+      code: 102,
+      indent: 1,
+      parameters: [
+        [
+          `<<[i[375]<1]>>(([s[${F1_PASSAGE_RAT_HOLE_MERCHANT_1_SWITCH}]]))${filthBombName} (1 tail)`,
+          `<<[i[375]<2]>>(([s[${F1_PASSAGE_RAT_HOLE_MERCHANT_2_SWITCH}]]))${ratTailWhipName} (2 tails)`,
+          `<<[i[375]<3]>>(([s[708]]))${ratTailBeltName} (3 tails)`,
+          `<<[i[375]<4]>>(([s[709]]))${giantRatSkullName} (4 tails)`,
+          `<<[i[375]<6]>>(([s[710]]))${filthyRingName} (6 tails)`,
+          "Never mind.",
+        ],
+        -1,
+        0,
+        2,
+        0,
+      ],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [
+        0,
+        `<<[i[375]<1]>>(([s[${F1_PASSAGE_RAT_HOLE_MERCHANT_1_SWITCH}]]))${filthBombName} (1 tail)`,
+      ],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, "Rat Hole"],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`Hand over one tail for ${filthBombName}?`],
+    },
+    {
+      code: 102,
+      indent: 2,
+      parameters: [["Trade!", "Never mind."], 1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 121,
+      indent: 3,
+      parameters: [
+        F1_PASSAGE_RAT_HOLE_MERCHANT_1_SWITCH,
+        F1_PASSAGE_RAT_HOLE_MERCHANT_1_SWITCH,
+        0,
+      ],
+    },
+    {
+      code: 126,
+      indent: 3,
+      parameters: [375, 1, 0, 1],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Rat Hole"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["Good! Yes! Come to me, little one..."],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: [
+        "The rat tail wriggles out of your grasp and inches its way",
+      ],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["to the hole like a worm."],
+    },
+    {
+      code: 111,
+      indent: 3,
+      parameters: [4, 11, 0],
+    },
+    {
+      code: 101,
+      indent: 4,
+      parameters: ["Portrait_Recruits2", 0, 0, 2, "Ernest"],
+    },
+    {
+      code: 401,
+      indent: 4,
+      parameters: ["Oh god! Ol' Ernest's stomach wasn't ready for this!"],
+    },
+    {
+      code: 0,
+      indent: 4,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [440, 440, 1, 0, 1],
+    },
+    {
+      code: 119,
+      indent: 3,
+      parameters: ["posttrade"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [1, "Never mind."],
+    },
+    {
+      code: 119,
+      indent: 3,
+      parameters: ["trade"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [
+        1,
+        `<<[i[375]<2]>>(([s[${F1_PASSAGE_RAT_HOLE_MERCHANT_2_SWITCH}]]))${ratTailWhipName} (2 tails)`,
+      ],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, "Rat Hole"],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`Hand over two tails for ${ratTailWhipName}?`],
+    },
+    {
+      code: 102,
+      indent: 2,
+      parameters: [["Trade!", "Never mind."], 1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 121,
+      indent: 3,
+      parameters: [
+        F1_PASSAGE_RAT_HOLE_MERCHANT_2_SWITCH,
+        F1_PASSAGE_RAT_HOLE_MERCHANT_2_SWITCH,
+        0,
+      ],
+    },
+    {
+      code: 126,
+      indent: 3,
+      parameters: [375, 1, 0, 2],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Rat Hole"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["Good! Yes! Come to me, little one..."],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: [
+        "The rat tails wriggle out of your grasp and inch their way",
+      ],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["to the hole like a pair of worms."],
+    },
+    {
+      code: 111,
+      indent: 3,
+      parameters: [4, 11, 0],
+    },
+    {
+      code: 101,
+      indent: 4,
+      parameters: ["Portrait_Recruits2", 0, 0, 2, "Ernest"],
+    },
+    {
+      code: 401,
+      indent: 4,
+      parameters: ["Oh god! Ol' Ernest's stomach wasn't ready for this!"],
+    },
+    {
+      code: 0,
+      indent: 4,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [440, 440, 1, 0, 1],
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [440, 440, 1, 0, 2],
+    },
+    {
+      code: 119,
+      indent: 3,
+      parameters: ["posttrade"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [1, "Never mind."],
+      collapsed: true,
+    },
+    {
+      code: 119,
+      indent: 3,
+      parameters: ["trade"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [2, `<<[i[375]<3]>>(([s[708]]))${ratTailBeltName} (3 tails)`],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, "Rat Hole"],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`Hand over three tails for ${ratTailBeltName}?`],
+    },
+    {
+      code: 102,
+      indent: 2,
+      parameters: [["Trade!", "Never mind."], 1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 121,
+      indent: 3,
+      parameters: [708, 708, 0],
+    },
+    {
+      code: 126,
+      indent: 3,
+      parameters: [375, 1, 0, 3],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Rat Hole"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["Good! Yes! Come to me, little one..."],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: [
+        "The rat tails wriggle out of your grasp and inch their way",
+      ],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["to the hole like worms."],
+    },
+    {
+      code: 111,
+      indent: 3,
+      parameters: [4, 11, 0],
+    },
+    {
+      code: 101,
+      indent: 4,
+      parameters: ["Portrait_Recruits2", 0, 0, 2, "Ernest"],
+    },
+    {
+      code: 401,
+      indent: 4,
+      parameters: ["Oh god! Ol' Ernest's stomach wasn't ready for this!"],
+    },
+    {
+      code: 0,
+      indent: 4,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [440, 440, 1, 0, 3],
+    },
+    {
+      code: 119,
+      indent: 3,
+      parameters: ["posttrade"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [1, "Never mind."],
+    },
+    {
+      code: 119,
+      indent: 3,
+      parameters: ["trade"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [3, "<<[i[375]<4]>>(([s[709]]))Giant Rat Skull (4 tails)"],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, "Rat Hole"],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`Hand over four tails for ${giantRatSkullName}?`],
+    },
+    {
+      code: 102,
+      indent: 2,
+      parameters: [["Trade!", "Never mind."], 1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 121,
+      indent: 3,
+      parameters: [709, 709, 0],
+    },
+    {
+      code: 126,
+      indent: 3,
+      parameters: [375, 1, 0, 4],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Rat Hole"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["Good! Yes! Come to me, little one..."],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: [
+        "The rat tails wriggle out of your grasp and inch their way",
+      ],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["to the hole like worms."],
+    },
+    {
+      code: 111,
+      indent: 3,
+      parameters: [4, 11, 0],
+    },
+    {
+      code: 101,
+      indent: 4,
+      parameters: ["Portrait_Recruits2", 0, 0, 2, "Ernest"],
+    },
+    {
+      code: 401,
+      indent: 4,
+      parameters: ["Oh god! Ol' Ernest's stomach wasn't ready for this!"],
+    },
+    {
+      code: 0,
+      indent: 4,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [440, 440, 1, 0, 4],
+    },
+    {
+      code: 119,
+      indent: 3,
+      parameters: ["posttrade"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [1, "Never mind."],
+    },
+    {
+      code: 119,
+      indent: 3,
+      parameters: ["trade"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [4, `<<[i[375]<6]>>(([s[710]]))${filthyRingName} (6 tails)`],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, "Rat Hole"],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`Hand over six tails for ${filthyRingName}?`],
+    },
+    {
+      code: 102,
+      indent: 2,
+      parameters: [["Trade!", "Never mind."], 1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 121,
+      indent: 3,
+      parameters: [710, 710, 0],
+    },
+    {
+      code: 128,
+      indent: 3,
+      parameters: [282, 0, 0, 1, false],
+    },
+    {
+      code: 126,
+      indent: 3,
+      parameters: [375, 1, 0, 6],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, "Rat Hole"],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["Good! Yes! Come to me, little one..."],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: [
+        "The rat tails wriggle out of your grasp and inch their way",
+      ],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: ["to the hole like worms."],
+    },
+    {
+      code: 111,
+      indent: 3,
+      parameters: [4, 11, 0],
+    },
+    {
+      code: 101,
+      indent: 4,
+      parameters: ["Portrait_Recruits2", 0, 0, 2, "Ernest"],
+    },
+    {
+      code: 401,
+      indent: 4,
+      parameters: ["Oh god! Ol' Ernest's stomach wasn't ready for this!"],
+    },
+    {
+      code: 0,
+      indent: 4,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [440, 440, 1, 0, 6],
+    },
+    {
+      code: 119,
+      indent: 3,
+      parameters: ["posttrade"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [1, "Never mind."],
+    },
+    {
+      code: 119,
+      indent: 3,
+      parameters: ["trade"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [5, "Never mind."],
+    },
+    {
+      code: 119,
+      indent: 2,
+      parameters: ["leave"],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 118,
+      indent: 1,
+      parameters: ["posttrade"],
+    },
+  ];
+};
 
 ShopHelpers.gunTraderInitList = function (mapId, ev) {
   // all the same, but none of the specific gun types

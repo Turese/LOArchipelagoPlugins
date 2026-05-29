@@ -1535,6 +1535,63 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   function clearBasementKeyDrops() {
     // clear out the key prize from antoine
     // and from the arthropods from B1
+    if (lastLoadedMapId === 273 && ev.id === 11) {
+      // only one of these pages may actually be hit but im clearing both jic
+      ev.pages[0].list = EventLogicUpdates.itemDropClear(
+        ev.pages[0].list,
+        ITEM_CODE,
+      );
+      ev.pages[1].list = EventLogicUpdates.itemDropClear(
+        ev.pages[0].list,
+        ITEM_CODE,
+      );
+      ev.pages[0].list == EventLogicUpdates.deleteMessage(ev.pages[0].list, "Antoine");
+      ev.pages[1].list == EventLogicUpdates.deleteMessage(ev.pages[1].list, "Antoine");
+    }
+
+    if (lastLoadedMapId === 299 && ev.id === 12) {
+      // only one of these pages may actually be hit but im clearing both jic
+      ev.pages[1].list = EventLogicUpdates.itemDropClear(
+        ev.pages[1].list,
+        ITEM_CODE,
+      );
+      ev.pages[2].list = EventLogicUpdates.itemDropClear(
+        ev.pages[2].list,
+        ITEM_CODE,
+      );
+      ev.pages[1].list ==
+        EventLogicUpdates.deleteMessage(ev.pages[1].list, "Clyde's Key");
+      ev.pages[2].list ==
+        EventLogicUpdates.deleteMessage(ev.pages[2].list, "Clyde's Key");
+    }
+    if (lastLoadedMapId === 300 && ev.id === 6) {
+      ev.pages[0].list = EventLogicUpdates.itemDropClear(
+        ev.pages[0].list,
+        ITEM_CODE,
+      );
+      ev.pages[1].list = EventLogicUpdates.itemDropClear(
+        ev.pages[0].list,
+        ITEM_CODE,
+      );
+      ev.pages[0].list ==
+        EventLogicUpdates.deleteMessage(ev.pages[0].list, "Jennifer's Key");
+      ev.pages[1].list ==
+        EventLogicUpdates.deleteMessage(ev.pages[1].list, "Jennifer's Key");
+    }
+    if (lastLoadedMapId === 301 && ev.id === 5) {
+      ev.pages[0].list = EventLogicUpdates.itemDropClear(
+        ev.pages[0].list,
+        ITEM_CODE,
+      );
+      ev.pages[1].list = EventLogicUpdates.itemDropClear(
+        ev.pages[0].list,
+        ITEM_CODE,
+      );
+      ev.pages[0].list ==
+        EventLogicUpdates.deleteMessage(ev.pages[0].list, "Auguste's Key");
+      ev.pages[1].list ==
+        EventLogicUpdates.deleteMessage(ev.pages[1].list, "Auguste's Key");
+    }
   }
   clearBasementKeyDrops();
 
@@ -1718,7 +1775,20 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   }
   clearLandlordCache();
 
-  function clearLandlordDigSpot() {}
+  function clearLandlordDigSpot() {
+    if (lastLoadedMapId == 207 && ev.id == 26) {
+      ev.pages[2].list = EventLogicUpdates.itemDropClear(
+        ev.pages[2].list,
+        ITEM_CODE,
+      );
+      ev.pages[2].list = EventLogicUpdates.messageReplacement(
+        ev.pages[2].list,
+        "Ammo Crate",
+        "LL_BATTLEFIELD_DIG_SPOT",
+        "You found",
+      );
+    }
+  }
   clearLandlordDigSpot();
   // all the basement key drops
   // only check if player already has basement key
@@ -2322,9 +2392,6 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
     }
   }
   clearBurritoRatGift();
-
-  function clearComatusYoga() {}
-  clearComatusYoga();
 
   function clearHellenQuestPrizes() {
     if (lastLoadedMapId === 433 && ev.id === 9) {
@@ -3106,7 +3173,6 @@ EventLogicUpdates.clearTroopsDrops = function () {
         listItem.parameters[0].length == 5 &&
         listItem.parameters[0][2] == "I want to buy a key.",
     );
-    console.log(choiceListItem);
 
     if (choiceListItem) {
       choiceListItem.parameters[0][2] = `<<[s[${APT_38_KAELEY_PURCHASE_SWITCH}]]>>I want to buy a key.`;
@@ -3171,18 +3237,6 @@ EventLogicUpdates.clearTroopsDrops = function () {
   }
   updateSpiderHuskEvent();
 
-  function clearTickleShop() {}
-  clearTickleShop();
-
-  function clearEmmanuelShop() {}
-  clearEmmanuelShop();
-
-  function clearKevinShop() {}
-  clearKevinShop();
-
-  function clearLyleTrades() {}
-  clearLyleTrades();
-
   function clearBenPlayPrizes() {
     let benList = JsonEx.makeDeepCopy(originalTroops[27].pages[0].list);
 
@@ -3244,6 +3298,22 @@ EventLogicUpdates.clearTroopsDrops = function () {
   }
   clearZacharyChewToy();
 
+  function clearDavidRewards() {
+    let davidList = JsonEx.makeDeepCopy(originalTroops[532].pages[0].list);
+
+    davidList = EventLogicUpdates.itemDropClear(davidList, ITEM_CODE);
+    davidList = EventLogicUpdates.deleteMessage(davidList, "Bandages");
+    davidList = EventLogicUpdates.messageReplacement(
+      davidList,
+      "Elixir",
+      "SEWER_DAVID_GIFT",
+      "Receive",
+    );
+
+    $dataTroops[532].pages[0].list = davidList;
+  }
+  clearDavidRewards();
+
   function clearComatusGifts() {
     let comatusSwordList = JsonEx.makeDeepCopy(
       originalTroops[207].pages[12].list,
@@ -3273,6 +3343,126 @@ EventLogicUpdates.clearTroopsDrops = function () {
     $dataTroops[207].pages[0].list = tadasanaList;
   }
   clearComatusGifts();
+
+  // killing betrayed hellen gets you a drop
+  function clearEnragedHellenDrops() {
+    let enragedHellenList = JsonEx.makeDeepCopy(
+      originalTroops[623].pages[7].list,
+    );
+
+    enragedHellenList = EventLogicUpdates.itemDropClear(
+      enragedHellenList,
+      WEAPON_CODE,
+    );
+    enragedHellenList = EventLogicUpdates.messageReplacement(
+      enragedHellenList,
+      "Gardening Shears",
+      "APT_18_HELLEN_QUEST_BETRAY",
+      "Receive",
+    );
+
+    $dataTroops[623].pages[7].list = enragedHellenList;
+  }
+  clearEnragedHellenDrops();
+
+  function updateRatHoleShop() {
+    let ratHoleList = JsonEx.makeDeepCopy(originalTroops[113].pages[0].list);
+
+    let tradeSequenceStartIndex = ratHoleList.findIndex(
+      (listItem) => listItem.code === 102 && listItem.parameters[0].length == 6,
+    );
+    let tradeSequenceEndIndex = ratHoleList.findIndex(
+      (listItem) =>
+        listItem.code === 118 && listItem.parameters[0] == "posttrade",
+    );
+    ratHoleList.splice(
+      tradeSequenceStartIndex,
+      tradeSequenceEndIndex - tradeSequenceStartIndex + 1,
+      ...ShopHelpers.getRatHoleTradeList(),
+    );
+
+    $dataTroops[113].pages[0].list = ratHoleList;
+  }
+  updateRatHoleShop();
+
+  function updateEmmanuelShop() {
+    let emmanuelTroopList = JsonEx.makeDeepCopy(
+      originalTroops[227].pages[0].list,
+    );
+
+    // need to specify because this conversation has multiple 6-choice choice blocks
+    let tradeSequenceStartIndex = emmanuelTroopList.findIndex(
+      (listItem) =>
+        listItem.code === 102 &&
+        listItem.parameters[0].length == 6 &&
+        listItem.parameters[0][0].includes("Nail Bomb"),
+    );
+    // theres no end of trade sequence label, so we use the last option instead
+    let tradeSequenceEndIndex = emmanuelTroopList.findIndex(
+      (listItem) =>
+        listItem.code === 402 &&
+        listItem.parameters[0] == 5 &&
+        listItem.parameters[1] == "Never mind.",
+    );
+    emmanuelTroopList.splice(
+      tradeSequenceStartIndex,
+      tradeSequenceEndIndex - tradeSequenceStartIndex + 1,
+      ...ShopHelpers.getEmmanuelTradeList(),
+    );
+
+    $dataTroops[227].pages[0].list = emmanuelTroopList;
+  }
+  updateEmmanuelShop();
+
+  function updateTickleShopGift() {
+    let tickleTroopList = JsonEx.makeDeepCopy(
+      originalTroops[415].pages[0].list,
+    );
+
+    tickleTroopList = EventLogicUpdates.itemDropClear(
+      tickleTroopList,
+      ITEM_CODE,
+    );
+    tickleTroopList = EventLogicUpdates.messageReplacement(
+      tickleTroopList,
+      "You receive 5x",
+      "SEWER_N_TICKLES_GIFT",
+      "You receive",
+    );
+    tickleTroopList = EventLogicUpdates.messageReplacement(
+      tickleTroopList,
+      "Tickle's Gift",
+      "SEWER_N_TICKLES_DRAWING",
+      "You receive",
+    );
+    let tradeSequenceStartIndex = tickleTroopList.findIndex(
+      (listItem) =>
+        listItem.code === 102 &&
+        listItem.parameters[0].length == 6 &&
+        listItem.parameters[0][0].includes("Bloodclot Bomb"),
+    );
+    // theres no end of trade sequence label, so we use the last option instead
+    let tradeSequenceEndIndex = tickleTroopList.findIndex(
+      (listItem) =>
+        listItem.code === 402 &&
+        listItem.parameters[0] == 5 &&
+        listItem.parameters[1] == "Never mind.",
+    );
+    tickleTroopList.splice(
+      tradeSequenceStartIndex,
+      tradeSequenceEndIndex - tradeSequenceStartIndex + 1,
+      ...ShopHelpers.getTickleTradeList(),
+    );
+
+    $dataTroops[415].pages[0].list = tickleTroopList;
+  }
+  updateTickleShopGift();
+
+  function updateKevinShop() {}
+  updateKevinShop();
+
+  function clearLyleTrades() {}
+  clearLyleTrades();
 };
 
 EventLogicUpdates.clearDoorEncounterDrops = function () {

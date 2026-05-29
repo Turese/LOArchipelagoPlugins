@@ -690,7 +690,6 @@ LookOutsideAPClient.updateItems = function () {
       console.warn(`Item ${i} already received, skipping.`);
       continue;
     }
-    console.log("RECEIVED ITEM: ", items[i]);
     if (itemId < 1000) {
       window.InsertAPItems.insertItem(itemId, "item");
     } else if (itemId < 2000) {
