@@ -51,6 +51,7 @@ Manages tracking what door encounters player already has locations for; resets e
 - [ ] Ability to bring Emmanuel back to life if killed by the player
 - [ ] Ability to bring Sybil back to life if killed by the player
 - [ ] Ability to bring Kaeley back to life if killed by the player
+- [ ] Ability to bring Spider Husk back to life if killed by the player
 
 
 ## EventLogicUpdates.js
@@ -138,14 +139,14 @@ Goes through the game's in-map events to remove everything that explicitly grant
     - [x] Shrimp Knight (jousting lance)
     - [x] Taxidermy (rhino hide)
     - [x] Spore Guardian (fungus fibers)
-- [ ] returnTickle - allow player to place tickle back on the boiler tendril to continue interfacing with his shop
+- [x] returnTickle - allow player to place tickle back on the boiler tendril to continue interfacing with his shop
 - [x] clearBlackoutIrisKey - clear iris key drop from the hole in the parking garage
 - [x] clearRatFreakGift - clear out sword given by the rat freak when player wears the rusty crown
 - [x] clearBurritoRatGift - clear out burrito given by the rat in the rat den when player wears the rusty crown
-- [ ] clearComatusYoga - clear yoga skill grant from interacting with comatus after defeating him
-- [ ] clearHellenQuestPrizes - clear out explicit item gifts from Hellen's quest
+- [x] clearComatusGifts - clear whisperblade gift for defeating comatus and yoga skill grant from interacting with comatus after defeating him
+- [x] clearHellenQuestPrizes - clear out explicit item gifts from Hellen's quest
 - [x] clearSecretDoorLockout - the door at the base of the stairwell won't lock you out on first open, and will tell you what large shades you have yet to slay
-- [ ] clear Sybil red key drop
+- [x] clear Sybil red key drop
 
 ### EventLogicUpdates.clearAllEnemiesDrops
 
@@ -182,16 +183,18 @@ Updates events that happen during battle scenes.
 - [x] clearFinalFredGifts - clears out explicit gift drops from all freds when they're the final one
 - [x] dontStockStuart - don't stock audrey's gear in Stuart's basement shop so it can be randomized
 - [x] clearKaeleyTalk - update some Kaeley dialogue and add location check to her key sale
-- [ ] clearSpiderHuskGift - updates Spider Husk logic
-    - [ ] make it impossible for player to offend Spider Husk and exit the dialogue early
-    - [ ] clear out beating heart given by the Spider Husk in Mutt's shop
+- [x] clearSpiderHuskGift - updates Spider Husk logic
+    - [x] make it impossible for player to offend Spider Husk and exit the dialogue early
+    - [x] clear out beating heart given by the Spider Husk in Mutt's shop
 - [ ] clearTickleShop - update tickle's shop so that locations are granted instead of items
     - [ ] clear out Tickle's gifts (blood clot bombs and drawing)
 - [ ] clearEmmanuelShop
 - [ ] clearKevinShop
 - [ ] clearLyleTrades
-- [ ] clearBenPlayPrizes - clear out gifts from being a good to great playmate with Ben
-- [ ] clearZacharyChewToy - clear out chew toy Zachary gives you for Roxie
+- [x] clearBenPlayPrizes - clear out gifts from being a good to great playmate with Ben
+- [x] clearZacharyChewToy - clear out chew toy Zachary gives you for Roxie
+- [ ] clearDavidRewards - clear out rewards David gives you for saving the kids
+
 
 ## EventLogicUpdates.clearDoorEncounterDrops
 

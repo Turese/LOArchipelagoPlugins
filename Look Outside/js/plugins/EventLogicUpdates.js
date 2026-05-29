@@ -525,6 +525,103 @@ const SECRET_DOOR_LIST = [
     parameters: [],
   },
 ];
+const RETURN_TICKLE_LIST = [
+  {
+    code: 111,
+    indent: 0,
+    parameters: [0, 672, 0],
+  },
+  {
+    code: 101,
+    indent: 1,
+    parameters: ["", 0, 0, 2, ""],
+  },
+  {
+    code: 401,
+    indent: 1,
+    parameters: ["Return Tickle to the pipe?"],
+  },
+  {
+    code: 102,
+    indent: 1,
+    parameters: [["Yes.", "No."], 1, 1, 2, 0],
+  },
+  {
+    code: 402,
+    indent: 1,
+    parameters: [0, "Yes."],
+  },
+  {
+    code: 121,
+    indent: 2,
+    parameters: [661, 661, 1],
+  },
+  {
+    code: 121,
+    indent: 2,
+    parameters: [672, 672, 1],
+  },
+  {
+    code: 122,
+    indent: 2,
+    parameters: [523, 523, 2, 0, 1],
+  },
+  {
+    code: 313,
+    indent: 2,
+    parameters: [0, 1, 1, 164],
+  },
+  {
+    code: 101,
+    indent: 2,
+    parameters: ["Portrait_Misc", 7, 0, 2, "Tickle"],
+  },
+  {
+    code: 401,
+    indent: 2,
+    parameters: ["It's been good, buddy! See you again soon!"],
+  },
+  {
+    code: 0,
+    indent: 2,
+    parameters: [],
+  },
+  {
+    code: 402,
+    indent: 1,
+    parameters: [1, "No."],
+  },
+  {
+    code: 0,
+    indent: 2,
+    parameters: [],
+  },
+  {
+    code: 404,
+    indent: 1,
+    parameters: [],
+  },
+  {
+    code: 0,
+    indent: 1,
+    parameters: [],
+  },
+  {
+    code: 412,
+    indent: 0,
+    parameters: [],
+  },
+  {
+    code: 123,
+    indent: 0,
+    parameters: ["A", 1],
+  },
+  {
+    code: 0,
+    indent: 0,
+    parameters: [],
+  },
+];
 
 EventLogicUpdates.initializeAPVariables = function () {
   // gotsupplies = true; prevents fungus guys from giving you supplies at the entrance to the lair
@@ -649,6 +746,7 @@ const WEAPON_CODE = 127;
 const ARMOR_CODE = 128;
 const SET_SWITCH_CODE = 121;
 const SET_VAR_CODE = 122;
+const SKILL_CODE = 318;
 
 //codes:
 //126 = item drop
@@ -825,7 +923,10 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
         ev.pages[0].list,
         ARMOR_CODE,
       );
-      ev.pages[0].list = EventLogicUpdates.itemDropClear(ev.pages[0].list, 318); // clear skill grants
+      ev.pages[0].list = EventLogicUpdates.itemDropClear(
+        ev.pages[0].list,
+        SKILL_CODE,
+      ); // clear skill grants
       ev.pages[0].list = EventLogicUpdates.messageReplacement(
         ev.pages[0].list,
         "Martin's Ring",
@@ -1022,9 +1123,11 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   // replace the event message for getting screamatorium from the shelf with the actual drop
   function clearScreamitorumEvent() {
     if (lastLoadedMapId === 3 && ev.id === 88) {
-
       // filter out the set var that sets video game count (var 41)
-      let filteredList = ev.pages[0].list.filter((listItem) => !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 41));
+      let filteredList = ev.pages[0].list.filter(
+        (listItem) =>
+          !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 41),
+      );
       filteredList = EventLogicUpdates.itemDropClear(filteredList, ITEM_CODE);
 
       filteredList
@@ -1881,7 +1984,13 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   }
   clearGrateLever();
 
-  function returnTickle() {}
+  function returnTickle() {
+    if (lastLoadedMapId == 189 && ev.id == 18) {
+      ev.pages[1].list = RETURN_TICKLE_LIST;
+      ev.pages[1].conditions = EventLogicUpdates.buildConditions("A", 661);
+      ev.pages[1].trigger = ev.pages[0].trigger;
+    }
+  }
   returnTickle();
 
   function clearAudreyBossDrops() {
@@ -2217,7 +2326,20 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   function clearComatusYoga() {}
   clearComatusYoga();
 
-  function clearHellenQuestPrizes() {}
+  function clearHellenQuestPrizes() {
+    if (lastLoadedMapId === 433 && ev.id === 9) {
+      ev.pages[2].list = EventLogicUpdates.itemDropClear(
+        ev.pages[2].list,
+        WEAPON_CODE,
+      );
+      ev.pages[2].list = EventLogicUpdates.messageReplacement(
+        ev.pages[2].list,
+        "Hellen's Shears",
+        "APT_18_HELLEN_QUEST_SHEARS",
+        "Receive",
+      );
+    }
+  }
   clearHellenQuestPrizes();
 
   function clearSecretDoorLockout() {
@@ -2230,6 +2352,21 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
     }
   }
   clearSecretDoorLockout();
+
+  function clearSybilRedKey() {
+    if (lastLoadedMapId === 367 && ev.id === 1) {
+      ev.pages[1].list = EventLogicUpdates.itemDropClear(
+        ev.pages[1].list,
+        ITEM_CODE,
+      );
+      ev.pages[1].list = EventLogicUpdates.messageReplacement(
+        ev.pages[1].list,
+        "Small Red Key",
+        "MEAT_SYBIL_COMBAT_VICTORY",
+      );
+    }
+  }
+  clearSybilRedKey();
 };
 
 EventLogicUpdates.clearAllEnemiesDrops = function () {
@@ -3005,7 +3142,33 @@ EventLogicUpdates.clearTroopsDrops = function () {
   }
   clearKaeleyTalk();
 
-  function updateSpiderHuskEvent() {}
+  function updateSpiderHuskEvent() {
+    let huskList = JsonEx.makeDeepCopy(originalTroops[655].pages[0].list);
+
+    // the greeting that spider husk gives when you talk again
+    const secondGreetingIndex = huskList.findIndex(
+      (listItem) =>
+        listItem.code === 401 && listItem.parameters[0].includes("Hi again."),
+    );
+    if (secondGreetingIndex !== -1) {
+      huskList.splice(secondGreetingIndex + 1, 0, {
+        code: 355,
+        indent: huskList[secondGreetingIndex].indent,
+        parameters: [
+          "if (gVr(874) >= 2 && gVr(874) < 10) sVr(874, 1);", // if you messed up, start over
+        ],
+      });
+    }
+
+    huskList = EventLogicUpdates.itemDropClear(huskList, ARMOR_CODE);
+    huskList = EventLogicUpdates.messageReplacement(
+      huskList,
+      "Beating Heart",
+      "MUTT_SPIDER_HUSK_HEART",
+    );
+
+    $dataTroops[655].pages[0].list = huskList;
+  }
   updateSpiderHuskEvent();
 
   function clearTickleShop() {}
@@ -3020,8 +3183,96 @@ EventLogicUpdates.clearTroopsDrops = function () {
   function clearLyleTrades() {}
   clearLyleTrades();
 
-  function clearBenPlayPrizes() {}
+  function clearBenPlayPrizes() {
+    let benList = JsonEx.makeDeepCopy(originalTroops[27].pages[0].list);
+
+    // clear out video game, candy, and necklace gifts
+    benList = EventLogicUpdates.itemDropClear(benList, ITEM_CODE);
+    benList = EventLogicUpdates.itemDropClear(benList, ARMOR_CODE);
+
+    // dont increment video game count
+    benList = benList.filter(
+      (listItem) =>
+        !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 41),
+    );
+
+    benList = EventLogicUpdates.deleteMessage(
+      benList,
+      "He lets you borrow one of his favorite video games",
+    );
+    benList = EventLogicUpdates.deleteMessage(benList, "Kill to Shoot");
+    benList = EventLogicUpdates.deleteMessage(benList, "Kill To Shoot");
+    benList = EventLogicUpdates.deleteMessage(benList, "as you take it.");
+
+    benList = EventLogicUpdates.deleteMessage(benList, "Teeth Pendant");
+
+    // every play gets the last gift, so i message replace that one
+    benList = EventLogicUpdates.messageReplacement(
+      benList,
+      "Chocky Bar",
+      "APT_32_CHILD_BEDROOM_BEN_PLAY",
+      "Receive",
+    );
+
+    $dataTroops[27].pages[0].list = benList;
+  }
   clearBenPlayPrizes();
+
+  function clearZacharyChewToy() {
+    let zachList = JsonEx.makeDeepCopy(originalTroops[540].pages[0].list);
+
+    //replace dialogue condition to not check for chew toy item
+    zachList.find(
+      (listItem) => listItem.code === 102 && listItem.parameters[0].length == 6,
+    ).parameters[0][3] =
+      `(([s[${SEWER_NE_CHEW_TOY_SWITCH}]]))How do I show her I'm a friend?`;
+
+    // clear out chew toy
+    EventLogicUpdates.itemDropReplaceScript(
+      zachList,
+      ITEM_CODE,
+      `sSw(${SEWER_NE_CHEW_TOY_SWITCH}, true);`,
+    );
+    zachList = EventLogicUpdates.messageReplacement(
+      zachList,
+      "Chew Toy",
+      "SEWER_NE_CHEW_TOY",
+      "Receive",
+    );
+
+    $dataTroops[540].pages[0].list = zachList;
+  }
+  clearZacharyChewToy();
+
+  function clearComatusGifts() {
+    let comatusSwordList = JsonEx.makeDeepCopy(
+      originalTroops[207].pages[12].list,
+    );
+
+    comatusSwordList = EventLogicUpdates.itemDropClear(
+      comatusSwordList,
+      WEAPON_CODE,
+    );
+    comatusSwordList = EventLogicUpdates.messageReplacement(
+      comatusSwordList,
+      "Whisperblade",
+      "FUNGUS_COMATUS_COMBAT_VICTORY",
+    );
+
+    $dataTroops[207].pages[12].list = comatusSwordList;
+
+    let tadasanaList = JsonEx.makeDeepCopy(originalTroops[207].pages[0].list);
+
+    tadasanaList = EventLogicUpdates.itemDropClear(tadasanaList, SKILL_CODE); // the skill grant item code
+    tadasanaList = EventLogicUpdates.messageReplacement(
+      tadasanaList,
+      "Tadasana",
+      "BOILER_ROOM_COMATUS_YOGA",
+    );
+
+    $dataTroops[207].pages[0].list = tadasanaList;
+  }
+  clearComatusGifts();
 };
 
 EventLogicUpdates.clearDoorEncounterDrops = function () {
@@ -3320,7 +3571,7 @@ EventLogicUpdates.clearCommonEventDrops = function () {
 
     for (let i = 21; i <= 39; i++) {
       $dataCommonEvents[i].list = originalCommonEvents[i].list.filter(
-        (listItem) => listItem.code !== 318,
+        (listItem) => listItem.code !== SKILL_CODE,
       );
 
       if (
