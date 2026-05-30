@@ -5570,6 +5570,526 @@ ShopHelpers.getRatHoleTradeList = function () {
   ];
 };
 
+ShopHelpers.getKevinTradeList = function () {
+  const wormJuiceName = LookOutsideAPClient.getItemName(
+    "F1_PIPE_ROOM_KEVIN_MERCHANT_1",
+    true,
+  );
+  const wormBakedPieName = LookOutsideAPClient.getItemName(
+    "F1_PIPE_ROOM_KEVIN_MERCHANT_2",
+    true,
+  );
+  const wormONineTailsName = LookOutsideAPClient.getItemName(
+    "F1_PIPE_ROOM_KEVIN_MERCHANT_3",
+    true,
+  );
+  const wormSkinRobeName = LookOutsideAPClient.getItemName(
+    "F1_PIPE_ROOM_KEVIN_MERCHANT_4",
+    true,
+  );
+  const wormCrownName = LookOutsideAPClient.getItemName(
+    "F1_PIPE_ROOM_KEVIN_MERCHANT_5",
+    true,
+  );
+
+  return [
+    {
+      code: 102,
+      indent: 1,
+      parameters: [
+        [
+          `<<[i[382]<1]>>(([s[${F1_PIPE_ROOM_KEVIN_MERCHANT_1_SWITCH}]]))${wormJuiceName} (1 egg)`,
+          `<<[i[382]<2]>>(([s[${F1_PIPE_ROOM_KEVIN_MERCHANT_2_SWITCH}]]))${wormBakedPieName} (2 eggs)`,
+          `<<[i[382]<3]>>(([s[${F1_PIPE_ROOM_KEVIN_MERCHANT_3_SWITCH}]]))${wormONineTailsName} (3 eggs)`,
+          `<<[i[382]<5]>>(([s[961]]))${wormSkinRobeName} (5 eggs)`,
+          `<<[i[382]<6]>>(([s[962]]))${wormCrownName} (6 eggs)`,
+          "Never mind.",
+        ],
+        -1,
+        0,
+        2,
+        0,
+      ],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [
+        0,
+        `<<[i[382]<1]>>(([s[${F1_PIPE_ROOM_KEVIN_MERCHANT_1_SWITCH}]]))${wormJuiceName} (1 egg)`,
+      ],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`Hand over one Worm Egg for a ${wormJuiceName}?`],
+    },
+    {
+      code: 102,
+      indent: 2,
+      parameters: [["Trade!", "Never mind."], -1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 121,
+      indent: 3,
+      parameters: [
+        F1_PIPE_ROOM_KEVIN_MERCHANT_1_SWITCH,
+        F1_PIPE_ROOM_KEVIN_MERCHANT_1_SWITCH,
+        0,
+      ],
+    },
+    {
+      code: 126,
+      indent: 3,
+      parameters: [382, 1, 0, 1],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: [`Receive ${wormJuiceName}.`],
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [734, 734, 1, 0, 1],
+    },
+    {
+      code: 119,
+      indent: 3,
+      parameters: ["posttrade"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [1, "Never mind."],
+    },
+    {
+      code: 119,
+      indent: 3,
+      parameters: ["trade"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [
+        1,
+        `<<[i[382]<2]>>(([s[${F1_PIPE_ROOM_KEVIN_MERCHANT_2_SWITCH}]]))${wormBakedPieName} (2 eggs)`,
+      ],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`Hand over two Worm Eggs for a ${wormBakedPieName}?`],
+    },
+    {
+      code: 102,
+      indent: 2,
+      parameters: [["Trade!", "Never mind."], -1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 121,
+      indent: 3,
+      parameters: [
+        F1_PIPE_ROOM_KEVIN_MERCHANT_2_SWITCH,
+        F1_PIPE_ROOM_KEVIN_MERCHANT_2_SWITCH,
+        0,
+      ],
+    },
+    {
+      code: 126,
+      indent: 3,
+      parameters: [382, 1, 0, 2],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: [`Receive ${wormBakedPieName}.`],
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [734, 734, 1, 0, 1],
+    },
+    {
+      code: 119,
+      indent: 3,
+      parameters: ["posttrade"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [1, "Never mind."],
+    },
+    {
+      code: 119,
+      indent: 3,
+      parameters: ["trade"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [
+        2,
+        `<<[i[382]<3]>>(([s[${F1_PIPE_ROOM_KEVIN_MERCHANT_3_SWITCH}]]))${wormONineTailsName} (3 eggs)`,
+      ],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`Hand over three Worm Eggs for ${wormONineTailsName}?`],
+    },
+    {
+      code: 102,
+      indent: 2,
+      parameters: [["Trade!", "Never mind."], -1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 121,
+      indent: 3,
+      parameters: [
+        F1_PIPE_ROOM_KEVIN_MERCHANT_3_SWITCH,
+        F1_PIPE_ROOM_KEVIN_MERCHANT_3_SWITCH,
+        0,
+      ],
+    },
+    {
+      code: 126,
+      indent: 3,
+      parameters: [382, 1, 0, 3],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: [`Receive ${wormONineTailsName}.`],
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [734, 734, 1, 0, 3],
+    },
+    {
+      code: 119,
+      indent: 3,
+      parameters: ["posttrade"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [1, "Never mind."],
+    },
+    {
+      code: 119,
+      indent: 3,
+      parameters: ["trade"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [3, `<<[i[382]<5]>>(([s[961]]))${wormSkinRobeName} (5 eggs)`],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`Hand over five Worm Eggs for a ${wormSkinRobeName}?`],
+    },
+    {
+      code: 102,
+      indent: 2,
+      parameters: [["Trade!", "Never mind."], -1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 121,
+      indent: 3,
+      parameters: [961, 961, 0],
+    },
+    {
+      code: 128,
+      indent: 3,
+      parameters: [343, 0, 0, 1, false],
+    },
+    {
+      code: 126,
+      indent: 3,
+      parameters: [382, 1, 0, 5],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: [`Receive ${wormSkinRobeName}.`],
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [734, 734, 1, 0, 5],
+    },
+    {
+      code: 119,
+      indent: 3,
+      parameters: ["posttrade"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [1, "Never mind."],
+    },
+    {
+      code: 119,
+      indent: 3,
+      parameters: ["trade"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [4, `<<[i[382]<6]>>(([s[962]]))${wormCrownName} (6 eggs)`],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`Hand over six eggs for a ${wormCrownName}?`],
+    },
+    {
+      code: 102,
+      indent: 2,
+      parameters: [["Trade!", "Never mind."], -1, 0, 2, 0],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [0, "Trade!"],
+    },
+    {
+      code: 121,
+      indent: 3,
+      parameters: [962, 962, 0],
+    },
+    {
+      code: 126,
+      indent: 3,
+      parameters: [382, 1, 0, 6],
+    },
+    {
+      code: 101,
+      indent: 3,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 3,
+      parameters: [`Receive ${wormCrownName}.`],
+    },
+    {
+      code: 122,
+      indent: 3,
+      parameters: [734, 734, 1, 0, 6],
+    },
+    {
+      code: 119,
+      indent: 3,
+      parameters: ["posttrade"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 2,
+      parameters: [1, "Never mind."],
+    },
+    {
+      code: 119,
+      indent: 3,
+      parameters: ["trade"],
+    },
+    {
+      code: 0,
+      indent: 3,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [5, "Never mind."],
+    },
+    {
+      code: 119,
+      indent: 2,
+      parameters: ["leave"],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 118,
+      indent: 1,
+      parameters: ["posttrade"],
+    },
+  ];
+};
+
 ShopHelpers.gunTraderInitList = function (mapId, ev) {
   // all the same, but none of the specific gun types
 

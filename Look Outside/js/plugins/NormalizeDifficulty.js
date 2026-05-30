@@ -8,7 +8,6 @@
  * @help
  */
 
-
 var NormalizeDifficulty = NormalizeDifficulty || {};
 
 NormalizeDifficulty.applyChanges = function () {
@@ -173,6 +172,19 @@ NormalizeDifficulty.applyChanges = function () {
     }
   }
 
+  function forceHardmodeF1(ev, lastLoadedMapId) {
+    // floor 1 layout checks the hardmode switch in the middle of the page logic
+    if (lastLoadedMapId == 92 && [1, 2, 3, 4].includes(ev.id)) {
+      ev.pages[0]
+        .filter(
+          (listItem) =>
+            listItem.code === 111 &&
+            listItem.parameters[1] === HARDMODE,
+        )
+        .forEach((listItem) => (listItem.parameters[1] = TRUE_SWITCH_ID));
+    }
+  }
+
   // always enable saves, even in places like the roof and rat hell
   DataManager.isSaveEnabled = function () {
     return true;
@@ -211,6 +223,7 @@ NormalizeDifficulty.applyChanges = function () {
 
     forceHardModeBeastChaseItems(ev, lastLoadedMapId);
     forceHardmodePositiveItems(ev, lastLoadedMapId);
+    forceHardmodeF1(ev, lastLoadedMapId);
 
     return ev;
   };

@@ -60,6 +60,7 @@ const DOOR_GENERAL = {
   68: "Morton",
   71: "Nobody",
   73: "Kind-Faced Man",
+  80: "Pierre"
 };
 
 const DOOR_CURSED_GENERAL = {
@@ -327,10 +328,13 @@ DoorHelpers.setRemainingEncounterVars = function () {
   const remainingDoorRecruits = Object.keys(DOOR_RECRUIT).filter((id) =>
     DoorHelpers.playerNeedsEncounter(id),
   ).length;
+  
+  const pierreDoorAvailable = gVr(617) == 5;
 
   const remainingDoorGeneral = Object.keys(DOOR_GENERAL).filter((id) =>
     DoorHelpers.playerNeedsEncounter(id),
-  ).length;
+  ).length + (pierreDoorAvailable ? 1 : 0);
+  
 
   const remainingDoorCursedGeneral = Object.keys(DOOR_CURSED_GENERAL).filter(
     (id) => DoorHelpers.playerNeedsEncounter(id),
@@ -383,6 +387,10 @@ DoorHelpers.buildEncounterPickerEventPage = function () {
   const remainingDoorGeneralArray = Object.keys(DOOR_GENERAL).filter((id) =>
     DoorHelpers.playerNeedsEncounter(id),
   );
+
+  if (gVr(617) == 5) {
+    remainingDoorGeneralArray.push(80); 
+  }
 
   const remainingDoorCursedGeneralArray = Object.keys(
     DOOR_CURSED_GENERAL,
@@ -507,7 +515,7 @@ DoorHelpers.buildEncounterPickerEventPage = function () {
       parameters: [
         [
           `<<[v[${REMAINING_DOOR_CURSED_TRADERS_VAR}]=0]>>Cursed Traders.`,
-          `<<[v[${REMAINING_DOOR_CURSED_GENERAL_VAR}]=0]>>Cursed general.`,
+          `<<[v[${REMAINING_DOOR_CURSED_GENERAL_VAR}]=0]>>Cursed General.`,
           `<<[v[${REMAINING_DOOR_CURSED_RECRUITS_VAR}]=0]>>Cursed Recruits.`,
           "Never mind.",
         ],
@@ -531,7 +539,7 @@ DoorHelpers.buildEncounterPickerEventPage = function () {
       indent: 1,
       parameters: [
         1,
-        `<<[v[${REMAINING_DOOR_CURSED_GENERAL_VAR}]=0]>>Cursed general.`,
+        `<<[v[${REMAINING_DOOR_CURSED_GENERAL_VAR}]=0]>>Cursed General.`,
       ],
     },
     ...DoorHelpers.buildEncounterOptions(remainingDoorCursedGeneralArray),

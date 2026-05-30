@@ -837,6 +837,10 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
       "APT_21_DARK_ROOM_KEY",
       "$gameSelfSwitches.setValue([112, 14, 'A'], true)",
     ],
+    16: [
+      "APT_21_DARK_ROOM_PHOTO_PAPER",
+      "$gameSelfSwitches.setValue([112, 16, 'A'], true)",
+    ],
   },
 
   10: {
@@ -2857,8 +2861,8 @@ const FRIDGE_ITEM_OVERRIDES = {
   },
   57: {
     5: ["MUTT_FRIDGE_1", "$gameSelfSwitches.setValue([57, 5, 'A'], true)"],
-    9: ["MUTT_FRIDGE_1", "$gameSelfSwitches.setValue([57, 9, 'A'], true)"],
-    10: ["MUTT_FRIDGE_1", "$gameSelfSwitches.setValue([57, 10, 'A'], true)"],
+    9: ["MUTT_FRIDGE_2", "$gameSelfSwitches.setValue([57, 9, 'A'], true)"],
+    10: ["MUTT_FRIDGE_3", "$gameSelfSwitches.setValue([57, 10, 'A'], true)"],
   },
   258: {
     6: ["SEWER_SW_FRIDGE", "$gameSelfSwitches.setValue([258, 6, 'A'], true)"],
@@ -3425,6 +3429,7 @@ MassEventUpdates.overrideOverworldPickups = function (currentMapId) {
       list: pickupList,
       image: LookOutsideAPClient.getItemImage(name),
       direction: 4,
+      directionFix: true,
       moveFrequency: 3,
       moveRoute: {
         list: [

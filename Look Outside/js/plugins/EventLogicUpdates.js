@@ -45,7 +45,7 @@ EventLogicUpdates.buildConditions = function (selfSwitch, switch1) {
 
 const EMPTY_PAGE = {
   conditions: EventLogicUpdates.buildConditions(),
-  directionFix: false,
+  directionFix: true,
   image: {
     characterIndex: 0,
     characterName: "",
@@ -1120,6 +1120,17 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
     // remove page 2 of bookcase event (room 332, event 3)
   }
 
+  // removes event page with Lyle blocking the door after Sam opens his eyes while kissing, which makes it gay
+  // also lets player go in when lyle is developing the photo
+  function removeLyleDoorBlocker() {
+    if (lastLoadedMapId === 9 && ev.id === 13) {
+      if (ev.pages.length > 2) {
+        ev.pages.splice(2, 2);
+      }
+    }
+  }
+  removeLyleDoorBlocker();
+
   // replace the event message for getting screamatorium from the shelf with the actual drop
   function clearScreamitorumEvent() {
     if (lastLoadedMapId === 3 && ev.id === 88) {
@@ -1545,8 +1556,10 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
         ev.pages[0].list,
         ITEM_CODE,
       );
-      ev.pages[0].list == EventLogicUpdates.deleteMessage(ev.pages[0].list, "Antoine");
-      ev.pages[1].list == EventLogicUpdates.deleteMessage(ev.pages[1].list, "Antoine");
+      ev.pages[0].list ==
+        EventLogicUpdates.deleteMessage(ev.pages[0].list, "Antoine");
+      ev.pages[1].list ==
+        EventLogicUpdates.deleteMessage(ev.pages[1].list, "Antoine");
     }
 
     if (lastLoadedMapId === 299 && ev.id === 12) {
@@ -1861,15 +1874,51 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   }
   clearSadipedePrize();
 
-  // the key in the darkroom vanishes when lyle is recruited
   function fixDarkRoomItem() {
-    if (lastLoadedMapId == 112 && ev.id == 14) {
-      if (ev.pages.length >= 2) {
-        ev.pages.splice(1, 1);
-      }
+    // the key in the darkroom vanishes when lyle is recruited
+    if (lastLoadedMapId == 112) {
+      if (ev.id == 14 && ev.pages.length >= 2) ev.pages.splice(2, 1);
+    }
+    // turn the photo paper into a regular drop
+    if (ev.id == 16 && ev.pages.length < 2) {
+      ev.pages.push({
+        ...EMPTY_PAGE,
+        conditions: EventLogicUpdates.buildConditions("A"),
+      });
+    }
+    if (ev.id == 13 && ev.pages.length < 2) {
+      ev.pages.push({
+        ...EMPTY_PAGE,
+        image: ev.pages[0].image,
+        conditions: EventLogicUpdates.buildConditions("A"),
+      });
     }
   }
   fixDarkRoomItem();
+
+  function clearDarkRoomDevelopment() {
+    if (lastLoadedMapId == 112 && ev.id == 13) {
+      // set switch to true when getting photograph successfully
+      EventLogicUpdates.itemDropReplaceScript(
+        ev.pages[0].list,
+        ITEM_CODE,
+        "$gameSelfSwitches.setValue([112, 13, 'A'], true)",
+        (listItem) => listItem.parameters[0] == 340,
+      );
+
+      ev.pages[0].list = EventLogicUpdates.messageReplacement(
+        ev.pages[0].list,
+        "Photograph",
+        "APT_21_DARK_ROOM_PHOTO",
+        "Get",
+      );
+      ev.pages[0].list = EventLogicUpdates.itemDropClear(
+        ev.pages[0].list,
+        ITEM_CODE,
+      );
+    }
+  }
+  clearDarkRoomDevelopment();
 
   function clearRaftaLetter() {
     if (lastLoadedMapId === 94 && ev.id === 9) {
@@ -3458,10 +3507,61 @@ EventLogicUpdates.clearTroopsDrops = function () {
   }
   updateTickleShopGift();
 
-  function updateKevinShop() {}
+  function updateKevinShop() {
+    let kevinList = JsonEx.makeDeepCopy(originalTroops[560].pages[0].list);
+
+    let tradeSequenceStartIndex = kevinList.findIndex(
+      (listItem) =>
+        listItem.code === 102 &&
+        listItem.parameters[0].length == 6 &&
+        listItem.parameters[0][0].includes("Worm Juice"),
+    );
+
+    let tradeSequenceEndIndex = kevinList.findIndex(
+      (listItem) =>
+        listItem.code === 118 && listItem.parameters[0] == "posttrade",
+    );
+    kevinList.splice(
+      tradeSequenceStartIndex,
+      tradeSequenceEndIndex - tradeSequenceStartIndex + 1,
+      ...ShopHelpers.getKevinTradeList(),
+    );
+
+    $dataTroops[560].pages[0].list = kevinList;
+  }
+
   updateKevinShop();
 
-  function clearLyleTrades() {}
+  function clearLyleTrades() {
+    let lyleList = JsonEx.makeDeepCopy(originalTroops[145].pages[0].list);
+
+    // clear out all photo papers
+    lyleList = EventLogicUpdates.itemDropClear(lyleList, ITEM_CODE);
+
+    // make it always the correct photo case
+    lyleList.find(
+      (listItem) => listItem.code === 111 && listItem.parameters[1] == 245,
+    ).parameters = [1, 245, 1, 245, 0];
+
+    lyleList = EventLogicUpdates.messageReplacement(
+      lyleList,
+      "Photograph",
+      "APT_21_SECOND_KISS_GIFT",
+    );
+
+    lyleList = EventLogicUpdates.messageReplacement(
+      lyleList,
+      "Photo Paper",
+      "APT_21_FIRST_KISS_GIFT",
+    );
+
+    lyleList = lyleList.filter(
+      (listItem) =>
+        !(listItem.code == SET_SWITCH_CODE && listItem.parameters[0] == 476),
+    ); // remove the switch that makes lyle primed to join
+
+    $dataTroops[145].pages[0].list = lyleList;
+  }
   clearLyleTrades();
 };
 
@@ -3788,7 +3888,24 @@ EventLogicUpdates.clearCommonEventDrops = function () {
   clearGameSkills();
 
   function clearNewDayEvent() {
-    // clear rat baby growth spurt
+    let newDayList = JsonEx.makeDeepCopy(originalCommonEvents[6].list);
+
+    // set the checks for the individual nestor parts to always treat them as alive and advance their infection state
+    newDayList
+      .filter(
+        (listItem) =>
+          listItem.code === 111 &&
+          [448, 449, 450, 451].includes(listItem.parameters[1]),
+      )
+      .forEach((listItem) => (listItem.parameters[1] = FALSE_SWITCH_ID));
+
+    // always skip the check for if rat child can grow up
+    newDayList
+      .filter(
+        (listItem) => listItem.code === 111 && listItem.parameters[1] == 1167,
+      )
+      .forEach((listItem) => (listItem.parameters[1] = TRUE_SWITCH_ID));
+    $dataCommonEvents[6].list = newDayList;
   }
   clearNewDayEvent();
 

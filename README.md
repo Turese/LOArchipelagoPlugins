@@ -78,7 +78,6 @@ Goes through the game's in-map events to remove everything that explicitly grant
 - [x] leighWillWait - if player doesn't recruit Leigh immediately after defeating the grinning beast, she will still wait in her apartment
 - [x] forceRecruitsToStay - make recruit presence in the overworld independent of their presence in the player's apartment/party
     - [x] Leigh will leave after player finishes the recruitment dialogue
-    - [ ] Lyle will leave after player finishes the trade sequence
     - [x] Aster will only leave after player finishes the recruitment dialogue AND has Aster in their apartment, so they're never blocked from offerings
     - [x] Audrey will only leave after player player finishes the recruitment quest dialogue AND has Audrey in their apartment, so they're never blocked from vending machine purchases
     - [x] Joel will only leave after player finishes the recruitment dialogue
@@ -121,7 +120,7 @@ Goes through the game's in-map events to remove everything that explicitly grant
 - [x] clearErnestCheeseStash - remove explicit cheese drop from interacting with the hidden chest in Ernest's hideout
 - [x] clearRoachQuestPrize - remove item drops from solving the roach schism
 - [x] clearSadipedePrize - remove Marc-Andre item drop from the sadipede post-battle dialogue
-- [x] fixDarkRoomItem - allow apt 33 key location to stay on floor of darkroom even when lyle has been recruited
+- [x] fixDarkRoomItem - allow apt 33 key location to stay on floor of darkroom even when lyle has been recruited. add item drops to the photo paper stack and photo development sequence.
 - [x] clearRaftaLetter - remove explicit letter item grant after giving pen and paper to rafta
 - [x] clearOozeMachine - replace all explicit item sales from ooze machine in basement to replace them with locations; allow player to interact with it at any danger level
 - [x] clearDeadFredDrops - remove item drops from killing the facetaker; remove key drops from killing toxic fred or any of his offshoots
@@ -188,8 +187,8 @@ Updates events that happen during battle scenes.
 - [x] updateRatHoleShop - update Rat hole shop to have random items
 - [x] updateEmmanuelShop - update Emmanuel's shop to have random items
 - [x] updateTickleShopGift - update Tickle's shop to have random items, clear Tickle's gifts
-- [ ] updateKevinShop - update Kevin's shop to have random items
-- [ ] clearLyleTrades
+- [x] updateKevinShop - update Kevin's shop to have random items
+- [x] clearLyleTrades
 - [x] clearBenPlayPrizes - clear out gifts from being a good to great playmate with Ben
 - [x] clearZacharyChewToy - clear out chew toy Zachary gives you for Roxie
 - [x] clearDavidRewards - clear out rewards David gives you for saving the kids
