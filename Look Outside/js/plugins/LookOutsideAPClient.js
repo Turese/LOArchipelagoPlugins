@@ -681,7 +681,6 @@ LookOutsideAPClient.watchLocations = function () {
 
 LookOutsideAPClient.updateItems = function () {
   const items = client.items.received;
-  console.log(items);
   const currIndex = LookOutsideAPClient.initializeItemIndex();
   for (let i = currIndex; i < items.length; i++) {
     const itemId = items[i].id;

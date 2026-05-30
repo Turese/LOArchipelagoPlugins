@@ -823,17 +823,16 @@ EventLogicUpdates.messageReplacement = function (
   return newList;
 };
 
-originalEvents = {};
+const eventUpdated = {};
 EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
-  // start fresh each run
-  if (!originalEvents[lastLoadedMapId]) {
-    originalEvents[lastLoadedMapId] = {};
+  // note which events were already updated
+  if (!$gamePlayer || !$gamePlayer.LOCATION_NAME_MAPPING) return;
+  if (!eventUpdated[lastLoadedMapId]) {
+    eventUpdated[lastLoadedMapId] = {};
   }
-  if (!originalEvents[lastLoadedMapId][ev.id]) {
-    originalEvents[lastLoadedMapId][ev.id] = JsonEx.makeDeepCopy(ev);
-  }
-
-  ev.pages = JsonEx.makeDeepCopy(originalEvents[lastLoadedMapId][ev.id].pages);
+  if (eventUpdated[lastLoadedMapId][ev.id]) {
+    return;
+  } else eventUpdated[lastLoadedMapId][ev.id] = true;
 
   function doorEncounterPicker() {
     if (lastLoadedMapId == 3 && ev.id == 17) {
