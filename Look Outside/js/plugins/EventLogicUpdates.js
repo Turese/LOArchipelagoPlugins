@@ -937,6 +937,12 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   }
   leighRematch();
 
+  // needs location names from here on out
+  if (!$gamePlayer || !$gamePlayer.LOCATION_NAME_MAPPING) return;
+
+    console.log('USING', $gamePlayer.LOCATION_NAME_MAPPING)
+
+
   function clearLeighQuest() {
     if (lastLoadedMapId == 434 && ev.id == 1) {
       // clear martin's ring

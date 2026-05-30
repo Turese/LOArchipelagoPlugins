@@ -4057,6 +4057,9 @@ MassEventUpdates.overrideSafePickups = function (currentMapId) {
 };
 
 MassEventUpdates.overrideAllPickups = function (currentMapId) {
+  if (!$gamePlayer || !$gamePlayer.LOCATION_NAME_MAPPING) return;
+
+  console.log('USING', $gamePlayer.LOCATION_NAME_MAPPING)
   MassEventUpdates.overrideOverworldPickups(currentMapId);
   MassEventUpdates.overrideTrashSearchPickups(currentMapId);
   MassEventUpdates.overrideFridgePickups(currentMapId);

@@ -43,7 +43,7 @@ InsertAPItems.insertItem = function (id, itemClass, amount = 1) {
     }
     if (itemClass === "armor" && id == 160) {
       // crossbow comes with 12 bolts
-      $gameParty.gainItem(197, 12);
+      InsertAPItems.insertItem(197,'item',12)
     }
     $gameParty.gainItem(item, amount);
     console.log(`Item granted: ${id}`);

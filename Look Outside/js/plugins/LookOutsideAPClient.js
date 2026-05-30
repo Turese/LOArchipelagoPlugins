@@ -288,8 +288,6 @@ const TRAP_MAPPINGS = [
 LookOutsideAPClient.initializeLocationNames = async function () {
   locations = Object.values(LOCATION_ID_MAPPING);
   let locationMapping = {};
-  if (!$gamePlayer.LOCATION_NAME_MAPPING)
-    $gamePlayer.LOCATION_NAME_MAPPING = locationMapping;
 
   if (client?.authenticated)
     for (const l of locations) {
@@ -488,14 +486,15 @@ LookOutsideAPClient.submitGoal = function () {
   if (client.authenticated) client.goal();
 };
 
-LookOutsideAPClient.gameLoadedAPSetup = async function (slotData) {
+LookOutsideAPClient.gameLoadedAPSetup = function (slotData) {
+  console.log('GAME LOADED, STARTING SETUP WITH SLOTDATA', slotData)
   LookOutsideAPClient.initializeSlotData(slotData);
+  LookOutsideAPClient.updateItems();
   LookOutsideAPClient.checkGoal();
   LookOutsideAPClient.makeSlotDataChanges();
   LookOutsideAPClient.initializeItemIndex();
   LookOutsideAPClient.reportLocations();
-  await LookOutsideAPClient.initializeLocationNames();
-  LookOutsideAPClient.updateItems();
+  LookOutsideAPClient.initializeLocationNames();
   LookOutsideAPClient.updateDeathLink(slotData);
   EventLogicUpdates.clearTroopsDrops();
   EventLogicUpdates.clearCommonEventDrops();
@@ -683,6 +682,7 @@ LookOutsideAPClient.watchLocations = function () {
 
 LookOutsideAPClient.updateItems = function () {
   const items = client.items.received;
+  console.log(items)
   const currIndex = LookOutsideAPClient.initializeItemIndex();
   for (let i = currIndex; i < items.length; i++) {
     const itemId = items[i].id;
