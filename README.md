@@ -91,9 +91,8 @@ Goes through the game's in-map events to remove everything that explicitly grant
     - [x] Joel
     - [x] Madison
     - [x] Ben
-- [ ] fixWigglyFredRecruitMechanics - allows Wiggly Fred to appear in the Fred apartment even if he is already in the player's fridge
 - [x] Force Piranha guy to always explode into Piranhas even if player killed him (done in MassEventUpdates on the APT_28_MIDNIGHT_VALVE pickup)
-- [ ] unblockEugeneBookcase - Force Eugene's bookcase to never become blocked by Nestor
+- [x] unblockEugeneBookcase - Force Eugene's bookcase to never become blocked by Nestor
 - [x] clearScreamitorumEvent - Remove explicit game item drop from player's bookcase
 - [x] clearWoundedManKnifeEvent - Remove explicit knife item drop from wounded neighbor battle
 - [x] clearTelescopeEvent - Remove explicit item exchange (void and negative disc) from the telescope in Edwin's apartment
@@ -189,6 +188,9 @@ Updates events that happen during battle scenes.
 - [x] updateTickleShopGift - update Tickle's shop to have random items, clear Tickle's gifts
 - [x] updateKevinShop - update Kevin's shop to have random items
 - [x] clearLyleTrades
+- [x] setKillableShopkeepers - if the YAML option is set to not allow killing shopkeepers to take their stuff, disable the options to kill mutt and Eugene (Eugene will now also survive if player kills Nestor)
+- [x] clearErnestRecruit - update Ernest's rat hell recruitment event
+- [x] clearVendingMachineDeputization - randomizes the item granted by Mutt after finding his note on Audrey
 - [x] clearBenPlayPrizes - clear out gifts from being a good to great playmate with Ben
 - [x] clearZacharyChewToy - clear out chew toy Zachary gives you for Roxie
 - [x] clearDavidRewards - clear out rewards David gives you for saving the kids
@@ -216,8 +218,8 @@ Troops updates for door encounters specifically; separated only for organization
 fixes event items granted from common events
 
 - [x] clearGameSkills - clears game skill drops (or, if player has removed them from the pool via YAML option, grants them after only 1 play of each game)
-- [ ] clearNewDayEvent - clear out rat baby growth spurt when it reaches lvl 12 and a day has passed
-- [ ] clearSleepEvent - clear out Wiggly Fred moving into player's fridge if he is the last Fred standing
+- [x] clearNewDayEvent - clear out rat baby growth spurt when it reaches lvl 12 and a day has passed
+- [x] clearSleepEvent - clear out Wiggly Fred moving into player's fridge if he is the last Fred standing
 - [x] clearReturnHomePhillippeRatbaby - removes recruitment switch flips from bringing home Phillippe's remains / Rat Baby Thing; sets location checks instead
 - [x] clearAudreyShop - updates Audrey's vending machine stock to grant randomized items
 - [x] clearAudreyGiftsRecruit - update's Audrey's recruitment event; clears out energy drink gift, and short circuits recruit event to set a switch instead of adding her to party
@@ -225,6 +227,8 @@ fixes event items granted from common events
 - [x] updateAsterOfferings - fixes how the "correctness" of photograph offerings is calculated, allowing player to have an incorrect and correct photograph at the same time as distinct inventory items
 - [x] lockpicksNeverBreak - make lockpicks never break
 - [x] kaeleyLovesLockpicks - make Kaeley not get mad when player picks locks in her game
+- [x] updateBuyItemTable - update the functionality of buying an item from eugene to not grant one if it's an AP item (currently only dinosaur football included)
+- [x] updateMortonRecruitEvent - Morton won't show up in player's apartment when recruited
 
 # MassEventUpdates.js
 

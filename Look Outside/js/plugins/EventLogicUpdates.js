@@ -10,7 +10,13 @@
 
 var EventLogicUpdates = EventLogicUpdates || {};
 
-EventLogicUpdates.buildConditions = function (selfSwitch, switch1) {
+EventLogicUpdates.buildConditions = function (
+  selfSwitch,
+  switch1,
+  switch2,
+  variable,
+  variableValue,
+) {
   let conditions = {
     actorId: 1,
     actorValid: false,
@@ -38,6 +44,21 @@ EventLogicUpdates.buildConditions = function (selfSwitch, switch1) {
       ...conditions,
       switch1Id: switch1,
       switch1Valid: true,
+    };
+  }
+  if (switch2) {
+    conditions = {
+      ...conditions,
+      switch2Id: switch2,
+      switch2Valid: true,
+    };
+  }
+  if (variable && variableValue) {
+    conditions = {
+      ...conditions,
+      variableId: variable,
+      variableValue: variableValue,
+      variableValid: true,
     };
   }
   return conditions;
@@ -1118,7 +1139,13 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   // don't block bookcase when eugene is posessed by nestor
   function unblockEugeneBookcase() {
     // remove page 2 of bookcase event (room 332, event 3)
+    if (lastLoadedMapId === 332 && ev.id === 3) {
+      if (ev.pages.length > 1) {
+        ev.pages.splice(1, 1);
+      }
+    }
   }
+  unblockEugeneBookcase();
 
   // removes event page with Lyle blocking the door after Sam opens his eyes while kissing, which makes it gay
   // also lets player go in when lyle is developing the photo
@@ -2483,6 +2510,279 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
     }
   }
   clearSybilRedKey();
+
+  // allow eugene to live after nestor is killed if killable shopkeepers is false
+  function clearEugeneDeath() {
+    if (lastLoadedMapId == 132 && ev.id == 2 && ev.pages.length < 9) {
+      // make the deadpage need both nestor AND eugene to be dead
+      const killedEugene = 168;
+      ev.pages[7].conditions = EventLogicUpdates.buildConditions(
+        undefined,
+        killedEugene,
+        449,
+        434,
+        5,
+      );
+
+      // add a page where only nestor is dead
+      ev.pages.splice(7, 0, {
+        ...ev.pages[1],
+        conditions: EventLogicUpdates.buildConditions(
+          undefined,
+          449,
+          undefined,
+          undefined,
+          434,
+          5,
+        ),
+      });
+
+      ev.pages.forEach((page) => {
+        EventLogicUpdates.itemDropReplaceScript(
+          page.list,
+          SET_SWITCH_CODE,
+          `sSw(${killedEugene},gSw(${CAN_KILL_SHOPKEEPERS_SWITCH}));`,
+          (listItem) => listItem.parameters[0] == killedEugene,
+        );
+      });
+    }
+  }
+  clearEugeneDeath();
+
+  // dont increase game count when you buy it
+  // set the name variable to the custom apitem name
+  function clearReptileFootball() {
+    if (lastLoadedMapId == 132 && ev.id == 47) {
+      ev.pages[0].list = ev.pages[0].list.filter(
+        (listItem) =>
+          !(listItem.code == SET_SWITCH_CODE && listItem.parameters[0] == 41),
+      );
+
+      EventLogicUpdates.itemDropReplaceScript(
+        ev.pages[0].list,
+        SET_VAR_CODE,
+        `sVr(486,"${LookOutsideAPClient.getItemName(
+          "APT_24_REPTILE_FOOTBALL",
+          true,
+          false,
+          true,
+        )}");`,
+        (listItem) => listItem.parameters[0] == 486,
+      );
+
+      ev.pages[0].list.find(
+        (listItem) =>
+          listItem.code == SET_VAR_CODE && listItem.parameters[0] == 480,
+      ).parameters[4] = "!";
+    }
+  }
+  clearReptileFootball();
+
+  function clearMuttItems() {
+    function clearMuttPages(
+      deleteCode,
+      identifyString,
+      getString,
+      itemId,
+      altIdentifyString,
+      startIndex = 0, // we need this because the trophy has a leading empty page /sob
+    ) {
+      for (let i = startIndex; i <= startIndex + 1; i++) {
+        ev.pages[i].list = EventLogicUpdates.itemDropClear(
+          ev.pages[i].list,
+          deleteCode,
+        );
+
+        const descriptionIndex = ev.pages[i].list;
+        ev.pages[i].list = EventLogicUpdates.messageReplacement(
+          ev.pages[i].list,
+          identifyString,
+          itemId,
+          "A",
+        );
+
+        // in some cases, Mutt uses a different identifying string
+        if (altIdentifyString) {
+          ev.pages[i].list = EventLogicUpdates.messageReplacement(
+            ev.pages[i].list,
+            altIdentifyString,
+            itemId,
+            "A",
+          );
+        }
+
+        ev.pages[i].list = EventLogicUpdates.messageReplacement(
+          ev.pages[i].list,
+          getString,
+          itemId,
+          "Get",
+        );
+
+        // this is a cheap way of clearing out all lines of dialogue besides what we use for purchasing
+        // and what we use to identify the item
+
+        const itemName = LookOutsideAPClient.getItemName(itemId);
+
+        //todo: find a better way
+        ev.pages[i].list = ev.pages[i].list.filter(
+          (listItem) =>
+            listItem.code !== 401 ||
+            ["yours for", "You don't have enough money", itemName].find(
+              (target) =>
+                listItem.parameters[0].includes(target) ||
+                (altIdentifyString &&
+                  listItem.parameters[0].includes(altIdentifyString)),
+            ),
+        );
+
+        // never update cafe purchases; we should always pay base price
+        ev.pages[i].list = ev.pages[i].list.filter(
+          (pageItem) =>
+            !(pageItem.code == SET_VAR_CODE && pageItem.parameters[0] == 197),
+        );
+      }
+    }
+
+    if (lastLoadedMapId == 56) {
+      if (ev.id == 25) {
+        clearMuttPages(
+          ITEM_CODE,
+          "A trophy",
+          "Trophy",
+          "MUTT_TROPHY",
+          undefined,
+          1,
+        );
+      }
+      if (ev.id == 23) {
+        clearMuttPages(
+          ARMOR_CODE,
+          "A champion's belt",
+          "Champion's Belt",
+          "MUTT_CHAMPIONS_BELT",
+        );
+      }
+      if (ev.id == 22) {
+        clearMuttPages(WEAPON_CODE, "A chainsaw", "Chainsaw", "MUTT_CHAINSAW");
+      }
+      if (ev.id == 18) {
+        clearMuttPages(
+          WEAPON_CODE,
+          "A cattle prod spear",
+          "Cattle Prod Spear",
+          "MUTT_CATTLE_PROD",
+        );
+      }
+      if (ev.id == 16) {
+        clearMuttPages(
+          ITEM_CODE,
+          "Set of lockpicks",
+          "Lockpicks",
+          "MUTT_LOCKPICKS",
+        );
+      }
+      if (ev.id == 14) {
+        clearMuttPages(
+          ARMOR_CODE,
+          "A Training Belt",
+          "Training Belt",
+          "MUTT_TRAINING_BELT",
+          "A special belt",
+        );
+      }
+      if (ev.id == 12) {
+        // champion belt
+        clearMuttPages(
+          ARMOR_CODE,
+          "A Pickelhaube",
+          "Pickelhaube",
+          "MUTT_PICKELHAUBE",
+          "A highly decorated",
+        );
+      }
+      if (ev.id == 4) {
+        clearMuttPages(
+          WEAPON_CODE,
+          "A Stun Baton",
+          "Stun Baton",
+          "MUTT_STUN_BATON",
+          "Battery-powered",
+        );
+      }
+      if (ev.id == 10) {
+        clearMuttPages(
+          ARMOR_CODE,
+          "A trauma kit",
+          "Trauma Kit",
+          "MUTT_TRAUMA_KIT",
+        );
+      }
+      if (ev.id == 13) {
+        clearMuttPages(
+          ARMOR_CODE,
+          "A Venom Dagger",
+          "Venom Dagger",
+          "MUTT_DAGGER",
+        );
+      }
+      if (ev.id == 15) {
+        clearMuttPages(ARMOR_CODE, "A crossbow", "Crossbow", "MUTT_CROSSBOW");
+      }
+      if (ev.id == 17) {
+        // doing this here since this is the only case where the item name is capitalized
+        // differently between pages
+        ev.pages[0].list = EventLogicUpdates.messageReplacement(
+          ev.pages[0].list,
+          "{Coffee machine}",
+          "MUTT_COFFEE_MACHINE",
+          "Get",
+        );
+        clearMuttPages(
+          ITEM_CODE,
+          "A coffee machine",
+          "Coffee Machine",
+          "MUTT_COFFEE_MACHINE",
+        );
+      }
+      if (ev.id == 21) {
+        clearMuttPages(
+          ARMOR_CODE,
+          "A Comfort Belt",
+          "Comfort Belt",
+          "MUTT_COMFORT_BELT",
+        );
+      }
+      if (ev.id == 11) {
+        clearMuttPages(
+          ARMOR_CODE,
+          "A Breastplate",
+          "Breastplate",
+          "MUTT_COMFORT_BELT",
+          "A medieval breastplate",
+        );
+      }
+      if (ev.id == 24) {
+        clearMuttPages(
+          ITEM_CODE,
+          "A Game Cart",
+          "Auntie Wilma",
+          "MUTT_CROSSWORD_CHALLENGE",
+          "crossword video game",
+        );
+
+        // clear out video game count setting
+        ev.pages[1].list = ev.pages[1].list.filter(
+          (listItem) =>
+            !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 41),
+        );
+        ev.pages[0].list = ev.pages[0].list.filter(
+          (listItem) =>
+            !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 41),
+        );
+      }
+    }
+  }
+  clearMuttItems();
 };
 
 EventLogicUpdates.clearAllEnemiesDrops = function () {
@@ -3563,6 +3863,68 @@ EventLogicUpdates.clearTroopsDrops = function () {
     $dataTroops[145].pages[0].list = lyleList;
   }
   clearLyleTrades();
+
+  // use the player options to decide if the player can kill shopkeepers or not
+  function setKillableShopkeepers() {
+    let godMuttList = JsonEx.makeDeepCopy(originalTroops[157].pages[0].list);
+
+    godMuttList.find(
+      (listItem) =>
+        listItem.code == 102 &&
+        listItem.parameters[0].length == 3 &&
+        listItem.parameters[0][1].includes("attack"),
+    ).parameters[0][1] = `<<[!s[${CAN_KILL_SHOPKEEPERS_SWITCH}]]>>(Attack!)`;
+
+    $dataTroops[157].pages[0].list = godMuttList;
+
+    let eugeneList = JsonEx.makeDeepCopy(originalTroops[117].pages[0].list);
+
+    eugeneList.find(
+      (listItem) =>
+        listItem.code == 102 &&
+        listItem.parameters[0].length == 4 &&
+        listItem.parameters[0][2].includes("Attack"),
+    ).parameters[0][2] = `<<[!s[${CAN_KILL_SHOPKEEPERS_SWITCH}]]>>(Attack!)`;
+
+    $dataTroops[117].pages[0].list = eugeneList;
+  }
+  setKillableShopkeepers();
+
+  function clearErnestRecruit() {
+    let ernestList = JsonEx.makeDeepCopy(originalTroops[520].pages[0].list);
+
+    EventLogicUpdates.itemDropReplaceScript(
+      ernestList,
+      SET_SWITCH_CODE,
+      "sSw(796, true); BattleManager.abort(); this.command115();",
+      (listItem) => listItem.parameters[0] == 361,
+    );
+
+    $dataTroops[520].pages[0].list = ernestList;
+  }
+  clearErnestRecruit();
+
+  function clearVendingMachineDeputization() {
+    let muttShopList = JsonEx.makeDeepCopy(originalTroops[155].pages[0].list);
+
+    // clear vending machine key item drop
+    muttShopList = EventLogicUpdates.itemDropClear(muttShopList, ITEM_CODE);
+
+    // dont increase the special offer price
+    muttShopList = muttShopList.filter(
+      (pageItem) =>
+        !(pageItem.code == SET_VAR_CODE && pageItem.parameters[0] == 197),
+    );
+
+    muttShopList = EventLogicUpdates.messageReplacement(
+      muttShopList,
+      "Vending Machine Key",
+      "MUTT_VENDING_MACHINE_KEY",
+      "Receive",
+    );
+    $dataTroops[155].pages[0].list = muttShopList;
+  }
+  clearVendingMachineDeputization();
 };
 
 EventLogicUpdates.clearDoorEncounterDrops = function () {
@@ -3911,6 +4273,12 @@ EventLogicUpdates.clearCommonEventDrops = function () {
 
   function clearSleepEvent() {
     // clear wiggly fred moving into fridge
+    $dataCommonEvents[9].list = JsonEx.makeDeepCopy(
+      originalCommonEvents[9].list,
+    ).filter(
+      (listItem) =>
+        !(listItem.code == SET_SWITCH_CODE && listItem.parameters[0] == 539),
+    );
   }
 
   clearSleepEvent();
@@ -4285,4 +4653,78 @@ EventLogicUpdates.clearCommonEventDrops = function () {
     ];
   }
   kaeleyLovesLockpicks();
+
+  // eugene shop purchases; make them work for AP items
+  function updateBuyItemTable() {
+    let buyItemTable = JsonEx.makeDeepCopy(originalCommonEvents[46].list);
+
+    // if 480 (itemamount) is -1, grant 0 items on purchase, and use preexisting name and description
+
+    // the first item is the script
+    buyItemTable[0] = {
+      code: 355,
+      indent: 0,
+      parameters: ["EventLogicUpdates.buyItemTableScript();"],
+    };
+
+    buyItemTable = buyItemTable.filter((listItem) => listItem.code != 655);
+
+    $dataCommonEvents[46].list = buyItemTable;
+  }
+  updateBuyItemTable();
+
+  function updateMortonRecruitEvent() {
+    let mortonTrading = JsonEx.makeDeepCopy(originalCommonEvents[214].list);
+
+    EventLogicUpdates.itemDropReplaceScript(
+      mortonTrading,
+      SET_SWITCH_CODE,
+      "EventLogicUpdates.mortonRecruitScript();",
+      (listItem) => listItem.parameters[0] == 1226,
+    );
+
+    $dataCommonEvents[214].list = mortonTrading;
+  }
+  updateMortonRecruitEvent();
+};
+
+EventLogicUpdates.buyItemTableScript = () => {
+  // set price like normal
+  if (gVr(941) == 0) {
+    sVr(941, 1);
+  }
+  if (gVr(483) == 0) {
+    sVr(483, gVr(481).price);
+  }
+  sVr(483, gVr(483) * gVr(941));
+
+  if (gVr(480) != "!") {
+    if (gVr(486) == "") {
+      sVr(486, gVr(481).name);
+    }
+    if (gVr(482) == "") {
+      sVr(482, gVr(481).description);
+    }
+
+    if (gVr(480) == 0) {
+      sVr(480, 1);
+    }
+    if (gVr(480) > 1) {
+      sVr(486, "x" + gVr(480) + " " + gVr(486));
+      sVr(483, gVr(483) * gVr(480));
+    }
+  } else {
+    sVr(480, 0);
+    sVr(482, "---");
+  }
+};
+
+EventLogicUpdates.mortonRecruitScript = () => {
+  sSw(1226, gVr(410) < 5); // remove morton from dumpster if you got the recruit
+  if ($gameParty.inBattle()) {
+    BattleManager.abort();
+    $gameTroop._interpreter.command115();
+  } else {
+    $gameMap._interpreter.command115();
+  }
 };

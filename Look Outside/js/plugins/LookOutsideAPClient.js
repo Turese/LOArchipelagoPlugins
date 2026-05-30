@@ -727,6 +727,7 @@ LookOutsideAPClient.getItemName = function (
   apLocationName,
   excludeBrackets = false,
   useTrapName = false,
+  excludeColor = false
 ) {
   const locationId = LOCATION_ID_MAPPING[apLocationName];
 
@@ -742,6 +743,10 @@ LookOutsideAPClient.getItemName = function (
 
   const nameToUse = useTrapName ? trapName : name;
   const colorToUse = useTrapName ? trapTextColor : itemColor;
+
+  if (excludeColor) {
+    return `${player && !useTrapName ? player + " " : ""}${nameToUse}`;
+  }
 
   if (excludeBrackets) {
     return `${player && !useTrapName ? player + " " : ""}\\C[${colorToUse}]${nameToUse}\\C[0]`;

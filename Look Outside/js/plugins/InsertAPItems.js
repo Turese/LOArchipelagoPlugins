@@ -41,6 +41,10 @@ InsertAPItems.insertItem = function (id, itemClass, amount = 1) {
       // rat baby thing; set the sacrifice room to "solved"
       sSw(130, true); // gratingRoomSolved
     }
+    if (itemClass === "armor" && id == 160) {
+      // crossbow comes with 12 bolts
+      $gameParty.gainItem(197, 12);
+    }
     $gameParty.gainItem(item, amount);
     console.log(`Item granted: ${id}`);
   } catch (e) {
