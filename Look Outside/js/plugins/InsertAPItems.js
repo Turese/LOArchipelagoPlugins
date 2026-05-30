@@ -746,10 +746,6 @@ InsertAPItems.insertArm = function (position) {
 };
 
 InsertAPItems.loadCurrentMapImages = function () {
-  console.log(
-    "has custom image: ",
-    !!MAP_OVERWORLD_ITEM_OVERRIDES[lastLoadedMapId],
-  );
   if (MAP_OVERWORLD_ITEM_OVERRIDES[lastLoadedMapId]) {
     ImageManager.loadCharacter(DEFAULT_AP_ITEM_IMAGE.characterName);
     /*const characterImagesToLoad = new Set();

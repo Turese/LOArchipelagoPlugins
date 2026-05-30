@@ -427,11 +427,6 @@ ShopHelpers.getF3VendingMachineList = function (
       parameters: ["What snack will you buy?"],
     },
     {
-      code: 355,
-      indent: 1,
-      parameters: ['console.log("TODO: SEND HINTS HERE")'],
-    },
-    {
       code: 102,
       indent: 1,
       parameters: [

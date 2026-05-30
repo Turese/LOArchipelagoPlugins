@@ -11,8 +11,6 @@
 var UnarmedAndDangerous = UnarmedAndDangerous || {};
 
 UnarmedAndDangerous.applyChanges = function () {
-  console.log("Welcome to unarmed and dangerous!");
-
   const SAM_NAME = "Chara_Player";
   const SAM_ACTOR_ID = 1;
   const MISSING_RIGHT_ARM_SUFFIX = "_MissingRightarm";

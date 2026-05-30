@@ -823,7 +823,18 @@ EventLogicUpdates.messageReplacement = function (
   return newList;
 };
 
+originalEvents = {};
 EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
+  // start fresh each run
+  if (!originalEvents[lastLoadedMapId]) {
+    originalEvents[lastLoadedMapId] = {};
+  }
+  if (!originalEvents[lastLoadedMapId][ev.id]) {
+    originalEvents[lastLoadedMapId][ev.id] = JsonEx.makeDeepCopy(ev);
+  }
+
+  ev.pages = JsonEx.makeDeepCopy(originalEvents[lastLoadedMapId][ev.id].pages);
+
   function doorEncounterPicker() {
     if (lastLoadedMapId == 3 && ev.id == 17) {
       DoorHelpers.setRemainingEncounterVars();
@@ -936,12 +947,6 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
     }
   }
   leighRematch();
-
-  // needs location names from here on out
-  if (!$gamePlayer || !$gamePlayer.LOCATION_NAME_MAPPING) return;
-
-    console.log('USING', $gamePlayer.LOCATION_NAME_MAPPING)
-
 
   function clearLeighQuest() {
     if (lastLoadedMapId == 434 && ev.id == 1) {

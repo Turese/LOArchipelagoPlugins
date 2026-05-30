@@ -288,33 +288,33 @@ const TRAP_MAPPINGS = [
 LookOutsideAPClient.initializeLocationNames = async function () {
   locations = Object.values(LOCATION_ID_MAPPING);
   let locationMapping = {};
+  if (!$gamePlayer.LOCATION_NAME_MAPPING) {
+    $gamePlayer.LOCATION_NAME_MAPPING = locationMapping;
+  }
 
   if (client?.authenticated)
-    for (const l of locations) {
-      await client.scout([l]).then((results) => {
-        if (results.length > 0) {
-          const item = results[0];
-
-          let itemColor = 3;
-          if (item.progression) itemColor = 15;
-          else if (item.useful) itemColor = 22;
-          else if (item.filler) itemColor = 4;
-          else if (item.trap) itemColor = 18;
-          let player;
-          if (item.receiver.slot === item.sender.slot) player = null;
-          else player = `${item.receiver}'s `;
-          let mapping = { player, itemColor, name: item.name };
-          if (item.trap) {
-            const randIndex = Math.floor(
-              Math.random() * Object.keys(TRAP_MAPPINGS).length,
-            );
-            mapping = { ...mapping, ...TRAP_MAPPINGS[randIndex], isTrap: true };
-          }
-          locationMapping[l] = mapping;
+    await client.scout(locations).then((results) => {
+      results.forEach((item) => {
+        const location = item.locationId;
+        let itemColor = 3;
+        if (item.progression) itemColor = 15;
+        else if (item.useful) itemColor = 22;
+        else if (item.filler) itemColor = 4;
+        else if (item.trap) itemColor = 18;
+        let player;
+        if (item.receiver.slot === item.sender.slot) player = null;
+        else player = `${item.receiver}'s `;
+        let mapping = { player, itemColor, name: item.name };
+        if (item.trap) {
+          const randIndex = Math.floor(
+            Math.random() * Object.keys(TRAP_MAPPINGS).length,
+          );
+          mapping = { ...mapping, ...TRAP_MAPPINGS[randIndex], isTrap: true };
         }
+        locationMapping[location] = mapping;
       });
-      $gamePlayer.LOCATION_NAME_MAPPING = locationMapping;
-    }
+    });
+  $gamePlayer.LOCATION_NAME_MAPPING = locationMapping;
 };
 
 LookOutsideAPClient.initializeLocationObject = function () {
@@ -487,7 +487,6 @@ LookOutsideAPClient.submitGoal = function () {
 };
 
 LookOutsideAPClient.gameLoadedAPSetup = function (slotData) {
-  console.log('GAME LOADED, STARTING SETUP WITH SLOTDATA', slotData)
   LookOutsideAPClient.initializeSlotData(slotData);
   LookOutsideAPClient.updateItems();
   LookOutsideAPClient.checkGoal();
@@ -628,7 +627,7 @@ LookOutsideAPClient.watchLocations = function () {
     _setSwitchValue.call(this, switchId, value);
 
     if (SWITCH_LOCATIONS[switchId]) {
-      const locationId = SWITCH_LOCATIONS[switchId];      
+      const locationId = SWITCH_LOCATIONS[switchId];
 
       if (locationId && value) {
         if (locationId) console.log("SETTING SWITCH LOCATION: ", locationId);
@@ -682,7 +681,7 @@ LookOutsideAPClient.watchLocations = function () {
 
 LookOutsideAPClient.updateItems = function () {
   const items = client.items.received;
-  console.log(items)
+  console.log(items);
   const currIndex = LookOutsideAPClient.initializeItemIndex();
   for (let i = currIndex; i < items.length; i++) {
     const itemId = items[i].id;
@@ -727,7 +726,7 @@ LookOutsideAPClient.getItemName = function (
   apLocationName,
   excludeBrackets = false,
   useTrapName = false,
-  excludeColor = false
+  excludeColor = false,
 ) {
   const locationId = LOCATION_ID_MAPPING[apLocationName];
 
