@@ -629,10 +629,10 @@ LookOutsideAPClient.watchLocations = function () {
     _setSwitchValue.call(this, switchId, value);
 
     if (SWITCH_LOCATIONS[switchId]) {
-      const locationId = SWITCH_LOCATIONS[switchId];
-      if (locationId) console.log("SETTING SWITCH LOCATION: ", locationId);
+      const locationId = SWITCH_LOCATIONS[switchId];      
 
       if (locationId && value) {
+        if (locationId) console.log("SETTING SWITCH LOCATION: ", locationId);
         // make sure the switch is set to true
         LookOutsideAPClient.setLocation(locationId);
       }

@@ -144,6 +144,37 @@ BackInTime.fixTrueFredKilled = function () {
   delete $gameSelfSwitches._data[[239, 6, "C"].toString()]; // delete the dead true fred
 };
 
+BackInTime.fixSybilKilled = function () {
+  sSw(969, false);
+  sSw(975, false);
+};
+
+BackInTime.fixSpiderHuskKilled = function () {
+  sSw(1083, false);
+};
+
+BackInTime.fixTickleDead = function () {
+  sSw(661, false); // set tickle's boiler arm to frozen / set tickle to alive
+  sVr(523, gVr(523) - 1); // reduce active boiler arms by 1
+};
+
+BackInTime.fixEmmanuelKilled = function () {
+  delete $gameSelfSwitches._data[[56, 28, "C"].toString()];
+};
+
+BackInTime.isEmmanuelDead = function () {
+  return !!$gameSelfSwitches._data[[56, 28, "C"].toString()];
+};
+
+BackInTime.isKaeleyDead = function () {
+  return !!$gameSelfSwitches._data[[355, 43, "A"].toString()];
+};
+
+BackInTime.fixKaeleyKilled = function () {
+  delete $gameSelfSwitches._data[[355, 43, "A"].toString()];
+  sSw(939, false) // theres also a kaeleydead switch
+};
+
 const BEDROOM_MAP_ID = 2;
 const CALENDAR_EVENT_ID = 16;
 
@@ -166,6 +197,34 @@ BackInTime.haveAnyAstronomersLeft = function () {
 
 BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
   const regretTemplates = {
+    sybilDead: {
+      rFunction: "BackInTime.fixSybilKilled",
+      rName: "(([!s[975],!s[969]]))Sybil.",
+      rText: []
+    },
+    spiderHuskDead: {
+      rFunction: "BackInTime.fixSpiderHuskKilled",
+      rName: "(([!s[1083]]))Spider Husk.",
+      rText: []
+    },
+    tickleDead: {
+      rFunction: "BackInTime.fixTickleDead",
+      // also checks if tickle is on player or on the tickmonger
+      rName: "(([s[672];s[673];!s[661]]))Tickle.",
+      rText: []
+    },
+    emmanuelDead: {
+      rCondition: BackInTime.isEmmanuelDead,
+      rFunction: "BackInTime.fixEmmanuelKilled",
+      rName: "Emmanuel.",
+      rText: []
+    },
+    kaeleyDead: {
+      rCondition: BackInTime.isKaeleyDead,
+      rFunction: "BackInTime.fixKaeleyKilled",
+      rName: "Kaeley.",
+      rText: []
+    },
     trueFredDead: {
       rCondition: BackInTime.isTrueFredDead,
       rFunction: "BackInTime.fixTrueFredKilled",

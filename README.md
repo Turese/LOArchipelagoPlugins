@@ -47,11 +47,11 @@ Manages tracking what door encounters player already has locations for; resets e
 - [x] Ability to bring the true Fred back to life if killed by the player
 - [x] Ability to bring the friendly Rats back to life if killed by the player + player now has Rusted Crown
 - [x] Ability to bring Steve back to life if killed by the player
-- [ ] Ability to bring Tickle back to life if killed by the player
-- [ ] Ability to bring Emmanuel back to life if killed by the player
-- [ ] Ability to bring Sybil back to life if killed by the player
-- [ ] Ability to bring Kaeley back to life if killed by the player
-- [ ] Ability to bring Spider Husk back to life if killed by the player
+- [x] Ability to bring Tickle back to life if killed by the player
+- [x] Ability to bring Emmanuel back to life if killed by the player
+- [x] Ability to bring Sybil back to life if killed by the player
+- [x] Ability to bring Kaeley back to life if killed by the player
+- [x] Ability to bring Spider Husk back to life if killed by the player
 
 
 ## EventLogicUpdates.js
