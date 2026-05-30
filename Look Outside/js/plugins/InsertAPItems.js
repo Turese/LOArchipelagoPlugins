@@ -98,7 +98,7 @@ InsertAPItems.insertRecruit = function (name) {
   if (name === "Aster") {
     sSw(374, true);
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
-    sSw(1004, true) // notaloner = on
+    sSw(1004, true); // notaloner = on
     setSybilMajorStory(51);
   }
   if (name === "Sophie") {
@@ -109,7 +109,7 @@ InsertAPItems.insertRecruit = function (name) {
     InsertAPItems.insertItem(661, "item", 3); // steel marbles
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
     setSybilMajorStory(60);
-    sSw(1004, true) // notaloner = on
+    sSw(1004, true); // notaloner = on
     $gamePlayer.sophieAcquired = true; // setting this in case player loses her
   }
   if (name === "Phillippe") {
@@ -122,7 +122,7 @@ InsertAPItems.insertRecruit = function (name) {
     philActor.learnSkill(652);
     philActor.setFaceImage("Philippe", 0); // yes it's supposed to be spelled like that
     philActor.setCharacterImage("Chara_FungusLair", 6);
-    sSw(1004, true) // notaloner = on
+    sSw(1004, true); // notaloner = on
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
   }
   if (name === "Audrey") {
@@ -132,7 +132,7 @@ InsertAPItems.insertRecruit = function (name) {
     audreyActor.setCharacterImage("!VendingMachines", 6);
     audreyActor.changeClass(22, true); // shes a machine
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
-    sSw(1004, true) // notaloner = on
+    sSw(1004, true); // notaloner = on
     setSybilMajorStory(64);
   }
   if (name === "Rat Baby") {
@@ -145,7 +145,7 @@ InsertAPItems.insertRecruit = function (name) {
       sVr(384, 50); // set rat calm to 50
       sVr(385, 100); // set rat energy to 100
       sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
-      sSw(1004, true) // notaloner = on
+      sSw(1004, true); // notaloner = on
     } else {
       InsertAPItems.growRatBaby();
     }
@@ -156,73 +156,73 @@ InsertAPItems.insertRecruit = function (name) {
     $gameActors.actor(5).learnSkill(65);
     setSybilMajorStory(53);
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
-    sSw(1004, true) // notaloner = on
+    sSw(1004, true); // notaloner = on
   }
   if (name === "Hellen") {
     sSw(35, true);
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
-    sSw(1004, true) // notaloner = on
+    sSw(1004, true); // notaloner = on
   }
   if (name === "Lyle") {
     sSw(376, true);
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
-    sSw(1004, true) // notaloner = on
+    sSw(1004, true); // notaloner = on
   }
   if (name === "Joel") {
     sSw(33, true);
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
-    sSw(1004, true) // notaloner = on
+    sSw(1004, true); // notaloner = on
     setSybilMajorStory(52);
   }
   if (name === "Ernest") {
     sSw(361, true);
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
-    sSw(1004, true) // notaloner = on
+    sSw(1004, true); // notaloner = on
     setSybilMajorStory(59);
   }
   if (name === "Morton") {
     sSw(371, true);
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
-    sSw(1004, true) // notaloner = on
+    sSw(1004, true); // notaloner = on
     setSybilMajorStory(63);
   }
   if (name === "Dan") {
     sSw(32, true);
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
-    sSw(1004, true) // notaloner = on
+    sSw(1004, true); // notaloner = on
     setSybilMajorStory(54);
   }
   if (name === "Shadow") {
     sSw(27, true);
-    sSw(1004, true) // notaloner = on
+    sSw(1004, true); // notaloner = on
     setSybilMajorStory(90);
   }
   if (name === "Wiggly Fred") {
     sSw(539, true);
-    sSw(1004, true) // notaloner = on
+    sSw(1004, true); // notaloner = on
   }
   if (name === "Roaches") {
     sSw(249, true);
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
-    sSw(1004, true) // notaloner = on
+    sSw(1004, true); // notaloner = on
   }
   if (name === "Papineau") {
     sSw(378, true);
     InsertAPItems.insertItem(284, "item", 1); // Papineau's lunch
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
-    sSw(1004, true) // notaloner = on
+    sSw(1004, true); // notaloner = on
     setSybilMajorStory(61);
   }
   if (name === "Xaria and Montgomery") {
     sSw(363, true);
     sVr(37, gVr(37) + 2); // add 2 people when xaria and mongomery arrive
-    sSw(1004, true) // notaloner = on
+    sSw(1004, true); // notaloner = on
     setSybilMajorStory(62);
   }
   if (name === "Spider") {
     sSw(375, true);
     sVr(37, gVr(37) + 1); // adds 1 to # of people in apartment counter
-    sSw(1004, true) // notaloner = on
+    sSw(1004, true); // notaloner = on
     setSybilMajorStory(66);
   }
 };
@@ -645,9 +645,39 @@ InsertAPItems.insertResourcePack = function (itemId) {
     case 69: // 4x cheese
       InsertAPItems.insertItem(34, "item", 4);
       break;
+    case 70: // progressive rent money
+      InsertAPItems.insertRentMoney();
+      break;
     default:
       console.warn(`Unrecognized pack item id: ${itemId}, no item granted`);
   }
+};
+
+InsertAPItems.insertRentMoney = function () {
+  if (!$gamePlayer.rent) $gamePlayer.rent = 0;
+
+  // using the cursed mode payment requests here...
+  switch ($gamePlayer.rent) {
+    case 0:
+      InsertAPItems.insertMoney(100);
+      break;
+    case 1:
+      InsertAPItems.insertMoney(200);
+      break;
+    case 2:
+      InsertAPItems.insertMoney(400);
+      break;
+    case 3:
+      InsertAPItems.insertMoney(800);
+      break;
+    default:
+      // failsafe; we shouldn't hit this case
+      console.warn(
+        `Unrecognized Progressive Rent Money count: ${$gamePlayer.rent}, $200 granted`,
+      );
+      InsertAPItems.insertMoney(200);
+  }
+  $gamePlayer.rent += 1;
 };
 
 InsertAPItems.insertTrap = function (itemId) {
