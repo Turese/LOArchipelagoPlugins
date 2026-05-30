@@ -4686,6 +4686,21 @@ EventLogicUpdates.clearCommonEventDrops = function () {
     $dataCommonEvents[214].list = mortonTrading;
   }
   updateMortonRecruitEvent();
+
+  function nestorAlsoRestocks() {
+    let nestorEugeneRestock = JsonEx.makeDeepCopy(
+      originalCommonEvents[89].list,
+    );
+
+    // finds the check for if infestation > 3
+    // and sets it to 99
+    nestorEugeneRestock.find(
+      (listItem) => listItem.code === 111 && listItem.parameters[1] == 434,
+    ).parameters[3] = 99;
+
+    $dataCommonEvents[89].list = nestorEugeneRestock;
+  }
+  nestorAlsoRestocks();
 };
 
 EventLogicUpdates.buyItemTableScript = () => {

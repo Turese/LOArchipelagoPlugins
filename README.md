@@ -229,6 +229,7 @@ fixes event items granted from common events
 - [x] kaeleyLovesLockpicks - make Kaeley not get mad when player picks locks in her game
 - [x] updateBuyItemTable - update the functionality of buying an item from eugene to not grant one if it's an AP item (currently only dinosaur football included)
 - [x] updateMortonRecruitEvent - Morton won't show up in player's apartment when recruited
+- [x] nestorAlsoRestocks - fixes check for Nestor that prevents Eugene from restocking
 
 # MassEventUpdates.js
 
