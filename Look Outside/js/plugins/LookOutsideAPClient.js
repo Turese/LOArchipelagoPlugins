@@ -497,6 +497,7 @@ LookOutsideAPClient.gameLoadedAPSetup = function (slotData) {
   LookOutsideAPClient.updateDeathLink(slotData);
   EventLogicUpdates.clearTroopsDrops();
   EventLogicUpdates.clearCommonEventDrops();
+  EventLogicUpdates.clearEventsUpdated();
 };
 
 const resetClient = async function () {

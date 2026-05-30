@@ -823,17 +823,13 @@ EventLogicUpdates.messageReplacement = function (
   return newList;
 };
 
-const eventUpdated = {};
-EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
-  // note which events were already updated
-  if (!$gamePlayer || !$gamePlayer.LOCATION_NAME_MAPPING) return;
-  if (!eventUpdated[lastLoadedMapId]) {
-    eventUpdated[lastLoadedMapId] = {};
-  }
-  if (eventUpdated[lastLoadedMapId][ev.id]) {
-    return;
-  } else eventUpdated[lastLoadedMapId][ev.id] = true;
+let eventsUpdated = {};
 
+EventLogicUpdates.clearEventsUpdated = function () {
+  eventsUpdated = {};
+};
+
+EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   function doorEncounterPicker() {
     if (lastLoadedMapId == 3 && ev.id == 17) {
       DoorHelpers.setRemainingEncounterVars();
@@ -843,6 +839,17 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
     }
   }
   doorEncounterPicker();
+
+  // want the above to always update because it's variable
+
+  // note which events were already updated
+  if (!$gamePlayer || !$gamePlayer.LOCATION_NAME_MAPPING) return;
+  if (!eventsUpdated[lastLoadedMapId]) {
+    eventsUpdated[lastLoadedMapId] = {};
+  }
+  if (eventsUpdated[lastLoadedMapId][ev.id]) {
+    return;
+  } else eventsUpdated[lastLoadedMapId][ev.id] = true;
 
   ShopHelpers.gunTraderInitList(lastLoadedMapId, ev); // remove all the special unique guns from his sales list
   ShopHelpers.gamerInitList(lastLoadedMapId, ev); // remove randomized games from his sales list
