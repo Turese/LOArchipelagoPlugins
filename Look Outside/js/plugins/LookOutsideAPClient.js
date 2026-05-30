@@ -536,7 +536,7 @@ LookOutsideAPClient.startAPClient = async function (deathLink) {
   });
 
   client.deathLink.on("deathReceived", (_m) => {
-    if (client.deathLink.enabled) forceGameOver();
+    if (client.deathLink.enabled) LookOutsideAPClient.forceGameOver();
   });
 
   client.socket.on("disconnected", (_m) => {
