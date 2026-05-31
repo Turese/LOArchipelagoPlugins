@@ -844,12 +844,12 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
 
   // note which events were already updated
   if (!$gamePlayer || !$gamePlayer.LOCATION_NAME_MAPPING) return;
-  if (!eventsUpdated[lastLoadedMapId]) {
+  /*if (!eventsUpdated[lastLoadedMapId]) {
     eventsUpdated[lastLoadedMapId] = {};
   }
   if (eventsUpdated[lastLoadedMapId][ev.id]) {
     return;
-  } else eventsUpdated[lastLoadedMapId][ev.id] = true;
+  } else eventsUpdated[lastLoadedMapId][ev.id] = true;*/
 
   ShopHelpers.gunTraderInitList(lastLoadedMapId, ev); // remove all the special unique guns from his sales list
   ShopHelpers.gamerInitList(lastLoadedMapId, ev); // remove randomized games from his sales list

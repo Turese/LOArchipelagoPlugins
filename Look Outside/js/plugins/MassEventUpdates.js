@@ -2626,11 +2626,119 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     ],
   },
 
-  // TODO: OTHER MEAT WORLD DROPS IN HERE
   408: {
     10: [
       "APT_32_BATHROOM_BITING_BOOTS",
       "$gameSelfSwitches.setValue([408, 10, 'A'], true)",
+    ],
+  },
+
+  367: {
+    6: ["MEAT_SYBIL_TONIC", "$gameSelfSwitches.setValue([367, 6, 'A'], true)"],
+  },
+
+  410: {
+    8: [
+      "MEAT_SYBIL_SHOTGUN_SHELLS",
+      "$gameSelfSwitches.setValue([410, 8, 'A'], true)",
+    ],
+  },
+
+  413: {
+    6: ["MEAT_SYBIL_ENZYME", "$gameSelfSwitches.setValue([413, 6, 'A'], true)"],
+  },
+
+  412: {
+    9: [
+      "MEAT_SYBIL_RIFLE_BULLETS",
+      "$gameSelfSwitches.setValue([412, 9, 'A'], true)",
+    ],
+  },
+
+  421: {
+    4: [
+      "MEAT_MENS_ROOM_GOBLIN_CLAWS",
+      "$gameSelfSwitches.setValue([421, 4, 'A'], true)",
+    ],
+  },
+
+  426: {
+    1: ["MEAT_GF_IRIS_KEY", "$gameSelfSwitches.setValue([426, 1, 'A'], true)"],
+  },
+
+  408: {
+    11: [
+      "MEAT_TV_HEALING_SPRAY",
+      "$gameSelfSwitches.setValue([408, 11, 'A'], true)",
+    ],
+    12: [
+      "MEAT_TV_CATALYST",
+      "$gameSelfSwitches.setValue([408, 12, 'A'], true)",
+    ],
+  },
+
+  393: {
+    12: [
+      "MEAT_FELE_F1_IRIS_KEY",
+      "$gameSelfSwitches.setValue([393, 12, 'A'], true)",
+    ],
+  },
+
+  415: {
+    6: [
+      "MEAT_MAZE_OCULAR_TETHERBLADE",
+      "$gameSelfSwitches.setValue([415, 6, 'A'], true)",
+    ],
+    6: [
+      "MEAT_EYEBALL_OCULAR_TETHERBLADE",
+      "$gameSelfSwitches.setValue([415, 6, 'A'], true)",
+    ],
+  },
+
+  429: {
+    1: [
+      "MEAT_GROCERY_IRIS_KEY",
+      "$gameSelfSwitches.setValue([429, 1, 'A'], true)",
+    ],
+    6: [
+      "MEAT_GROCERY_MAGNUM_BULLETS",
+      "$gameSelfSwitches.setValue([429, 6, 'A'], true)",
+    ],
+    7: [
+      "MEAT_GROCERY_SMG_BULLETS",
+      "$gameSelfSwitches.setValue([429, 7, 'A'], true)",
+    ],
+  },
+
+  386: {
+    8: [
+      "MEAT_CENTRAL_BASEMENT_STIMULANT",
+      "$gameSelfSwitches.setValue([386, 8, 'A'], true)",
+    ],
+    7: [
+      "MEAT_CENTRAL_BASEMENT_SPINERO_COMBAT_VICTORY",
+      "$gameSelfSwitches.setValue([386, 7, 'D'], true)",
+    ],
+  },
+
+  398: {
+    7: [
+      "MEAT_WEST_BASEMENT_SHURIKEN",
+      "$gameSelfSwitches.setValue([398, 7, 'A'], true)",
+    ],
+  },
+
+  424: {
+    8: [
+      "MEAT_FELE_G_IRIS_KEY",
+      "$gameSelfSwitches.setValue([424, 8, 'A'], true)",
+    ],
+  },
+
+  417: {
+    8: [
+      "MEAT_LYLE_PISTOL_BULLETS",
+      "$gameSelfSwitches.setValue([417, 8, 'A'], true)",
     ],
   },
 };
