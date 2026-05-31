@@ -2626,12 +2626,6 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     ],
   },
 
-  408: {
-    10: [
-      "APT_32_BATHROOM_BITING_BOOTS",
-      "$gameSelfSwitches.setValue([408, 10, 'A'], true)",
-    ],
-  },
 
   367: {
     6: ["MEAT_SYBIL_TONIC", "$gameSelfSwitches.setValue([367, 6, 'A'], true)"],
@@ -2667,6 +2661,10 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   },
 
   408: {
+    10: [
+      "APT_32_BATHROOM_BITING_BOOTS",
+      "$gameSelfSwitches.setValue([408, 10, 'A'], true)",
+    ],
     11: [
       "MEAT_TV_HEALING_SPRAY",
       "$gameSelfSwitches.setValue([408, 11, 'A'], true)",
