@@ -77,10 +77,8 @@ LookOutsideAPClient.applyOverrides = function () {
 
   const _Game_Event_refresh = Game_Event.prototype.refresh;
   Game_Event.prototype.refresh = function () {
-
     _Game_Event_refresh.call(this);
     EventLogicUpdates.applyEventUpdates(this._mapId, this.event());
-
   };
 
   // update - extra images may be needed to be loaded when initializing the map
@@ -201,6 +199,8 @@ LookOutsideAPClient.applyOverrides = function () {
 
       console.log("SENDING DEATH LINK: ", phrase);
       client.deathLink.sendDeathLink(playerName, phrase);
+
+      client.messages.say(phrase);
     }
   };
 };
