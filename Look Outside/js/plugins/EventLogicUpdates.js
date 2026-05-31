@@ -2307,6 +2307,217 @@ EventLogicUpdates.clearReptileFootball = function (ev) {
   ).parameters[4] = "!";
 };
 
+EventLogicUpdates.clearMuttPages = function (
+  deleteCode,
+  identifyString,
+  getString,
+  itemId,
+  altIdentifyString,
+  startIndex = 0, // we need this because the trophy has a leading empty page /sob
+) {
+  for (let i = startIndex; i <= startIndex + 1; i++) {
+    ev.pages[i].list = EventLogicUpdates.itemDropClear(
+      ev.pages[i].list,
+      deleteCode,
+    );
+
+    const descriptionIndex = ev.pages[i].list;
+    ev.pages[i].list = EventLogicUpdates.messageReplacement(
+      ev.pages[i].list,
+      identifyString,
+      itemId,
+      "A",
+    );
+
+    // in some cases, Mutt uses a different identifying string
+    if (altIdentifyString) {
+      ev.pages[i].list = EventLogicUpdates.messageReplacement(
+        ev.pages[i].list,
+        altIdentifyString,
+        itemId,
+        "A",
+      );
+    }
+
+    ev.pages[i].list = EventLogicUpdates.messageReplacement(
+      ev.pages[i].list,
+      getString,
+      itemId,
+      "Get",
+    );
+
+    // this is a cheap way of clearing out all lines of dialogue besides what we use for purchasing
+    // and what we use to identify the item
+
+    const itemName = LookOutsideAPClient.getItemName(itemId);
+
+    //todo: find a better way
+    ev.pages[i].list = ev.pages[i].list.filter(
+      (listItem) =>
+        listItem.code !== 401 ||
+        ["yours for", "You don't have enough money", itemName].find(
+          (target) =>
+            listItem.parameters[0].includes(target) ||
+            (altIdentifyString &&
+              listItem.parameters[0].includes(altIdentifyString)),
+        ),
+    );
+
+    // never update cafe purchases; we should always pay base price
+    ev.pages[i].list = ev.pages[i].list.filter(
+      (pageItem) =>
+        !(pageItem.code == SET_VAR_CODE && pageItem.parameters[0] == 197),
+    );
+  }
+};
+
+EventLogicUpdates.clearMuttTrophy = function (ev) {
+  EventLogicUpdates.clearMuttPages(
+    ITEM_CODE,
+    "A trophy",
+    "Trophy",
+    "MUTT_TROPHY",
+    undefined,
+    1,
+  );
+};
+EventLogicUpdates.clearMuttChampionsBelt = function (ev) {
+  EventLogicUpdates.clearMuttPages(
+    ARMOR_CODE,
+    "A champion's belt",
+    "Champion's Belt",
+    "MUTT_CHAMPIONS_BELT",
+  );
+};
+EventLogicUpdates.clearMuttChainsaw = function (ev) {
+  EventLogicUpdates.clearMuttPages(
+    WEAPON_CODE,
+    "A chainsaw",
+    "Chainsaw",
+    "MUTT_CHAINSAW",
+  );
+};
+EventLogicUpdates.clearMuttCattleprod = function (ev) {
+  EventLogicUpdates.clearMuttPages(
+    WEAPON_CODE,
+    "A cattle prod spear",
+    "Cattle Prod Spear",
+    "MUTT_CATTLE_PROD",
+  );
+};
+EventLogicUpdates.clearMuttLockpicks = function (ev) {
+  EventLogicUpdates.clearMuttPages(
+    ITEM_CODE,
+    "Set of lockpicks",
+    "Lockpicks",
+    "MUTT_LOCKPICKS",
+  );
+};
+EventLogicUpdates.clearMuttTrainingBelt = function (ev) {
+  EventLogicUpdates.clearMuttPages(
+    ARMOR_CODE,
+    "A Training Belt",
+    "Training Belt",
+    "MUTT_TRAINING_BELT",
+    "A special belt",
+  );
+};
+EventLogicUpdates.clearMuttPickelhaube = function (ev) {
+  EventLogicUpdates.clearMuttPages(
+    ARMOR_CODE,
+    "A Pickelhaube",
+    "Pickelhaube",
+    "MUTT_PICKELHAUBE",
+    "A highly decorated",
+  );
+};
+EventLogicUpdates.clearMuttStunBaton = function (ev) {
+  EventLogicUpdates.clearMuttPages(
+    WEAPON_CODE,
+    "A Stun Baton",
+    "Stun Baton",
+    "MUTT_STUN_BATON",
+    "Battery-powered",
+  );
+};
+EventLogicUpdates.clearMuttTraumaKit = function (ev) {
+  EventLogicUpdates.clearMuttPages(
+    ARMOR_CODE,
+    "A trauma kit",
+    "Trauma Kit",
+    "MUTT_TRAUMA_KIT",
+  );
+};
+EventLogicUpdates.clearMuttVenomDagger = function (ev) {
+  EventLogicUpdates.clearMuttPages(
+    ARMOR_CODE,
+    "A Venom Dagger",
+    "Venom Dagger",
+    "MUTT_DAGGER",
+  );
+};
+EventLogicUpdates.clearMuttCrossbow = function (ev) {
+  EventLogicUpdates.clearMuttPages(
+    ARMOR_CODE,
+    "A crossbow",
+    "Crossbow",
+    "MUTT_CROSSBOW",
+  );
+};
+
+EventLogicUpdates.clearMuttCoffeeMachine = function (ev) {
+  // doing this here since this is the only case where the item name is capitalized
+  // differently between pages
+  ev.pages[0].list = EventLogicUpdates.messageReplacement(
+    ev.pages[0].list,
+    "{Coffee machine}",
+    "MUTT_COFFEE_MACHINE",
+    "Get",
+  );
+  EventLogicUpdates.clearMuttPages(
+    ITEM_CODE,
+    "A coffee machine",
+    "Coffee Machine",
+    "MUTT_COFFEE_MACHINE",
+  );
+};
+EventLogicUpdates.clearMuttComfortBelt = function (ev) {
+  EventLogicUpdates.clearMuttPages(
+    ARMOR_CODE,
+    "A Comfort Belt",
+    "Comfort Belt",
+    "MUTT_COMFORT_BELT",
+  );
+};
+EventLogicUpdates.clearMuttBreastplate = function (ev) {
+  EventLogicUpdates.clearMuttPages(
+    ARMOR_CODE,
+    "A Breastplate",
+    "Breastplate",
+    "MUTT_COMFORT_BELT",
+    "A medieval breastplate",
+  );
+};
+EventLogicUpdates.clearMuttVideoGame = function (ev) {
+  EventLogicUpdates.clearMuttPages(
+    ITEM_CODE,
+    "A Game Cart",
+    "Auntie Wilma",
+    "MUTT_CROSSWORD_CHALLENGE",
+    "crossword video game",
+  );
+
+  // clear out video game count setting
+  ev.pages[1].list = ev.pages[1].list.filter(
+    (listItem) =>
+      !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 41),
+  );
+  ev.pages[0].list = ev.pages[0].list.filter(
+    (listItem) =>
+      !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 41),
+  );
+};
+
 const EVENT_UPDATE_TABLE = {
   3: {
     9: EventLogicUpdates.doorCombatChecker,
@@ -2540,6 +2751,23 @@ const EVENT_UPDATE_TABLE = {
     2: EventLogicUpdates.clearEugeneDeath,
     47: EventLogicUpdates.clearReptileFootball,
   },
+  56: {
+    4: EventLogicUpdates.clearMuttStunBaton,
+    10: EventLogicUpdates.clearMuttTraumaKit,
+    11: EventLogicUpdates.clearMuttBreastplate,
+    12: EventLogicUpdates.clearMuttPickelhaube,
+    13: EventLogicUpdates.clearMuttVenomDagger,
+    14: EventLogicUpdates.clearMuttTrainingBelt,
+    15: EventLogicUpdates.clearMuttCrossbow,
+    16: EventLogicUpdates.clearMuttLockpicks,
+    17: EventLogicUpdates.clearMuttCoffeeMachine,
+    18: EventLogicUpdates.clearMuttCattleprod,
+    21: EventLogicUpdates.clearMuttComfortBelt,
+    22: EventLogicUpdates.clearMuttChainsaw,
+    23: EventLogicUpdates.clearMuttChampionsBelt,
+    24: EventLogicUpdates.clearMuttVideoGame,
+    25: EventLogicUpdates.clearMuttTrophy,
+  },
 };
 
 EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
@@ -2552,212 +2780,6 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
     EVENT_UPDATE_TABLE[lastLoadedMapId][ev.id](ev);
     return;
   }
-
-  function clearMuttItems() {
-    function clearMuttPages(
-      deleteCode,
-      identifyString,
-      getString,
-      itemId,
-      altIdentifyString,
-      startIndex = 0, // we need this because the trophy has a leading empty page /sob
-    ) {
-      for (let i = startIndex; i <= startIndex + 1; i++) {
-        ev.pages[i].list = EventLogicUpdates.itemDropClear(
-          ev.pages[i].list,
-          deleteCode,
-        );
-
-        const descriptionIndex = ev.pages[i].list;
-        ev.pages[i].list = EventLogicUpdates.messageReplacement(
-          ev.pages[i].list,
-          identifyString,
-          itemId,
-          "A",
-        );
-
-        // in some cases, Mutt uses a different identifying string
-        if (altIdentifyString) {
-          ev.pages[i].list = EventLogicUpdates.messageReplacement(
-            ev.pages[i].list,
-            altIdentifyString,
-            itemId,
-            "A",
-          );
-        }
-
-        ev.pages[i].list = EventLogicUpdates.messageReplacement(
-          ev.pages[i].list,
-          getString,
-          itemId,
-          "Get",
-        );
-
-        // this is a cheap way of clearing out all lines of dialogue besides what we use for purchasing
-        // and what we use to identify the item
-
-        const itemName = LookOutsideAPClient.getItemName(itemId);
-
-        //todo: find a better way
-        ev.pages[i].list = ev.pages[i].list.filter(
-          (listItem) =>
-            listItem.code !== 401 ||
-            ["yours for", "You don't have enough money", itemName].find(
-              (target) =>
-                listItem.parameters[0].includes(target) ||
-                (altIdentifyString &&
-                  listItem.parameters[0].includes(altIdentifyString)),
-            ),
-        );
-
-        // never update cafe purchases; we should always pay base price
-        ev.pages[i].list = ev.pages[i].list.filter(
-          (pageItem) =>
-            !(pageItem.code == SET_VAR_CODE && pageItem.parameters[0] == 197),
-        );
-      }
-    }
-
-    if (lastLoadedMapId == 56) {
-      if (ev.id == 25) {
-        clearMuttPages(
-          ITEM_CODE,
-          "A trophy",
-          "Trophy",
-          "MUTT_TROPHY",
-          undefined,
-          1,
-        );
-      }
-      if (ev.id == 23) {
-        clearMuttPages(
-          ARMOR_CODE,
-          "A champion's belt",
-          "Champion's Belt",
-          "MUTT_CHAMPIONS_BELT",
-        );
-      }
-      if (ev.id == 22) {
-        clearMuttPages(WEAPON_CODE, "A chainsaw", "Chainsaw", "MUTT_CHAINSAW");
-      }
-      if (ev.id == 18) {
-        clearMuttPages(
-          WEAPON_CODE,
-          "A cattle prod spear",
-          "Cattle Prod Spear",
-          "MUTT_CATTLE_PROD",
-        );
-      }
-      if (ev.id == 16) {
-        clearMuttPages(
-          ITEM_CODE,
-          "Set of lockpicks",
-          "Lockpicks",
-          "MUTT_LOCKPICKS",
-        );
-      }
-      if (ev.id == 14) {
-        clearMuttPages(
-          ARMOR_CODE,
-          "A Training Belt",
-          "Training Belt",
-          "MUTT_TRAINING_BELT",
-          "A special belt",
-        );
-      }
-      if (ev.id == 12) {
-        // champion belt
-        clearMuttPages(
-          ARMOR_CODE,
-          "A Pickelhaube",
-          "Pickelhaube",
-          "MUTT_PICKELHAUBE",
-          "A highly decorated",
-        );
-      }
-      if (ev.id == 4) {
-        clearMuttPages(
-          WEAPON_CODE,
-          "A Stun Baton",
-          "Stun Baton",
-          "MUTT_STUN_BATON",
-          "Battery-powered",
-        );
-      }
-      if (ev.id == 10) {
-        clearMuttPages(
-          ARMOR_CODE,
-          "A trauma kit",
-          "Trauma Kit",
-          "MUTT_TRAUMA_KIT",
-        );
-      }
-      if (ev.id == 13) {
-        clearMuttPages(
-          ARMOR_CODE,
-          "A Venom Dagger",
-          "Venom Dagger",
-          "MUTT_DAGGER",
-        );
-      }
-      if (ev.id == 15) {
-        clearMuttPages(ARMOR_CODE, "A crossbow", "Crossbow", "MUTT_CROSSBOW");
-      }
-      if (ev.id == 17) {
-        // doing this here since this is the only case where the item name is capitalized
-        // differently between pages
-        ev.pages[0].list = EventLogicUpdates.messageReplacement(
-          ev.pages[0].list,
-          "{Coffee machine}",
-          "MUTT_COFFEE_MACHINE",
-          "Get",
-        );
-        clearMuttPages(
-          ITEM_CODE,
-          "A coffee machine",
-          "Coffee Machine",
-          "MUTT_COFFEE_MACHINE",
-        );
-      }
-      if (ev.id == 21) {
-        clearMuttPages(
-          ARMOR_CODE,
-          "A Comfort Belt",
-          "Comfort Belt",
-          "MUTT_COMFORT_BELT",
-        );
-      }
-      if (ev.id == 11) {
-        clearMuttPages(
-          ARMOR_CODE,
-          "A Breastplate",
-          "Breastplate",
-          "MUTT_COMFORT_BELT",
-          "A medieval breastplate",
-        );
-      }
-      if (ev.id == 24) {
-        clearMuttPages(
-          ITEM_CODE,
-          "A Game Cart",
-          "Auntie Wilma",
-          "MUTT_CROSSWORD_CHALLENGE",
-          "crossword video game",
-        );
-
-        // clear out video game count setting
-        ev.pages[1].list = ev.pages[1].list.filter(
-          (listItem) =>
-            !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 41),
-        );
-        ev.pages[0].list = ev.pages[0].list.filter(
-          (listItem) =>
-            !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 41),
-        );
-      }
-    }
-  }
-  clearMuttItems();
 };
 
 EventLogicUpdates.clearAllEnemiesDrops = function () {

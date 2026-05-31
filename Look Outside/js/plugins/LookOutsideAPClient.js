@@ -77,12 +77,10 @@ LookOutsideAPClient.applyOverrides = function () {
 
   const _Game_Event_refresh = Game_Event.prototype.refresh;
   Game_Event.prototype.refresh = function () {
-    // code before refresh
 
     _Game_Event_refresh.call(this);
-    EventLogicUpdates.applyEventUpdates(this._mapId, ev);
+    EventLogicUpdates.applyEventUpdates(this._mapId, this.event());
 
-    // code after refresh
   };
 
   // update - extra images may be needed to be loaded when initializing the map
