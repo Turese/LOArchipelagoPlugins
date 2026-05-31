@@ -829,6 +829,42 @@ EventLogicUpdates.clearEventsUpdated = function () {
   eventsUpdated = {};
 };
 
+EventLogicUpdates.doorEncounterPicker = function (ev) {
+  DoorHelpers.setRemainingEncounterVars();
+  ev.pages[0].conditions = EventLogicUpdates.buildConditions();
+  ev.pages[0].list = DoorHelpers.buildEncounterPickerEventPage();
+  ev.pages[0].directionFix = true;
+};
+
+EventLogicUpdates.doorCombatChecker = function () {
+  // 601 - the if condition if the player won the previous encounter
+  const winEncounterIndex = ev.pages[1].list.findIndex(
+    (listItem) => listItem.code == 601,
+  );
+  // this can run on dataMap multiple times, so we need to
+  // ensure we don't add multiple calls
+  const processVictory = ev.pages[1].list.find(
+    (listItem) =>
+      listItem.code == 355 &&
+      listItem.parameters[0] == "DoorHelpers.processDoorVictory();",
+  );
+  if (winEncounterIndex !== -1 && !processVictory) {
+    ev.pages[1].list.splice(winEncounterIndex + 1, 0, {
+      code: 355,
+      indent: ev.pages[1].list[winEncounterIndex].indent + 1,
+      parameters: ["DoorHelpers.processDoorVictory();"],
+    });
+  }
+};
+
+const EVENT_UPDATE_TABLE = {
+  3: {
+    9: EventLogicUpdates.doorCombatChecker,
+    17: EventLogicUpdates.doorEncounterPicker,
+    52: ShopHelpers.gunTraderInitList,
+  },
+};
+
 EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   function doorEncounterPicker() {
     if (lastLoadedMapId == 3 && ev.id == 17) {
@@ -839,6 +875,14 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
     }
   }
   doorEncounterPicker();
+
+  if (
+    EVENT_UPDATE_TABLE[lastLoadedMapId] &&
+    EVENT_UPDATE_TABLE[lastLoadedMapId][ev]
+  ) {
+    EVENT_UPDATE_TABLE[lastLoadedMapId][ev]();
+    return;
+  }
 
   // want the above to always update because it's variable
 
@@ -1466,41 +1510,7 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
 
   function clearF3HallwayVendingMachineEvent() {
     if (lastLoadedMapId === 6 && ev.id === 25) {
-      // theres too many things to change here so im
-      // just recreating the page
-      const cardTrickName = LookOutsideAPClient.getItemName(
-        "F3_PLAYING_CARD",
-        true,
-      );
-      const cheezName = LookOutsideAPClient.getItemName(
-        "F3_VENDING_MACHINE_CHEESE",
-        true,
-      );
-      const chipsName = LookOutsideAPClient.getItemName(
-        "F3_VENDING_MACHINE_CHIPS",
-        true,
-      );
-      const spicyChipsName = LookOutsideAPClient.getItemName(
-        "F3_VENDING_MACHINE_SPICY",
-        true,
-      );
-      const gummiBearName = LookOutsideAPClient.getItemName(
-        "F3_VENDING_MACHINE_GUMMI_BEARS",
-        true,
-      );
-      const onionOsName = LookOutsideAPClient.getItemName(
-        "F3_VENDING_MACHINE_ONIONOS",
-        true,
-      );
-
-      ev.pages[1].list = ShopHelpers.getF3VendingMachineList(
-        cardTrickName,
-        cheezName,
-        chipsName,
-        spicyChipsName,
-        gummiBearName,
-        onionOsName,
-      );
+      ev.pages[1].list = ShopHelpers.getF3VendingMachineList();
     }
   }
   clearF3HallwayVendingMachineEvent();

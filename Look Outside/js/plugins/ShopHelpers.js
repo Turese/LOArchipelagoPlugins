@@ -10,14 +10,93 @@
 
 var ShopHelpers = ShopHelpers || {};
 
-ShopHelpers.getF3VendingMachineList = function (
-  cardTrickName,
-  cheezName,
-  chipsName,
-  spicyChipsName,
-  gummiBearName,
-  onionOsName,
-) {
+const SHOP_LOCATIONS = {
+  f3Vending: [
+    "F3_VENDING_MACHINE_CHEESE",
+    "F3_VENDING_MACHINE_CHIPS",
+    "F3_VENDING_MACHINE_SPICY",
+    "F3_VENDING_MACHINE_GUMMI_BEARS",
+    "F3_VENDING_MACHINE_ONIONOS",
+  ].map((id) => LOCATION_ID_MAPPING[id]),
+  audrey: [
+    "AUDREY_VENDING_COLA",
+    "AUDREY_VENDING_LEMON",
+    "AUDREY_VENDING_ORANGE",
+    "AUDREY_VENDING_JUICE",
+  ].map((id) => LOCATION_ID_MAPPING[id]),
+  ooze: [
+    "B_OOZE_MACHINE_MERCHANT_1",
+    "B_OOZE_MACHINE_MERCHANT_2",
+    "B_OOZE_MACHINE_MERCHANT_3",
+    "B_OOZE_MACHINE_MERCHANT_4",
+    "B_OOZE_MACHINE_MERCHANT_5",
+  ].map((id) => LOCATION_ID_MAPPING[id]),
+  tickle: [
+    "SEWER_TICKLE_BLOODCLOT_BOMB",
+    "SEWER_TICKLE_MOSQUITO_KNIFE",
+    "SEWER_TICKLE_BLOOD_CAP",
+    "SEWER_TICKLE_VAMPIRIC_JACKET",
+    "SEWER_TICKLE_CRIMSON_RING",
+  ].map((id) => LOCATION_ID_MAPPING[id]),
+  emmanuel: [
+    "MUTT_EMMANUEL_MERCHANT_1",
+    "MUTT_EMMANUEL_MERCHANT_2",
+    "MUTT_EMMANUEL_MERCHANT_3",
+    "MUTT_EMMANUEL_MERCHANT_4",
+    "MUTT_EMMANUEL_MERCHANT_5",
+  ].map((id) => LOCATION_ID_MAPPING[id]),
+  ratHole: [
+    "F1_PASSAGE_RAT_HOLE_MERCHANT_1",
+    "F1_PASSAGE_RAT_HOLE_MERCHANT_2",
+    "F1_PASSAGE_RAT_HOLE_MERCHANT_3",
+    "F1_PASSAGE_RAT_HOLE_MERCHANT_4",
+    "F1_PASSAGE_RAT_HOLE_MERCHANT_5",
+  ].map((id) => LOCATION_ID_MAPPING[id]),
+  kevin: [
+    "F1_PIPE_ROOM_KEVIN_MERCHANT_1",
+    "F1_PIPE_ROOM_KEVIN_MERCHANT_2",
+    "F1_PIPE_ROOM_KEVIN_MERCHANT_3",
+    "F1_PIPE_ROOM_KEVIN_MERCHANT_4",
+    "F1_PIPE_ROOM_KEVIN_MERCHANT_5",
+  ].map((id) => LOCATION_ID_MAPPING[id]),
+};
+
+ShopHelpers.sendLocationHints = function (shopKey) {
+  const hintTracker = LookOutsideAPClient.initializeHintTracker();
+  if (hintTracker[shopKey]) return;
+
+  if (client.authenticated) {
+    hintTracker[shopKey] = true;
+    client.scout(SHOP_LOCATIONS[shopKey], 1);
+  }
+};
+
+ShopHelpers.getF3VendingMachineList = function () {
+  const cardTrickName = LookOutsideAPClient.getItemName(
+    "F3_PLAYING_CARD",
+    true,
+  );
+  const cheezName = LookOutsideAPClient.getItemName(
+    "F3_VENDING_MACHINE_CHEESE",
+    true,
+  );
+  const chipsName = LookOutsideAPClient.getItemName(
+    "F3_VENDING_MACHINE_CHIPS",
+    true,
+  );
+  const spicyChipsName = LookOutsideAPClient.getItemName(
+    "F3_VENDING_MACHINE_SPICY",
+    true,
+  );
+  const gummiBearName = LookOutsideAPClient.getItemName(
+    "F3_VENDING_MACHINE_GUMMI_BEARS",
+    true,
+  );
+  const onionOsName = LookOutsideAPClient.getItemName(
+    "F3_VENDING_MACHINE_ONIONOS",
+    true,
+  );
+
   return [
     {
       code: 122,
@@ -425,6 +504,11 @@ ShopHelpers.getF3VendingMachineList = function (
       code: 401,
       indent: 1,
       parameters: ["What snack will you buy?"],
+    },
+    {
+      code: 355,
+      indent: 1,
+      parameters: ["ShopHelpers.sendLocationHints('f3Vending');"],
     },
     {
       code: 102,
@@ -2660,6 +2744,11 @@ ShopHelpers.getAudreyVendingMachineList = function () {
       parameters: ["Confirm to buy a can?"],
     },
     {
+      code: 355,
+      indent: 1,
+      parameters: ["ShopHelpers.sendLocationHints('audrey');"],
+    },
+    {
       code: 102,
       indent: 1,
       parameters: [
@@ -3444,6 +3533,11 @@ ShopHelpers.getOozeMachineList = function () {
       parameters: ["What will you buy? You have \\V[6] Black Ooze."],
     },
     {
+      code: 355,
+      indent: 0,
+      parameters: ["ShopHelpers.sendLocationHints('ooze');"],
+    },
+    {
       code: 102,
       indent: 0,
       parameters: [
@@ -3874,6 +3968,11 @@ ShopHelpers.getTickleTradeList = function () {
   );
 
   return [
+    {
+      code: 355,
+      indent: 1,
+      parameters: ["ShopHelpers.sendLocationHints('tickle');"],
+    },
     {
       code: 102,
       indent: 1,
@@ -4349,6 +4448,11 @@ ShopHelpers.getEmmanuelTradeList = function () {
   );
 
   return [
+    {
+      code: 355,
+      indent: 1,
+      parameters: ["ShopHelpers.sendLocationHints('emmanuel');"],
+    },
     {
       code: 102,
       indent: 1,
@@ -4859,6 +4963,11 @@ ShopHelpers.getRatHoleTradeList = function () {
   );
 
   return [
+    {
+      code: 355,
+      indent: 1,
+      parameters: ["ShopHelpers.sendLocationHints('ratHole');"],
+    },
     {
       code: 102,
       indent: 1,
@@ -5588,6 +5697,11 @@ ShopHelpers.getKevinTradeList = function () {
   );
 
   return [
+    {
+      code: 355,
+      indent: 1,
+      parameters: ["ShopHelpers.sendLocationHints('kevin');"],
+    },
     {
       code: 102,
       indent: 1,

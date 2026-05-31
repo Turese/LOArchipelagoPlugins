@@ -285,6 +285,13 @@ const TRAP_MAPPINGS = [
   { trapTextColor: 22, trapName: "Master Sword" },
 ];
 
+LookOutsideAPClient.initializeHintTracker = function () {
+  if (!$gamePlayer.hintsGiven) {
+    $gamePlayer.hintsGiven = {};
+  }
+  return $gamePlayer.hintsGiven;
+};
+
 LookOutsideAPClient.initializeLocationNames = async function () {
   locations = Object.values(LOCATION_ID_MAPPING);
   let locationMapping = {};
