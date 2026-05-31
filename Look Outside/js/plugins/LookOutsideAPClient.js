@@ -75,6 +75,16 @@ LookOutsideAPClient.applyOverrides = function () {
     return ev;
   };
 
+  const _Game_Event_refresh = Game_Event.prototype.refresh;
+  Game_Event.prototype.refresh = function () {
+    // code before refresh
+
+    _Game_Event_refresh.call(this);
+    EventLogicUpdates.applyEventUpdates(this._mapId, ev);
+
+    // code after refresh
+  };
+
   // update - extra images may be needed to be loaded when initializing the map
   const _createCharacters = Spriteset_Map.prototype.createCharacters;
   Spriteset_Map.prototype.createCharacters = function () {
@@ -504,7 +514,6 @@ LookOutsideAPClient.gameLoadedAPSetup = function (slotData) {
   LookOutsideAPClient.updateDeathLink(slotData);
   EventLogicUpdates.clearTroopsDrops();
   EventLogicUpdates.clearCommonEventDrops();
-  EventLogicUpdates.clearEventsUpdated();
 };
 
 const resetClient = async function () {

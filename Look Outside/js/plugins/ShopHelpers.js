@@ -6199,246 +6199,241 @@ ShopHelpers.getKevinTradeList = function () {
   ];
 };
 
-ShopHelpers.gunTraderInitList = function (mapId, ev) {
+ShopHelpers.gunTraderInitList = function (ev) {
   // all the same, but none of the specific gun types
-
-  if (mapId == 3 && ev.id == 52)
-    ev.pages[0].list = [
-      {
-        code: 355,
-        indent: 0,
-        parameters: ['console.log("AP-Friendly gun trader setup");'],
-      },
-      {
-        code: 357,
-        indent: 0,
-        parameters: [
-          "TLB_LimitedShopStock",
-          "setStock",
-          "Set Shop Stock",
-          {
-            mapId: "0",
-            eventId: "0",
-            items:
-              '["{\\"item\\":\\"89\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"90\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"91\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"98\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"10\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"99\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"10\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"100\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"101\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"102\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"10\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"180\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"24\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"181\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"12\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"182\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"32\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"183\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"16\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"184\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"16\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"185\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"24\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"186\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"8\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}"]',
-            weapons:
-              '["{\\"weapon\\":\\"77\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"weapon\\":\\"81\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}"]',
-            armours:
-              '["{\\"armour\\":\\"19\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"armour\\":\\"15\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"armour\\":\\"60\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"armour\\":\\"88\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}"]',
-            sellXRandom: "9",
-            randomiseType: "Randomise Always",
-          },
-        ],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: ["Map ID = 0"],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: ["Event ID = 0"],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: [
-          'Items = ["{\\"item\\":\\"89\\",\\"quantityType\\":\\"0\\",\\"quantit…',
-        ],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: [
-          'Weapons = ["{\\"weapon\\":\\"77\\",\\"quantityType\\":\\"0\\",\\"qua…',
-        ],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: [
-          'Armours = ["{\\"armour\\":\\"19\\",\\"quantityType\\":\\"0\\",\\"qua…',
-        ],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: ["Sell X random = 9"],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: ["Randomise type = Randomise Always"],
-      },
-      {
-        code: 123,
-        indent: 0,
-        parameters: ["A", 0],
-      },
-      {
-        code: 0,
-        indent: 0,
-        parameters: [],
-      },
-    ];
+  ev.pages[0].list = [
+    {
+      code: 355,
+      indent: 0,
+      parameters: ['console.log("AP-Friendly gun trader setup");'],
+    },
+    {
+      code: 357,
+      indent: 0,
+      parameters: [
+        "TLB_LimitedShopStock",
+        "setStock",
+        "Set Shop Stock",
+        {
+          mapId: "0",
+          eventId: "0",
+          items:
+            '["{\\"item\\":\\"89\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"90\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"91\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"98\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"10\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"99\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"10\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"100\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"101\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"102\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"10\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"180\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"24\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"181\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"12\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"182\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"32\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"183\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"16\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"184\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"16\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"185\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"24\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"186\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"8\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}"]',
+          weapons:
+            '["{\\"weapon\\":\\"77\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"weapon\\":\\"81\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}"]',
+          armours:
+            '["{\\"armour\\":\\"19\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"armour\\":\\"15\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"armour\\":\\"60\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"armour\\":\\"88\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}"]',
+          sellXRandom: "9",
+          randomiseType: "Randomise Always",
+        },
+      ],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: ["Map ID = 0"],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: ["Event ID = 0"],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: [
+        'Items = ["{\\"item\\":\\"89\\",\\"quantityType\\":\\"0\\",\\"quantit…',
+      ],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: [
+        'Weapons = ["{\\"weapon\\":\\"77\\",\\"quantityType\\":\\"0\\",\\"qua…',
+      ],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: [
+        'Armours = ["{\\"armour\\":\\"19\\",\\"quantityType\\":\\"0\\",\\"qua…',
+      ],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: ["Sell X random = 9"],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: ["Randomise type = Randomise Always"],
+    },
+    {
+      code: 123,
+      indent: 0,
+      parameters: ["A", 0],
+    },
+    {
+      code: 0,
+      indent: 0,
+      parameters: [],
+    },
+  ];
 };
 
-ShopHelpers.gamerInitList = function (mapId, ev) {
+ShopHelpers.gamerInitList = function (ev) {
   // take out the video games
   // replace with some thematically appropriate items so he at least has something
-
-  if (mapId == 3 && ev.id == 56)
-    ev.pages[0].list = [
-      {
-        code: 355,
-        indent: 0,
-        parameters: ['console.log("AP-Friendly game trader setup");'],
-      },
-      {
-        code: 357,
-        indent: 0,
-        parameters: [
-          "TLB_LimitedShopStock",
-          "setStock",
-          "Set Shop Stock",
-          {
-            mapId: "0",
-            eventId: "0",
-            items:
-              '["{\\"item\\":\\"36\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"45\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"25\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"238\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"240\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"45\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}"]',
-            weapons: "",
-            armours: "",
-            sellXRandom: "",
-            randomiseType: "",
-          },
-        ],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: ["Map ID = 0"],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: ["Event ID = 0"],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: [
-          'Items = ["{\\"item\\":\\"36\\",\\"quantityType\\":\\"0\\",\\"quantit…',
-        ],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: ["Weapons = "],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: ["Armours = "],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: ["Sell X random = "],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: ["Randomise type = "],
-      },
-      {
-        code: 123,
-        indent: 0,
-        parameters: ["A", 0],
-      },
-      {
-        code: 0,
-        indent: 0,
-        parameters: [],
-      },
-    ];
+  ev.pages[0].list = [
+    {
+      code: 355,
+      indent: 0,
+      parameters: ['console.log("AP-Friendly game trader setup");'],
+    },
+    {
+      code: 357,
+      indent: 0,
+      parameters: [
+        "TLB_LimitedShopStock",
+        "setStock",
+        "Set Shop Stock",
+        {
+          mapId: "0",
+          eventId: "0",
+          items:
+            '["{\\"item\\":\\"36\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"45\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"25\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"238\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"240\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"45\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}"]',
+          weapons: "",
+          armours: "",
+          sellXRandom: "",
+          randomiseType: "",
+        },
+      ],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: ["Map ID = 0"],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: ["Event ID = 0"],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: [
+        'Items = ["{\\"item\\":\\"36\\",\\"quantityType\\":\\"0\\",\\"quantit…',
+      ],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: ["Weapons = "],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: ["Armours = "],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: ["Sell X random = "],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: ["Randomise type = "],
+    },
+    {
+      code: 123,
+      indent: 0,
+      parameters: ["A", 0],
+    },
+    {
+      code: 0,
+      indent: 0,
+      parameters: [],
+    },
+  ];
 };
 
-ShopHelpers.strangeTraderInitList = function (mapId, ev) {
+ShopHelpers.strangeTraderInitList = function (ev) {
   // take out special currencies besides black ooze
   // take out strange key
-  if (mapId == 3 && ev.id == 133)
-    ev.pages[0].list = [
-      {
-        code: 355,
-        indent: 0,
-        parameters: ['console.log("AP-friendly rare item trader setup");'],
-      },
-      {
-        code: 357,
-        indent: 0,
-        parameters: [
-          "TLB_LimitedShopStock",
-          "setStock",
-          "Set Shop Stock",
-          {
-            mapId: "0",
-            eventId: "0",
-            items:
-              '["{\\"item\\":\\"158\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"159\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"160\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"147\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"148\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"150\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"6\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"176\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"177\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"319\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"379\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"381\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}"]',
-            weapons: "[]",
-            armours: "[]",
-            sellXRandom: "9",
-            randomiseType: "Randomise Always",
-          },
-        ],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: ["Map ID = 0"],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: ["Event ID = 0"],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: [
-          'Items = ["{\\"item\\":\\"158\\",\\"quantityType\\":\\"0\\",\\"quanti…',
-        ],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: ["Weapons = []"],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: ["Armours = []"],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: ["Sell X random = 9"],
-      },
-      {
-        code: 657,
-        indent: 0,
-        parameters: ["Randomise type = Randomise Always"],
-      },
-      {
-        code: 123,
-        indent: 0,
-        parameters: ["A", 0],
-      },
-      {
-        code: 0,
-        indent: 0,
-        parameters: [],
-      },
-    ];
+  ev.pages[0].list = [
+    {
+      code: 355,
+      indent: 0,
+      parameters: ['console.log("AP-friendly rare item trader setup");'],
+    },
+    {
+      code: 357,
+      indent: 0,
+      parameters: [
+        "TLB_LimitedShopStock",
+        "setStock",
+        "Set Shop Stock",
+        {
+          mapId: "0",
+          eventId: "0",
+          items:
+            '["{\\"item\\":\\"158\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"159\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"160\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"147\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"148\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"150\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"6\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"176\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"177\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"319\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"379\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"4\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}","{\\"item\\":\\"381\\",\\"quantityType\\":\\"0\\",\\"quantity\\":\\"1\\",\\"priceType\\":\\"standard\\",\\"price\\":\\"0\\",\\"restockTimer\\":\\"0\\",\\"restockType\\":\\"0\\",\\"restockQuantity\\":\\"1\\",\\"restockMax\\":\\"99\\"}"]',
+          weapons: "[]",
+          armours: "[]",
+          sellXRandom: "9",
+          randomiseType: "Randomise Always",
+        },
+      ],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: ["Map ID = 0"],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: ["Event ID = 0"],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: [
+        'Items = ["{\\"item\\":\\"158\\",\\"quantityType\\":\\"0\\",\\"quanti…',
+      ],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: ["Weapons = []"],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: ["Armours = []"],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: ["Sell X random = 9"],
+    },
+    {
+      code: 657,
+      indent: 0,
+      parameters: ["Randomise type = Randomise Always"],
+    },
+    {
+      code: 123,
+      indent: 0,
+      parameters: ["A", 0],
+    },
+    {
+      code: 0,
+      indent: 0,
+      parameters: [],
+    },
+  ];
 };

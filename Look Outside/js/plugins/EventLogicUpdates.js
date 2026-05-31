@@ -823,12 +823,6 @@ EventLogicUpdates.messageReplacement = function (
   return newList;
 };
 
-let eventsUpdated = {};
-
-EventLogicUpdates.clearEventsUpdated = function () {
-  eventsUpdated = {};
-};
-
 EventLogicUpdates.doorEncounterPicker = function (ev) {
   DoorHelpers.setRemainingEncounterVars();
   ev.pages[0].conditions = EventLogicUpdates.buildConditions();
@@ -836,7 +830,7 @@ EventLogicUpdates.doorEncounterPicker = function (ev) {
   ev.pages[0].directionFix = true;
 };
 
-EventLogicUpdates.doorCombatChecker = function () {
+EventLogicUpdates.doorCombatChecker = function (ev) {
   // 601 - the if condition if the player won the previous encounter
   const winEncounterIndex = ev.pages[1].list.findIndex(
     (listItem) => listItem.code == 601,
@@ -857,1753 +851,1707 @@ EventLogicUpdates.doorCombatChecker = function () {
   }
 };
 
+EventLogicUpdates.fixWoundedManDoor = function (ev) {
+  ev.pages[1].conditions = ev.pages[0].conditions;
+  // set the page that lets you in to the bathroom unarmed on hardmode to always hit
+};
+
+// screw the elevator game, just let me go to 4
+EventLogicUpdates.fixElevatorButtons = function (ev) {
+  // at the start of the event, set the elevator game to be finished.
+  // make sure you only add the elevator function set once
+  ev.pages[1].list[0] = {
+    code: 355,
+    indent: 1,
+    parameters: ["sVr(1, 0), sVr(817, 4)"],
+  };
+};
+
+// update page 2 of the apt 21 key event to trigger grinning beast if you walk over it
+EventLogicUpdates.leighRematch = function (ev) {
+  ev.pages[1].list = [
+    {
+      code: 111,
+      indent: 0,
+      parameters: [0, 119, 1],
+    },
+    {
+      code: 355, // Script command
+      indent: 1,
+      // 84: floor2slowdown (set on the room after youve escaped)
+      // 81: floor2spook  // triggered by floor in first room; makes the door make a noise
+      // 82: floor2spookspawn // triggered by floor in first room; spawns the grinning beast
+      // 83: floor2done // despawns grinning beast
+      // 1050: grinningbeastprime // triggered by floor in second room
+      // 1105: leighpreventfight (if player is actively opening door)
+      // reset sfx on grinning beast spawn
+      // reset sfx for grinning beast door
+      // reset animation for grabby hands
+      // reset chase sequence for room 1 beast
+      parameters: [
+        "sSw(84, false), sSw(83, false); sSw(82, false); sSw(81, false); sSw(1050,false); sSw(1105, false); $gameSelfSwitches.setValue([8, 10, 'A'], false); $gameSelfSwitches.setValue([8, 4, 'A'], false); $gameSelfSwitches.setValue([8, 4, 'B'], false); $gameSelfSwitches.setValue([8, 46, 'A'], false); $gameSelfSwitches.setValue([8, 46, 'B'], false); $gameSelfSwitches.setValue([8, 14, 'B'], false); $gameSelfSwitches.setValue([8, 14, 'A'], false);",
+      ],
+    },
+    {
+      code: 201,
+      indent: 1,
+      parameters: [0, 8, 31, 8, 0, 2],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 0,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 0,
+      parameters: [],
+    },
+  ];
+
+  ev.pages[1].trigger = 1;
+};
+
+EventLogicUpdates.clearLeighQuest = function (ev) {
+  // clear martin's ring
+  ev.pages[0].list = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    ARMOR_CODE,
+  );
+  ev.pages[0].list = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    SKILL_CODE,
+  ); // clear skill grants
+  ev.pages[0].list = EventLogicUpdates.messageReplacement(
+    ev.pages[0].list,
+    "Martin's Ring",
+    "LEIGH_APARTMENT_READ_NOTE",
+  );
+  ev.pages[0].list = EventLogicUpdates.messageReplacement(
+    ev.pages[0].list,
+    "much more dangerous",
+    "LEIGH_APARTMENT_READ_NOTE",
+  );
+};
+
+// make it so grasshopper doesnt leave after leighs quest
+EventLogicUpdates.permaGrasshopper = function (ev) {
+  if (ev.pages.length > 4) ev.pages.splice(3, 1);
+};
+
+// removes the switch setters that set 119 = false when walking east after fighting the beast
+EventLogicUpdates.leighWillWait = function (ev) {
+  ev.pages[0].list = ev.pages[0].list.filter(
+    (listEntry) => listEntry.code !== SET_SWITCH_CODE,
+  );
+};
+
+EventLogicUpdates.forceLeighToStay = function (ev) {
+  ev.pages[2].conditions = EventLogicUpdates.buildConditions("D");
+};
+
+EventLogicUpdates.updateLyleEvent = function (ev) {
+  // keep him there even when he's recruited by making the page condition impossible
+  ev.pages[6].conditions = EventLogicUpdates.buildConditions("D");
+
+  // clear out dark room key drop from killing him
+  for (let i = 0; i <= 2; i++) {
+    ev.pages[i].list = ev.pages[i].list.filter(
+      (listItem) => listItem.code !== ITEM_CODE && listItem.code !== 401,
+    );
+  }
+};
+
+EventLogicUpdates.forceAsterToStay = function (ev) {
+  // he cant leave until he is recruited because he's needed for offerings
+  ev.pages[4].conditions = {
+    ...ev.pages[4].conditions,
+    ...{ selfSwitchCh: "D", selfSwitchValid: true },
+  };
+};
+
+EventLogicUpdates.forceAudreyToStay = function (ev) {
+  ev.pages[5].conditions = {
+    // same as aster, she needs to be reachable at all times
+    ...ev.pages[5].conditions,
+    ...{ selfSwitchCh: "D", selfSwitchValid: true },
+  };
+};
+
+EventLogicUpdates.updateAudreyEvents = function (ev) {
+  // page that sets audrey events
+  // also disabled on recruit
+  if (ev.pages.length >= 2) {
+    ev.pages.splice(1, 1);
+  }
+};
+
+EventLogicUpdates.updateAudreyPose = function (ev) {
+  // page that sets audrey pose when player gets close
+  // also disabled on recruit
+  if (ev.pages.length >= 2) {
+    ev.pages.splice(1, 1);
+  }
+};
+
+EventLogicUpdates.makeSpiderLeave = function (ev) {
+  if (ev.pages.length < 2) {
+    ev.pages.push({
+      ...EMPTY_PAGE,
+      conditions: EventLogicUpdates.buildConditions("A"),
+    });
+  }
+};
+
+EventLogicUpdates.forcePapineauToStay = function (ev) {
+  if (ev.pages.length > 4) {
+    ev.pages.splice(2, 1); // remove page that checks for recruited papineau
+    // switch 783 (removePapineau) can be used instead
+  }
+};
+
+EventLogicUpdates.forceInstantStumblingShadeSpawn = function (ev) {
+  ev.pages[0].conditions = EventLogicUpdates.buildConditions();
+};
+
+EventLogicUpdates.updateShadeDefeatConditions = function (ev) {
+  const eraseIndex = ev.pages[2].list.findIndex(
+    (listEntry) => listEntry.code === 214,
+  );
+  if (eraseIndex !== -1) {
+    ev.pages[2].list[eraseIndex] = {
+      code: 355,
+      indent: ev.pages[2].list[eraseIndex].indent,
+      parameters: [
+        `$gameSelfSwitches.setValue([${lastLoadedMapId}, ${ev.id}, 'D'], true);`,
+      ],
+    };
+  }
+  if (ev.pages.length < 5) {
+    ev.pages.push({
+      ...EMPTY_PAGE,
+      conditions: EventLogicUpdates.buildConditions("D"),
+    });
+  }
+};
+
+EventLogicUpdates.updateCrawlingShadeDefeatConditions = function (ev) {
+  ev.pages[0].list = EMPTY_PAGE.list;
+  updateShadeDefeatConditions(ev);
+};
+
+EventLogicUpdates.updateJoelPages = function (ev) {
+  ev.pages = ToothHelpers.JoelPages;
+};
+
+EventLogicUpdates.updateMadisonPages = function (ev) {
+  ev.pages = ToothHelpers.MadisonPages;
+};
+
+EventLogicUpdates.updateDay5ClintPages = function (ev) {
+  // day5 clint
+  // he has less complicated logic since
+  // his day 5 form is a different event than his day 2-4 form
+  if (ev.pages.length == 5) {
+    ev.pages.splice(3, 1); // clear page that checks 'killedClint'
+    // todo: set his indoor spawn to depend on the day
+  }
+};
+
+EventLogicUpdates.updateDay9JoelPages = function (ev) {
+  if (ev.pages.length == 7) {
+    // joel
+    ev.pages.splice(5, 2); // clear last2 pages that check 'removeJoel' and 'recruitedJoel'
+    ev.pages.splice(3, 1); // clear page that checks 'killedJoel'
+  }
+};
+
+EventLogicUpdates.updateDay9BenPages = function (ev) {
+  if (ev.pages.length == 3) {
+    // mound of teeth and gums
+    ev.pages.splice(1, 1); // clear page that checks 'killedBen'
+  }
+};
+
+EventLogicUpdates.updateDay9MadisonPages = function (ev) {
+  if (ev.pages.length == 5) {
+    // madison
+    ev.pages.splice(3, 1); // clear page that checks 'killedMadison'
+  }
+};
+
+EventLogicUpdates.updateDay9ClintPages = function (ev) {
+  if (ev.pages.length == 5) {
+    // clint
+    ev.pages.splice(3, 1); // clear page that checks 'killedClint'
+  }
+};
+
+EventLogicUpdates.unblockEugeneBookcase = function (ev) {
+  // don't block bookcase when eugene is posessed by nestor
+
+  // remove page 2 of bookcase event (room 332, event 3)
+
+  if (ev.pages.length > 1) {
+    ev.pages.splice(1, 1);
+  }
+};
+
+// removes event page with Lyle blocking the door after Sam opens his eyes while kissing, which makes it gay
+// also lets player go in when lyle is developing the photo
+EventLogicUpdates.removeLyleDoorBlocker = function (ev) {
+  if (ev.pages.length > 2) {
+    ev.pages.splice(2, 2);
+  }
+};
+
+// replace the event message for getting screamatorium from the shelf with the actual drop
+EventLogicUpdates.clearScreamitorumEvent = function (ev) {
+  // filter out the set var that sets video game count (var 41)
+  let filteredList = ev.pages[0].list.filter(
+    (listItem) =>
+      !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 41),
+  );
+  filteredList = EventLogicUpdates.itemDropClear(filteredList, ITEM_CODE);
+
+  filteredList
+    .filter(
+      (listItem) =>
+        listItem.code === 401 &&
+        listItem.parameters[0].contains("Screamatorium"),
+    )
+    .forEach((listItem) => {
+      listItem.parameters[0] = listItem.parameters[0].replace(
+        "Screamatorium",
+        LookOutsideAPClient.getItemName("APT_33_LIVING_ROOM_SCREAMATORIUM"),
+      );
+    });
+  ev.pages[0].list = filteredList;
+};
+
+EventLogicUpdates.clearWoundedManKnifeEvent = function (ev) {
+  // dont add knife to inventory
+  const filteredList = EventLogicUpdates.itemDropClear(
+    ev.pages[1].list,
+    WEAPON_CODE,
+  );
+
+  const messageListItem = filteredList.filter(
+    (listItem) =>
+      listItem.code === 401 &&
+      listItem.parameters[0].contains(
+        "His hand still clutches that bloody knife.",
+      ),
+  );
+
+  filteredList
+    .filter(
+      (listItem) =>
+        listItem.code === 401 && listItem.parameters[0].contains("knife"),
+    )
+    .forEach((listItem, i) => {
+      const replacement =
+        i == 0
+          ? `${LookOutsideAPClient.getItemName("APT_36_BATHROOM_WOUNDED_NEIGHBOR_KNIFE")}\\C[0]`
+          : "thing";
+      listItem.parameters[0] = listItem.parameters[0].replace(
+        "knife",
+        replacement,
+      );
+    });
+
+  const choiceListItem = filteredList.find(
+    (listItem) =>
+      listItem.code === 102 &&
+      listItem.parameters[0][0].contains("Take the knife."),
+  );
+
+  if (choiceListItem)
+    choiceListItem.parameters[0][0] = choiceListItem.parameters[0][0] =
+      "Take it.";
+
+  ev.pages[1].list = filteredList;
+
+  const confirmationListItem = filteredList.find(
+    (listItem) =>
+      listItem.code === 401 &&
+      listItem.parameters[0].contains("Find a \\C[03]{Kitchen Knife}\\C[0]."),
+  );
+
+  if (confirmationListItem)
+    confirmationListItem.parameters[0] =
+      confirmationListItem.parameters[0] = `Find ${LookOutsideAPClient.getItemName("APT_36_BATHROOM_WOUNDED_NEIGHBOR_KNIFE")}\\C[0].`;
+};
+
+EventLogicUpdates.clearTelescopeEvent = function (ev) {
+  const darkTelescopeRoomPage = ev.pages[0];
+
+  // remove the explicit deletion of void disc from inventory
+  const filteredList = darkTelescopeRoomPage.list.filter(
+    (listItem) => listItem.code !== ITEM_CODE || listItem.parameters[0] !== 331, // remove the explicit removal of void disc
+  );
+
+  const negativeDiscGrantEventIndex = filteredList.findIndex(
+    (listItem) => listItem.code === ITEM_CODE,
+  );
+  // instead of grant item, set custom check switch
+  if (negativeDiscGrantEventIndex !== -1) {
+    filteredList[negativeDiscGrantEventIndex] = {
+      code: SET_SWITCH_CODE,
+      indent: 2,
+      parameters: [
+        APT_31_TELESCOPE_DISC_EXPOSURE_SWITCH,
+        APT_31_TELESCOPE_DISC_EXPOSURE_SWITCH,
+        0,
+      ],
+    };
+  }
+  // display the randomized item earned
+  const itemEarnedDisplay = filteredList.find(
+    (listItem) =>
+      listItem.code === 401 && listItem.parameters[0].contains("Negative Disc"),
+  );
+
+  if (itemEarnedDisplay)
+    itemEarnedDisplay.parameters[0] = `Get ${LookOutsideAPClient.getItemName("APT_31_TELESCOPE_DISC_EXPOSURE")}.`;
+
+  // gray out option after the check is finished
+  // only one choice block in the event so i can check for just 102
+  const choiceListItem = filteredList.find((listItem) => listItem.code === 102);
+
+  if (choiceListItem)
+    choiceListItem.parameters[0][0] = `<<[s[${APT_31_TELESCOPE_DISC_EXPOSURE_SWITCH}]]>>Put down void disc.`;
+
+  // and the item for picking the option
+  // gray out option after the check is finished
+  const choiceSelectionItem = filteredList.find(
+    (listItem) =>
+      listItem.code === 402 &&
+      listItem.parameters.length > 1 &&
+      listItem.parameters[1].contains("void disc"),
+  );
+
+  if (choiceSelectionItem)
+    choiceSelectionItem.parameters[1] = `<<[s[${APT_31_TELESCOPE_DISC_EXPOSURE_SWITCH}]]>>Put down void disc.`;
+
+  ev.pages[0].list = filteredList;
+};
+
+EventLogicUpdates.clearGuineaPigChairEvent = function (ev) {
+  // panopticon / chair event
+  // dont take or give back guinea pig
+  ev.pages.forEach(
+    (page) =>
+      (page.list = EventLogicUpdates.itemDropClear(page.list, ITEM_CODE)),
+  );
+};
+
+EventLogicUpdates.clearSecurityTapeEvent = function (ev) {
+  // vhs event
+
+  // dont take players tape when recording
+  ev.pages[0].list = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    ITEM_CODE,
+  );
+
+  // on page 0, dont allow player to record unless it's the correct feed
+
+  ev.pages[0].list.forEach((listItem) => {
+    // the game prompts the player twice
+    // since they can also record over a cctv
+    if (listItem.code === 102 && listItem.parameters[0][0].includes("Yes."))
+      listItem.parameters[0][0] = `<<[!v[158]=8]>>Yes.`;
+  });
+
+  ev.pages[2].list = EventLogicUpdates.itemDropClear(
+    ev.pages[2].list,
+    ITEM_CODE,
+  );
+  ev.pages[2].list = EventLogicUpdates.messageReplacement(
+    ev.pages[2].list,
+    "CCTV Recording",
+    "SECURITY_CORRECT_RECORDING",
+    "Get",
+  );
+
+  // change the self switch b set to c and disable the event
+  const selfSwitchIndex = ev.pages[2].list.findIndex(
+    (listItem) => listItem.code == 123,
+  );
+
+  if (selfSwitchIndex !== -1) {
+    ev.pages[2].list[selfSwitchIndex] = {
+      code: 355,
+      indent: ev.pages[2].list[selfSwitchIndex].indent,
+      parameters: ['$gameSelfSwitches.setValue([78, 3, "C"], true);'],
+    };
+  }
+
+  if (ev.pages.length < 4) {
+    ev.pages.push({
+      ...ev.pages[2],
+      list: EMPTY_PAGE.list,
+      conditions: EventLogicUpdates.buildConditions("C"),
+    });
+  }
+};
+
+EventLogicUpdates.clearProjectorEvent = function (ev) {
+  // page 1 is projector head down / turned off
+  let projectorList = ev.pages[1].list;
+
+  // replace the exposed paper grant with switch set
+  const getPhotoPaperIndex = projectorList.findIndex(
+    (listItem) => listItem.code == ITEM_CODE && listItem.parameters[0] == 339,
+  );
+  if (getPhotoPaperIndex !== -1) {
+    projectorList.splice(getPhotoPaperIndex, 1, {
+      code: 355,
+      indent: projectorList[getPhotoPaperIndex].indent,
+      parameters: [`sSw(${APT_37_PROJECTOR_ROOM_PHOTO_SWITCH}, true);`],
+    });
+  }
+  // clear out the part where it takes your photo paper
+  projectorList = EventLogicUpdates.itemDropClear(projectorList, ITEM_CODE);
+
+  // make sure we dont update what's on the photograph when doing this
+  projectorList = projectorList.filter(
+    (listItem) =>
+      !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 245),
+  );
+
+  // the first instance should be when player placed photo paper
+  projectorList.find(
+    (listItem) =>
+      listItem.code === 102 &&
+      listItem.parameters[0][0].includes("Switch it on."),
+  ).parameters[0][0] = `<<[!v[256]=12]>>Switch it on.`;
+
+  //v[256] = 12 means the projector socket has the negative disc
+  projectorList = EventLogicUpdates.messageReplacement(
+    projectorList,
+    "Exposed Paper",
+    "APT_37_PROJECTOR_ROOM_PHOTO",
+    "Get",
+  );
+  ev.pages[1].list = projectorList;
+};
+
+EventLogicUpdates.clearF3HallwayPlanterEvent = function (ev) {
+  // the event usually disables itself by setting
+  // self switch A when you do any interaction. I'll change it to setting B when
+  // you get the drop, so you dont miss out
+  ev.pages[0].list.find(
+    (listItem) => listItem.code === 111, // if condition at start
+  ).parameters[1] = "B";
+
+  ev.pages[0].list = EventLogicUpdates.messageReplacement(
+    ev.pages[0].list,
+    "Apartment 33 Key",
+    "F3_PLANTER_KEY",
+  );
+
+  // change the item that sets the event self switch to A
+  // this works because the success case is the very first one in the list
+  // but is kind of hacky
+  ev.pages[0].list.find((listItem) => listItem.code === 123).parameters[0] =
+    "B";
+
+  // filter out explicit apartment 33 key drop
+  ev.pages[0].list = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    ITEM_CODE,
+  );
+};
+
+EventLogicUpdates.clearF3HallwayVendingMachineEvent = function (ev) {
+  ev.pages[1].list = ShopHelpers.getF3VendingMachineList();
+};
+
+EventLogicUpdates.clearCoffeeMachineEvent = function (ev) {
+  if (ev.pages.length < 2) {
+    const coffeeGrantIndex = ev.pages[0].list.findIndex(
+      (listItem) => listItem.code == ITEM_CODE && listItem.parameters[0] == 41,
+    );
+    if (coffeeGrantIndex) {
+      ev.pages[0].list.splice(
+        coffeeGrantIndex,
+        1,
+        ...ShopHelpers.getCoffeeMachineMessage(),
+      );
+    }
+
+    // adds new noninteractable page for when player
+    // has already bought coffee
+    ev.pages.push({
+      ...EMPTY_PAGE,
+      conditions: EventLogicUpdates.buildConditions("A"),
+      image: ev.pages[0].image,
+    });
+  }
+};
+
+EventLogicUpdates.clearElevatorFreakEvent = function (ev) {
+  // the elevator access switch is also used to tell whether the freak is dead; lets change it to a self switch
+  victorySwitchIdx = ev.pages[0].list.findIndex(
+    (listItem) => listItem.code == SET_SWITCH_CODE,
+  );
+  if (victorySwitchIdx !== -1) {
+    ev.pages[0].list[victorySwitchIdx] = {
+      code: 355,
+      indent: 0,
+      parameters: ["$gameSelfSwitches.setValue([74, 3, 'A'], true)"],
+    };
+    ev.pages[1].conditions = EventLogicUpdates.buildConditions("A");
+  }
+  // also clear out the power outage effect; player should trigger this manually
+  ev.pages[0].list = ev.pages[0].list.filter(
+    (listItem) => !(listItem.code == SET_VAR_CODE && parameters[0] == 736),
+  );
+};
+
+EventLogicUpdates.clearRatKingCrown = function (ev) {
+  // clear out rusty crown drop
+  ev.pages[2].list = ev.pages[2].list.filter(
+    (pageItem) => pageItem.code !== ARMOR_CODE,
+  );
+
+  // change message for both bow and non bow cases
+
+  const rustyCrownAnnouncement = ev.pages[2].list.find(
+    (listItem) =>
+      listItem.code === 401 && listItem.parameters[0].contains("Rusty Crown"),
+  );
+  if (rustyCrownAnnouncement)
+    rustyCrownAnnouncement.parameters[0] = `You receive ${LookOutsideAPClient.getItemName("F1_RAT_KING_COMBAT_VICTORY")}.`;
+
+  const crownDustAnnouncement = ev.pages[2].list.find(
+    (listItem) =>
+      listItem.code === 401 && listItem.parameters[0].contains("turns to dust"),
+  );
+  if (crownDustAnnouncement)
+    crownDustAnnouncement.parameters[0] = `The Rat King's crown turns to ${LookOutsideAPClient.getItemName("F1_RAT_KING_COMBAT_VICTORY")} in your hands.`;
+};
+
+EventLogicUpdates.clearAntoinesKey = function (ev) {
+  // only one of these pages may actually be hit but im clearing both jic
+  ev.pages[0].list = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    ITEM_CODE,
+  );
+  ev.pages[1].list = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    ITEM_CODE,
+  );
+  ev.pages[0].list ==
+    EventLogicUpdates.deleteMessage(ev.pages[0].list, "Antoine");
+  ev.pages[1].list ==
+    EventLogicUpdates.deleteMessage(ev.pages[1].list, "Antoine");
+};
+
+EventLogicUpdates.clearClydesKey = function (ev) {
+  // only one of these pages may actually be hit but im clearing both jic
+  ev.pages[1].list = EventLogicUpdates.itemDropClear(
+    ev.pages[1].list,
+    ITEM_CODE,
+  );
+  ev.pages[2].list = EventLogicUpdates.itemDropClear(
+    ev.pages[2].list,
+    ITEM_CODE,
+  );
+  ev.pages[1].list ==
+    EventLogicUpdates.deleteMessage(ev.pages[1].list, "Clyde's Key");
+  ev.pages[2].list ==
+    EventLogicUpdates.deleteMessage(ev.pages[2].list, "Clyde's Key");
+};
+
+EventLogicUpdates.clearJennifersKey = function (ev) {
+  ev.pages[0].list = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    ITEM_CODE,
+  );
+  ev.pages[1].list = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    ITEM_CODE,
+  );
+  ev.pages[0].list ==
+    EventLogicUpdates.deleteMessage(ev.pages[0].list, "Jennifer's Key");
+  ev.pages[1].list ==
+    EventLogicUpdates.deleteMessage(ev.pages[1].list, "Jennifer's Key");
+};
+
+EventLogicUpdates.clearAugustesKey = function (ev) {
+  ev.pages[0].list = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    ITEM_CODE,
+  );
+  ev.pages[1].list = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    ITEM_CODE,
+  );
+  ev.pages[0].list ==
+    EventLogicUpdates.deleteMessage(ev.pages[0].list, "Auguste's Key");
+  ev.pages[1].list ==
+    EventLogicUpdates.deleteMessage(ev.pages[1].list, "Auguste's Key");
+};
+
+EventLogicUpdates.clearGlitchElixirDrops = function (ev) {
+  const filteredList = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    ITEM_CODE,
+  );
+
+  const messageIndex = filteredList.findIndex(
+    (listItem) =>
+      listItem.code === 401 && listItem.parameters[0].contains("Elixir"),
+  );
+  if (messageIndex !== -1) {
+    filteredList[messageIndex].parameters[0] =
+      `You ha v e rec ei v ed ${LookOutsideAPClient.getItemName("GLITCH_W_GLITCH_ELIXIR")}.`;
+  }
+  ev.pages[0].list = filteredList;
+};
+
+EventLogicUpdates.clearAmbroseDrops = function (ev) {
+  let filteredList = EventLogicUpdates.itemDropClear(ev.pages[0], ITEM_CODE); // ambrose parts
+  filteredList = EventLogicUpdates.itemDropClear(ev.pages[0], ARMOR_CODE); // ambroses pipe
+
+  const messageIndex = filteredList.findIndex(
+    (listItem) =>
+      listItem.code === 401 &&
+      listItem.parameters[0].contains("AAAAAAAAAAAAAAAAAAAAAAAAAMBROS"),
+  );
+  if (messageIndex !== -1) {
+    filteredList[messageIndex].parameters[0] =
+      `You \C[5]fi\C[20]nd ${LookOutsideAPClient.getItemName("GLITCH_SW_AMBROSE")}.`;
+  }
+  ev.pages[0].list = filteredList;
+};
+
+// removes both loose manuscript drop and the message telling player they got it
+EventLogicUpdates.clearTypewritherDrop = function (ev) {
+  // item drops on first 2 pages
+  for (let i = 0; i <= 1; i++) {
+    ev.pages[i].list = ev.pages[i].list.filter(
+      (listItem) => ![ITEM_CODE, 101, 401].includes(listItem.code),
+    );
+  }
+};
+
+// instead of setting and checking for variable 231, typewriter sets and checks self state A
+EventLogicUpdates.clearManuscriptCompletion = function (ev) {
+  // remove where it sets the manuscriptfull switch
+  const completeManuscriptIndex = ev.pages[0].list.findIndex(
+    (listItem) => listItem.code == SET_SWITCH_CODE,
+  );
+  if (completeManuscriptIndex !== -1) {
+    ev.pages[0].list[completeManuscriptIndex] = {
+      code: 355,
+      indent: 0,
+      parameters: ["$gameSelfSwitches.setValue([118, 5, 'A'], true)"],
+    };
+  }
+
+  const completeManuscriptMessageIdx = ev.pages[0].list.findIndex(
+    (listItem) =>
+      listItem.code == 401 &&
+      listItem.parameters[0] ==
+        "You add the sheet to the incomplete manuscript.",
+  );
+  if (completeManuscriptMessageIdx !== -1) {
+    ev.pages[0].list[completeManuscriptMessageIdx].parameters[0] =
+      `Find ${LookOutsideAPClient.getItemName("APT_27_COMPLETE_MANUSCRIPT")}.`;
+  }
+
+  ev.pages[1].conditions = EventLogicUpdates.buildConditions("A");
+};
+
+EventLogicUpdates.clearCribDrop = function (ev) {
+  // find where it sets the switch ratChasePrime
+  const ratChaseTriggerIndex = ev.pages[0].list.findIndex(
+    (listItem) => listItem.code == SET_SWITCH_CODE,
+  );
+
+  if (ratChaseTriggerIndex !== -1) {
+    ev.pages[0].list.splice(
+      ratChaseTriggerIndex,
+      1,
+      ...[
+        {
+          code: 355,
+          indent: 1,
+          parameters: ["$gameSelfSwitches.setValue([101, 5, 'A'], true);"],
+        },
+        {
+          code: 101,
+          indent: 1,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 1,
+          parameters: [
+            `Find ${LookOutsideAPClient.getItemName("RAT_APT_RAT_BABY_THING")}.`,
+          ],
+        },
+        {
+          code: 101,
+          indent: 1,
+          parameters: ["", 0, 0, 2, ""],
+        },
+      ],
+    );
+  }
+
+  ev.pages[2].conditions = EventLogicUpdates.buildConditions("A");
+};
+
+EventLogicUpdates.clearJeanneLaundry = function (ev) {
+  // dont add laundry to inventory
+  let filteredList = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    ITEM_CODE,
+  );
+  filteredList = EventLogicUpdates.messageReplacement(
+    filteredList,
+    "Jeanne's clothes",
+    "LAUNDRY_JEANNES_LAUNDRY",
+    "This must be Jeanne's",
+    ". Take it?",
+  );
+
+  ev.pages[0].list = filteredList;
+};
+
+// all the basement key drops
+// only check if player already has basement key
+// so we need them to check a custom switch instead
+EventLogicUpdates.fixBasementKeyConditions = function (ev) {
+  ev.pages[1].conditions = EventLogicUpdates.buildConditions(
+    null,
+    LL_BASEMENT_KEY_SWITCH,
+  );
+};
+
+EventLogicUpdates.clearLandlordCache = function (ev) {
+  // remove dollar coin item drop
+
+  ev.pages[0].list = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    ITEM_CODE,
+  );
+  ev.pages[0].list = EventLogicUpdates.messageReplacement(
+    ev.pages[0].list,
+    "Dollar Coin",
+    "LL_SECRET_DINING_CACHE",
+  );
+};
+
+EventLogicUpdates.clearLandlordDigSpot = function (ev) {
+  ev.pages[2].list = EventLogicUpdates.itemDropClear(
+    ev.pages[2].list,
+    ITEM_CODE,
+  );
+  ev.pages[2].list = EventLogicUpdates.messageReplacement(
+    ev.pages[2].list,
+    "Ammo Crate",
+    "LL_BATTLEFIELD_DIG_SPOT",
+    "You found",
+  );
+};
+
+EventLogicUpdates.clearErnestCheeseStash = function (ev) {
+  ev.pages[0].list = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    ITEM_CODE,
+  );
+  ev.pages[0].list = EventLogicUpdates.messageReplacement(
+    ev.pages[0].list,
+    "Cheese",
+    "ERNEST_CHEESE",
+  );
+};
+
+EventLogicUpdates.clearRoachQuestPrize = function (ev) {
+  ev.pages[2].list = EventLogicUpdates.itemDropClear(
+    ev.pages[2].list,
+    ARMOR_CODE,
+  );
+
+  ev.pages[2].list = EventLogicUpdates.messageReplacement(
+    ev.pages[2].list,
+    "Official Sash",
+    "APT_33_ROACH_QUEST",
+  );
+
+  ev.pages[2].list = EventLogicUpdates.messageReplacement(
+    ev.pages[2].list,
+    "Papier",
+    "APT_33_ROACH_QUEST",
+  );
+};
+
+EventLogicUpdates.clearSadipedePrize = function (ev) {
+  ev.pages[3].list = EventLogicUpdates.itemDropClear(
+    ev.pages[3].list,
+    ITEM_CODE,
+  );
+
+  ev.pages[3].list = EventLogicUpdates.messageReplacement(
+    ev.pages[3].list,
+    "is now following you around",
+    "F4_SADIPEDE_COMBAT_LOSS",
+  );
+};
+
+EventLogicUpdates.updateDarkRoomPhotoDevelopmentEvent = function (ev) {
+  // add a new "finished" state
+  if (ev.pages.length < 2) {
+    ev.pages.push({
+      ...EMPTY_PAGE,
+      image: ev.pages[0].image,
+      conditions: EventLogicUpdates.buildConditions("A"),
+    });
+  }
+
+  // set switch to true when getting photograph successfully
+  EventLogicUpdates.itemDropReplaceScript(
+    ev.pages[0].list,
+    ITEM_CODE,
+    "$gameSelfSwitches.setValue([112, 13, 'A'], true)",
+    (listItem) => listItem.parameters[0] == 340,
+  );
+
+  ev.pages[0].list = EventLogicUpdates.messageReplacement(
+    ev.pages[0].list,
+    "Photograph",
+    "APT_21_DARK_ROOM_PHOTO",
+    "Get",
+  );
+  ev.pages[0].list = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    ITEM_CODE,
+  );
+};
+
+EventLogicUpdates.updateDarkRoomKey = function (ev) {
+  // the key in the darkroom vanishes when lyle is recruited
+  if (ev.id == 14 && ev.pages.length >= 2) ev.pages.splice(2, 1);
+};
+
+EventLogicUpdates.updateDarkRoomPhotoPaper = function (ev) {
+  // turn the photo paper into a regular drop
+  ev.pages.push({
+    ...EMPTY_PAGE,
+    conditions: EventLogicUpdates.buildConditions("A"),
+  });
+};
+
+EventLogicUpdates.clearRaftaLetter = function (ev) {
+  ev.pages[0].list = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    ITEM_CODE,
+  );
+  ev.pages[0].list = EventLogicUpdates.messageReplacement(
+    ev.pages[0].list,
+    "Love Letter",
+    "F1_LETTER_FROM_RAFTA",
+  );
+};
+
+EventLogicUpdates.clearOozeMachine = function (ev) {
+  // blank conditions; remove danger req
+  ev.pages[0].conditions = EventLogicUpdates.buildConditions();
+
+  ev.pages[0].list = ShopHelpers.getOozeMachineList();
+};
+
+EventLogicUpdates.clearFaceTakerDrops = function (ev) {
+  ev.pages.forEach((page) => {
+    // canvas carry bag and torn off face
+    page.list = EventLogicUpdates.itemDropClear(page.list, ITEM_CODE);
+    page.list == EventLogicUpdates.deleteMessage(page.list, "Canvas Carry Bag");
+    page.list == EventLogicUpdates.deleteMessage(page.list, "Face");
+  });
+};
+
+EventLogicUpdates.clearToxicFredDrop = function (ev) {
+  // toxic fred/paintlings/hat stained key drops
+  ev.pages.forEach((page) => {
+    page.list = EventLogicUpdates.itemDropClear(page.list, ITEM_CODE);
+    // some drops have different capitalization
+    page.list = EventLogicUpdates.deleteMessage(page.list, "Stained key");
+  });
+};
+
+EventLogicUpdates.clearTrueFredStateReset = function (ev) {
+  // true fred; his state gets reset when you kill him
+  ev.pages.forEach((page) => {
+    // dont let his state get set to 99
+    page.list = page.list.filter(
+      (listItem) =>
+        !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 300),
+    );
+  });
+};
+
+EventLogicUpdates.clearKOTDDrop = function (ev) {
+  // clear all-seeing-8-ball drop
+  ev.pages[2].list = EventLogicUpdates.itemDropClear(
+    ev.pages[2].list,
+    ITEM_CODE,
+  );
+  ev.pages[2].list = EventLogicUpdates.messageReplacement(
+    ev.pages[2].list,
+    "All-Seeing",
+    "GF_KOTD_COMBAT_VICTORY",
+    "Get",
+  );
+};
+
+EventLogicUpdates.clearPhilDelusionDrops = function (ev, index) {
+  ev.pages[index].list = EventLogicUpdates.itemDropClear(
+    ev.pages[index].list,
+    ITEM_CODE,
+  );
+  ev.pages[index].list = EventLogicUpdates.messageReplacement(
+    ev.pages[index].list,
+    "Phillippe's Remains",
+    "FUNGUS_PHILLIPPE_COMBAT_VICTORY",
+    "Receive",
+  );
+};
+
+EventLogicUpdates.clearPhilDelusionDropsOutside = function (ev) {
+  EventLogicUpdates.clearPhilDelusionDrops(ev, 1);
+};
+
+EventLogicUpdates.clearPhilDelusionDropsSporeMother = function (ev) {
+  EventLogicUpdates.clearPhilDelusionDrops(ev, 0);
+};
+
+// allows fungus people to be rescued after spore mother is killed
+EventLogicUpdates.rescueFightsAfterSporeMother = function (ev) {
+  // triggers for phillippe/rodrigue rescue fight
+  if (ev.pages.length > 1) ev.pages.splice(1, 1);
+};
+
+// shows the rescuable fungus people even after the spore mother is killed
+EventLogicUpdates.trappedVisualsAfterSporeMother = function (ev) {
+  if (ev.pages.length > 2) ev.pages.splice(2, 1);
+};
+
+EventLogicUpdates.updateLaughingMoldEvent = function (ev) {
+  // make laughing mold nonmissable
+  const conditions = ev.pages[8].conditions;
+  ev.pages[8] = {
+    ...ev.pages[5],
+    conditions,
+  };
+  if (ev.pages.length < 11) {
+    // push finished states to the front
+    ev.pages.push(ev.pages[6]);
+    ev.pages.push(ev.pages[7]);
+  }
+};
+
+EventLogicUpdates.fixRoxieRoomItemDoubleEntry = function (ev) {
+  // two of the items in roxie's room in the sewers have two separate pages
+  // since theyre different items on hard mode
+  // we will delete the second entries
+  if (ev.pages.length > 2) {
+    ev.pages.splice(1, 1);
+  }
+};
+
+EventLogicUpdates.clearGrateLever = function (ev) {
+  ev.pages[1].list = EventLogicUpdates.itemDropClear(
+    ev.pages[1].list,
+    111, // = set switch
+  );
+};
+
+EventLogicUpdates.returnTickle = function (ev) {
+  ev.pages[1].list = RETURN_TICKLE_LIST;
+  ev.pages[1].conditions = EventLogicUpdates.buildConditions("A", 661);
+  ev.pages[1].trigger = ev.pages[0].trigger;
+};
+
+EventLogicUpdates.updateAudreyLootDeadPage = function (
+  page,
+  locationId,
+  script,
+) {
+  page.trigger = 0;
+  page.list = [
+    {
+      code: 111,
+      indent: 0,
+      parameters: [4, 22, 0],
+    },
+    {
+      code: 101,
+      indent: 1,
+      parameters: ["", 13, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 1,
+      parameters: ["Audrey looks through the corpse\\..\\..\\.."],
+    },
+    {
+      code: 101,
+      indent: 1,
+      parameters: ["", 13, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 1,
+      parameters: [
+        `She has found ${LookOutsideAPClient.getItemName(locationId)}.`,
+      ],
+    },
+    script
+      ? {
+          code: 355,
+          indent: 1,
+          parameters: [script],
+        }
+      : {
+          code: 123,
+          indent: 1,
+          parameters: ["D", 0],
+        },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 0,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 0,
+      parameters: [],
+    },
+  ];
+};
+
+EventLogicUpdates.clearAudreyHellrideDrop = function (ev) {
+  EventLogicUpdates.itemDropReplaceScript(
+    ev.pages[3].list,
+    ARMOR_CODE,
+    `$gameSelfSwitches.setValue([86, 14, 'C'], true)`,
+  );
+  ev.pages[3].list = EventLogicUpdates.messageReplacement(
+    ev.pages[3].list,
+    "Demon Plating",
+    "B_CAR_HELLRIDE_AUDREY_LOOT",
+    "She has found",
+  );
+  const deadPage = ev.pages[4];
+  EventLogicUpdates.updateAudreyLootDeadPage(
+    deadPage,
+    "B_CAR_HELLRIDE_AUDREY_LOOT",
+    `$gameSelfSwitches.setValue([86, 14, 'C'], true)`,
+  );
+  if (ev.pages.length < 6) {
+    ev.pages.push({
+      ...EMPTY_PAGE,
+      conditions: EventLogicUpdates.buildConditions("C"),
+      image: deadPage.image,
+    });
+  }
+};
+
+EventLogicUpdates.clearAudreyCopCarDrop = function (ev) {
+  EventLogicUpdates.itemDropReplaceScript(
+    ev.pages[3].list,
+    ARMOR_CODE,
+    `$gameSelfSwitches.setValue([86, 58, 'C'], true)`,
+  );
+  ev.pages[3].list = EventLogicUpdates.messageReplacement(
+    ev.pages[3].list,
+    "Chrome Finish",
+    "B_CAR_COP_CAR_AUDREY_LOOT",
+    "She has found",
+  );
+  const deadPage = ev.pages[5];
+  EventLogicUpdates.updateAudreyLootDeadPage(
+    deadPage,
+    "B_CAR_COP_CAR_AUDREY_LOOT",
+    `$gameSelfSwitches.setValue([86, 58, 'C'], true)`,
+  );
+  if (ev.pages.length < 7) {
+    ev.pages.push({
+      ...EMPTY_PAGE,
+      conditions: EventLogicUpdates.buildConditions("C"),
+      image: deadPage.image,
+    });
+  }
+};
+
+EventLogicUpdates.clearAudreyTankDrop = function (ev) {
+  EventLogicUpdates.itemDropReplaceScript(
+    ev.pages[2].list,
+    ARMOR_CODE,
+    `$gameSelfSwitches.setValue([233, 11, 'C'], true)`,
+  );
+  ev.pages[2].list = EventLogicUpdates.messageReplacement(
+    ev.pages[2].list,
+    "Cope Cage",
+    "LL_MEMORIAL_TANK_AUDREY_LOOT",
+    "She has found",
+  );
+  const deadPage = ev.pages[4];
+  EventLogicUpdates.updateAudreyLootDeadPage(
+    deadPage,
+    "LL_MEMORIAL_TANK_AUDREY_LOOT",
+    `$gameSelfSwitches.setValue([233, 11, 'C'], true)`,
+  );
+  if (ev.pages.length < 6) {
+    ev.pages.push({
+      ...EMPTY_PAGE,
+      conditions: EventLogicUpdates.buildConditions("C"),
+      image: deadPage.image,
+    });
+  }
+};
+
+EventLogicUpdates.clearAudreyAPCDrop = function (ev) {
+  EventLogicUpdates.itemDropReplaceScript(
+    ev.pages[3].list,
+    ARMOR_CODE,
+    `sSw(${LL_BATTLEFIELD_APC_AUDREY_LOOT_SWITCH}, true)`,
+  );
+  ev.pages[3].list = EventLogicUpdates.messageReplacement(
+    ev.pages[3].list,
+    "Tank Tracks",
+    "LL_BATTLEFIELD_APC_AUDREY_LOOT",
+    "She has found",
+  );
+
+  const deadPage = ev.pages[5];
+  EventLogicUpdates.updateAudreyLootDeadPage(
+    deadPage,
+    "LL_BATTLEFIELD_APC_AUDREY_LOOT",
+    `sSw(${LL_BATTLEFIELD_APC_AUDREY_LOOT_SWITCH}, true);`,
+  );
+  if (ev.pages.length < 7) {
+    ev.pages.push({
+      ...EMPTY_PAGE,
+      conditions: EventLogicUpdates.buildConditions(
+        undefined,
+        LL_BATTLEFIELD_APC_AUDREY_LOOT_SWITCH,
+      ),
+      image: deadPage.image,
+    });
+  }
+};
+
+// this ones weird because the battle trigger and the dead body are 2 different events
+EventLogicUpdates.clearAudreyTrenchDiggerBattleDrop = function (ev) {
+  EventLogicUpdates.itemDropReplaceScript(
+    ev.pages[1].list,
+    ARMOR_CODE,
+    `$gameSelfSwitches.setValue([130, 2, 'D'], true);`,
+  );
+  ev.pages[1].list = EventLogicUpdates.messageReplacement(
+    ev.pages[1].list,
+    "Tank Guns",
+    "LL_TRENCH_DIGGER_AUDREY_LOOT",
+    "She has found",
+  );
+};
+
+EventLogicUpdates.clearAudreyTrenchDiggerOverworldDrop = function (ev) {
+  const deadPage = ev.pages[6];
+  EventLogicUpdates.updateAudreyLootDeadPage(
+    deadPage,
+    "LL_TRENCH_DIGGER_AUDREY_LOOT",
+  );
+  if (ev.pages.length < 8) {
+    ev.pages.push({
+      ...EMPTY_PAGE,
+      conditions: EventLogicUpdates.buildConditions("D"),
+      image: deadPage.image,
+    });
+  }
+};
+
+EventLogicUpdates.clearAudreyShrimpKnightDrop = function (ev) {
+  for (let i = 0; i < 2; i++) {
+    EventLogicUpdates.itemDropReplaceScript(
+      ev.pages[i].list,
+      ARMOR_CODE,
+      "$gameSelfSwitches.setValue([152, 6, 'D'], true)",
+    );
+    ev.pages[i].list = EventLogicUpdates.messageReplacement(
+      ev.pages[i].list,
+      "Jousting Lance",
+      "APT_28_SHRIMP_KNIGHT_AUDREY_LOOT",
+      "She has found",
+    );
+    const deadPage = ev.pages[3];
+    EventLogicUpdates.updateAudreyLootDeadPage(
+      deadPage,
+      "APT_28_SHRIMP_KNIGHT_AUDREY_LOOT",
+    );
+    if (ev.pages.length < 5) {
+      ev.pages.push({
+        ...EMPTY_PAGE,
+        conditions: EventLogicUpdates.buildConditions("D"),
+        image: deadPage.image,
+      });
+    }
+  }
+};
+
+EventLogicUpdates.clearAudreySporeGuardianDrop = function (ev) {
+  for (let i = 0; i < 2; i++) {
+    EventLogicUpdates.itemDropReplaceScript(
+      ev.pages[i].list,
+      ARMOR_CODE,
+      "$gameSelfSwitches.setValue([127, 3, 'D'], true)",
+    );
+    ev.pages[i].list = EventLogicUpdates.messageReplacement(
+      ev.pages[i].list,
+      "Fungus Fibers",
+      "FUNGUS_SPORE_GUARDIAN_AUDREY_LOOT",
+      "She has found",
+    );
+  }
+  const deadPage = ev.pages[3];
+  EventLogicUpdates.updateAudreyLootDeadPage(
+    deadPage,
+    "FUNGUS_SPORE_GUARDIAN_AUDREY_LOOT",
+  );
+  // override the page that checks if spore mother is dead because we want to remove that condition anyway
+  ev.pages[4] = {
+    ...EMPTY_PAGE,
+    conditions: EventLogicUpdates.buildConditions("D"),
+    image: deadPage.image,
+  };
+};
+
+EventLogicUpdates.clearAudreyTaxidermyDrop = function (ev) {
+  for (let i = 1; i < 3; i++) {
+    EventLogicUpdates.itemDropReplaceScript(
+      ev.pages[i].list,
+      ARMOR_CODE,
+      "$gameSelfSwitches.setValue([270, 6, 'D'], true)",
+    );
+    ev.pages[i].list = EventLogicUpdates.messageReplacement(
+      ev.pages[i].list,
+      "Leather Skin",
+      "APT_30_TAXIDERMY_AUDREY_LOOT",
+      "She has found",
+    );
+    const deadPage = ev.pages[4];
+    EventLogicUpdates.updateAudreyLootDeadPage(
+      deadPage,
+      "APT_30_TAXIDERMY_AUDREY_LOOT",
+    );
+    if (ev.pages.length < 6) {
+      ev.pages.push({
+        ...EMPTY_PAGE,
+        conditions: EventLogicUpdates.buildConditions("D"),
+        image: deadPage.image,
+      });
+    }
+  }
+};
+
+EventLogicUpdates.clearBlackoutIrisKey = function (ev) {
+  ev.pages[3].list = EventLogicUpdates.itemDropClear(
+    ev.pages[3].list,
+    ITEM_CODE,
+  );
+  ev.pages[3].list = EventLogicUpdates.messageReplacement(
+    ev.pages[3].list,
+    "Iris Key",
+    "B_CAR_HOLE_IRIS_KEY",
+    "You find",
+  );
+};
+
+EventLogicUpdates.clearRatFreakGift = function (ev) {
+  ev.pages[3].list = EventLogicUpdates.itemDropClear(
+    ev.pages[3].list,
+    WEAPON_CODE,
+  );
+  ev.pages[3].list = EventLogicUpdates.messageReplacement(
+    ev.pages[3].list,
+    "Rat Claws",
+    "APT_11_RAT_FREAK_GIFT",
+    "You receive",
+  );
+};
+
+EventLogicUpdates.clearBurritoRatGift = function (ev) {
+  ev.pages[3].list = EventLogicUpdates.itemDropClear(
+    ev.pages[3].list,
+    ITEM_CODE,
+  );
+  ev.pages[3].list = EventLogicUpdates.messageReplacement(
+    ev.pages[3].list,
+    "Burrito",
+    "RAT_LAIR_GIANT_RAT_BURRITO",
+    "Receive",
+  );
+};
+
+EventLogicUpdates.clearHellenQuestPrizes = function (ev) {
+  ev.pages[2].list = EventLogicUpdates.itemDropClear(
+    ev.pages[2].list,
+    WEAPON_CODE,
+  );
+  ev.pages[2].list = EventLogicUpdates.messageReplacement(
+    ev.pages[2].list,
+    "Hellen's Shears",
+    "APT_18_HELLEN_QUEST_SHEARS",
+    "Receive",
+  );
+};
+
+EventLogicUpdates.clearSecretDoorLockout = function (ev) {
+  ev.pages[2].list = SECRET_DOOR_LIST;
+  if (ev.pages.length > 5) {
+    ev.pages.splice(3, 1);
+    // remove page that says there was never a door
+  }
+};
+EventLogicUpdates.clearSybilRedKey = function (ev) {
+  if (lastLoadedMapId === 367 && ev.id === 1) {
+    ev.pages[1].list = EventLogicUpdates.itemDropClear(
+      ev.pages[1].list,
+      ITEM_CODE,
+    );
+    ev.pages[1].list = EventLogicUpdates.messageReplacement(
+      ev.pages[1].list,
+      "Small Red Key",
+      "MEAT_SYBIL_COMBAT_VICTORY",
+    );
+  }
+};
+
+// allow eugene to live after nestor is killed if killable shopkeepers is false
+EventLogicUpdates.clearEugeneDeath = function (ev) {
+  if (ev.pages.length < 9) {
+    // make the deadpage need both nestor AND eugene to be dead
+    const killedEugene = 168;
+    ev.pages[7].conditions = EventLogicUpdates.buildConditions(
+      undefined,
+      killedEugene,
+      449,
+      434,
+      5,
+    );
+
+    // add a page where only nestor is dead
+    ev.pages.splice(7, 0, {
+      ...ev.pages[1],
+      conditions: EventLogicUpdates.buildConditions(
+        undefined,
+        449,
+        undefined,
+        undefined,
+        434,
+        5,
+      ),
+    });
+
+    ev.pages.forEach((page) => {
+      EventLogicUpdates.itemDropReplaceScript(
+        page.list,
+        SET_SWITCH_CODE,
+        `sSw(${killedEugene},gSw(${CAN_KILL_SHOPKEEPERS_SWITCH}));`,
+        (listItem) => listItem.parameters[0] == killedEugene,
+      );
+    });
+  }
+};
+
+// dont increase game count when you buy it
+// set the name variable to the custom apitem name
+EventLogicUpdates.clearReptileFootball = function (ev) {
+  ev.pages[0].list = ev.pages[0].list.filter(
+    (listItem) =>
+      !(listItem.code == SET_SWITCH_CODE && listItem.parameters[0] == 41),
+  );
+
+  EventLogicUpdates.itemDropReplaceScript(
+    ev.pages[0].list,
+    SET_VAR_CODE,
+    `sVr(486,"${LookOutsideAPClient.getItemName(
+      "APT_24_REPTILE_FOOTBALL",
+      true,
+      false,
+      true,
+    )}");`,
+    (listItem) => listItem.parameters[0] == 486,
+  );
+
+  ev.pages[0].list.find(
+    (listItem) =>
+      listItem.code == SET_VAR_CODE && listItem.parameters[0] == 480,
+  ).parameters[4] = "!";
+};
+
 const EVENT_UPDATE_TABLE = {
   3: {
     9: EventLogicUpdates.doorCombatChecker,
     17: EventLogicUpdates.doorEncounterPicker,
     52: ShopHelpers.gunTraderInitList,
+    56: ShopHelpers.gamerInitList,
+    88: EventLogicUpdates.clearScreamitorumEvent,
+    121: EventLogicUpdates.clearRoachQuestPrize,
+    133: ShopHelpers.strangeTraderInitList,
+  },
+  23: { 40: EventLogicUpdates.fixWoundedManDoor },
+  24: { 3: EventLogicUpdates.clearWoundedManKnifeEvent },
+  74: {
+    2: EventLogicUpdates.fixElevatorButtons,
+    3: EventLogicUpdates.clearElevatorFreakEvent,
+  },
+  6: {
+    13: EventLogicUpdates.clearF3HallwayPlanterEvent,
+    25: EventLogicUpdates.clearF3HallwayVendingMachineEvent,
+  },
+  7: {
+    1: EventLogicUpdates.leighRematch,
+    14: EventLogicUpdates.forceAsterToStay,
+    60: EventLogicUpdates.permaGrasshopper,
+  },
+  434: { 1: EventLogicUpdates.clearLeighQuest },
+  186: {
+    2: EventLogicUpdates.leighWillWait,
+    3: EventLogicUpdates.leighWillWait,
+    5: EventLogicUpdates.leighWillWait,
+  },
+  92: {
+    45: EventLogicUpdates.clearRatKingCrown,
+    111: EventLogicUpdates.forceAudreyToStay,
+    113: EventLogicUpdates.updateAudreyEvents,
+    114: EventLogicUpdates.updateAudreyPose,
+  },
+  93: {
+    3: EventLogicUpdates.forceLeighToStay,
+  },
+  9: {
+    13: EventLogicUpdates.removeLyleDoorBlocker,
+    14: EventLogicUpdates.updateLyleEvent,
+  },
+  326: {
+    4: EventLogicUpdates.makeSpiderLeave,
+  },
+  60: {
+    9: EventLogicUpdates.forcePapineauToStay,
+  },
+  451: { 7: EventLogicUpdates.forceInstantStumblingShadeSpawn },
+  325: {
+    5: EventLogicUpdates.updateCrawlingShadeDefeatConditions,
+  },
+  380: {
+    2: EventLogicUpdates.updateShadeDefeatConditions, // writhing shade
+  },
+  401: {
+    6: EventLogicUpdates.updateShadeDefeatConditions, // moaning shade
+  },
+  32: {
+    7: EventLogicUpdates.updateJoelPages,
+  },
+  34: {
+    20: EventLogicUpdates.updateMadisonPages,
+  },
+  31: {
+    35: EventLogicUpdates.updateDay5ClintPages,
+  },
+  435: {
+    1: EventLogicUpdates.updateDay9ClintPages,
+    2: EventLogicUpdates.updateDay9JoelPages,
+    3: EventLogicUpdates.updateDay9MadisonPages,
+    4: EventLogicUpdates.updateDay9BenPages,
+  },
+  332: { 3: EventLogicUpdates.unblockEugeneBookcase },
+  110: { 7: EventLogicUpdates.clearTelescopeEvent },
+  78: {
+    31: EventLogicUpdates.clearGuineaPigChairEvent,
+    3: EventLogicUpdates.clearSecurityTapeEvent,
+  },
+  38: {
+    8: EventLogicUpdates.clearProjectorEvent,
+  },
+  47: {
+    43: EventLogicUpdates.clearCoffeeMachineEvent,
+  },
+  273: {
+    11: EventLogicUpdates.clearAntoinesKey,
+  },
+  299: {
+    12: EventLogicUpdates.clearClydesKey,
+  },
+  300: {
+    6: EventLogicUpdates.clearJennifersKey,
+  },
+  301: {
+    5: EventLogicUpdates.clearAugustesKey,
+  },
+  441: {
+    7: EventLogicUpdates.clearGlitchElixirDrops,
+  },
+  442: {
+    9: EventLogicUpdates.clearAmbroseDrops,
+  },
+  115: {
+    2: EventLogicUpdates.clearTypewritherDrop,
+  },
+  118: {
+    5: EventLogicUpdates.clearManuscriptCompletion,
+  },
+  101: { 5: EventLogicUpdates.clearCribDrop },
+  69: { 56: EventLogicUpdates.clearJeanneLaundry },
+  180: {
+    15: EventLogicUpdates.clearLandlordCache,
+  },
+  184: {
+    1: EventLogicUpdates.fixBasementKeyConditions,
+  },
+  204: {
+    22: EventLogicUpdates.fixBasementKeyConditions,
+  },
+  206: {
+    13: EventLogicUpdates.fixBasementKeyConditions,
+  },
+  207: {
+    22: EventLogicUpdates.clearAudreyAPCDrop,
+    26: EventLogicUpdates.clearLandlordDigSpot,
+  },
+  233: {
+    11: EventLogicUpdates.clearAudreyTankDrop,
+  },
+  130: {
+    2: EventLogicUpdates.clearAudreyTrenchDiggerOverworldDrop,
+    9: EventLogicUpdates.clearAudreyTrenchDiggerBattleDrop,
+    11: EventLogicUpdates.fixBasementKeyConditions,
+  },
+  309: {
+    19: EventLogicUpdates.clearErnestCheeseStash,
+  },
+  457: {
+    1: EventLogicUpdates.clearSadipedePrize,
+  },
+  112: {
+    13: EventLogicUpdates.updateDarkRoomPhotoDevelopmentEvent,
+    14: EventLogicUpdates.updateDarkRoomKey,
+    16: EventLogicUpdates.updateDarkRoomPhotoPaper,
+  },
+  94: {
+    9: EventLogicUpdates.clearRaftaLetter,
+  },
+  96: {
+    12: EventLogicUpdates.clearFaceTakerDrops,
+  },
+  50: {
+    12: EventLogicUpdates.clearOozeMachine,
+  },
+  217: {
+    7: EventLogicUpdates.clearToxicFredDrop,
+    8: EventLogicUpdates.clearToxicFredDrop,
+  },
+  236: {
+    16: EventLogicUpdates.clearToxicFredDrop,
+    18: EventLogicUpdates.clearToxicFredDrop,
+    19: EventLogicUpdates.clearToxicFredDrop,
+  },
+  42: {
+    6: EventLogicUpdates.clearToxicFredDrop,
+  },
+  237: {
+    14: EventLogicUpdates.clearToxicFredDrop,
+  },
+  119: { 13: EventLogicUpdates.clearToxicFredDrop },
+  239: { 6: EventLogicUpdates.clearTrueFredStateReset },
+  460: { 15: EventLogicUpdates.clearKOTDDrop },
+  187: {
+    26: EventLogicUpdates.updateLaughingMoldEvent,
+    3: EventLogicUpdates.trappedVisualsAfterSporeMother,
+    5: EventLogicUpdates.trappedVisualsAfterSporeMother,
+    6: EventLogicUpdates.trappedVisualsAfterSporeMother,
+    21: EventLogicUpdates.trappedVisualsAfterSporeMother,
+    23: EventLogicUpdates.trappedVisualsAfterSporeMother,
+    19: EventLogicUpdates.trappedVisualsAfterSporeMother,
+    14: EventLogicUpdates.trappedVisualsAfterSporeMother,
+    15: EventLogicUpdates.rescueFightsAfterSporeMother,
+    16: EventLogicUpdates.rescueFightsAfterSporeMother,
+    7: EventLogicUpdates.rescueFightsAfterSporeMother,
+    22: EventLogicUpdates.rescueFightsAfterSporeMother,
+  },
+  188: {
+    2: EventLogicUpdates.clearPhilDelusionDropsOutside,
+    5: EventLogicUpdates.rescueFightsAfterSporeMother,
+    6: EventLogicUpdates.rescueFightsAfterSporeMother,
+    13: EventLogicUpdates.rescueFightsAfterSporeMother,
+    14: EventLogicUpdates.rescueFightsAfterSporeMother,
+    3: EventLogicUpdates.trappedVisualsAfterSporeMother,
+    9: EventLogicUpdates.trappedVisualsAfterSporeMother,
+    10: EventLogicUpdates.trappedVisualsAfterSporeMother,
+    11: EventLogicUpdates.trappedVisualsAfterSporeMother,
+    12: EventLogicUpdates.trappedVisualsAfterSporeMother,
+  },
+  127: {
+    2: EventLogicUpdates.clearPhilDelusionDropsSporeMother,
+    3: EventLogicUpdates.clearAudreySporeGuardianDrop,
+  },
+  259: {
+    3: EventLogicUpdates.fixRoxieRoomItemDoubleEntry,
+    17: EventLogicUpdates.fixRoxieRoomItemDoubleEntry,
+  },
+  256: {
+    3: EventLogicUpdates.clearGrateLever,
+  },
+  189: {
+    18: EventLogicUpdates.returnTickle,
+  },
+  86: {
+    14: EventLogicUpdates.clearAudreyHellrideDrop,
+    58: EventLogicUpdates.clearAudreyCopCarDrop,
+    106: EventLogicUpdates.clearBlackoutIrisKey,
+  },
+  152: { 6: EventLogicUpdates.clearAudreyShrimpKnightDrop },
+  270: {
+    6: EventLogicUpdates.clearAudreyTaxidermyDrop,
+  },
+  106: { 11: EventLogicUpdates.clearRatFreakGift },
+  289: { 6: EventLogicUpdates.clearBurritoRatGift },
+  433: { 9: EventLogicUpdates.clearHellenQuestPrizes },
+  30: { 6: EventLogicUpdates.clearSecretDoorLockout },
+  367: { 1: EventLogicUpdates.clearSybilRedKey },
+  132: {
+    2: EventLogicUpdates.clearEugeneDeath,
+    47: EventLogicUpdates.clearReptileFootball,
   },
 };
 
 EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
-  function doorEncounterPicker() {
-    if (lastLoadedMapId == 3 && ev.id == 17) {
-      DoorHelpers.setRemainingEncounterVars();
-      ev.pages[0].conditions = EventLogicUpdates.buildConditions();
-      ev.pages[0].list = DoorHelpers.buildEncounterPickerEventPage();
-      ev.pages[0].directionFix = true;
-    }
-  }
-  doorEncounterPicker();
+  if (!$gamePlayer || !$gamePlayer.LOCATION_NAME_MAPPING) return;
 
   if (
     EVENT_UPDATE_TABLE[lastLoadedMapId] &&
-    EVENT_UPDATE_TABLE[lastLoadedMapId][ev]
+    EVENT_UPDATE_TABLE[lastLoadedMapId][ev.id]
   ) {
-    EVENT_UPDATE_TABLE[lastLoadedMapId][ev]();
+    EVENT_UPDATE_TABLE[lastLoadedMapId][ev.id](ev);
     return;
   }
-
-  // want the above to always update because it's variable
-
-  // note which events were already updated
-  if (!$gamePlayer || !$gamePlayer.LOCATION_NAME_MAPPING) return;
-  /*if (!eventsUpdated[lastLoadedMapId]) {
-    eventsUpdated[lastLoadedMapId] = {};
-  }
-  if (eventsUpdated[lastLoadedMapId][ev.id]) {
-    return;
-  } else eventsUpdated[lastLoadedMapId][ev.id] = true;*/
-
-  ShopHelpers.gunTraderInitList(lastLoadedMapId, ev); // remove all the special unique guns from his sales list
-  ShopHelpers.gamerInitList(lastLoadedMapId, ev); // remove randomized games from his sales list
-  ShopHelpers.strangeTraderInitList(lastLoadedMapId, ev); // remove randomized currencies and gauntlet key from sales list
-
-  function doorCombatChecker() {
-    if (lastLoadedMapId == 3 && ev.id == 9) {
-      // 601 - the if condition if the player won the previous encounter
-      const winEncounterIndex = ev.pages[1].list.findIndex(
-        (listItem) => listItem.code == 601,
-      );
-      // this can run on dataMap multiple times, so we need to
-      // ensure we don't add multiple calls
-      const processVictory = ev.pages[1].list.find(
-        (listItem) =>
-          listItem.code == 355 &&
-          listItem.parameters[0] == "DoorHelpers.processDoorVictory();",
-      );
-      if (winEncounterIndex !== -1 && !processVictory) {
-        ev.pages[1].list.splice(winEncounterIndex + 1, 0, {
-          code: 355,
-          indent: ev.pages[1].list[winEncounterIndex].indent + 1,
-          parameters: ["DoorHelpers.processDoorVictory();"],
-        });
-      }
-    }
-  }
-  doorCombatChecker();
-
-  function fixWoundedManDoor() {
-    if (lastLoadedMapId === 23 && ev.id === 40) {
-      ev.pages[1].conditions = ev.pages[0].conditions;
-      // set the page that lets you in to the bathroom unarmed on hardmode to always hit
-    }
-  }
-  fixWoundedManDoor();
-
-  // screw the elevator game, just let me go to 4
-  function fixElevatorButtons() {
-    if (lastLoadedMapId === 74 && ev.id === 2) {
-      // at the start of the event, set the elevator game to be finished.
-      // make sure you only add the elevator function set once
-      ev.pages[1].list[0] = {
-        code: 355,
-        indent: 1,
-        parameters: ["sVr(1, 0), sVr(817, 4)"],
-      };
-    }
-  }
-  fixElevatorButtons();
-
-  // update page 2 of the apt 21 key event to trigger grinning beast if you walk over it
-  function leighRematch() {
-    if (lastLoadedMapId === 7 && ev.id === 1) {
-      ev.pages[1].list = [
-        {
-          code: 111,
-          indent: 0,
-          parameters: [0, 119, 1],
-        },
-        {
-          code: 355, // Script command
-          indent: 1,
-          // 84: floor2slowdown (set on the room after youve escaped)
-          // 81: floor2spook  // triggered by floor in first room; makes the door make a noise
-          // 82: floor2spookspawn // triggered by floor in first room; spawns the grinning beast
-          // 83: floor2done // despawns grinning beast
-          // 1050: grinningbeastprime // triggered by floor in second room
-          // 1105: leighpreventfight (if player is actively opening door)
-          // reset sfx on grinning beast spawn
-          // reset sfx for grinning beast door
-          // reset animation for grabby hands
-          // reset chase sequence for room 1 beast
-          parameters: [
-            "sSw(84, false), sSw(83, false); sSw(82, false); sSw(81, false); sSw(1050,false); sSw(1105, false); $gameSelfSwitches.setValue([8, 10, 'A'], false); $gameSelfSwitches.setValue([8, 4, 'A'], false); $gameSelfSwitches.setValue([8, 4, 'B'], false); $gameSelfSwitches.setValue([8, 46, 'A'], false); $gameSelfSwitches.setValue([8, 46, 'B'], false); $gameSelfSwitches.setValue([8, 14, 'B'], false); $gameSelfSwitches.setValue([8, 14, 'A'], false);",
-          ],
-        },
-        {
-          code: 201,
-          indent: 1,
-          parameters: [0, 8, 31, 8, 0, 2],
-        },
-        {
-          code: 0,
-          indent: 1,
-          parameters: [],
-        },
-        {
-          code: 412,
-          indent: 0,
-          parameters: [],
-        },
-        {
-          code: 0,
-          indent: 0,
-          parameters: [],
-        },
-      ];
-
-      ev.pages[1].trigger = 1;
-    }
-  }
-  leighRematch();
-
-  function clearLeighQuest() {
-    if (lastLoadedMapId == 434 && ev.id == 1) {
-      // clear martin's ring
-      ev.pages[0].list = EventLogicUpdates.itemDropClear(
-        ev.pages[0].list,
-        ARMOR_CODE,
-      );
-      ev.pages[0].list = EventLogicUpdates.itemDropClear(
-        ev.pages[0].list,
-        SKILL_CODE,
-      ); // clear skill grants
-      ev.pages[0].list = EventLogicUpdates.messageReplacement(
-        ev.pages[0].list,
-        "Martin's Ring",
-        "LEIGH_APARTMENT_READ_NOTE",
-      );
-      ev.pages[0].list = EventLogicUpdates.messageReplacement(
-        ev.pages[0].list,
-        "much more dangerous",
-        "LEIGH_APARTMENT_READ_NOTE",
-      );
-    }
-  }
-  clearLeighQuest();
-
-  // make it so grasshopper doesnt leave after leighs quest
-  function permaGrasshopper() {
-    if (lastLoadedMapId == 7 && ev.id == 60) {
-      if (ev.pages.length > 4) ev.pages.splice(3, 1);
-    }
-  }
-  permaGrasshopper();
-
-  // removes the switch setters that set 119 = false when walking east after fighting the beast
-  function leighWillWait() {
-    if (lastLoadedMapId == 186) {
-      if (ev.id == 5 || ev.id == 3 || ev.id == 2) {
-        ev.pages[0].list = ev.pages[0].list.filter(
-          (listEntry) => listEntry.code !== SET_SWITCH_CODE,
-        );
-      }
-    }
-  }
-  leighWillWait();
-
-  const recruitLeaveCondition = EventLogicUpdates.buildConditions("D");
-  // for overworld recruits; the switch that makes them leave their spots is replaced with their check switch
-  function forceRecruitsToStay() {
-    // leigh
-    if (lastLoadedMapId == 93 && ev.id == 3) {
-      ev.pages[2].conditions = recruitLeaveCondition;
-    }
-
-    // lyle
-    if (lastLoadedMapId == 9 && ev.id == 14) {
-      ev.pages[6].conditions = recruitLeaveCondition;
-    }
-
-    // aster
-    if (lastLoadedMapId == 7 && ev.id == 14) {
-      // he cant leave until he is recruited because he's needed for offerings
-      ev.pages[4].conditions = {
-        ...ev.pages[4].conditions,
-        ...{ selfSwitchCh: "D", selfSwitchValid: true },
-      };
-    }
-
-    // audrey
-    if (lastLoadedMapId == 92) {
-      if (ev.id == 111) {
-        ev.pages[5].conditions = {
-          // same as aster, she needs to be reachable at all times
-          ...ev.pages[5].conditions,
-          ...{ selfSwitchCh: "D", selfSwitchValid: true },
-        };
-      }
-      if (ev.id == 113) {
-        // page that sets audrey events
-        // also disabled on recruit
-        if (ev.pages.length >= 2) {
-          ev.pages.splice(1, 1);
-        }
-      }
-      if (ev.id == 114) {
-        // page that sets audrey pose when player gets close
-        // also disabled on recruit
-        if (ev.pages.length >= 2) {
-          ev.pages.splice(1, 1);
-        }
-      }
-    }
-
-    // spider
-    // make spider leave after player recruits it
-    if (lastLoadedMapId == 326 && ev.id == 4) {
-      if (ev.pages.length < 2) {
-        ev.pages.push({
-          ...EMPTY_PAGE,
-          conditions: EventLogicUpdates.buildConditions("A"),
-        });
-      }
-    }
-
-    //joel
-
-    //papineau
-    if (lastLoadedMapId == 60 && ev.id == 9) {
-      if (ev.pages.length > 4) {
-        ev.pages.splice(2, 1); // remove page that checks for recruited papineau
-        // switch 783 (removePapineau) can be used instead
-      }
-    }
-  }
-  forceRecruitsToStay();
-
-  function fixMaskShadeSpawns() {
-    // make stumbling shade on f4 spawn immediately
-    // instead of be triggered by old tape
-
-    if (lastLoadedMapId == 451 && ev.id == 7) {
-      ev.pages[0].conditions = EventLogicUpdates.buildConditions();
-    }
-    // crawling shade sets its own self switch to D right away for no reason
-    if (lastLoadedMapId == 325 && ev.id == 5) {
-      ev.pages[0].list = EMPTY_PAGE.list;
-    }
-    // writhing shade --- needs to not erase itself
-    // same with moaning shade
-    // and crawling shade from spider's stairs
-    if (
-      (lastLoadedMapId == 380 && ev.id == 2) ||
-      (lastLoadedMapId == 401 && ev.id == 6) ||
-      (lastLoadedMapId == 325 && ev.id == 5)
-    ) {
-      const eraseIndex = ev.pages[2].list.findIndex(
-        (listEntry) => listEntry.code === 214,
-      );
-      if (eraseIndex !== -1) {
-        ev.pages[2].list[eraseIndex] = {
-          code: 355,
-          indent: ev.pages[2].list[eraseIndex].indent,
-          parameters: [
-            `$gameSelfSwitches.setValue([${lastLoadedMapId}, ${ev.id}, 'D'], true);`,
-          ],
-        };
-      }
-      if (ev.pages.length < 5) {
-        ev.pages.push({
-          ...EMPTY_PAGE,
-          conditions: EventLogicUpdates.buildConditions("D"),
-        });
-      }
-    }
-  }
-  fixMaskShadeSpawns();
-
-  // allows each tooth family phase to spawn even if theyve been killed in another form
-  function fixToothFamilySpawnTriggers() {
-    if (lastLoadedMapId == 32 && ev.id == 7) {
-      ev.pages = ToothHelpers.JoelPages;
-    }
-
-    if (lastLoadedMapId == 34 && ev.id == 20) {
-      ev.pages = ToothHelpers.MadisonPages;
-    }
-
-    // day5 clint
-    // he has less complicated logic since
-    // his day 5 form is a different event than his day 2-4 form
-    if (lastLoadedMapId == 31 && ev.id == 35 && ev.pages.length == 5) {
-      ev.pages.splice(3, 1); // clear page that checks 'killedClint'
-      // todo: set his indoor spawn to depend on the day
-    }
-
-    if (lastLoadedMapId == 435) {
-      if (ev.id == 2 && ev.pages.length == 7) {
-        // joel
-        ev.pages.splice(5, 2); // clear last2 pages that check 'removeJoel' and 'recruitedJoel'
-        ev.pages.splice(3, 1); // clear page that checks 'killedJoel'
-      }
-      if (ev.id == 4 && ev.pages.length == 3) {
-        // mound of teeth and gums
-        ev.pages.splice(1, 1); // clear page that checks 'killedBen'
-      }
-      if (ev.id == 3 && ev.pages.length == 5) {
-        // madison
-        ev.pages.splice(3, 1); // clear page that checks 'killedMadison'
-      }
-      if (ev.id === 1 && ev.pages.length == 5) {
-        // clint
-        ev.pages.splice(3, 1); // clear page that checks 'killedClint'
-      }
-    }
-  }
-  fixToothFamilySpawnTriggers();
-
-  // allows wiggly fred to spawn in the fred apt even if he lives in your fridge
-  function fixWigglyFredRecruitMechanics() {}
-
-  // don't block bookcase when eugene is posessed by nestor
-  function unblockEugeneBookcase() {
-    // remove page 2 of bookcase event (room 332, event 3)
-    if (lastLoadedMapId === 332 && ev.id === 3) {
-      if (ev.pages.length > 1) {
-        ev.pages.splice(1, 1);
-      }
-    }
-  }
-  unblockEugeneBookcase();
-
-  // removes event page with Lyle blocking the door after Sam opens his eyes while kissing, which makes it gay
-  // also lets player go in when lyle is developing the photo
-  function removeLyleDoorBlocker() {
-    if (lastLoadedMapId === 9 && ev.id === 13) {
-      if (ev.pages.length > 2) {
-        ev.pages.splice(2, 2);
-      }
-    }
-  }
-  removeLyleDoorBlocker();
-
-  // replace the event message for getting screamatorium from the shelf with the actual drop
-  function clearScreamitorumEvent() {
-    if (lastLoadedMapId === 3 && ev.id === 88) {
-      // filter out the set var that sets video game count (var 41)
-      let filteredList = ev.pages[0].list.filter(
-        (listItem) =>
-          !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 41),
-      );
-      filteredList = EventLogicUpdates.itemDropClear(filteredList, ITEM_CODE);
-
-      filteredList
-        .filter(
-          (listItem) =>
-            listItem.code === 401 &&
-            listItem.parameters[0].contains("Screamatorium"),
-        )
-        .forEach((listItem) => {
-          listItem.parameters[0] = listItem.parameters[0].replace(
-            "Screamatorium",
-            LookOutsideAPClient.getItemName("APT_33_LIVING_ROOM_SCREAMATORIUM"),
-          );
-        });
-      ev.pages[0].list = filteredList;
-    }
-  }
-  clearScreamitorumEvent();
-
-  function clearWoundedManKnifeEvent() {
-    if (lastLoadedMapId === 24 && ev.id === 3) {
-      // dont add knife to inventory
-      const filteredList = EventLogicUpdates.itemDropClear(
-        ev.pages[1].list,
-        WEAPON_CODE,
-      );
-
-      const messageListItem = filteredList.filter(
-        (listItem) =>
-          listItem.code === 401 &&
-          listItem.parameters[0].contains(
-            "His hand still clutches that bloody knife.",
-          ),
-      );
-
-      filteredList
-        .filter(
-          (listItem) =>
-            listItem.code === 401 && listItem.parameters[0].contains("knife"),
-        )
-        .forEach((listItem, i) => {
-          const replacement =
-            i == 0
-              ? `${LookOutsideAPClient.getItemName("APT_36_BATHROOM_WOUNDED_NEIGHBOR_KNIFE")}\\C[0]`
-              : "thing";
-          listItem.parameters[0] = listItem.parameters[0].replace(
-            "knife",
-            replacement,
-          );
-        });
-
-      const choiceListItem = filteredList.find(
-        (listItem) =>
-          listItem.code === 102 &&
-          listItem.parameters[0][0].contains("Take the knife."),
-      );
-
-      if (choiceListItem)
-        choiceListItem.parameters[0][0] = choiceListItem.parameters[0][0] =
-          "Take it.";
-
-      ev.pages[1].list = filteredList;
-
-      const confirmationListItem = filteredList.find(
-        (listItem) =>
-          listItem.code === 401 &&
-          listItem.parameters[0].contains(
-            "Find a \\C[03]{Kitchen Knife}\\C[0].",
-          ),
-      );
-
-      if (confirmationListItem)
-        confirmationListItem.parameters[0] =
-          confirmationListItem.parameters[0] = `Find ${LookOutsideAPClient.getItemName("APT_36_BATHROOM_WOUNDED_NEIGHBOR_KNIFE")}\\C[0].`;
-    }
-  }
-  clearWoundedManKnifeEvent();
-
-  function clearTelescopeEvent() {
-    if (lastLoadedMapId === 110 && ev.id === 7) {
-      const darkTelescopeRoomPage = ev.pages[0];
-
-      // remove the explicit deletion of void disc from inventory
-      const filteredList = darkTelescopeRoomPage.list.filter(
-        (listItem) =>
-          listItem.code !== ITEM_CODE || listItem.parameters[0] !== 331, // remove the explicit removal of void disc
-      );
-
-      const negativeDiscGrantEventIndex = filteredList.findIndex(
-        (listItem) => listItem.code === ITEM_CODE,
-      );
-      // instead of grant item, set custom check switch
-      if (negativeDiscGrantEventIndex !== -1) {
-        filteredList[negativeDiscGrantEventIndex] = {
-          code: SET_SWITCH_CODE,
-          indent: 2,
-          parameters: [
-            APT_31_TELESCOPE_DISC_EXPOSURE_SWITCH,
-            APT_31_TELESCOPE_DISC_EXPOSURE_SWITCH,
-            0,
-          ],
-        };
-      }
-      // display the randomized item earned
-      const itemEarnedDisplay = filteredList.find(
-        (listItem) =>
-          listItem.code === 401 &&
-          listItem.parameters[0].contains("Negative Disc"),
-      );
-
-      if (itemEarnedDisplay)
-        itemEarnedDisplay.parameters[0] = `Get ${LookOutsideAPClient.getItemName("APT_31_TELESCOPE_DISC_EXPOSURE")}.`;
-
-      // gray out option after the check is finished
-      // only one choice block in the event so i can check for just 102
-      const choiceListItem = filteredList.find(
-        (listItem) => listItem.code === 102,
-      );
-
-      if (choiceListItem)
-        choiceListItem.parameters[0][0] = `<<[s[${APT_31_TELESCOPE_DISC_EXPOSURE_SWITCH}]]>>Put down void disc.`;
-
-      // and the item for picking the option
-      // gray out option after the check is finished
-      const choiceSelectionItem = filteredList.find(
-        (listItem) =>
-          listItem.code === 402 &&
-          listItem.parameters.length > 1 &&
-          listItem.parameters[1].contains("void disc"),
-      );
-
-      if (choiceSelectionItem)
-        choiceSelectionItem.parameters[1] = `<<[s[${APT_31_TELESCOPE_DISC_EXPOSURE_SWITCH}]]>>Put down void disc.`;
-
-      ev.pages[0].list = filteredList;
-    }
-  }
-  clearTelescopeEvent();
-
-  function clearSecurityEvent() {
-    if (lastLoadedMapId == 78) {
-      if (ev.id == 31) {
-        // panopticon / chair event
-        // dont take or give back guinea pig
-        ev.pages.forEach(
-          (page) =>
-            (page.list = EventLogicUpdates.itemDropClear(page.list, ITEM_CODE)),
-        );
-      }
-      if (ev.id == 3) {
-        // vhs event
-
-        // dont take players tape when recording
-        ev.pages[0].list = EventLogicUpdates.itemDropClear(
-          ev.pages[0].list,
-          ITEM_CODE,
-        );
-
-        // on page 0, dont allow player to record unless it's the correct feed
-
-        ev.pages[0].list.forEach((listItem) => {
-          // the game prompts the player twice
-          // since they can also record over a cctv
-          if (
-            listItem.code === 102 &&
-            listItem.parameters[0][0].includes("Yes.")
-          )
-            listItem.parameters[0][0] = `<<[!v[158]=8]>>Yes.`;
-        });
-
-        ev.pages[2].list = EventLogicUpdates.itemDropClear(
-          ev.pages[2].list,
-          ITEM_CODE,
-        );
-        ev.pages[2].list = EventLogicUpdates.messageReplacement(
-          ev.pages[2].list,
-          "CCTV Recording",
-          "SECURITY_CORRECT_RECORDING",
-          "Get",
-        );
-
-        // change the self switch b set to c and disable the event
-        const selfSwitchIndex = ev.pages[2].list.findIndex(
-          (listItem) => listItem.code == 123,
-        );
-
-        if (selfSwitchIndex !== -1) {
-          ev.pages[2].list[selfSwitchIndex] = {
-            code: 355,
-            indent: ev.pages[2].list[selfSwitchIndex].indent,
-            parameters: ['$gameSelfSwitches.setValue([78, 3, "C"], true);'],
-          };
-        }
-
-        if (ev.pages.length < 4) {
-          ev.pages.push({
-            ...ev.pages[2],
-            list: EMPTY_PAGE.list,
-            conditions: EventLogicUpdates.buildConditions("C"),
-          });
-        }
-      }
-    }
-  }
-  clearSecurityEvent();
-
-  function clearProjectorEvent() {
-    if (lastLoadedMapId === 38 && ev.id === 8) {
-      // page 1 is projector head down / turned off
-      let projectorList = ev.pages[1].list;
-
-      // replace the exposed paper grant with switch set
-      const getPhotoPaperIndex = projectorList.findIndex(
-        (listItem) =>
-          listItem.code == ITEM_CODE && listItem.parameters[0] == 339,
-      );
-      if (getPhotoPaperIndex !== -1) {
-        projectorList.splice(getPhotoPaperIndex, 1, {
-          code: 355,
-          indent: projectorList[getPhotoPaperIndex].indent,
-          parameters: [`sSw(${APT_37_PROJECTOR_ROOM_PHOTO_SWITCH}, true);`],
-        });
-      }
-      // clear out the part where it takes your photo paper
-      projectorList = EventLogicUpdates.itemDropClear(projectorList, ITEM_CODE);
-
-      // make sure we dont update what's on the photograph when doing this
-      projectorList = projectorList.filter(
-        (listItem) =>
-          !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 245),
-      );
-
-      // the first instance should be when player placed photo paper
-      projectorList.find(
-        (listItem) =>
-          listItem.code === 102 &&
-          listItem.parameters[0][0].includes("Switch it on."),
-      ).parameters[0][0] = `<<[!v[256]=12]>>Switch it on.`;
-
-      //v[256] = 12 means the projector socket has the negative disc
-      projectorList = EventLogicUpdates.messageReplacement(
-        projectorList,
-        "Exposed Paper",
-        "APT_37_PROJECTOR_ROOM_PHOTO",
-        "Get",
-      );
-      ev.pages[1].list = projectorList;
-    }
-  }
-  clearProjectorEvent();
-
-  function clearF3HallwayPlanterEvent() {
-    if (lastLoadedMapId === 6 && ev.id === 13) {
-      // the event usually disables itself by setting
-      // self switch A when you do any interaction. I'll change it to setting B when
-      // you get the drop, so you dont miss out
-      ev.pages[0].list.find(
-        (listItem) => listItem.code === 111, // if condition at start
-      ).parameters[1] = "B";
-
-      ev.pages[0].list = EventLogicUpdates.messageReplacement(
-        ev.pages[0].list,
-        "Apartment 33 Key",
-        "F3_PLANTER_KEY",
-      );
-
-      // change the item that sets the event self switch to A
-      // this works because the success case is the very first one in the list
-      // but is kind of hacky
-      ev.pages[0].list.find((listItem) => listItem.code === 123).parameters[0] =
-        "B";
-
-      // filter out explicit apartment 33 key drop
-      ev.pages[0].list = EventLogicUpdates.itemDropClear(
-        ev.pages[0].list,
-        ITEM_CODE,
-      );
-    }
-  }
-  clearF3HallwayPlanterEvent();
-
-  function clearF3HallwayVendingMachineEvent() {
-    if (lastLoadedMapId === 6 && ev.id === 25) {
-      ev.pages[1].list = ShopHelpers.getF3VendingMachineList();
-    }
-  }
-  clearF3HallwayVendingMachineEvent();
-
-  function clearCoffeeMachineEvent() {
-    if (lastLoadedMapId === 47 && ev.id === 43) {
-      if (ev.pages.length < 2) {
-        const coffeeGrantIndex = ev.pages[0].list.findIndex(
-          (listItem) =>
-            listItem.code == ITEM_CODE && listItem.parameters[0] == 41,
-        );
-        if (coffeeGrantIndex) {
-          ev.pages[0].list.splice(
-            coffeeGrantIndex,
-            1,
-            ...ShopHelpers.getCoffeeMachineMessage(),
-          );
-        }
-
-        // adds new noninteractable page for when player
-        // has already bought coffee
-        ev.pages.push({
-          ...EMPTY_PAGE,
-          conditions: EventLogicUpdates.buildConditions("A"),
-          image: ev.pages[0].image,
-        });
-      }
-    }
-  }
-  clearCoffeeMachineEvent();
-
-  function clearCandyMachine() {
-    $dataCommonEvents[219].list = ShopHelpers.getCandyMachineList();
-  }
-  clearCandyMachine();
-
-  function clearElevatorFreakEvent() {
-    // the elevator access switch is also used to tell whether the freak is dead; lets change it to a self switch
-    if (lastLoadedMapId === 74 && ev.id === 3) {
-      victorySwitchIdx = ev.pages[0].list.findIndex(
-        (listItem) => listItem.code == SET_SWITCH_CODE,
-      );
-      if (victorySwitchIdx !== -1) {
-        ev.pages[0].list[victorySwitchIdx] = {
-          code: 355,
-          indent: 0,
-          parameters: ["$gameSelfSwitches.setValue([74, 3, 'A'], true)"],
-        };
-        ev.pages[1].conditions = EventLogicUpdates.buildConditions("A");
-      }
-      // also clear out the power outage effect; player should trigger this manually
-      ev.pages[0].list = ev.pages[0].list.filter(
-        (listItem) => !(listItem.code == SET_VAR_CODE && parameters[0] == 736),
-      );
-    }
-  }
-  clearElevatorFreakEvent();
-
-  function clearRatKingCrown() {
-    if (lastLoadedMapId === 92 && ev.id === 45) {
-      // clear out rusty crown drop
-      ev.pages[2].list = ev.pages[2].list.filter(
-        (pageItem) => pageItem.code !== ARMOR_CODE,
-      );
-
-      // change message for both bow and non bow cases
-
-      const rustyCrownAnnouncement = ev.pages[2].list.find(
-        (listItem) =>
-          listItem.code === 401 &&
-          listItem.parameters[0].contains("Rusty Crown"),
-      );
-      if (rustyCrownAnnouncement)
-        rustyCrownAnnouncement.parameters[0] = `You receive ${LookOutsideAPClient.getItemName("F1_RAT_KING_COMBAT_VICTORY")}.`;
-
-      const crownDustAnnouncement = ev.pages[2].list.find(
-        (listItem) =>
-          listItem.code === 401 &&
-          listItem.parameters[0].contains("turns to dust"),
-      );
-      if (crownDustAnnouncement)
-        crownDustAnnouncement.parameters[0] = `The Rat King's crown turns to ${LookOutsideAPClient.getItemName("F1_RAT_KING_COMBAT_VICTORY")} in your hands.`;
-    }
-  }
-  clearRatKingCrown();
-
-  function clearBasementKeyDrops() {
-    // clear out the key prize from antoine
-    // and from the arthropods from B1
-    if (lastLoadedMapId === 273 && ev.id === 11) {
-      // only one of these pages may actually be hit but im clearing both jic
-      ev.pages[0].list = EventLogicUpdates.itemDropClear(
-        ev.pages[0].list,
-        ITEM_CODE,
-      );
-      ev.pages[1].list = EventLogicUpdates.itemDropClear(
-        ev.pages[0].list,
-        ITEM_CODE,
-      );
-      ev.pages[0].list ==
-        EventLogicUpdates.deleteMessage(ev.pages[0].list, "Antoine");
-      ev.pages[1].list ==
-        EventLogicUpdates.deleteMessage(ev.pages[1].list, "Antoine");
-    }
-
-    if (lastLoadedMapId === 299 && ev.id === 12) {
-      // only one of these pages may actually be hit but im clearing both jic
-      ev.pages[1].list = EventLogicUpdates.itemDropClear(
-        ev.pages[1].list,
-        ITEM_CODE,
-      );
-      ev.pages[2].list = EventLogicUpdates.itemDropClear(
-        ev.pages[2].list,
-        ITEM_CODE,
-      );
-      ev.pages[1].list ==
-        EventLogicUpdates.deleteMessage(ev.pages[1].list, "Clyde's Key");
-      ev.pages[2].list ==
-        EventLogicUpdates.deleteMessage(ev.pages[2].list, "Clyde's Key");
-    }
-    if (lastLoadedMapId === 300 && ev.id === 6) {
-      ev.pages[0].list = EventLogicUpdates.itemDropClear(
-        ev.pages[0].list,
-        ITEM_CODE,
-      );
-      ev.pages[1].list = EventLogicUpdates.itemDropClear(
-        ev.pages[0].list,
-        ITEM_CODE,
-      );
-      ev.pages[0].list ==
-        EventLogicUpdates.deleteMessage(ev.pages[0].list, "Jennifer's Key");
-      ev.pages[1].list ==
-        EventLogicUpdates.deleteMessage(ev.pages[1].list, "Jennifer's Key");
-    }
-    if (lastLoadedMapId === 301 && ev.id === 5) {
-      ev.pages[0].list = EventLogicUpdates.itemDropClear(
-        ev.pages[0].list,
-        ITEM_CODE,
-      );
-      ev.pages[1].list = EventLogicUpdates.itemDropClear(
-        ev.pages[0].list,
-        ITEM_CODE,
-      );
-      ev.pages[0].list ==
-        EventLogicUpdates.deleteMessage(ev.pages[0].list, "Auguste's Key");
-      ev.pages[1].list ==
-        EventLogicUpdates.deleteMessage(ev.pages[1].list, "Auguste's Key");
-    }
-  }
-  clearBasementKeyDrops();
-
-  function clearglitchElixirDrops() {
-    if (lastLoadedMapId === 441 && ev.id === 7) {
-      const filteredList = EventLogicUpdates.itemDropClear(
-        ev.pages[0].list,
-        ITEM_CODE,
-      );
-
-      const messageIndex = filteredList.findIndex(
-        (listItem) =>
-          listItem.code === 401 && listItem.parameters[0].contains("Elixir"),
-      );
-      if (messageIndex !== -1) {
-        filteredList[messageIndex].parameters[0] =
-          `You ha v e rec ei v ed ${LookOutsideAPClient.getItemName("GLITCH_W_GLITCH_ELIXIR")}.`;
-      }
-      ev.pages[0].list = filteredList;
-    }
-  }
-  clearglitchElixirDrops();
-
-  function clearAmbroseDrops() {
-    if (lastLoadedMapId === 442 && ev.id === 9) {
-      let filteredList = EventLogicUpdates.itemDropClear(
-        ev.pages[0],
-        ITEM_CODE,
-      ); // ambrose parts
-      filteredList = EventLogicUpdates.itemDropClear(ev.pages[0], ARMOR_CODE); // ambroses pipe
-
-      const messageIndex = filteredList.findIndex(
-        (listItem) =>
-          listItem.code === 401 &&
-          listItem.parameters[0].contains("AAAAAAAAAAAAAAAAAAAAAAAAAMBROS"),
-      );
-      if (messageIndex !== -1) {
-        filteredList[messageIndex].parameters[0] =
-          `You \C[5]fi\C[20]nd ${LookOutsideAPClient.getItemName("GLITCH_SW_AMBROSE")}.`;
-      }
-      ev.pages[0].list = filteredList;
-    }
-  }
-  clearAmbroseDrops();
-
-  // removes both loose manuscript drop and the message telling player they got it
-  function clearTypewritherDrop() {
-    if (lastLoadedMapId === 115 && ev.id === 2) {
-      // item drops on first 2 pages
-      for (let i = 0; i <= 1; i++) {
-        ev.pages[i].list = ev.pages[i].list.filter(
-          (listItem) => ![ITEM_CODE, 101, 401].includes(listItem.code),
-        );
-      }
-    }
-  }
-  clearTypewritherDrop();
-
-  // instead of setting and checking for variable 231, typewriter sets and checks self state A
-  function clearManuscriptCompletion() {
-    if (lastLoadedMapId === 118 && ev.id === 5) {
-      // remove where it sets the manuscriptfull switch
-      const completeManuscriptIndex = ev.pages[0].list.findIndex(
-        (listItem) => listItem.code == SET_SWITCH_CODE,
-      );
-      if (completeManuscriptIndex !== -1) {
-        ev.pages[0].list[completeManuscriptIndex] = {
-          code: 355,
-          indent: 0,
-          parameters: ["$gameSelfSwitches.setValue([118, 5, 'A'], true)"],
-        };
-      }
-
-      const completeManuscriptMessageIdx = ev.pages[0].list.findIndex(
-        (listItem) =>
-          listItem.code == 401 &&
-          listItem.parameters[0] ==
-            "You add the sheet to the incomplete manuscript.",
-      );
-      if (completeManuscriptMessageIdx !== -1) {
-        ev.pages[0].list[completeManuscriptMessageIdx].parameters[0] =
-          `Find ${LookOutsideAPClient.getItemName("APT_27_COMPLETE_MANUSCRIPT")}.`;
-      }
-
-      ev.pages[1].conditions = EventLogicUpdates.buildConditions("A");
-    }
-  }
-  clearManuscriptCompletion();
-
-  function clearCribDrop() {
-    if (lastLoadedMapId === 101 && ev.id === 5) {
-      // find where it sets the switch ratChasePrime
-      const ratChaseTriggerIndex = ev.pages[0].list.findIndex(
-        (listItem) => listItem.code == SET_SWITCH_CODE,
-      );
-
-      if (ratChaseTriggerIndex !== -1) {
-        ev.pages[0].list.splice(
-          ratChaseTriggerIndex,
-          1,
-          ...[
-            {
-              code: 355,
-              indent: 1,
-              parameters: ["$gameSelfSwitches.setValue([101, 5, 'A'], true);"],
-            },
-            {
-              code: 101,
-              indent: 1,
-              parameters: ["", 0, 0, 2, ""],
-            },
-            {
-              code: 401,
-              indent: 1,
-              parameters: [
-                `Find ${LookOutsideAPClient.getItemName("RAT_APT_RAT_BABY_THING")}.`,
-              ],
-            },
-            {
-              code: 101,
-              indent: 1,
-              parameters: ["", 0, 0, 2, ""],
-            },
-          ],
-        );
-      }
-
-      ev.pages[2].conditions = EventLogicUpdates.buildConditions("A");
-    }
-  }
-  clearCribDrop();
-
-  // make it so killing lyle wont drop the darkroom key
-  // remove both item grant and alert message
-  function clearShutterbugDrop() {
-    if (lastLoadedMapId === 9 && ev.id === 14) {
-      // all first 3 event states have the drop
-      for (let i = 0; i <= 2; i++) {
-        ev.pages[i].list = ev.pages[i].list.filter(
-          (listItem) => listItem.code !== ITEM_CODE && listItem.code !== 401,
-        );
-      }
-    }
-  }
-  clearShutterbugDrop();
-
-  function clearJeanneLaundry() {
-    if (lastLoadedMapId === 69 && ev.id === 56) {
-      // dont add laundry to inventory
-      let filteredList = EventLogicUpdates.itemDropClear(
-        ev.pages[0].list,
-        ITEM_CODE,
-      );
-      filteredList = EventLogicUpdates.messageReplacement(
-        filteredList,
-        "Jeanne's clothes",
-        "LAUNDRY_JEANNES_LAUNDRY",
-        "This must be Jeanne's",
-        ". Take it?",
-      );
-
-      ev.pages[0].list = filteredList;
-    }
-  }
-  clearJeanneLaundry();
-
-  function clearLandlordCache() {
-    if (lastLoadedMapId === 180 && ev.id === 15) {
-      // remove dollar coin item drop
-
-      ev.pages[0].list = EventLogicUpdates.itemDropClear(
-        ev.pages[0].list,
-        ITEM_CODE,
-      );
-      ev.pages[0].list = EventLogicUpdates.messageReplacement(
-        ev.pages[0].list,
-        "Dollar Coin",
-        "LL_SECRET_DINING_CACHE",
-      );
-    }
-  }
-  clearLandlordCache();
-
-  function clearLandlordDigSpot() {
-    if (lastLoadedMapId == 207 && ev.id == 26) {
-      ev.pages[2].list = EventLogicUpdates.itemDropClear(
-        ev.pages[2].list,
-        ITEM_CODE,
-      );
-      ev.pages[2].list = EventLogicUpdates.messageReplacement(
-        ev.pages[2].list,
-        "Ammo Crate",
-        "LL_BATTLEFIELD_DIG_SPOT",
-        "You found",
-      );
-    }
-  }
-  clearLandlordDigSpot();
-  // all the basement key drops
-  // only check if player already has basement key
-  // so we need them to check a custom switch instead
-  function fixBasementKeyConditions() {
-    if (
-      (lastLoadedMapId == 184 && ev.id == 1) ||
-      (lastLoadedMapId == 204 && ev.id == 22) ||
-      (lastLoadedMapId == 206 && ev.id == 13) ||
-      (lastLoadedMapId == 130 && ev.id == 11)
-    ) {
-      ev.pages[1].conditions = EventLogicUpdates.buildConditions(
-        null,
-        LL_BASEMENT_KEY_SWITCH,
-      );
-    }
-  }
-  fixBasementKeyConditions();
-
-  function clearErnestCheeseStash() {
-    if (lastLoadedMapId === 309 && ev.id === 19) {
-      ev.pages[0].list = EventLogicUpdates.itemDropClear(
-        ev.pages[0].list,
-        ITEM_CODE,
-      );
-      ev.pages[0].list = EventLogicUpdates.messageReplacement(
-        ev.pages[0].list,
-        "Cheese",
-        "ERNEST_CHEESE",
-      );
-    }
-  }
-  clearErnestCheeseStash();
-
-  function clearRoachQuestPrize() {
-    if (lastLoadedMapId === 3 && ev.id === SET_SWITCH_CODE) {
-      ev.pages[2].list = EventLogicUpdates.itemDropClear(
-        ev.pages[2].list,
-        ARMOR_CODE,
-      );
-
-      ev.pages[2].list = EventLogicUpdates.messageReplacement(
-        ev.pages[2].list,
-        "Official Sash",
-        "APT_33_ROACH_QUEST",
-      );
-
-      ev.pages[2].list = EventLogicUpdates.messageReplacement(
-        ev.pages[2].list,
-        "Papier",
-        "APT_33_ROACH_QUEST",
-      );
-    }
-  }
-  clearRoachQuestPrize();
-
-  function clearSadipedePrize() {
-    if (lastLoadedMapId === 457 && ev.id === 1) {
-      ev.pages[3].list = EventLogicUpdates.itemDropClear(
-        ev.pages[3].list,
-        ITEM_CODE,
-      );
-
-      ev.pages[3].list = EventLogicUpdates.messageReplacement(
-        ev.pages[3].list,
-        "is now following you around",
-        "F4_SADIPEDE_COMBAT_LOSS",
-      );
-    }
-  }
-  clearSadipedePrize();
-
-  function fixDarkRoomItem() {
-    // the key in the darkroom vanishes when lyle is recruited
-    if (lastLoadedMapId == 112) {
-      if (ev.id == 14 && ev.pages.length >= 2) ev.pages.splice(2, 1);
-    }
-    // turn the photo paper into a regular drop
-    if (ev.id == 16 && ev.pages.length < 2) {
-      ev.pages.push({
-        ...EMPTY_PAGE,
-        conditions: EventLogicUpdates.buildConditions("A"),
-      });
-    }
-    if (ev.id == 13 && ev.pages.length < 2) {
-      ev.pages.push({
-        ...EMPTY_PAGE,
-        image: ev.pages[0].image,
-        conditions: EventLogicUpdates.buildConditions("A"),
-      });
-    }
-  }
-  fixDarkRoomItem();
-
-  function clearDarkRoomDevelopment() {
-    if (lastLoadedMapId == 112 && ev.id == 13) {
-      // set switch to true when getting photograph successfully
-      EventLogicUpdates.itemDropReplaceScript(
-        ev.pages[0].list,
-        ITEM_CODE,
-        "$gameSelfSwitches.setValue([112, 13, 'A'], true)",
-        (listItem) => listItem.parameters[0] == 340,
-      );
-
-      ev.pages[0].list = EventLogicUpdates.messageReplacement(
-        ev.pages[0].list,
-        "Photograph",
-        "APT_21_DARK_ROOM_PHOTO",
-        "Get",
-      );
-      ev.pages[0].list = EventLogicUpdates.itemDropClear(
-        ev.pages[0].list,
-        ITEM_CODE,
-      );
-    }
-  }
-  clearDarkRoomDevelopment();
-
-  function clearRaftaLetter() {
-    if (lastLoadedMapId === 94 && ev.id === 9) {
-      ev.pages[0].list = EventLogicUpdates.itemDropClear(
-        ev.pages[0].list,
-        ITEM_CODE,
-      );
-      ev.pages[0].list = EventLogicUpdates.messageReplacement(
-        ev.pages[0].list,
-        "Love Letter",
-        "F1_LETTER_FROM_RAFTA",
-      );
-    }
-  }
-  clearRaftaLetter();
-
-  function clearOozeMachine() {
-    if (lastLoadedMapId === 50 && ev.id === 12) {
-      // blank conditions; remove danger req
-      ev.pages[0].conditions = EventLogicUpdates.buildConditions();
-
-      ev.pages[0].list = ShopHelpers.getOozeMachineList();
-    }
-  }
-  clearOozeMachine();
-
-  function clearDeadFredDrops() {
-    // facetaker
-    if (lastLoadedMapId == 96 && ev.id == 12) {
-      ev.pages.forEach((page) => {
-        // canvas carry bag and torn off face
-        page.list = EventLogicUpdates.itemDropClear(page.list, ITEM_CODE);
-        page.list ==
-          EventLogicUpdates.deleteMessage(page.list, "Canvas Carry Bag");
-        page.list == EventLogicUpdates.deleteMessage(page.list, "Face");
-      });
-    }
-    // toxic fred/paintlings/hat stained key drops
-    if (
-      (lastLoadedMapId == 217 && ev.id == 8) ||
-      (lastLoadedMapId == 217 && ev.id == 7) ||
-      (lastLoadedMapId == 236 && ev.id == 16) ||
-      (lastLoadedMapId == 236 && ev.id == 18) ||
-      (lastLoadedMapId == 236 && ev.id == 19) ||
-      (lastLoadedMapId == 42 && ev.id == 6) ||
-      (lastLoadedMapId == 237 && ev.id == 14) ||
-      (lastLoadedMapId == 119 && ev.id == 13)
-    ) {
-      ev.pages.forEach((page) => {
-        page.list = EventLogicUpdates.itemDropClear(page.list, ITEM_CODE);
-        // some drops have different capitalization
-        page.list = EventLogicUpdates.deleteMessage(page.list, "Stained key");
-      });
-    }
-    // true fred; his state gets reset when you kill him
-    if (lastLoadedMapId == 239 && ev.id == 6) {
-      ev.pages.forEach((page) => {
-        // dont let his state get set to 99
-        page.list = page.list.filter(
-          (listItem) =>
-            !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 300),
-        );
-      });
-    }
-  }
-  clearDeadFredDrops();
-
-  function clearKOTDDrop() {
-    if (lastLoadedMapId == 460 && ev.id == 15) {
-      // clear all-seeing-8-ball drop
-      ev.pages[2].list = EventLogicUpdates.itemDropClear(
-        ev.pages[2].list,
-        ITEM_CODE,
-      );
-      ev.pages[2].list = EventLogicUpdates.messageReplacement(
-        ev.pages[2].list,
-        "All-Seeing",
-        "GF_KOTD_COMBAT_VICTORY",
-        "Get",
-      );
-    }
-  }
-  clearKOTDDrop();
-
-  function clearPhilDelusionDrops() {
-    if (
-      (lastLoadedMapId == 188 && ev.id == 2) ||
-      (lastLoadedMapId == 127 && ev.id == 2)
-    ) {
-      const index = lastLoadedMapId == 188 ? 0 : 1;
-      ev.pages[index].list = EventLogicUpdates.itemDropClear(
-        ev.pages[index].list,
-        ITEM_CODE,
-      );
-      ev.pages[index].list = EventLogicUpdates.messageReplacement(
-        ev.pages[index].list,
-        "Phillippe's Remains",
-        "FUNGUS_PHILLIPPE_COMBAT_VICTORY",
-        "Receive",
-      );
-    }
-  }
-  clearPhilDelusionDrops();
-
-  function fungusWithoutSporeMother() {
-    // allows the various fungus combat encounters to continue after killing spore mother
-    // skipping spore guardian because we're modifying it's spore mother dead check page in clearAudreyBossDrops
-
-    if (lastLoadedMapId == 188) {
-      // triggers for phillippe/rodrigue rescue fight
-      if (ev.id == 5 || ev.id == 6 || ev.id == 13 || ev.id == 14) {
-        if (ev.pages.length > 1) ev.pages.splice(1, 1);
-      }
-
-      // visuals for trapped phillippe/rodrigue
-      if (
-        ev.id == 3 ||
-        ev.id == 9 ||
-        ev.id == 10 ||
-        ev.id == 11 ||
-        ev.id == 12
-      ) {
-        if (ev.pages.length > 2) ev.pages.splice(2, 1);
-      }
-    }
-
-    if (lastLoadedMapId == 187) {
-      if (ev.id == 26) {
-        // make laughing mold nonmissable
-        const conditions = ev.pages[8].conditions;
-        ev.pages[8] = {
-          ...ev.pages[5],
-          conditions,
-        };
-        if (ev.pages.length < 11) {
-          // push finished states to the front
-          ev.pages.push(ev.pages[6]);
-          ev.pages.push(ev.pages[7]);
-        }
-      }
-
-      // these are all the visuals for the trapped fungus people
-      if (
-        ev.id == 3 ||
-        ev.id == 5 ||
-        ev.id == 6 ||
-        ev.id == 21 ||
-        ev.id == 23 ||
-        ev.id == 19 ||
-        ev.id == 14
-      ) {
-        if (ev.pages.length > 2) ev.pages.splice(2, 1);
-      }
-
-      // these are the battle triggers for the trapped fungus people
-      if (ev.id == 15 || ev.id == 16 || ev.id == 7 || ev.id == 22) {
-        if (ev.pages.length > 1) ev.pages.splice(1, 1);
-      }
-    }
-  }
-  fungusWithoutSporeMother();
-
-  function fixRoxieRoomItemDoubleEntry() {
-    // two of the items in roxie's room in the sewers have two separate pages
-    // since theyre different items on hard mode
-    // we will delete the second entries
-    if (lastLoadedMapId == 259 && (ev.id == 3 || ev.id == 17)) {
-      if (ev.pages.length > 2) {
-        ev.pages.splice(1, 1);
-      }
-    }
-  }
-  fixRoxieRoomItemDoubleEntry();
-
-  function clearGrateLever() {
-    if (lastLoadedMapId == 256 && ev.id == 3) {
-      ev.pages[1].list = EventLogicUpdates.itemDropClear(
-        ev.pages[1].list,
-        111, // = set switch
-      );
-    }
-  }
-  clearGrateLever();
-
-  function returnTickle() {
-    if (lastLoadedMapId == 189 && ev.id == 18) {
-      ev.pages[1].list = RETURN_TICKLE_LIST;
-      ev.pages[1].conditions = EventLogicUpdates.buildConditions("A", 661);
-      ev.pages[1].trigger = ev.pages[0].trigger;
-    }
-  }
-  returnTickle();
-
-  function clearAudreyBossDrops() {
-    function updateDeadPage(page, locationId, script) {
-      page.trigger = 0;
-      page.list = [
-        {
-          code: 111,
-          indent: 0,
-          parameters: [4, 22, 0],
-        },
-        {
-          code: 101,
-          indent: 1,
-          parameters: ["", 13, 0, 2, ""],
-        },
-        {
-          code: 401,
-          indent: 1,
-          parameters: ["Audrey looks through the corpse\\..\\..\\.."],
-        },
-        {
-          code: 101,
-          indent: 1,
-          parameters: ["", 13, 0, 2, ""],
-        },
-        {
-          code: 401,
-          indent: 1,
-          parameters: [
-            `She has found ${LookOutsideAPClient.getItemName(locationId)}.`,
-          ],
-        },
-        script
-          ? {
-              code: 355,
-              indent: 1,
-              parameters: [script],
-            }
-          : {
-              code: 123,
-              indent: 1,
-              parameters: ["D", 0],
-            },
-        {
-          code: 0,
-          indent: 1,
-          parameters: [],
-        },
-        {
-          code: 412,
-          indent: 0,
-          parameters: [],
-        },
-        {
-          code: 0,
-          indent: 0,
-          parameters: [],
-        },
-      ];
-    }
-
-    // hellride
-    if (lastLoadedMapId == 86 && ev.id == 14) {
-      EventLogicUpdates.itemDropReplaceScript(
-        ev.pages[3].list,
-        ARMOR_CODE,
-        `$gameSelfSwitches.setValue([86, 14, 'C'], true)`,
-      );
-      ev.pages[3].list = EventLogicUpdates.messageReplacement(
-        ev.pages[3].list,
-        "Demon Plating",
-        "B_CAR_HELLRIDE_AUDREY_LOOT",
-        "She has found",
-      );
-      const deadPage = ev.pages[4];
-      updateDeadPage(
-        deadPage,
-        "B_CAR_HELLRIDE_AUDREY_LOOT",
-        `$gameSelfSwitches.setValue([86, 14, 'C'], true)`,
-      );
-      if (ev.pages.length < 6) {
-        ev.pages.push({
-          ...EMPTY_PAGE,
-          conditions: EventLogicUpdates.buildConditions("C"),
-          image: deadPage.image,
-        });
-      }
-    }
-
-    // cop car
-    if (lastLoadedMapId == 86 && ev.id == 58) {
-      EventLogicUpdates.itemDropReplaceScript(
-        ev.pages[3].list,
-        ARMOR_CODE,
-        `$gameSelfSwitches.setValue([86, 58, 'C'], true)`,
-      );
-      ev.pages[3].list = EventLogicUpdates.messageReplacement(
-        ev.pages[3].list,
-        "Chrome Finish",
-        "B_CAR_COP_CAR_AUDREY_LOOT",
-        "She has found",
-      );
-      const deadPage = ev.pages[5];
-      updateDeadPage(
-        deadPage,
-        "B_CAR_COP_CAR_AUDREY_LOOT",
-        `$gameSelfSwitches.setValue([86, 58, 'C'], true)`,
-      );
-      if (ev.pages.length < 7) {
-        ev.pages.push({
-          ...EMPTY_PAGE,
-          conditions: EventLogicUpdates.buildConditions("C"),
-          image: deadPage.image,
-        });
-      }
-    }
-
-    // tank
-    if (lastLoadedMapId == 233 && ev.id == 11) {
-      EventLogicUpdates.itemDropReplaceScript(
-        ev.pages[2].list,
-        ARMOR_CODE,
-        `$gameSelfSwitches.setValue([233, 11, 'C'], true)`,
-      );
-      ev.pages[2].list = EventLogicUpdates.messageReplacement(
-        ev.pages[2].list,
-        "Cope Cage",
-        "LL_MEMORIAL_TANK_AUDREY_LOOT",
-        "She has found",
-      );
-      const deadPage = ev.pages[4];
-      updateDeadPage(
-        deadPage,
-        "LL_MEMORIAL_TANK_AUDREY_LOOT",
-        `$gameSelfSwitches.setValue([233, 11, 'C'], true)`,
-      );
-      if (ev.pages.length < 6) {
-        ev.pages.push({
-          ...EMPTY_PAGE,
-          conditions: EventLogicUpdates.buildConditions("C"),
-          image: deadPage.image,
-        });
-      }
-    }
-
-    // APC
-    if (lastLoadedMapId == 207 && ev.id == 22) {
-      EventLogicUpdates.itemDropReplaceScript(
-        ev.pages[3].list,
-        ARMOR_CODE,
-        `sSw(${LL_BATTLEFIELD_APC_AUDREY_LOOT_SWITCH}, true)`,
-      );
-      ev.pages[3].list = EventLogicUpdates.messageReplacement(
-        ev.pages[3].list,
-        "Tank Tracks",
-        "LL_BATTLEFIELD_APC_AUDREY_LOOT",
-        "She has found",
-      );
-
-      const deadPage = ev.pages[5];
-      updateDeadPage(
-        deadPage,
-        "LL_BATTLEFIELD_APC_AUDREY_LOOT",
-        `sSw(${LL_BATTLEFIELD_APC_AUDREY_LOOT_SWITCH}, true);`,
-      );
-      if (ev.pages.length < 7) {
-        ev.pages.push({
-          ...EMPTY_PAGE,
-          conditions: EventLogicUpdates.buildConditions(
-            undefined,
-            LL_BATTLEFIELD_APC_AUDREY_LOOT_SWITCH,
-          ),
-          image: deadPage.image,
-        });
-      }
-    }
-
-    // trench digger
-    // this ones weird because the battle trigger and the dead body are 2 different events
-    if (lastLoadedMapId == 130 && ev.id == 9) {
-      EventLogicUpdates.itemDropReplaceScript(
-        ev.pages[1].list,
-        ARMOR_CODE,
-        `$gameSelfSwitches.setValue([130, 2, 'D'], true);`,
-      );
-      ev.pages[1].list = EventLogicUpdates.messageReplacement(
-        ev.pages[1].list,
-        "Tank Guns",
-        "LL_TRENCH_DIGGER_AUDREY_LOOT",
-        "She has found",
-      );
-    }
-    if (lastLoadedMapId == 130 && ev.id == 2) {
-      const deadPage = ev.pages[6];
-      updateDeadPage(deadPage, "LL_TRENCH_DIGGER_AUDREY_LOOT");
-      if (ev.pages.length < 8) {
-        ev.pages.push({
-          ...EMPTY_PAGE,
-          conditions: EventLogicUpdates.buildConditions("D"),
-          image: deadPage.image,
-        });
-      }
-    }
-
-    // shrimp knight
-    if (lastLoadedMapId == 152 && ev.id == 6) {
-      for (let i = 0; i < 2; i++) {
-        EventLogicUpdates.itemDropReplaceScript(
-          ev.pages[i].list,
-          ARMOR_CODE,
-          "$gameSelfSwitches.setValue([152, 6, 'D'], true)",
-        );
-        ev.pages[i].list = EventLogicUpdates.messageReplacement(
-          ev.pages[i].list,
-          "Jousting Lance",
-          "APT_28_SHRIMP_KNIGHT_AUDREY_LOOT",
-          "She has found",
-        );
-        const deadPage = ev.pages[3];
-        updateDeadPage(deadPage, "APT_28_SHRIMP_KNIGHT_AUDREY_LOOT");
-        if (ev.pages.length < 5) {
-          ev.pages.push({
-            ...EMPTY_PAGE,
-            conditions: EventLogicUpdates.buildConditions("D"),
-            image: deadPage.image,
-          });
-        }
-      }
-    }
-
-    // taxidermy
-    if (lastLoadedMapId == 270 && ev.id == 6) {
-      for (let i = 1; i < 3; i++) {
-        EventLogicUpdates.itemDropReplaceScript(
-          ev.pages[i].list,
-          ARMOR_CODE,
-          "$gameSelfSwitches.setValue([270, 6, 'D'], true)",
-        );
-        ev.pages[i].list = EventLogicUpdates.messageReplacement(
-          ev.pages[i].list,
-          "Leather Skin",
-          "APT_30_TAXIDERMY_AUDREY_LOOT",
-          "She has found",
-        );
-        const deadPage = ev.pages[4];
-        updateDeadPage(deadPage, "APT_30_TAXIDERMY_AUDREY_LOOT");
-        if (ev.pages.length < 6) {
-          ev.pages.push({
-            ...EMPTY_PAGE,
-            conditions: EventLogicUpdates.buildConditions("D"),
-            image: deadPage.image,
-          });
-        }
-      }
-    }
-
-    // spore guardian
-    if (lastLoadedMapId == 127 && ev.id == 3) {
-      for (let i = 0; i < 2; i++) {
-        EventLogicUpdates.itemDropReplaceScript(
-          ev.pages[i].list,
-          ARMOR_CODE,
-          "$gameSelfSwitches.setValue([127, 3, 'D'], true)",
-        );
-        ev.pages[i].list = EventLogicUpdates.messageReplacement(
-          ev.pages[i].list,
-          "Fungus Fibers",
-          "FUNGUS_SPORE_GUARDIAN_AUDREY_LOOT",
-          "She has found",
-        );
-      }
-      const deadPage = ev.pages[3];
-      updateDeadPage(deadPage, "FUNGUS_SPORE_GUARDIAN_AUDREY_LOOT");
-      // override the page that checks if spore mother is dead because we want to remove that condition anyway
-      ev.pages[4] = {
-        ...EMPTY_PAGE,
-        conditions: EventLogicUpdates.buildConditions("D"),
-        image: deadPage.image,
-      };
-    }
-  }
-  clearAudreyBossDrops();
-
-  function clearBlackoutIrisKey() {
-    if (lastLoadedMapId == 86 && ev.id == 106) {
-      ev.pages[3].list = EventLogicUpdates.itemDropClear(
-        ev.pages[3].list,
-        ITEM_CODE,
-      );
-      ev.pages[3].list = EventLogicUpdates.messageReplacement(
-        ev.pages[3].list,
-        "Iris Key",
-        "B_CAR_HOLE_IRIS_KEY",
-        "You find",
-      );
-    }
-  }
-  clearBlackoutIrisKey();
-
-  function clearRatFreakGift() {
-    if (lastLoadedMapId == 106 && ev.id == 11) {
-      ev.pages[3].list = EventLogicUpdates.itemDropClear(
-        ev.pages[3].list,
-        WEAPON_CODE,
-      );
-      ev.pages[3].list = EventLogicUpdates.messageReplacement(
-        ev.pages[3].list,
-        "Rat Claws",
-        "APT_11_RAT_FREAK_GIFT",
-        "You receive",
-      );
-    }
-  }
-  clearRatFreakGift();
-
-  function clearBurritoRatGift() {
-    if (lastLoadedMapId == 289 && ev.id == 6) {
-      ev.pages[3].list = EventLogicUpdates.itemDropClear(
-        ev.pages[3].list,
-        ITEM_CODE,
-      );
-      ev.pages[3].list = EventLogicUpdates.messageReplacement(
-        ev.pages[3].list,
-        "Burrito",
-        "RAT_LAIR_GIANT_RAT_BURRITO",
-        "Receive",
-      );
-    }
-  }
-  clearBurritoRatGift();
-
-  function clearHellenQuestPrizes() {
-    if (lastLoadedMapId === 433 && ev.id === 9) {
-      ev.pages[2].list = EventLogicUpdates.itemDropClear(
-        ev.pages[2].list,
-        WEAPON_CODE,
-      );
-      ev.pages[2].list = EventLogicUpdates.messageReplacement(
-        ev.pages[2].list,
-        "Hellen's Shears",
-        "APT_18_HELLEN_QUEST_SHEARS",
-        "Receive",
-      );
-    }
-  }
-  clearHellenQuestPrizes();
-
-  function clearSecretDoorLockout() {
-    if (lastLoadedMapId === 30 && ev.id === 6) {
-      ev.pages[2].list = SECRET_DOOR_LIST;
-      if (ev.pages.length > 5) {
-        ev.pages.splice(3, 1);
-        // remove page that says there was never a door
-      }
-    }
-  }
-  clearSecretDoorLockout();
-
-  function clearSybilRedKey() {
-    if (lastLoadedMapId === 367 && ev.id === 1) {
-      ev.pages[1].list = EventLogicUpdates.itemDropClear(
-        ev.pages[1].list,
-        ITEM_CODE,
-      );
-      ev.pages[1].list = EventLogicUpdates.messageReplacement(
-        ev.pages[1].list,
-        "Small Red Key",
-        "MEAT_SYBIL_COMBAT_VICTORY",
-      );
-    }
-  }
-  clearSybilRedKey();
-
-  // allow eugene to live after nestor is killed if killable shopkeepers is false
-  function clearEugeneDeath() {
-    if (lastLoadedMapId == 132 && ev.id == 2 && ev.pages.length < 9) {
-      // make the deadpage need both nestor AND eugene to be dead
-      const killedEugene = 168;
-      ev.pages[7].conditions = EventLogicUpdates.buildConditions(
-        undefined,
-        killedEugene,
-        449,
-        434,
-        5,
-      );
-
-      // add a page where only nestor is dead
-      ev.pages.splice(7, 0, {
-        ...ev.pages[1],
-        conditions: EventLogicUpdates.buildConditions(
-          undefined,
-          449,
-          undefined,
-          undefined,
-          434,
-          5,
-        ),
-      });
-
-      ev.pages.forEach((page) => {
-        EventLogicUpdates.itemDropReplaceScript(
-          page.list,
-          SET_SWITCH_CODE,
-          `sSw(${killedEugene},gSw(${CAN_KILL_SHOPKEEPERS_SWITCH}));`,
-          (listItem) => listItem.parameters[0] == killedEugene,
-        );
-      });
-    }
-  }
-  clearEugeneDeath();
-
-  // dont increase game count when you buy it
-  // set the name variable to the custom apitem name
-  function clearReptileFootball() {
-    if (lastLoadedMapId == 132 && ev.id == 47) {
-      ev.pages[0].list = ev.pages[0].list.filter(
-        (listItem) =>
-          !(listItem.code == SET_SWITCH_CODE && listItem.parameters[0] == 41),
-      );
-
-      EventLogicUpdates.itemDropReplaceScript(
-        ev.pages[0].list,
-        SET_VAR_CODE,
-        `sVr(486,"${LookOutsideAPClient.getItemName(
-          "APT_24_REPTILE_FOOTBALL",
-          true,
-          false,
-          true,
-        )}");`,
-        (listItem) => listItem.parameters[0] == 486,
-      );
-
-      ev.pages[0].list.find(
-        (listItem) =>
-          listItem.code == SET_VAR_CODE && listItem.parameters[0] == 480,
-      ).parameters[4] = "!";
-    }
-  }
-  clearReptileFootball();
 
   function clearMuttItems() {
     function clearMuttPages(
@@ -4275,6 +4223,11 @@ EventLogicUpdates.clearCommonEventDrops = function () {
     }
   }
   clearGameSkills();
+
+  function clearCandyMachine() {
+    $dataCommonEvents[219].list = ShopHelpers.getCandyMachineList();
+  }
+  clearCandyMachine();
 
   function clearNewDayEvent() {
     let newDayList = JsonEx.makeDeepCopy(originalCommonEvents[6].list);
