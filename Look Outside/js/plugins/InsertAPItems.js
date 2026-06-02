@@ -742,11 +742,11 @@ InsertAPItems.insertTrap = function (itemId) {
       for (const actor of $gameParty.aliveMembers()) {
         if (!actor.isStateAffected(13)) {
           // if already at triple bleed, ignore
-          if (!actor.isStateAffected(12)) {
+          if (actor.isStateAffected(12)) {
             // double bleed -> triple bleed
             actor.removeState(12);
             actor.addState(13);
-          } else if (!actor.isStateAffected(11)) {
+          } else if (actor.isStateAffected(11)) {
             // single bleed -> double bleed
             actor.removeState(11);
             actor.addState(12);

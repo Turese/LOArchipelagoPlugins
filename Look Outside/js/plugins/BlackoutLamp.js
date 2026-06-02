@@ -10,7 +10,7 @@
 
 var BlackoutLamp = BlackoutLamp || {};
 
-BlackoutLamp.createLampBlackoutEvent = function (mapId) {
+BlackoutLamp.createLampBlackoutEvent = function (ev) {
   const BLACKOUT_LAMP_PAGE = [
     {
       code: 111,
@@ -125,13 +125,12 @@ BlackoutLamp.createLampBlackoutEvent = function (mapId) {
     },
   ];
 
-  if (lastLoadedMapId == 2) {
-    if (gVr(213) >= 2) { // if juicebox is there, then move the lamp
-      $dataMap.events[5].x = 12;
-      $dataMap.events[5].y = 6;
-    }
-
-    $dataMap.events[5].pages[0].directionFix = true;
-    $dataMap.events[5].pages[0].list = BLACKOUT_LAMP_PAGE;
+  if (gVr(213) >= 2) {
+    // if juicebox is there, then move the lamp
+    ev.x = 12;
+    ev.y = 6;
   }
+
+  ev.pages[0].directionFix = true;
+  ev.pages[0].list = BLACKOUT_LAMP_PAGE;
 };

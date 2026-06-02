@@ -1451,7 +1451,7 @@ EventLogicUpdates.removeLyleDoorBlocker = function (ev) {
 };
 
 // replace the event message for getting screamatorium from the shelf with the actual drop
-EventLogicUpdates.clearScreamitorumEvent = function (ev) {
+EventLogicUpdates.clearScreamatoriumEvent = function (ev) {
   // filter out the set var that sets video game count (var 41)
   let filteredList = ev.pages[0].list.filter(
     (listItem) =>
@@ -2894,22 +2894,27 @@ EventLogicUpdates.clearWrongPaintingGrabEvent = function (ev) {};
 
 EventLogicUpdates.clearRightPaintingGrabEvent = function (ev) {};
 
-EventLogicUpdates.updateSybilAwakenedDoorPage  = function (ev) {
+EventLogicUpdates.updateSybilAwakenedDoorPage = function (ev) {
   if (ev.pages.length < 4) {
     const newPage = JsonEx.makeDeepCopy(ev.pages[2]);
-    newPage.conditions = EventLogicUpdates.buildConditions(undefined, 970) // if sybilPromise is on
-    newPage.list = AWAKENED_SYBIL_DOOR_LIST
-    ev.pages.push(newPage)
+    newPage.conditions = EventLogicUpdates.buildConditions(undefined, 970); // if sybilPromise is on
+    newPage.list = AWAKENED_SYBIL_DOOR_LIST;
+    ev.pages.push(newPage);
   }
 };
 
 const EVENT_UPDATE_TABLE = {
+  2: {
+    5: BlackoutLamp.createLampBlackoutEvent,
+    16: BackInTime.createCalendarBackInTimeEvent,
+  },
   3: {
+    12: BackInTime.createClockTimeEvent,
     9: EventLogicUpdates.doorCombatChecker,
     17: EventLogicUpdates.doorEncounterPicker,
     52: ShopHelpers.gunTraderInitList,
     56: ShopHelpers.gamerInitList,
-    88: EventLogicUpdates.clearScreamitorumEvent,
+    88: EventLogicUpdates.clearScreamatoriumEvent,
     121: EventLogicUpdates.clearRoachQuestPrize,
     133: ShopHelpers.strangeTraderInitList,
   },
@@ -3157,15 +3162,28 @@ const EVENT_UPDATE_TABLE = {
     24: EventLogicUpdates.clearMuttVideoGame,
     25: EventLogicUpdates.clearMuttTrophy,
   },
+  28: {
+    12: GoalChecker.insertGoalCheckerEvent,
+  },
 };
 
-EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
-  if (!$gamePlayer || !$gamePlayer.LOCATION_NAME_MAPPING) return;
+const originalEventPages = {};
 
+EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
   if (
     EVENT_UPDATE_TABLE[lastLoadedMapId] &&
     EVENT_UPDATE_TABLE[lastLoadedMapId][ev.id]
   ) {
+    // store a copy of the ev pages to update fresh every time
+    if (!originalEventPages[lastLoadedMapId]) {
+      originalEventPages[lastLoadedMapId] = {};
+    }
+    if (!originalEventPages[lastLoadedMapId][ev.id]) {
+      originalEventPages[lastLoadedMapId][ev.id] = JsonEx.makeDeepCopy(
+        ev.pages,
+      );
+    }
+    ev.pages = JsonEx.makeDeepCopy(originalEventPages[lastLoadedMapId][ev.id]);
     EVENT_UPDATE_TABLE[lastLoadedMapId][ev.id](ev);
     return;
   }

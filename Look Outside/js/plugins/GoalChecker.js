@@ -90,9 +90,8 @@ const GOAL_CHECKER_EVENT = {
 
 var GoalChecker = BackInTime || {};
 
-GoalChecker.insertGoalCheckerEvent = function (mapId) {
-  if (mapId !== 28) return;
-  else $dataMap.events[12] = { ...$dataMap.events[12], ...GOAL_CHECKER_EVENT };
+GoalChecker.insertGoalCheckerEvent = function (ev) {
+  ev = { ...ev, ...GOAL_CHECKER_EVENT };
 };
 
 const GOAL_NAMES = {

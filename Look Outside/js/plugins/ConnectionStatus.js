@@ -70,7 +70,7 @@ const initializeConnectionStatus = function () {
       text = `${disconnectedMessage} (retrying in ${sec}s)`;
     }
 
-    this.drawText(text, 0, -12, Graphics.width - 50);
+    this.drawText(text, 0, -12, Graphics.width - 50, "left");
   };
 
   ConnectionStatus.prototype.handleClick = function () {

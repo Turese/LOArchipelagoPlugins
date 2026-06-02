@@ -31,6 +31,14 @@ const DEFAULT_AP_ITEM_IMAGE = {
   characterIndex: 3,
 };
 
+LookOutsideAPClient.applyDataMapUpdates = function (mapId) {
+  EventLogicUpdates.applyIntroClears(mapId);
+  MassEventUpdates.overrideAllPickups(mapId);
+  $dataMap.events.forEach((ev) => {
+    if (ev) EventLogicUpdates.applyEventUpdates(mapId, ev);
+  });
+};
+
 LookOutsideAPClient.applyOverrides = function () {
   // track most recently loaded mapid for the sake of overwriting events
   const _loadMapData = DataManager.loadMapData;
@@ -63,24 +71,6 @@ LookOutsideAPClient.applyOverrides = function () {
     } else _startLoading.call(this);
   };
 
-  const _Game_Event_event = Game_Event.prototype.event;
-  Game_Event.prototype.event = function () {
-    const ev = _Game_Event_event.call(this);
-
-    if (!ev) return ev;
-
-    EventLogicUpdates.applyEventUpdates(this._mapId, ev);
-    BackInTime.createClockTimeEvent(lastLoadedMapId, ev);
-
-    return ev;
-  };
-
-  const _Game_Event_refresh = Game_Event.prototype.refresh;
-  Game_Event.prototype.refresh = function () {
-    _Game_Event_refresh.call(this);
-    EventLogicUpdates.applyEventUpdates(this._mapId, this.event());
-  };
-
   // update - extra images may be needed to be loaded when initializing the map
   const _createCharacters = Spriteset_Map.prototype.createCharacters;
   Spriteset_Map.prototype.createCharacters = function () {
@@ -94,23 +84,25 @@ LookOutsideAPClient.applyOverrides = function () {
     LookOutsideAPClient.checkMapForEnding($gameMap.mapId());
   };
 
-  // todo: find out why i need some things to happen in both setup and onload`
   const _Game_Map_setup = Game_Map.prototype.setup;
   Game_Map.prototype.setup = function (mapId) {
-    BackInTime.createCalendarBackInTimeEvent(mapId);
-    BlackoutLamp.createLampBlackoutEvent(mapId);
-    GoalChecker.insertGoalCheckerEvent(mapId);
-    EventLogicUpdates.applyIntroClears(mapId);
-    MassEventUpdates.overrideAllPickups(mapId);
-
     _Game_Map_setup.call(this, mapId);
+    LookOutsideAPClient.applyDataMapUpdates(mapId);
+  };
+
+  const _Game_Map_refresh = Game_Map.prototype.refresh;
+  Game_Map.prototype.refresh = function () {
+    LookOutsideAPClient.applyDataMapUpdates(this.mapId());
+    _Game_Map_refresh.call(this);
   };
 
   const _dataManagerOnLoad = DataManager.onLoad;
   DataManager.onLoad = function (object) {
     if (object === $dataMap) {
       MassEventUpdates.overrideAllPickups(lastLoadedMapId);
-      EventLogicUpdates.applyIntroClears(lastLoadedMapId);
+      $dataMap.events.forEach((ev) => {
+        if (ev) EventLogicUpdates.applyEventUpdates(lastLoadedMapId, ev);
+      });
     }
     if (object === $dataEnemies) {
       EventLogicUpdates.clearAllEnemiesDrops();
@@ -329,6 +321,9 @@ LookOutsideAPClient.initializeLocationNames = async function () {
         }
         locationMapping[location] = mapping;
       });
+      if ($dataMap) LookOutsideAPClient.applyDataMapUpdates(lastLoadedMapId);
+      if ($dataTroops) EventLogicUpdates.clearTroopsDrops();
+      if ($dataCommonEvents) EventLogicUpdates.clearCommonEventDrops();
     });
   $gamePlayer.LOCATION_NAME_MAPPING = locationMapping;
 };
@@ -437,7 +432,7 @@ LookOutsideAPClient.saveEndingReached = async function (endingIds) {
   });
 };
 
- const GOAL_MAPPING = {
+const GOAL_MAPPING = {
   0: "ritual",
   1: "perfectRitual",
   2: "screamingSkies",
@@ -446,7 +441,7 @@ LookOutsideAPClient.saveEndingReached = async function (endingIds) {
   5: "xinAmon",
   6: "unity",
   7: "trueFinal",
- }
+};
 
 LookOutsideAPClient.checkGoal = function () {
   const reachedEndings = LookOutsideAPClient.initializeReachedEndings();
@@ -486,8 +481,6 @@ LookOutsideAPClient.gameLoadedAPSetup = function (slotData) {
   LookOutsideAPClient.reportLocations();
   LookOutsideAPClient.initializeLocationNames();
   LookOutsideAPClient.updateDeathLink(slotData);
-  EventLogicUpdates.clearTroopsDrops();
-  EventLogicUpdates.clearCommonEventDrops();
 };
 
 const resetClient = async function () {

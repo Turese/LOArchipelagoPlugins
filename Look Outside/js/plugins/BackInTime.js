@@ -97,8 +97,7 @@ BackInTime.fixJeanneKilled = function () {
   // change jeane apartment tileset back to normal
 };
 
-BackInTime.fixSpineKilled = function () {
-};
+BackInTime.fixSpineKilled = function () {};
 
 BackInTime.revertJeannePhase = function () {
   sVr(583, 5); // set jeanne state to her middle phase
@@ -175,7 +174,7 @@ BackInTime.isKaeleyDead = function () {
 
 BackInTime.fixKaeleyKilled = function () {
   delete $gameSelfSwitches._data[[355, 43, "A"].toString()];
-  sSw(939, false) // theres also a kaeleydead switch
+  sSw(939, false); // theres also a kaeleydead switch
 };
 
 const BEDROOM_MAP_ID = 2;
@@ -183,11 +182,7 @@ const CALENDAR_EVENT_ID = 16;
 
 // refresh to recalculate the rconditions
 BackInTime.refreshEvent = function () {
-  BackInTime.createCalendarBackInTimeEvent(BEDROOM_MAP_ID);
-  $gameMap._events[CALENDAR_EVENT_ID] = new Game_Event(
-    $gameMap.mapId(),
-    CALENDAR_EVENT_ID,
-  );
+  BackInTime.createCalendarBackInTimeEvent($gameMap._events[CALENDAR_EVENT_ID]);
   const event = $gameMap.event(CALENDAR_EVENT_ID);
 
   event.refresh();
@@ -198,35 +193,34 @@ BackInTime.haveAnyAstronomersLeft = function () {
   return gSw(1148) || gSw(1149) || gSw(1150) || gSw(206);
 };
 
-BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
-  const regretTemplates = {
+BackInTime.regretTemplates = {
     sybilDead: {
       rFunction: "BackInTime.fixSybilKilled",
       rName: "(([!s[975],!s[969]]))Sybil.",
-      rText: []
+      rText: [],
     },
     spiderHuskDead: {
       rFunction: "BackInTime.fixSpiderHuskKilled",
       rName: "(([!s[1083]]))Spider Husk.",
-      rText: []
+      rText: [],
     },
     tickleDead: {
       rFunction: "BackInTime.fixTickleDead",
       // also checks if tickle is on player or on the tickmonger
       rName: "(([s[672];s[673];!s[661]]))Tickle.",
-      rText: []
+      rText: [],
     },
     emmanuelDead: {
       rCondition: BackInTime.isEmmanuelDead,
       rFunction: "BackInTime.fixEmmanuelKilled",
       rName: "Emmanuel.",
-      rText: []
+      rText: [],
     },
     kaeleyDead: {
       rCondition: BackInTime.isKaeleyDead,
       rFunction: "BackInTime.fixKaeleyKilled",
       rName: "Kaeley.",
-      rText: []
+      rText: [],
     },
     trueFredDead: {
       rCondition: BackInTime.isTrueFredDead,
@@ -1269,7 +1263,7 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
     },
   };
 
-  function createOptionIntro(options, indent) {
+BackInTime.createOptionIntro = function (options, indent) {
     return {
       code: 102,
       indent,
@@ -1278,17 +1272,17 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
   }
 
   // creates an option that is unselectable if it's already that date
-  function createDateChangeOptionName(index) {
+  BackInTime.createDateChangeOptionName = function (index) {
     return `<<[v[15]=${index}]>>Day ${index + 1}.`;
   }
 
   // sets current date to the index selected
-  function createDateChangeOption(index, date, indent) {
+  BackInTime.createDateChangeOption = function (index, date, indent) {
     return [
       {
         code: 402,
         indent,
-        parameters: [index, createDateChangeOptionName(date)],
+        parameters: [index, BackInTime.createDateChangeOptionName(date)],
       },
       {
         code: 122,
@@ -1303,8 +1297,8 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
     ];
   }
 
-  function createRegret(index, regretKey) {
-    const { rName, rFunction, rText } = regretTemplates[regretKey];
+BackInTime.createRegret = function (index, regretKey) {
+    const { rName, rFunction, rText } = BackInTime.regretTemplates[regretKey];
 
     return [
       {
@@ -1327,8 +1321,8 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
     ];
   }
 
-  const createRegretOptions = function () {
-    const regretsList = Object.keys(regretTemplates);
+BackInTime.createRegretOptions = function () {
+    const regretsList = Object.keys(BackInTime.regretTemplates);
 
     const regretNames = [];
     const regretCases = [];
@@ -1336,10 +1330,10 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
     let index = 1;
 
     regretsList.forEach((regretName) => {
-      const options = regretTemplates[regretName];
+      const options = BackInTime.regretTemplates[regretName];
       if (!options.rCondition || options.rCondition()) {
         regretNames.push(options.rName);
-        regretCases.push(...createRegret(index, regretName));
+        regretCases.push(...BackInTime.createRegret(index, regretName));
         index++;
       }
     });
@@ -1369,24 +1363,25 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
     ];
   };
 
-  if (lastLoadedMapId === BEDROOM_MAP_ID) {
+BackInTime.createCalendarBackInTimeEvent = function (ev) {
+
     const week1OptionNames = [];
     const week1Options = [];
 
     for (let date = 0; date < 7; date++) {
-      week1OptionNames.push(createDateChangeOptionName(date));
-      week1Options.push(...createDateChangeOption(date, date, 2));
+      week1OptionNames.push(BackInTime.createDateChangeOptionName(date));
+      week1Options.push(...BackInTime.createDateChangeOption(date, date, 2));
     }
-    const week1OptionIntro = createOptionIntro(week1OptionNames, 2);
+    const week1OptionIntro = BackInTime.createOptionIntro(week1OptionNames, 2);
 
     const week2OptionNames = [];
     const week2Options = [];
 
     for (let date = 7, i = 0; date < 15; date++, i++) {
-      week2OptionNames.push(createDateChangeOptionName(date, i));
-      week2Options.push(...createDateChangeOption(i, date, 2));
+      week2OptionNames.push(BackInTime.createDateChangeOptionName(date, i));
+      week2Options.push(...BackInTime.createDateChangeOption(i, date, 2));
     }
-    const week2OptionIntro = createOptionIntro(week2OptionNames, 2);
+    const week2OptionIntro = BackInTime.createOptionIntro(week2OptionNames, 2);
 
     const dateOptions = [
       {
@@ -1527,7 +1522,7 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
         indent: 1,
         parameters: ["You think of all that you regret..."],
       },
-      ...createRegretOptions(),
+      ...BackInTime.createRegretOptions(),
       {
         code: 115,
         indent: 1,
@@ -1672,406 +1667,404 @@ BackInTime.createCalendarBackInTimeEvent = function (lastLoadedMapId) {
       },
     ];
 
-    $dataMap.events[CALENDAR_EVENT_ID].pages[1].list = calendarSequence;
-  }
+    ev.pages[1].list = calendarSequence;
+  
 };
 
-BackInTime.createClockTimeEvent = function (lastLoadedMapId, ev) {
-  if (lastLoadedMapId == 3 && ev.id == 12) {
-    ev.pages[0].list = [
-      {
-        code: 101,
-        indent: 0,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 0,
-        parameters: ["It is \\V[12]."],
-      },
-      {
-        code: 102,
-        indent: 0,
-        parameters: [
-          [
-            "(([!s[990]]))Start the pendulum.",
-            "(([s[990]]))Stop the pendulum.",
-            "Set current time.",
-            "Leave it be.",
-          ],
-          3,
-          3,
-          2,
-          0,
+BackInTime.createClockTimeEvent = function (ev) {
+  ev.pages[0].list = [
+    {
+      code: 101,
+      indent: 0,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 0,
+      parameters: ["It is \\V[12]."],
+    },
+    {
+      code: 102,
+      indent: 0,
+      parameters: [
+        [
+          "(([!s[990]]))Start the pendulum.",
+          "(([s[990]]))Stop the pendulum.",
+          "Set current time.",
+          "Leave it be.",
         ],
-      },
-      {
-        code: 402,
-        indent: 0,
-        parameters: [0, "(([!s[990]]))Start the pendulum."],
-      },
-      {
-        code: 121,
-        indent: 1,
-        parameters: [990, 990, 1],
-      },
-      {
-        code: 357,
-        indent: 1,
-        parameters: [
-          "MUSH_Audio_Engine",
-          "StopBgs",
-          "Stop BGS",
-          {
-            Channel: "1",
-            FadeOut: "0",
-          },
+        3,
+        3,
+        2,
+        0,
+      ],
+    },
+    {
+      code: 402,
+      indent: 0,
+      parameters: [0, "(([!s[990]]))Start the pendulum."],
+    },
+    {
+      code: 121,
+      indent: 1,
+      parameters: [990, 990, 1],
+    },
+    {
+      code: 357,
+      indent: 1,
+      parameters: [
+        "MUSH_Audio_Engine",
+        "StopBgs",
+        "Stop BGS",
+        {
+          Channel: "1",
+          FadeOut: "0",
+        },
+      ],
+    },
+    {
+      code: 657,
+      indent: 1,
+      parameters: ["Channel = 1"],
+    },
+    {
+      code: 657,
+      indent: 1,
+      parameters: ["Fade Out = 0"],
+    },
+    {
+      code: 357,
+      indent: 1,
+      parameters: [
+        "MUSH_Audio_Engine",
+        "AddSpacialBgs",
+        "Add Spacial BGS",
+        {
+          Filename: "TickTock",
+          Pitch: "100",
+          Channel: "1",
+          Dynamic: "false",
+          MaxVolume: "90",
+          Radius: "20",
+          Strength: "100",
+          Pan: "Origin Expand",
+          PanSt: "3",
+          PanLd: "12",
+        },
+      ],
+    },
+    {
+      code: 657,
+      indent: 1,
+      parameters: ["Filename = TickTock"],
+    },
+    {
+      code: 657,
+      indent: 1,
+      parameters: ["Pitch = 100"],
+    },
+    {
+      code: 657,
+      indent: 1,
+      parameters: ["Channel = 1"],
+    },
+    {
+      code: 657,
+      indent: 1,
+      parameters: ["Dynamic = false"],
+    },
+    {
+      code: 657,
+      indent: 1,
+      parameters: ["Max Volume = 90"],
+    },
+    {
+      code: 657,
+      indent: 1,
+      parameters: ["Radius = 20"],
+    },
+    {
+      code: 657,
+      indent: 1,
+      parameters: ["Strength = 100"],
+    },
+    {
+      code: 657,
+      indent: 1,
+      parameters: ["Pan Type = Origin Expand"],
+    },
+    {
+      code: 657,
+      indent: 1,
+      parameters: ["Pan Start Distance = 3"],
+    },
+    {
+      code: 657,
+      indent: 1,
+      parameters: ["Pan Length Distance = 12"],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 0,
+      parameters: [1, "(([s[990]]))Stop the pendulum."],
+    },
+    {
+      code: 121,
+      indent: 1,
+      parameters: [990, 990, 0],
+    },
+    {
+      code: 357,
+      indent: 1,
+      parameters: [
+        "MUSH_Audio_Engine",
+        "StopBgs",
+        "Stop BGS",
+        {
+          Channel: "1",
+          FadeOut: "0",
+        },
+      ],
+    },
+    {
+      code: 657,
+      indent: 1,
+      parameters: ["Channel = 1"],
+    },
+    {
+      code: 657,
+      indent: 1,
+      parameters: ["Fade Out = 0"],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 0,
+      parameters: [2, "Set current time."],
+    },
+    {
+      code: 102,
+      indent: 1,
+      parameters: [
+        [
+          "Advance an hour.",
+          "Jump to midnight.",
+          "Jump to 7AM.",
+          "Jump to 11AM.",
+          "Jump to 3PM.",
+          "Jump to 7PM.",
+          "Jump to 11PM.",
+          "Never mind.",
         ],
-      },
-      {
-        code: 657,
-        indent: 1,
-        parameters: ["Channel = 1"],
-      },
-      {
-        code: 657,
-        indent: 1,
-        parameters: ["Fade Out = 0"],
-      },
-      {
-        code: 357,
-        indent: 1,
-        parameters: [
-          "MUSH_Audio_Engine",
-          "AddSpacialBgs",
-          "Add Spacial BGS",
-          {
-            Filename: "TickTock",
-            Pitch: "100",
-            Channel: "1",
-            Dynamic: "false",
-            MaxVolume: "90",
-            Radius: "20",
-            Strength: "100",
-            Pan: "Origin Expand",
-            PanSt: "3",
-            PanLd: "12",
-          },
-        ],
-      },
-      {
-        code: 657,
-        indent: 1,
-        parameters: ["Filename = TickTock"],
-      },
-      {
-        code: 657,
-        indent: 1,
-        parameters: ["Pitch = 100"],
-      },
-      {
-        code: 657,
-        indent: 1,
-        parameters: ["Channel = 1"],
-      },
-      {
-        code: 657,
-        indent: 1,
-        parameters: ["Dynamic = false"],
-      },
-      {
-        code: 657,
-        indent: 1,
-        parameters: ["Max Volume = 90"],
-      },
-      {
-        code: 657,
-        indent: 1,
-        parameters: ["Radius = 20"],
-      },
-      {
-        code: 657,
-        indent: 1,
-        parameters: ["Strength = 100"],
-      },
-      {
-        code: 657,
-        indent: 1,
-        parameters: ["Pan Type = Origin Expand"],
-      },
-      {
-        code: 657,
-        indent: 1,
-        parameters: ["Pan Start Distance = 3"],
-      },
-      {
-        code: 657,
-        indent: 1,
-        parameters: ["Pan Length Distance = 12"],
-      },
-      {
-        code: 0,
-        indent: 1,
-        parameters: [],
-      },
-      {
-        code: 402,
-        indent: 0,
-        parameters: [1, "(([s[990]]))Stop the pendulum."],
-      },
-      {
-        code: 121,
-        indent: 1,
-        parameters: [990, 990, 0],
-      },
-      {
-        code: 357,
-        indent: 1,
-        parameters: [
-          "MUSH_Audio_Engine",
-          "StopBgs",
-          "Stop BGS",
-          {
-            Channel: "1",
-            FadeOut: "0",
-          },
-        ],
-      },
-      {
-        code: 657,
-        indent: 1,
-        parameters: ["Channel = 1"],
-      },
-      {
-        code: 657,
-        indent: 1,
-        parameters: ["Fade Out = 0"],
-      },
-      {
-        code: 0,
-        indent: 1,
-        parameters: [],
-      },
-      {
-        code: 402,
-        indent: 0,
-        parameters: [2, "Set current time."],
-      },
-      {
-        code: 102,
-        indent: 1,
-        parameters: [
-          [
-            "Advance an hour.",
-            "Jump to midnight.",
-            "Jump to 7AM.",
-            "Jump to 11AM.",
-            "Jump to 3PM.",
-            "Jump to 7PM.",
-            "Jump to 11PM.",
-            "Never mind.",
-          ],
-          7,
-          7,
-          2,
-          0,
-        ],
-      },
-      {
-        code: 402,
-        indent: 1,
-        parameters: [0, "Advance an hour."],
-      },
-      {
-        code: 122,
-        indent: 2,
-        parameters: [19, 19, 0, 0, 60],
-      },
-      {
-        code: 0,
-        indent: 2,
-        parameters: [],
-      },
-      {
-        code: 402,
-        indent: 1,
-        parameters: [1, "Jump to midnight."],
-      },
-      {
-        code: 122,
-        indent: 2,
-        parameters: [16, 16, 0, 0, 0],
-      },
-      {
-        code: 122,
-        indent: 2,
-        parameters: [17, 17, 0, 0, 0],
-      },
-      {
-        code: 0,
-        indent: 2,
-        parameters: [],
-      },
-      {
-        code: 402,
-        indent: 1,
-        parameters: [2, "Jump to 7AM."],
-      },
-      {
-        code: 122,
-        indent: 2,
-        parameters: [16, 16, 0, 0, 7],
-      },
-      {
-        code: 122,
-        indent: 2,
-        parameters: [17, 17, 0, 0, 0],
-      },
-      {
-        code: 0,
-        indent: 2,
-        parameters: [],
-      },
-      {
-        code: 402,
-        indent: 1,
-        parameters: [3, "Jump to 11AM."],
-      },
-      {
-        code: 122,
-        indent: 2,
-        parameters: [16, 16, 0, 0, 11],
-      },
-      {
-        code: 122,
-        indent: 2,
-        parameters: [17, 17, 0, 0, 0],
-      },
-      {
-        code: 0,
-        indent: 2,
-        parameters: [],
-      },
-      {
-        code: 402,
-        indent: 1,
-        parameters: [4, "Jump to 3PM."],
-      },
-      {
-        code: 122,
-        indent: 2,
-        parameters: [16, 16, 0, 0, 15],
-      },
-      {
-        code: 122,
-        indent: 2,
-        parameters: [17, 17, 0, 0, 0],
-      },
-      {
-        code: 0,
-        indent: 2,
-        parameters: [],
-      },
-      {
-        code: 402,
-        indent: 1,
-        parameters: [5, "Jump to 7PM."],
-      },
-      {
-        code: 122,
-        indent: 2,
-        parameters: [16, 16, 0, 0, 19],
-      },
-      {
-        code: 122,
-        indent: 2,
-        parameters: [17, 17, 0, 0, 0],
-      },
-      {
-        code: 0,
-        indent: 2,
-        parameters: [],
-      },
-      {
-        code: 402,
-        indent: 1,
-        parameters: [6, "Jump to 11PM."],
-      },
-      {
-        code: 122,
-        indent: 2,
-        parameters: [16, 16, 0, 0, 23],
-      },
-      {
-        code: 122,
-        indent: 2,
-        parameters: [17, 17, 0, 0, 0],
-      },
-      {
-        code: 0,
-        indent: 2,
-        parameters: [],
-      },
-      {
-        code: 402,
-        indent: 1,
-        parameters: [7, "Never mind."],
-      },
-      {
-        code: 115,
-        indent: 2,
-        parameters: [],
-      },
-      {
-        code: 0,
-        indent: 2,
-        parameters: [],
-      },
-      {
-        code: 404,
-        indent: 1,
-        parameters: [],
-      },
-      {
-        code: 0,
-        indent: 1,
-        parameters: [],
-      },
-      {
-        code: 402,
-        indent: 0,
-        parameters: [3, "Leave it be."],
-      },
-      {
-        code: 115,
-        indent: 1,
-        parameters: [],
-      },
-      {
-        code: 0,
-        indent: 1,
-        parameters: [],
-      },
-      {
-        code: 404,
-        indent: 0,
-        parameters: [],
-      },
-      {
-        code: 117,
-        indent: 0,
-        parameters: [4],
-      },
-      {
-        code: 117,
-        indent: 0,
-        parameters: [7],
-      },
-      {
-        code: 0,
-        indent: 0,
-        parameters: [],
-      },
-    ];
-  }
+        7,
+        7,
+        2,
+        0,
+      ],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [0, "Advance an hour."],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [19, 19, 0, 0, 60],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [1, "Jump to midnight."],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [16, 16, 0, 0, 0],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [17, 17, 0, 0, 0],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [2, "Jump to 7AM."],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [16, 16, 0, 0, 7],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [17, 17, 0, 0, 0],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [3, "Jump to 11AM."],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [16, 16, 0, 0, 11],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [17, 17, 0, 0, 0],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [4, "Jump to 3PM."],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [16, 16, 0, 0, 15],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [17, 17, 0, 0, 0],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [5, "Jump to 7PM."],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [16, 16, 0, 0, 19],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [17, 17, 0, 0, 0],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [6, "Jump to 11PM."],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [16, 16, 0, 0, 23],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [17, 17, 0, 0, 0],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 1,
+      parameters: [7, "Never mind."],
+    },
+    {
+      code: 115,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 402,
+      indent: 0,
+      parameters: [3, "Leave it be."],
+    },
+    {
+      code: 115,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 404,
+      indent: 0,
+      parameters: [],
+    },
+    {
+      code: 117,
+      indent: 0,
+      parameters: [4],
+    },
+    {
+      code: 117,
+      indent: 0,
+      parameters: [7],
+    },
+    {
+      code: 0,
+      indent: 0,
+      parameters: [],
+    },
+  ];
 };
