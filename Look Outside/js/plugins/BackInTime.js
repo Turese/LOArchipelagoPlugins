@@ -97,6 +97,9 @@ BackInTime.fixJeanneKilled = function () {
   // change jeane apartment tileset back to normal
 };
 
+BackInTime.fixSpineKilled = function () {
+};
+
 BackInTime.revertJeannePhase = function () {
   sVr(583, 5); // set jeanne state to her middle phase
 };

@@ -10,10 +10,6 @@
   },
   "file_ops": [
     {
-      "source": "mod.json",
-      "target": "mod.json"
-    },
-    {
       "source": "img/characters/$Chara_PlayerWakeup_MissingBotharm.png",
       "target": "img/characters/$Chara_PlayerWakeup_MissingBotharm.png"
     },
@@ -84,6 +80,10 @@
     {
       "source": "js/plugins/ToothHelpers.js",
       "target": "js/plugins/ToothHelpers.js"
+    },
+    {
+      "source": "js/plugins/GoalChecker.js",
+      "target": "js/plugins/GoalChecker.js"
     },
     {
       "source": "js/plugins/Unarmed.js",
@@ -188,6 +188,12 @@
       "name": "BlackoutLamp",
       "status": true,
       "description": "Allows players to switch the blackout on and off thru the bedroom lamp",
+      "parameters": {}
+    },
+    {
+      "name": "GoalChecker",
+      "status": true,
+      "description": "event in stairwell allowing player to check goal",
       "parameters": {}
     },
     {

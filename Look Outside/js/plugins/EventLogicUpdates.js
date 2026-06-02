@@ -643,6 +643,346 @@ const RETURN_TICKLE_LIST = [
     parameters: [],
   },
 ];
+const AWAKENED_SYBIL_DOOR_LIST = [
+  {
+    code: 101,
+    indent: 0,
+    parameters: ["", 0, 0, 2, ""],
+  },
+  {
+    code: 401,
+    indent: 0,
+    parameters: ["Sybil has been awakened. Enter meat world?"],
+  },
+  {
+    code: 102,
+    indent: 0,
+    parameters: [["Go to Sybil's apartment.", "Go to meat world."], 1, 0, 2, 0],
+  },
+  {
+    code: 402,
+    indent: 0,
+    parameters: [0, "Go to Sybil's apartment."],
+  },
+  {
+    code: 250,
+    indent: 1,
+    parameters: [
+      {
+        name: "DoorOpenCreaky",
+        volume: 90,
+        pitch: 100,
+        pan: 0,
+      },
+    ],
+  },
+  {
+    code: 230,
+    indent: 1,
+    parameters: [10],
+  },
+  {
+    code: 205,
+    indent: 1,
+    parameters: [
+      19,
+      {
+        list: [
+          {
+            code: 39,
+            indent: null,
+          },
+          {
+            code: 0,
+          },
+        ],
+        repeat: false,
+        skippable: false,
+        wait: true,
+      },
+    ],
+  },
+  {
+    code: 505,
+    indent: 1,
+    parameters: [
+      {
+        code: 39,
+        indent: null,
+      },
+    ],
+  },
+  {
+    code: 205,
+    indent: 1,
+    parameters: [
+      0,
+      {
+        list: [
+          {
+            code: 36,
+            indent: null,
+          },
+          {
+            code: 17,
+            indent: null,
+          },
+          {
+            code: 15,
+            parameters: [5],
+            indent: null,
+          },
+          {
+            code: 18,
+            indent: null,
+          },
+          {
+            code: 15,
+            parameters: [5],
+            indent: null,
+          },
+          {
+            code: 0,
+          },
+        ],
+        repeat: false,
+        skippable: false,
+        wait: true,
+      },
+    ],
+  },
+  {
+    code: 505,
+    indent: 1,
+    parameters: [
+      {
+        code: 36,
+        indent: null,
+      },
+    ],
+  },
+  {
+    code: 505,
+    indent: 1,
+    parameters: [
+      {
+        code: 17,
+        indent: null,
+      },
+    ],
+  },
+  {
+    code: 505,
+    indent: 1,
+    parameters: [
+      {
+        code: 15,
+        parameters: [5],
+        indent: null,
+      },
+    ],
+  },
+  {
+    code: 505,
+    indent: 1,
+    parameters: [
+      {
+        code: 18,
+        indent: null,
+      },
+    ],
+  },
+  {
+    code: 505,
+    indent: 1,
+    parameters: [
+      {
+        code: 15,
+        parameters: [5],
+        indent: null,
+      },
+    ],
+  },
+  {
+    code: 201,
+    indent: 1,
+    parameters: [0, 364, 14, 17, 0, 0],
+  },
+  {
+    code: 0,
+    indent: 1,
+    parameters: [],
+  },
+  {
+    code: 402,
+    indent: 0,
+    parameters: [1, "Go to meat world."],
+  },
+  {
+    code: 250,
+    indent: 1,
+    parameters: [
+      {
+        name: "DoorOpenCreaky",
+        volume: 90,
+        pitch: 100,
+        pan: 0,
+      },
+    ],
+  },
+  {
+    code: 230,
+    indent: 1,
+    parameters: [10],
+  },
+  {
+    code: 205,
+    indent: 1,
+    parameters: [
+      19,
+      {
+        list: [
+          {
+            code: 39,
+            indent: null,
+          },
+          {
+            code: 0,
+          },
+        ],
+        repeat: false,
+        skippable: false,
+        wait: true,
+      },
+    ],
+  },
+  {
+    code: 505,
+    indent: 1,
+    parameters: [
+      {
+        code: 39,
+        indent: null,
+      },
+    ],
+  },
+  {
+    code: 205,
+    indent: 1,
+    parameters: [
+      0,
+      {
+        list: [
+          {
+            code: 36,
+            indent: null,
+          },
+          {
+            code: 17,
+            indent: null,
+          },
+          {
+            code: 15,
+            parameters: [5],
+            indent: null,
+          },
+          {
+            code: 18,
+            indent: null,
+          },
+          {
+            code: 15,
+            parameters: [5],
+            indent: null,
+          },
+          {
+            code: 0,
+          },
+        ],
+        repeat: false,
+        skippable: false,
+        wait: true,
+      },
+    ],
+  },
+  {
+    code: 505,
+    indent: 1,
+    parameters: [
+      {
+        code: 36,
+        indent: null,
+      },
+    ],
+  },
+  {
+    code: 505,
+    indent: 1,
+    parameters: [
+      {
+        code: 17,
+        indent: null,
+      },
+    ],
+  },
+  {
+    code: 505,
+    indent: 1,
+    parameters: [
+      {
+        code: 15,
+        parameters: [5],
+        indent: null,
+      },
+    ],
+  },
+  {
+    code: 505,
+    indent: 1,
+    parameters: [
+      {
+        code: 18,
+        indent: null,
+      },
+    ],
+  },
+  {
+    code: 505,
+    indent: 1,
+    parameters: [
+      {
+        code: 15,
+        parameters: [5],
+        indent: null,
+      },
+    ],
+  },
+  {
+    code: 201,
+    indent: 1,
+    parameters: [0, 367, 25, 43, 0, 0],
+  },
+  {
+    code: 117,
+    indent: 1,
+    parameters: [259],
+  },
+  {
+    code: 0,
+    indent: 1,
+    parameters: [],
+  },
+  {
+    code: 404,
+    indent: 0,
+    parameters: [],
+  },
+  {
+    code: 0,
+    indent: 0,
+    parameters: [],
+  },
+];
 
 EventLogicUpdates.initializeAPVariables = function () {
   // gotsupplies = true; prevents fungus guys from giving you supplies at the entrance to the lair
@@ -1649,7 +1989,7 @@ EventLogicUpdates.clearLandlordCache = function (ev) {
   ev.pages[0].list = EventLogicUpdates.messageReplacement(
     ev.pages[0].list,
     "Dollar Coin",
-    "LL_SECRET_DINING_CACHE",
+    "LL_DINING_SECRET_CACHE",
   );
 };
 
@@ -1777,7 +2117,7 @@ EventLogicUpdates.clearFaceTakerDrops = function (ev) {
     // canvas carry bag and torn off face
     page.list = EventLogicUpdates.itemDropClear(page.list, ITEM_CODE);
     page.list == EventLogicUpdates.deleteMessage(page.list, "Canvas Carry Bag");
-    page.list == EventLogicUpdates.deleteMessage(page.list, "Face");
+    page.list == EventLogicUpdates.deleteMessage(page.list, "Torn-Off Face");
   });
 };
 
@@ -2308,6 +2648,7 @@ EventLogicUpdates.clearReptileFootball = function (ev) {
 };
 
 EventLogicUpdates.clearMuttPages = function (
+  ev,
   deleteCode,
   identifyString,
   getString,
@@ -2373,6 +2714,7 @@ EventLogicUpdates.clearMuttPages = function (
 
 EventLogicUpdates.clearMuttTrophy = function (ev) {
   EventLogicUpdates.clearMuttPages(
+    ev,
     ITEM_CODE,
     "A trophy",
     "Trophy",
@@ -2383,6 +2725,7 @@ EventLogicUpdates.clearMuttTrophy = function (ev) {
 };
 EventLogicUpdates.clearMuttChampionsBelt = function (ev) {
   EventLogicUpdates.clearMuttPages(
+    ev,
     ARMOR_CODE,
     "A champion's belt",
     "Champion's Belt",
@@ -2391,6 +2734,7 @@ EventLogicUpdates.clearMuttChampionsBelt = function (ev) {
 };
 EventLogicUpdates.clearMuttChainsaw = function (ev) {
   EventLogicUpdates.clearMuttPages(
+    ev,
     WEAPON_CODE,
     "A chainsaw",
     "Chainsaw",
@@ -2399,6 +2743,7 @@ EventLogicUpdates.clearMuttChainsaw = function (ev) {
 };
 EventLogicUpdates.clearMuttCattleprod = function (ev) {
   EventLogicUpdates.clearMuttPages(
+    ev,
     WEAPON_CODE,
     "A cattle prod spear",
     "Cattle Prod Spear",
@@ -2407,6 +2752,7 @@ EventLogicUpdates.clearMuttCattleprod = function (ev) {
 };
 EventLogicUpdates.clearMuttLockpicks = function (ev) {
   EventLogicUpdates.clearMuttPages(
+    ev,
     ITEM_CODE,
     "Set of lockpicks",
     "Lockpicks",
@@ -2415,6 +2761,7 @@ EventLogicUpdates.clearMuttLockpicks = function (ev) {
 };
 EventLogicUpdates.clearMuttTrainingBelt = function (ev) {
   EventLogicUpdates.clearMuttPages(
+    ev,
     ARMOR_CODE,
     "A Training Belt",
     "Training Belt",
@@ -2424,6 +2771,7 @@ EventLogicUpdates.clearMuttTrainingBelt = function (ev) {
 };
 EventLogicUpdates.clearMuttPickelhaube = function (ev) {
   EventLogicUpdates.clearMuttPages(
+    ev,
     ARMOR_CODE,
     "A Pickelhaube",
     "Pickelhaube",
@@ -2433,6 +2781,7 @@ EventLogicUpdates.clearMuttPickelhaube = function (ev) {
 };
 EventLogicUpdates.clearMuttStunBaton = function (ev) {
   EventLogicUpdates.clearMuttPages(
+    ev,
     WEAPON_CODE,
     "A Stun Baton",
     "Stun Baton",
@@ -2442,6 +2791,7 @@ EventLogicUpdates.clearMuttStunBaton = function (ev) {
 };
 EventLogicUpdates.clearMuttTraumaKit = function (ev) {
   EventLogicUpdates.clearMuttPages(
+    ev,
     ARMOR_CODE,
     "A trauma kit",
     "Trauma Kit",
@@ -2450,14 +2800,17 @@ EventLogicUpdates.clearMuttTraumaKit = function (ev) {
 };
 EventLogicUpdates.clearMuttVenomDagger = function (ev) {
   EventLogicUpdates.clearMuttPages(
+    ev,
     ARMOR_CODE,
     "A Venom Dagger",
     "Venom Dagger",
     "MUTT_DAGGER",
+    "A dagger coated",
   );
 };
 EventLogicUpdates.clearMuttCrossbow = function (ev) {
   EventLogicUpdates.clearMuttPages(
+    ev,
     ARMOR_CODE,
     "A crossbow",
     "Crossbow",
@@ -2475,6 +2828,7 @@ EventLogicUpdates.clearMuttCoffeeMachine = function (ev) {
     "Get",
   );
   EventLogicUpdates.clearMuttPages(
+    ev,
     ITEM_CODE,
     "A coffee machine",
     "Coffee Machine",
@@ -2483,23 +2837,27 @@ EventLogicUpdates.clearMuttCoffeeMachine = function (ev) {
 };
 EventLogicUpdates.clearMuttComfortBelt = function (ev) {
   EventLogicUpdates.clearMuttPages(
+    ev,
     ARMOR_CODE,
     "A Comfort Belt",
     "Comfort Belt",
     "MUTT_COMFORT_BELT",
+    "A comfortable belt",
   );
 };
 EventLogicUpdates.clearMuttBreastplate = function (ev) {
   EventLogicUpdates.clearMuttPages(
+    ev,
     ARMOR_CODE,
     "A Breastplate",
     "Breastplate",
-    "MUTT_COMFORT_BELT",
+    "MUTT_BREASTPLATE",
     "A medieval breastplate",
   );
 };
 EventLogicUpdates.clearMuttVideoGame = function (ev) {
   EventLogicUpdates.clearMuttPages(
+    ev,
     ITEM_CODE,
     "A Game Cart",
     "Auntie Wilma",
@@ -2516,6 +2874,33 @@ EventLogicUpdates.clearMuttVideoGame = function (ev) {
     (listItem) =>
       !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 41),
   );
+};
+
+EventLogicUpdates.clearLLEastCache = function (ev) {
+  ev.pages[0].list = EventLogicUpdates.messageReplacement(
+    ev.pages[0].list,
+    "$50",
+    "LL_EAST_CACHE",
+  );
+  // the event doesnt actually drop cash, it just says it does
+  // so this is just in case it gets fixed in the future
+  ev.pages[0].list = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    CASH_CODE,
+  );
+};
+
+EventLogicUpdates.clearWrongPaintingGrabEvent = function (ev) {};
+
+EventLogicUpdates.clearRightPaintingGrabEvent = function (ev) {};
+
+EventLogicUpdates.updateSybilAwakenedDoorPage  = function (ev) {
+  if (ev.pages.length < 4) {
+    const newPage = JsonEx.makeDeepCopy(ev.pages[2]);
+    newPage.conditions = EventLogicUpdates.buildConditions(undefined, 970) // if sybilPromise is on
+    newPage.list = AWAKENED_SYBIL_DOOR_LIST
+    ev.pages.push(newPage)
+  }
 };
 
 const EVENT_UPDATE_TABLE = {
@@ -2535,6 +2920,7 @@ const EVENT_UPDATE_TABLE = {
     3: EventLogicUpdates.clearElevatorFreakEvent,
   },
   6: {
+    3: EventLogicUpdates.updateSybilAwakenedDoorPage,
     13: EventLogicUpdates.clearF3HallwayPlanterEvent,
     25: EventLogicUpdates.clearF3HallwayVendingMachineEvent,
   },
@@ -2607,6 +2993,9 @@ const EVENT_UPDATE_TABLE = {
   },
   273: {
     11: EventLogicUpdates.clearAntoinesKey,
+  },
+  208: {
+    24: EventLogicUpdates.clearLLEastCache,
   },
   299: {
     12: EventLogicUpdates.clearClydesKey,
@@ -3223,6 +3612,9 @@ EventLogicUpdates.clearTroopsDrops = function () {
 
   fixNestorLetterLogic();
 
+  function clearScoutDrop() {}
+  clearScoutDrop();
+
   function clearSapperDrop() {
     let sapperTroopList = JsonEx.makeDeepCopy(
       originalTroops[293].pages[0].list,
@@ -3230,7 +3622,8 @@ EventLogicUpdates.clearTroopsDrops = function () {
 
     // dont delete the sapper trade, but do delete the initial 2 sapper gift
     sapperTroopList = sapperTroopList.filter(
-      (listItem) => listItem.code !== ITEM_CODE && listItem.parameters[3] == 2,
+      (listItem) =>
+        !(listItem.code === ITEM_CODE && listItem.parameters[3] == 2),
     );
 
     sapperTroopList = EventLogicUpdates.messageReplacement(

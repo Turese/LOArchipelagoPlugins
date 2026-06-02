@@ -43,7 +43,7 @@ InsertAPItems.insertItem = function (id, itemClass, amount = 1) {
     }
     if (itemClass === "armor" && id == 160) {
       // crossbow comes with 12 bolts
-      InsertAPItems.insertItem(197,'item',12)
+      InsertAPItems.insertItem(197, "item", 12);
     }
     $gameParty.gainItem(item, amount);
     console.log(`Item granted: ${id}`);
@@ -611,8 +611,8 @@ InsertAPItems.insertResourcePack = function (itemId) {
       InsertAPItems.insertItem(212, "item", 3);
       InsertAPItems.insertItem(214, "item", 2);
       break;
-    case 62: // 5x junk
-      InsertAPItems.insertItem(177, "item", 5);
+    case 62: // 3x junk
+      InsertAPItems.insertItem(177, "item", 3);
       break;
     case 63: // 10x bandages
       InsertAPItems.insertItem(7, "item", 10);
@@ -647,6 +647,24 @@ InsertAPItems.insertResourcePack = function (itemId) {
       break;
     case 70: // progressive rent money
       InsertAPItems.insertRentMoney();
+      break;
+    case 71: //  // 2x table fork
+      InsertAPItems.insertItem(95, "item", 2);
+      break;
+    case 72: //  // 2x table knife
+      InsertAPItems.insertItem(96, "item", 2);
+      break;
+    case 73: //  // 2x beer
+      InsertAPItems.insertItem(42, "item", 2);
+      break;
+    case 74: //  // 2x whiskey
+      InsertAPItems.insertItem(43, "item", 2);
+      break;
+    case 75: //  // 2x vodka
+      InsertAPItems.insertItem(44, "item", 2);
+      break;
+    case 76: //  // 2x cloth
+      InsertAPItems.insertItem(44, "item", 150);
       break;
     default:
       console.warn(`Unrecognized pack item id: ${itemId}, no item granted`);
@@ -714,6 +732,35 @@ InsertAPItems.insertTrap = function (itemId) {
       break;
     case 7: // max danger
       sVr(112, Math.max(gVr(112), 480));
+      break;
+    case 8: // poison trap - applies poison to all current alive party members
+      for (const actor of $gameParty.aliveMembers()) {
+        actor.addState(4);
+      }
+      break;
+    case 9: // bleed trap - applies bleed to all current alive party members
+      for (const actor of $gameParty.aliveMembers()) {
+        if (!actor.isStateAffected(13)) {
+          // if already at triple bleed, ignore
+          if (!actor.isStateAffected(12)) {
+            // double bleed -> triple bleed
+            actor.removeState(12);
+            actor.addState(13);
+          } else if (!actor.isStateAffected(11)) {
+            // single bleed -> double bleed
+            actor.removeState(11);
+            actor.addState(12);
+          } else {
+            // apply single bleed
+            actor.addState(11);
+          }
+        }
+      }
+      break;
+    case 10: // hp drain trap - cuts each party member's current hp in half
+      for (const actor of $gameParty.aliveMembers()) {
+        actor.setHp(Math.floor(actor.hp / 2));
+      }
       break;
     default:
       console.warn(`Unrecognized trap item id: ${itemId}, no item granted`);

@@ -229,3 +229,12 @@ NormalizeDifficulty.applyChanges = function () {
 };
 
 NormalizeDifficulty.applyChanges();
+
+/*
+missing:
+
+1 ITEM post beast chase
+1 item in rat infested apartment bedroom table
+
+secret rat shop initialization is broken
+*/

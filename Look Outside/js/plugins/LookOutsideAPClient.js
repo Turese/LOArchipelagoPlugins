@@ -99,6 +99,7 @@ LookOutsideAPClient.applyOverrides = function () {
   Game_Map.prototype.setup = function (mapId) {
     BackInTime.createCalendarBackInTimeEvent(mapId);
     BlackoutLamp.createLampBlackoutEvent(mapId);
+    GoalChecker.insertGoalCheckerEvent(mapId);
     EventLogicUpdates.applyIntroClears(mapId);
     MassEventUpdates.overrideAllPickups(mapId);
 
@@ -396,19 +397,19 @@ LookOutsideAPClient.checkMapForEnding = function (lastLoadedMapId) {
   } else if (lastLoadedMapId == 340) {
     endingIds = ["ritual", "perfectRitual", "trueFinal"];
   } else if (lastLoadedMapId == 176) {
-    endingIds = ["xinAmon"];
+    endingIds = ["ritual", "xinAmon"];
   } else if (lastLoadedMapId == 170) {
     endingIds = ["ritual"];
   } else if (lastLoadedMapId == 172) {
     endingIds = ["noGoingBack"];
   } else if (lastLoadedMapId == 173) {
-    endingIds = ["screamingSkies"];
+    endingIds = ["ritual", "screamingSkies"];
   } else if (lastLoadedMapId == 175) {
-    endingIds = ["eternalFate"];
+    endingIds = ["ritual", "eternalFate"];
   } else if (lastLoadedMapId == 171) {
     endingIds = ["unity"];
   } else if (lastLoadedMapId == 174) {
-    endingIds = ["mask"];
+    endingIds = ["ritual", "mask"];
   } else if (lastLoadedMapId == 431) {
     endingIds = ["wordsOfPower"];
   }
@@ -436,50 +437,25 @@ LookOutsideAPClient.saveEndingReached = async function (endingIds) {
   });
 };
 
+ const GOAL_MAPPING = {
+  0: "ritual",
+  1: "perfectRitual",
+  2: "screamingSkies",
+  3: "promise",
+  4: "mask",
+  5: "xinAmon",
+  6: "unity",
+  7: "trueFinal",
+ }
+
 LookOutsideAPClient.checkGoal = function () {
   const reachedEndings = LookOutsideAPClient.initializeReachedEndings();
   const slotData = LookOutsideAPClient.initializeSlotData();
   if (!slotData || !reachedEndings) return;
   const goal = slotData["goal"];
-  if (goal == 0) {
-    // any partial ritual ending
-    if (reachedEndings["ritual"]) {
-      LookOutsideAPClient.submitGoal();
-    }
-  }
-  if (goal == 1) {
+  if (goal < 8) {
     // any perfect ritual ending
-    if (reachedEndings["perfectRitual"]) {
-      LookOutsideAPClient.submitGoal();
-    }
-  }
-  if (goal == 3) {
-    // promise
-    if (reachedEndings["promise"]) {
-      LookOutsideAPClient.submitGoal();
-    }
-  }
-  if (goal == 4) {
-    // mask
-    if (reachedEndings["mask"]) {
-      LookOutsideAPClient.submitGoal();
-    }
-  }
-  if (goal == 5) {
-    // xin-amon
-    if (reachedEndings["xinAmon"]) {
-      LookOutsideAPClient.submitGoal();
-    }
-  }
-  if (goal == 6) {
-    // unity
-    if (reachedEndings["unity"]) {
-      LookOutsideAPClient.submitGoal();
-    }
-  }
-  if (goal == 7) {
-    // true final
-    if (reachedEndings["trueFinal"]) {
+    if (reachedEndings[GOAL_MAPPING[goal]]) {
       LookOutsideAPClient.submitGoal();
     }
   }
@@ -489,7 +465,7 @@ LookOutsideAPClient.checkGoal = function () {
       LookOutsideAPClient.submitGoal();
     }
   }
-  if (goal == 7) {
+  if (goal == 9) {
     // all
     if (ALL_ENDINGS.every((ending) => reachedEndings[ending])) {
       LookOutsideAPClient.submitGoal();

@@ -1022,13 +1022,6 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     ],
   },
 
-  125: {
-    21: [
-      "APT_28_PIRANHAS_COMBAT_VICTORY",
-      "$gameSelfSwitches.setValue([125, 21, 'C'], true)",
-    ],
-  },
-
   142: {
     8: [
       "APT_28_GARBAGE_FIRST_AID_KIT",
@@ -2626,7 +2619,6 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     ],
   },
 
-
   367: {
     6: ["MEAT_SYBIL_TONIC", "$gameSelfSwitches.setValue([367, 6, 'A'], true)"],
   },
@@ -2713,10 +2705,6 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
       "MEAT_CENTRAL_BASEMENT_STIMULANT",
       "$gameSelfSwitches.setValue([386, 8, 'A'], true)",
     ],
-    7: [
-      "MEAT_CENTRAL_BASEMENT_SPINERO_COMBAT_VICTORY",
-      "$gameSelfSwitches.setValue([386, 7, 'D'], true)",
-    ],
   },
 
   398: {
@@ -2744,6 +2732,10 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
 const TRASH_CAN_ITEM_OVERRIDES = {
   108: {
     18: ["APT_31_TRASH", "$gameSelfSwitches.setValue([108, 18, 'A'], true)"],
+  },
+
+  52: {
+    3: ["CORNER_STORE_TRASH", "$gameSelfSwitches.setValue([52, 3, 'A'], true)"],
   },
 
   265: {
@@ -3097,7 +3089,6 @@ const ROACH_ITEM_OVERRIDES = {
   42: {
     2: "FRED_HALL_CLOSET_ROACH",
   },
-
   237: {
     6: "FRED_HAT_ROOM_ROACH",
   },
@@ -3110,6 +3101,9 @@ const ROACH_ITEM_OVERRIDES = {
   60: {
     7: "GF_JANITOR_NORTH_ROACH_1",
     8: "GF_JANITOR_NORTH_ROACH_2",
+  },
+  53: {
+    6: "CORNER_STORE_STORAGE_ROACH",
   },
   59: {
     3: "MUTT_STORAGE_ROACH_1",
@@ -3172,7 +3166,7 @@ const DRAWER_ITEM_OVERRIDES = {
     15: ["LL_SIDETABLE_W", "sSw(444, true);"],
   },
   208: {
-    3: ["LL_EAST_DRAWER_W", "$gameSelfSwitches.setValue([208, 3, 'A'], true)"],
+    3: ["LL_EAST_DRAWER_E", "$gameSelfSwitches.setValue([208, 3, 'A'], true)"],
     4: [
       "LL_EAST_SIDE_TABLE",
       "$gameSelfSwitches.setValue([208, 4, 'A'], true)",
@@ -3972,6 +3966,9 @@ MassEventUpdates.overrideRoachPickups = function (currentMapId) {
       const event = $dataMap.events[eventId];
       // clear out the roach being added to inventory
       event.pages[0].list = event.pages[0].list.filter(
+        (listItem) => listItem.code !== 126,
+      );
+      event.pages[1].list = event.pages[0].list.filter(
         (listItem) => listItem.code !== 126,
       );
     });
