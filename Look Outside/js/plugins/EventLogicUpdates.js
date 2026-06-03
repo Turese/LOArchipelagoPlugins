@@ -3014,6 +3014,41 @@ EventLogicUpdates.blockPlanetariumDoor = function (ev) {
   ];
 };
 
+EventLogicUpdates.blockIncorrectPainting = function (ev) {
+  // take it is always disabled
+  ev.pages[0].list.find(
+    (listItem) =>
+      listItem.code == 102 && listItem.parameters[0][1].includes("Take it."),
+  ).parameters[0][1] = `<<[s[${TRUE_SWITCH_ID}]]>>Take it.`;
+};
+
+EventLogicUpdates.clearCorrectPaintingDrop = function (ev) {
+  const originalList = ev.pages[0].list;
+  for (let i = 0; i < originalList.length; i++) {
+    const listItem = originalList[i];
+    if (listItem.code == ITEM_CODE) {
+      originalList.splice(
+        i,
+        1,
+        ...[
+          {
+            code: 101,
+            indent: 4,
+            parameters: ["", 0, 0, 2, ""],
+          },
+          {
+            code: 401,
+            indent: 4,
+            parameters: [
+              `Get ${LookOutsideAPClient.getItemName("FRED_DARK_ROOM_CORRECT_PAINTING")}.`,
+            ],
+          },
+        ],
+      );
+    }
+  }
+};
+
 const EVENT_UPDATE_TABLE = {
   2: {
     5: BlackoutLamp.createLampBlackoutEvent,
@@ -3183,6 +3218,23 @@ const EVENT_UPDATE_TABLE = {
   217: {
     7: EventLogicUpdates.clearToxicFredDrop,
     8: EventLogicUpdates.clearToxicFredDrop,
+  },
+  97: {
+    1: EventLogicUpdates.clearCorrectPaintingDrop,
+    5: EventLogicUpdates.blockIncorrectPainting,
+    10: EventLogicUpdates.blockIncorrectPainting,
+    11: EventLogicUpdates.blockIncorrectPainting,
+    12: EventLogicUpdates.blockIncorrectPainting,
+    13: EventLogicUpdates.blockIncorrectPainting,
+    14: EventLogicUpdates.blockIncorrectPainting,
+    15: EventLogicUpdates.blockIncorrectPainting,
+    16: EventLogicUpdates.blockIncorrectPainting,
+    17: EventLogicUpdates.blockIncorrectPainting,
+    18: EventLogicUpdates.blockIncorrectPainting,
+    19: EventLogicUpdates.blockIncorrectPainting,
+    20: EventLogicUpdates.blockIncorrectPainting,
+    21: EventLogicUpdates.blockIncorrectPainting,
+    22: EventLogicUpdates.blockIncorrectPainting,
   },
   236: {
     16: EventLogicUpdates.clearToxicFredDrop,
@@ -3755,17 +3807,17 @@ EventLogicUpdates.clearTroopsDrops = function () {
   fixNestorLetterLogic();
 
   function clearScoutDrop() {
-let scoutTroopList = JsonEx.makeDeepCopy(originalTroops[295].pages[0].list);
+    let scoutTroopList = JsonEx.makeDeepCopy(originalTroops[295].pages[0].list);
 
     scoutTroopList = EventLogicUpdates.itemDropClear(
-      minesweeperTroopList,
+      scoutTroopList,
       WEAPON_CODE,
     );
     scoutTroopList = EventLogicUpdates.messageReplacement(
       scoutTroopList,
       "Radio",
       "LL_DINING_RADIO",
-      "Receive"
+      "Receive",
     );
     $dataTroops[295].pages[0].list = scoutTroopList;
   }
@@ -5254,6 +5306,16 @@ EventLogicUpdates.clearCommonEventDrops = function () {
     $dataCommonEvents[89].list = nestorEugeneRestock;
   }
   nestorAlsoRestocks();
+
+  function clearResetPaintings() {
+    let paintingsList = JsonEx.makeDeepCopy(originalCommonEvents[43].list);
+
+    // clear painting exchange
+    paintingsList = EventLogicUpdates.itemDropClear(paintingsList, ITEM_CODE);
+
+    $dataCommonEvents[43].list = paintingsList;
+  }
+  clearResetPaintings();
 };
 
 EventLogicUpdates.buyItemTableScript = () => {

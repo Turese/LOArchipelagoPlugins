@@ -812,6 +812,7 @@ InsertAPItems.shouldOverrideImage = function (url) {
 InsertAPItems.renameItems = function () {
   $dataItems[336].name = "Incorrect CCTV Recording"; // incorrect recording
   $dataItems[365].name = "Incorrect Photograph"; // incorrect recording
+  $dataItems[342].name = "Incorrect Painting"; // incorrect painting
 };
 
 InsertAPItems.renameWeapons = function () {
