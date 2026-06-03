@@ -473,6 +473,7 @@ LookOutsideAPClient.submitGoal = function () {
 };
 
 LookOutsideAPClient.gameLoadedAPSetup = function (slotData) {
+  if (LookOutsideAPClient.isOnTitleMenu()) return; // dont initialize if we're not in a game
   LookOutsideAPClient.initializeSlotData(slotData);
   LookOutsideAPClient.updateItems();
   LookOutsideAPClient.checkGoal();
@@ -745,10 +746,17 @@ LookOutsideAPClient.getItemImage = function (apLocationName) {
 let gettingDeathLink;
 
 LookOutsideAPClient.forceGameOver = function () {
-  if ($gamePlayer && !(SceneManager._scene instanceof Scene_Title)) {
+  if ($gamePlayer && !LookOutsideAPClient.isOnTitleMenu()) {
     gettingDeathLink = true;
     SceneManager.goto(Scene_Gameover);
   }
+};
+
+LookOutsideAPClient.isOnTitleMenu = function () {
+  if (SceneManager._scene instanceof Scene_Title) return true;
+  // check if you're on any options menus, newgame, or file select scene
+  if (SceneManager.isPreviousScene(Scene_Title)) return true; 
+  return false;
 };
 
 LookOutsideAPClient.applyOverrides();
