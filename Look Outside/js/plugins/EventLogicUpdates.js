@@ -2974,6 +2974,44 @@ EventLogicUpdates.clearWilhelminaDrop = function (ev) {
   );
 };
 
+EventLogicUpdates.blockPlanetariumDoor = function (ev) {
+  if (ev.pages.length < 3) {
+    ev.pages.push({
+      ...ev.pages[1],
+      conditions: EventLogicUpdates.buildConditions("A", 975),
+    });
+  }
+  ev.pages[1].list = [
+    {
+      code: 250,
+      indent: 0,
+      parameters: [
+        {
+          name: "Door_CantOpen",
+          volume: 90,
+          pitch: 100,
+          pan: 0,
+        },
+      ],
+    },
+    {
+      code: 101,
+      indent: 0,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 0,
+      parameters: ["It still won't open. She's still alive. \\C[20]She's watching."],
+    },
+    {
+      code: 0,
+      indent: 0,
+      parameters: [],
+    },
+  ];
+};
+
 const EVENT_UPDATE_TABLE = {
   2: {
     5: BlackoutLamp.createLampBlackoutEvent,
@@ -3242,6 +3280,9 @@ const EVENT_UPDATE_TABLE = {
   },
   169: {
     2: EventLogicUpdates.clearWilhelminaDrop,
+  },
+  345: {
+    30: EventLogicUpdates.blockPlanetariumDoor,
   },
 };
 
