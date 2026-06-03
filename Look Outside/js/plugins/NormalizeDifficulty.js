@@ -27,6 +27,7 @@ NormalizeDifficulty.applyChanges = function () {
   // in-game difficulty variable ids
   const HARDMODE = 8;
   const EASYMODE = 13;
+  const NORMALMODE = 31;
 
   // todo: this focuses on fights with extra events or unique spawns
   // ive skipped the rat encounters on floor 1 where hardmode adds more rats
@@ -157,6 +158,13 @@ NormalizeDifficulty.applyChanges = function () {
       if (ev.id == 31 || ev.id == 30) {
         if (ev.pages.length > 2) ev.pages.splice(2, 3);
       }
+      if (ev.id == 61) {
+        // this item is ordarily a reward for defeating leigh on cursed; changing condition to having seen the beast at all
+        ev.pages[0].conditions = EventLogicUpdates.buildConditions(
+          undefined,
+          81,
+        );
+      }
     }
   }
 
@@ -169,6 +177,13 @@ NormalizeDifficulty.applyChanges = function () {
 
     if (lastLoadedMapId == 97 && ev.id == 6 && ev.pages.length == 3) {
       ev.pages.splice(2, 1); // turpentine in fred's studio
+    }
+  }
+
+  function forceNormalModePositiveItem(ev, lastLoadedMapId) {
+    // as far as i can tell, theres only 1 item like this
+    if (lastLoadedMapId == 102 && ev.id == 13) {
+      ev.pages[0].conditions.switch1Id = TRUE_SWITCH_ID;
     }
   }
 
@@ -206,12 +221,12 @@ NormalizeDifficulty.applyChanges = function () {
       forceEasyModeEvents(object);
       forceHardModeEvents(object);
     }
-    if (object === $dataTroops) {
+    /*if (object === $dataTroops) {
       //addHardmodeSpawnsToTroops(object);
     }
     if (object === $dataCommonEvents) {
       forceHardmodeFridgeFightLogic(object);
-    }
+    }*/
   };
 
   const _Game_Event_event = Game_Event.prototype.event;
@@ -222,6 +237,7 @@ NormalizeDifficulty.applyChanges = function () {
 
     forceHardModeBeastChaseItems(ev, lastLoadedMapId);
     forceHardmodePositiveItems(ev, lastLoadedMapId);
+    forceNormalModePositiveItem(ev, lastLoadedMapId);
     forceHardmodeF1(ev, lastLoadedMapId);
 
     return ev;
@@ -229,12 +245,3 @@ NormalizeDifficulty.applyChanges = function () {
 };
 
 NormalizeDifficulty.applyChanges();
-
-/*
-missing:
-
-1 ITEM post beast chase
-1 item in rat infested apartment bedroom table
-
-secret rat shop initialization is broken
-*/
