@@ -3754,7 +3754,21 @@ EventLogicUpdates.clearTroopsDrops = function () {
 
   fixNestorLetterLogic();
 
-  function clearScoutDrop() {}
+  function clearScoutDrop() {
+let scoutTroopList = JsonEx.makeDeepCopy(originalTroops[295].pages[0].list);
+
+    scoutTroopList = EventLogicUpdates.itemDropClear(
+      minesweeperTroopList,
+      WEAPON_CODE,
+    );
+    scoutTroopList = EventLogicUpdates.messageReplacement(
+      scoutTroopList,
+      "Radio",
+      "LL_DINING_RADIO",
+      "Receive"
+    );
+    $dataTroops[295].pages[0].list = scoutTroopList;
+  }
   clearScoutDrop();
 
   function clearSapperDrop() {
