@@ -10,11 +10,10 @@
  *
  **/
 
-const GOAL_CHECKER_EVENT = {
-  id: 12,
-  name: "APGOAL",
-  note: "",
-  pages: [
+const GOAL_CHECKER_X = 8;
+const GOAL_CHECKER_Y = 10;
+
+const GOAL_CHECKER_PAGES = [
     {
       conditions: {
         actorId: 1,
@@ -83,15 +82,14 @@ const GOAL_CHECKER_EVENT = {
       trigger: 0,
       walkAnime: true,
     },
-  ],
-  x: 8,
-  y: 10,
-};
+  ]
 
 var GoalChecker = BackInTime || {};
 
 GoalChecker.insertGoalCheckerEvent = function (ev) {
-  ev = { ...ev, ...GOAL_CHECKER_EVENT };
+  ev.pages = GOAL_CHECKER_PAGES;
+  ev.x = GOAL_CHECKER_X;
+  ev.y = GOAL_CHECKER_Y;
 };
 
 const GOAL_NAMES = {

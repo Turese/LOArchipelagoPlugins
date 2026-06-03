@@ -2933,6 +2933,47 @@ EventLogicUpdates.updateSybilAwakenedDoorPage = function (ev) {
   }
 };
 
+EventLogicUpdates.clearWilhelminaDrop = function (ev) {
+  ev.pages[1].list = EventLogicUpdates.itemDropClear(
+    ev.pages[1].list,
+    WEAPON_CODE,
+  );
+  ev.pages[1].list = EventLogicUpdates.itemDropClear(
+    ev.pages[1].list,
+    ARMOR_CODE,
+  );
+
+  ev.pages[1].list = EventLogicUpdates.messageReplacement(
+    ev.pages[1].list,
+    "Spellsword",
+    "CW_WILHEMINA_VICTORY",
+  );
+
+  ev.pages[1].list = EventLogicUpdates.messageReplacement(
+    ev.pages[1].list,
+    "Spear of the Word",
+    "CW_WILHEMINA_VICTORY",
+  );
+
+  ev.pages[1].list = EventLogicUpdates.messageReplacement(
+    ev.pages[1].list,
+    "Wordsmith's Hammer",
+    "CW_WILHEMINA_VICTORY",
+  );
+
+  ev.pages[1].list = EventLogicUpdates.messageReplacement(
+    ev.pages[1].list,
+    "Babylon Typewriter",
+    "CW_WILHEMINA_VICTORY",
+  );
+
+  ev.pages[1].list = EventLogicUpdates.messageReplacement(
+    ev.pages[1].list,
+    "Tome of Words",
+    "CW_WILHEMINA_VICTORY",
+  );
+};
+
 const EVENT_UPDATE_TABLE = {
   2: {
     5: BlackoutLamp.createLampBlackoutEvent,
@@ -3198,6 +3239,9 @@ const EVENT_UPDATE_TABLE = {
   },
   28: {
     12: GoalChecker.insertGoalCheckerEvent,
+  },
+  169: {
+    2: EventLogicUpdates.clearWilhelminaDrop,
   },
 };
 
