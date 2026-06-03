@@ -6437,3 +6437,352 @@ ShopHelpers.strangeTraderInitList = function (ev) {
     },
   ];
 };
+
+ShopHelpers.getGiveJunkRewardsList = function () {
+  const threeJunkItemName =
+    LookOutsideAPClient.getItemName("DOOR_MORTON_3_JUNK");
+
+  const sixJunkItemName = LookOutsideAPClient.getItemName("DOOR_MORTON_6_JUNK");
+
+  const nineJunkItemName =
+    LookOutsideAPClient.getItemName("DOOR_MORTON_9_JUNK");
+
+  const twelveJunkItemName = LookOutsideAPClient.getItemName(
+    "DOOR_MORTON_12_JUNK",
+  );
+
+  const fifteenJunkItemName = LookOutsideAPClient.getItemName(
+    "DOOR_RECRUIT_MORTON",
+  );
+
+  const eighteenJunkItemName = LookOutsideAPClient.getItemName(
+    "DOOR_MORTON_18_JUNK",
+  );
+
+  const twentyOneJunkItemName = LookOutsideAPClient.getItemName(
+    "DOOR_MORTON_21_JUNK",
+  );
+
+  return [
+    {
+      code: 111,
+      indent: 0,
+      parameters: [1, 410, 0, 0, 0],
+    },
+    {
+      code: 111,
+      indent: 1,
+      parameters: [1, 409, 0, 3, 1],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [410, 410, 0, 0, 1],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`Morton gives you ${threeJunkItemName}.`],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 0,
+      parameters: [],
+    },
+    {
+      code: 111,
+      indent: 0,
+      parameters: [1, 410, 0, 1, 0],
+    },
+    {
+      code: 111,
+      indent: 1,
+      parameters: [1, 409, 0, 6, 1],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [410, 410, 0, 0, 2],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`Morton gives you ${sixJunkItemName}.`],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 0,
+      parameters: [],
+    },
+    {
+      code: 111,
+      indent: 0,
+      parameters: [1, 410, 0, 2, 0],
+    },
+    {
+      code: 111,
+      indent: 1,
+      parameters: [1, 409, 0, 9, 1],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [410, 410, 0, 0, 3],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`Morton gives you ${nineJunkItemName}.`],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 0,
+      parameters: [],
+    },
+    {
+      code: 111,
+      indent: 0,
+      parameters: [1, 410, 0, 3, 0],
+    },
+    {
+      code: 111,
+      indent: 1,
+      parameters: [1, 409, 0, 12, 1],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [410, 410, 0, 0, 4],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`Morton gives you ${twelveJunkItemName}.`],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 0,
+      parameters: [],
+    },
+    {
+      code: 111,
+      indent: 0,
+      parameters: [1, 410, 0, 4, 0],
+    },
+    {
+      code: 111,
+      indent: 1,
+      parameters: [1, 409, 0, 15, 1],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [410, 410, 0, 0, 5],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`Morton gives you ${fifteenJunkItemName}.`],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 0,
+      parameters: [],
+    },
+    {
+      code: 111,
+      indent: 0,
+      parameters: [1, 410, 0, 5, 0],
+    },
+    {
+      code: 111,
+      indent: 1,
+      parameters: [1, 409, 0, 18, 1],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [410, 410, 0, 0, 6],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`Morton gives you ${eighteenJunkItemName}.`],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 0,
+      parameters: [],
+    },
+    {
+      code: 111,
+      indent: 0,
+      parameters: [1, 410, 0, 6, 0],
+    },
+    {
+      code: 111,
+      indent: 1,
+      parameters: [1, 409, 0, 21, 1],
+    },
+    {
+      code: 122,
+      indent: 2,
+      parameters: [410, 410, 0, 0, 7],
+    },
+    {
+      code: 101,
+      indent: 2,
+      parameters: ["", 0, 0, 2, ""],
+    },
+    {
+      code: 401,
+      indent: 2,
+      parameters: [`Morton gives you ${twentyOneJunkItemName}.`],
+    },
+    {
+      code: 0,
+      indent: 2,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 1,
+      parameters: [],
+    },
+    {
+      code: 412,
+      indent: 0,
+      parameters: [],
+    },
+    {
+      code: 0,
+      indent: 0,
+      parameters: [],
+    },
+  ];
+};

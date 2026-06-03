@@ -1232,7 +1232,7 @@ const LOCATION_ID_MAPPING = Object.freeze({
   B_CAR_HELLRIDE_AUDREY_LOOT: 5318,
   HELL_CAR_LAIR_SWORD: 5319,
   B_STUART_COMBAT_VICTORY: 5320,
-  B_STUART_MERCHANT: 5321,
+  B_CAR_SWAT_VAN_AUDREY_LOOT: 5321,
   B_STUART_FIRST_AID_KIT: 5322,
   B_STUART_SIMPLE_KEY: 5323,
   B_UTILITY_JUNK_1: 5324,
@@ -2869,6 +2869,7 @@ SELF_SWITCH_LOCATIONS = {
   },
 
   86: {
+    42: { D: "B_CAR_SWAT_VAN_AUDREY_LOOT" },
     58: { C: "B_COP_CAR_AUDREY_LOOT" },
     108: { C: "B_CAR_CABLEJUMPER_COMBAT_VICTORY" },
     106: { A: "B_CAR_HOLE_IRIS_KEY" },
@@ -3315,7 +3316,15 @@ VARIABLE_LOCATIONS = {
     { relation: ">=", value: 11, location: "APT_38_PIERRE_CLOWN_DRAWING" },
     { relation: ">=", value: 17, location: "APT_38_PIERRE_CLOWN_WIG" },
   ],
-  410: { relation: ">=", value: 5, location: "DOOR_RECRUIT_MORTON" },
+  410: [
+    { relation: ">=", value: 1, location: "DOOR_MORTON_3_JUNK" },
+    { relation: ">=", value: 2, location: "DOOR_MORTON_6_JUNK" },
+    { relation: ">=", value: 3, location: "DOOR_MORTON_9_JUNK" },
+    { relation: ">=", value: 4, location: "DOOR_MORTON_12_JUNK" },
+    { relation: ">=", value: 5, location: "DOOR_RECRUIT_MORTON" },
+    { relation: ">=", value: 6, location: "DOOR_MORTON_18_JUNK" },
+    { relation: ">=", value: 7, location: "DOOR_MORTON_21_JUNK" },
+  ],
   // 17 is when you lose, 20 is when you win
   /*81: {
     relation: ">=",

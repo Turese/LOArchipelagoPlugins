@@ -1751,8 +1751,9 @@ EventLogicUpdates.clearElevatorFreakEvent = function (ev) {
     ev.pages[1].conditions = EventLogicUpdates.buildConditions("A");
   }
   // also clear out the power outage effect; player should trigger this manually
-  ev.pages[0].list = ev.pages[0].list.filter(
-    (listItem) => !(listItem.code == SET_VAR_CODE && parameters[0] == 736),
+  ev.pages[0].list = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    SET_VAR_CODE,
   );
 };
 
@@ -2483,6 +2484,35 @@ EventLogicUpdates.clearAudreySporeGuardianDrop = function (ev) {
   };
 };
 
+EventLogicUpdates.clearAudreySwatBattleDrop = function (ev) {
+  EventLogicUpdates.itemDropReplaceScript(
+    ev.pages[1].list,
+    ARMOR_CODE,
+    `$gameSelfSwitches.setValue([86, 42, 'D'], true);`,
+  );
+  ev.pages[1].list = EventLogicUpdates.messageReplacement(
+    ev.pages[1].list,
+    "Chobham Armor",
+    "B_CAR_SWAT_VAN_AUDREY_LOOT",
+    "She has found",
+  );
+};
+
+EventLogicUpdates.clearAudreySwatOverworldDrop = function (ev) {
+  const deadPage = ev.pages[3];
+  if (ev.pages.length < 5) {
+    ev.pages.push({
+      ...EMPTY_PAGE,
+      conditions: EventLogicUpdates.buildConditions("D"),
+      image: deadPage.image,
+    });
+  }
+  EventLogicUpdates.updateAudreyLootDeadPage(
+    deadPage,
+    "B_CAR_SWAT_VAN_AUDREY_LOOT",
+  );
+};
+
 EventLogicUpdates.clearAudreyTaxidermyDrop = function (ev) {
   for (let i = 1; i < 3; i++) {
     EventLogicUpdates.itemDropReplaceScript(
@@ -3116,6 +3146,8 @@ const EVENT_UPDATE_TABLE = {
   127: {
     2: EventLogicUpdates.clearPhilDelusionDropsSporeMother,
     3: EventLogicUpdates.clearAudreySporeGuardianDrop,
+    24: EventLogicUpdates.clearAudreySporeGuardianDrop,
+    26: EventLogicUpdates.clearAudreySporeGuardianDrop,
   },
   259: {
     3: EventLogicUpdates.fixRoxieRoomItemDoubleEntry,
@@ -3130,6 +3162,8 @@ const EVENT_UPDATE_TABLE = {
   86: {
     14: EventLogicUpdates.clearAudreyHellrideDrop,
     58: EventLogicUpdates.clearAudreyCopCarDrop,
+    101: EventLogicUpdates.clearAudreySwatBattleDrop,
+    42: EventLogicUpdates.clearAudreySwatOverworldDrop,
     106: EventLogicUpdates.clearBlackoutIrisKey,
   },
   152: { 6: EventLogicUpdates.clearAudreyShrimpKnightDrop },
@@ -4585,7 +4619,7 @@ EventLogicUpdates.clearDoorEncounterDrops = function () {
       "saved my life",
       "DOOR_WILLIAM_PRIZE_2",
       `You might've saved my life. Let me give you \n${LookOutsideAPClient.getItemName("DOOR_WILLIAM_PRIZE_1")} and`,
-      " for the help.",
+      "\nfor the help.",
     );
 
     // william gives cash, so we need to replace that
@@ -5089,16 +5123,18 @@ EventLogicUpdates.clearCommonEventDrops = function () {
   function updateMortonRecruitEvent() {
     let mortonTrading = JsonEx.makeDeepCopy(originalCommonEvents[214].list);
 
-    EventLogicUpdates.itemDropReplaceScript(
-      mortonTrading,
-      SET_SWITCH_CODE,
-      "EventLogicUpdates.mortonRecruitScript();",
-      (listItem) => listItem.parameters[0] == 1226,
-    );
+    mortonTrading.find(
+      (listItem) => listItem.code === 111 && listItem.parameters[1] == 410,
+    ).parameters[3] = 99; // set recruit condition to never pass
 
     $dataCommonEvents[214].list = mortonTrading;
   }
   updateMortonRecruitEvent();
+
+  function updateMortonPrizes() {
+    $dataCommonEvents[110].list = ShopHelpers.getGiveJunkRewardsList();
+  }
+  updateMortonPrizes();
 
   function nestorAlsoRestocks() {
     let nestorEugeneRestock = JsonEx.makeDeepCopy(
@@ -5144,15 +5180,5 @@ EventLogicUpdates.buyItemTableScript = () => {
   } else {
     sVr(480, 0);
     sVr(482, "---");
-  }
-};
-
-EventLogicUpdates.mortonRecruitScript = () => {
-  sSw(1226, gVr(410) < 5); // remove morton from dumpster if you got the recruit
-  if ($gameParty.inBattle()) {
-    BattleManager.abort();
-    $gameTroop._interpreter.command115();
-  } else {
-    $gameMap._interpreter.command115();
   }
 };

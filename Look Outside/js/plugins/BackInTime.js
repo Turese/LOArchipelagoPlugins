@@ -1616,24 +1616,9 @@ BackInTime.createCalendarBackInTimeEvent = function (ev) {
         parameters: [],
       },
       {
-        code: 122,
-        indent: 0,
-        parameters: [16, 16, 0, 0, 6],
-      },
-      {
-        code: 122,
-        indent: 0,
-        parameters: [17, 17, 0, 0, 0],
-      },
-      {
         code: 117,
         indent: 0,
         parameters: [4],
-      },
-      {
-        code: 117,
-        indent: 0,
-        parameters: [6],
       },
       {
         code: 122,
@@ -1649,11 +1634,6 @@ BackInTime.createCalendarBackInTimeEvent = function (ev) {
         code: 101,
         indent: 0,
         parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 0,
-        parameters: ["It is now \\V[12]."],
       },
       {
         code: 401,
