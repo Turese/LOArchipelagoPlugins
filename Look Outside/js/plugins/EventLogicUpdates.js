@@ -3002,7 +3002,9 @@ EventLogicUpdates.blockPlanetariumDoor = function (ev) {
     {
       code: 401,
       indent: 0,
-      parameters: ["It still won't open. She's still alive. \\C[20]She's watching."],
+      parameters: [
+        "It still won't open. She's still alive. \\C[20]She's watching.",
+      ],
     },
     {
       code: 0,
@@ -3310,7 +3312,10 @@ EventLogicUpdates.applyEventUpdates = function (lastLoadedMapId, ev) {
 
 EventLogicUpdates.clearAllEnemiesDrops = function () {
   for (const enemy of $dataEnemies) {
-    if (enemy) enemy.dropItems = [];
+    if (enemy) {
+      enemy.dropItems = [];
+      enemy.gold = 0;
+    }
   }
 };
 
