@@ -26,6 +26,10 @@ InsertAPItems.insertItem = function (id, itemClass, amount = 1) {
       // this id range is all the video games. add 1 to the video game count
       sVr(41, gVr(41) + 1);
     }
+    if (itemClass === "item" && id == 85) {
+      // set tame landmine damage when it is rewarded
+      sVr(351, 60) // the in-game grant sets it to 60, so we do that here too
+    }
     if (itemClass === "item" && id == 346) {
       // progressive loose manuscript. second add should complete it
       // check if player either offered manuscript to jasper or if it's in their inventory...

@@ -5348,3 +5348,12 @@ EventLogicUpdates.buyItemTableScript = () => {
     sVr(482, "---");
   }
 };
+
+// manage what dinner talks are allowed
+const oldIsTalkAllowed = isTalkAllowed();
+
+isTalkAllowed = function () {
+  const evIndex = gVr(514);
+  if (evIndex == 360) return false; // wiggly fred gives the player his ring
+  return oldIsTalkAllowed();
+};
