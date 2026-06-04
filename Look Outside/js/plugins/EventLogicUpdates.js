@@ -2900,8 +2900,8 @@ EventLogicUpdates.clearMuttVideoGame = function (ev) {
   EventLogicUpdates.clearMuttPages(
     ev,
     ITEM_CODE,
-    "A Game Cart",
-    "Auntie Wilma",
+    "A Game Cartridge",
+    "Crossword Challenge}",
     "MUTT_CROSSWORD_CHALLENGE",
     "crossword video game",
   );
@@ -4551,6 +4551,23 @@ EventLogicUpdates.clearTroopsDrops = function () {
     $dataTroops[520].pages[0].list = ernestList;
   }
   clearErnestRecruit();
+
+  function clearSpineGift() {
+    let spineList = JsonEx.makeDeepCopy(originalTroops[167].pages[0].list);
+
+    $dataTroops[167].pages[0].list = spineList;
+
+    spineList = EventLogicUpdates.itemDropClear(spineList, WEAPON_CODE);
+
+    spineList = EventLogicUpdates.messageReplacement(
+      spineList,
+      "Spine Dagger",
+      "APT_33_MEAT_SPINE_GIFT",
+      "Receive"
+    );
+    $dataTroops[167].pages[0].list = spineList;
+  }
+  clearSpineGift();
 
   function clearVendingMachineDeputization() {
     let muttShopList = JsonEx.makeDeepCopy(originalTroops[155].pages[0].list);
