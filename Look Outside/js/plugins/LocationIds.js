@@ -770,6 +770,7 @@ const LOCATION_ID_MAPPING = Object.freeze({
   GF_HERBICIDE: 3404,
   GF_LEG_FOOT_WORM_COMBAT_VICTORY: 3405,
   GF_HAND_WORM_COMBAT_VICTORY: 3418,
+  MAILROOM_OFFICE_STATIONERY: 3419,
   GF_OFFICE_JASPER_COMBAT_VICTORY: 3406,
   GF_OFFICE_JASPER_GIFT_OFFERING: 3407,
   GF_OFFICE_JASPER_FIX_TELESCOPE: 3408,
@@ -2725,6 +2726,7 @@ SELF_SWITCH_LOCATIONS = {
   },
 
   71: {
+    5: { A: "MAILROOM_OFFICE_STATIONERY" },
     24: { A: "MAILROOM_OFFICE_CELL_PHONE" },
     22: { A: "MAILROOM_OFFICE_SUN_DISC" },
     25: { A: "MAILROOM_OFFICE_TRASH" },
@@ -3284,14 +3286,14 @@ VARIABLE_LOCATIONS = {
       relation: ">=",
       value: 100,
       location: "APT_33_BATHROOM_RECRUIT_ROACHES",
-      prefix: "You have befriended the roaches. Get "
+      prefix: "You have befriended the roaches. Get ",
     },
     {
       // this the dispo where they declare war
       relation: "<=",
       value: -50,
       location: "APT_33_ROACH_WAR",
-      prefix: "You have made mortal enemies of the roaches. Get "
+      prefix: "You have made mortal enemies of the roaches. Get ",
     },
   ],
   741: { relation: ">=", value: 2, location: "F3_PLAYING_CARD" },

@@ -2057,6 +2057,7 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   },
 
   71: {
+    5: ["MAILROOM_OFFICE_STATIONERY", "$gameSelfSwitches.setValue([71, 5, 'A'], true)",],
     24: [
       "MAILROOM_OFFICE_CELL_PHONE",
       "$gameSelfSwitches.setValue([71, 24, 'A'], true)",
