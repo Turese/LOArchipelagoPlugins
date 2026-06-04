@@ -991,6 +991,9 @@ EventLogicUpdates.initializeAPVariables = function () {
   // foughtwoundedman = true; allows players to enter vincents apartment right away
   sSw(94, true);
 
+  // starting arms are 0
+  window.Unarmed.setArms(3);
+
   // we use these for difficulty normalization
   sSw(TRUE_SWITCH_ID, true);
   sSw(FALSE_SWITCH_ID, false);
@@ -1026,6 +1029,9 @@ EventLogicUpdates.initializeAPVariables = function () {
 
   // re-setup door encounters with slot data
   setupDoorEncounters();
+  $gamePlayer.introFinished = true;
+
+  LookOutsideAPClient.gameLoadedAPSetup();
 };
 
 EventLogicUpdates.applyIntroClears = function (lastLoadedMapId) {
@@ -1082,20 +1088,6 @@ EventLogicUpdates.applyIntroClears = function (lastLoadedMapId) {
     }
   }
   updateStartingCutscene();
-
-  // remove the players arms at the start of the game. they get them back from ap
-  function updateStartingArms() {
-    if (lastLoadedMapId === 5) {
-      const armScript = {
-        code: 355,
-        indent: 0,
-        parameters: ["window.Unarmed.setArms(3);"],
-      };
-      const startingRoomEvent = $dataMap.events[2];
-      startingRoomEvent.pages[0].list.push(armScript);
-    }
-  }
-  updateStartingArms();
 };
 
 // if an event has a basic item drop + get message structure

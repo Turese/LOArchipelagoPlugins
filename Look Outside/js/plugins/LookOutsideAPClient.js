@@ -96,6 +96,14 @@ LookOutsideAPClient.applyOverrides = function () {
     _Game_Map_refresh.call(this);
   };
 
+  const _Game_Event_refresh = Game_Event.prototype.refresh;
+
+  Game_Event.prototype.refresh = function () {
+    EventLogicUpdates.applyEventUpdates(lastLoadedMapId, this.event());
+
+    _Game_Event_refresh.call(this);
+  };
+
   const _dataManagerOnLoad = DataManager.onLoad;
   DataManager.onLoad = function (object) {
     if (object === $dataMap) {
@@ -473,15 +481,18 @@ LookOutsideAPClient.submitGoal = function () {
 };
 
 LookOutsideAPClient.gameLoadedAPSetup = function (slotData) {
+  if (!client.authenticated) return;
+  if (slotData) {
+    LookOutsideAPClient.updateDeathLink(slotData);
+    LookOutsideAPClient.initializeSlotData(slotData);
+    LookOutsideAPClient.makeSlotDataChanges();
+  }
   if (LookOutsideAPClient.isOnTitleMenu()) return; // dont initialize if we're not in a game
-  LookOutsideAPClient.initializeSlotData(slotData);
+  if (!$gamePlayer || !$gamePlayer.introFinished) return; // dont initialize items before the opening cutscene
   LookOutsideAPClient.updateItems();
   LookOutsideAPClient.checkGoal();
-  LookOutsideAPClient.makeSlotDataChanges();
-  LookOutsideAPClient.initializeItemIndex();
   LookOutsideAPClient.reportLocations();
   LookOutsideAPClient.initializeLocationNames();
-  LookOutsideAPClient.updateDeathLink(slotData);
 };
 
 const resetClient = async function () {
