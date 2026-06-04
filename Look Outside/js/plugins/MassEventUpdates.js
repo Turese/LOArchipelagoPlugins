@@ -698,7 +698,7 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   446: {
     4: [
       "GLITCH_NE_GREEN_KEY",
-      "$gameSelfSwitches.setValue([446, 4, 'C'], true)",
+      "$gameSelfSwitches.setValue([446, 4, 'A'], true)",
     ],
   },
 
@@ -1090,6 +1090,29 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     61: ["F2_GRENADE", "$gameSelfSwitches.setValue([7, 61, 'A'], true)"],
   },
 
+  90: {
+    2: [
+      "F2_JANITORS_DCLOGGER",
+      "$gameSelfSwitches.setValue([90, 2, 'A'], true)",
+    ],
+    3: [
+      "F2_JANITORS_CLEANEREX",
+      "$gameSelfSwitches.setValue([90, 3, 'A'], true)",
+    ],
+    4: [
+      "F2_JANITORS_HERBICIDE",
+      "$gameSelfSwitches.setValue([90, 4, 'A'], true)",
+    ],
+    5: ["F2_JANITORS_MOP", "$gameSelfSwitches.setValue([90, 5, 'A'], true)"],
+    6: ["F2_JANITORS_BROOM", "$gameSelfSwitches.setValue([90, 6, 'A'], true)"],
+    7: ["F2_JANITORS_GLOVES", "$gameSelfSwitches.setValue([90, 7, 'A'], true)"],
+    8: [
+      "F2_JANITORS_GAS_MASK",
+      "$gameSelfSwitches.setValue([90, 8, 'A'], true)",
+    ],
+    11: ["F2_JANITORS_LUTE", "$gameSelfSwitches.setValue([90, 11, 'A'], true)"],
+  },
+
   372: {
     31: [
       "F2_GRINNING_BEAST_CHASE_POOL_CUE",
@@ -1357,6 +1380,22 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     8: [
       "RAT_LAIR_CHOCKY_BAR_2",
       "$gameSelfSwitches.setValue([292, 8, 'A'], true)",
+    ],
+    13: [
+      "RAT_LAIR_GUARDED_CHEESE_1",
+      "$gameSelfSwitches.setValue([292, 13, 'A'], true)",
+    ],
+    11: [
+      "RAT_LAIR_GUARDED_CHEESE_2",
+      "$gameSelfSwitches.setValue([292, 11, 'A'], true)",
+    ],
+    14: [
+      "RAT_LAIR_GUARDED_CHEESE_3",
+      "$gameSelfSwitches.setValue([292, 14, 'A'], true)",
+    ],
+    12: [
+      "RAT_LAIR_GUARDED_CHEESE_4",
+      "$gameSelfSwitches.setValue([292, 12, 'A'], true)",
     ],
   },
 

@@ -588,6 +588,49 @@ LookOutsideAPClient.isLocationSet = function (locationName) {
   return !!reachedLocations[LOCATION_ID_MAPPING[locationName]];
 };
 
+LookOutsideAPClient.shouldSendMessageForLocation = function (locationId) {
+  // if player already has location, dont send message again
+  if (LookOutsideAPClient.isLocationSet(locationId)) return false;
+  // either item name not stored or this location not included in run;
+  // either way, we shouldnt print anything
+  if (!LookOutsideAPClient.getLocationMapping(locationId)) return false;
+  // all these switches are set after encounters, just like battles, so we include them too
+  if (
+    [
+      "SEWER_N_TOP_LOCKED_ROOM_CORALIE_THOMAS",
+      "SEWER_W_OLIVER",
+      "SEWER_E_ALICE",
+      "SEWER_SW_TRISTAN_CHARLIE",
+      "SEWER_SW_VICTOR_FLORENCE",
+      "SEWER_NE_ZACHARY",
+      "SEWER_SE_ROXIE",
+      "B_STEVE_BANDAGE_GIFT",
+      "DOOR_PIZZA_TIP",
+      "DOOR_FATHER_ANDREW_DONATION",
+      "DOOR_FATHER_ANDREW_BLESSING",
+      "DOOR_HUMPHREY_DEAL",
+      "DOOR_BEFRIEND_TRICKSTER",
+      "DOOR_HOBBS_PRIZE",
+      "DOOR_RECRUIT_DAN",
+      "DOOR_RECRUIT_HELLEN",
+      "DOOR_RECRUIT_GOTHS",
+      "DOOR_RECRUIT_SOPHIE",
+      "DOOR_RECRUIT_KIND",
+      "APT_33_RECRUIT_PHILLIPPE",
+      "APT_33_RECRUIT_RAT_BABY",
+      "APT_33_BATHROOM_RECRUIT_ROACHES",
+      "APT_33_ROACH_WAR",
+      "BEAST_DEN_RECRUIT_LEIGH",
+      "F2_RECRUIT_ASTER",
+      "GF_JANITORS_RECRUIT_PAPINEAU",
+      "APT_32_BATHROOM_RECRUIT_JOEL",
+      "F1_AUDREY_RECRUIT"
+    ].includes(locationId)
+  )
+    return true;
+  return locationId.endsWith("COMBAT_VICTORY");
+};
+
 LookOutsideAPClient.watchLocations = function () {
   _setSelfSwitchValue = Game_SelfSwitches.prototype.setValue;
   Game_SelfSwitches.prototype.setValue = function (key, value) {
@@ -598,9 +641,12 @@ LookOutsideAPClient.watchLocations = function () {
     if (SELF_SWITCH_LOCATIONS[roomId]) {
       if (SELF_SWITCH_LOCATIONS[roomId][eventId]) {
         const locationId = SELF_SWITCH_LOCATIONS[roomId][eventId][switchId];
-        if (locationId)
-          console.log("SETTING SELF SWITCH LOCATION: ", locationId);
         if (locationId) {
+          if (LookOutsideAPClient.shouldSendMessageForLocation(locationId)) {
+            $gameMessage.add(EventLogicUpdates.getMessage(locationId));
+          }
+          console.log("SETTING SELF SWITCH LOCATION: ", locationId);
+
           LookOutsideAPClient.setLocation(locationId);
         }
       }
@@ -615,7 +661,13 @@ LookOutsideAPClient.watchLocations = function () {
       const locationId = SWITCH_LOCATIONS[switchId];
 
       if (locationId && value) {
-        if (locationId) console.log("SETTING SWITCH LOCATION: ", locationId);
+        if (locationId) {
+          console.log("SETTING SWITCH LOCATION: ", locationId);
+
+          if (LookOutsideAPClient.shouldSendMessageForLocation(locationId)) {
+            $gameMessage.add(EventLogicUpdates.getMessage(locationId));
+          }
+        }
         // make sure the switch is set to true
         LookOutsideAPClient.setLocation(locationId);
       }
@@ -629,7 +681,7 @@ LookOutsideAPClient.watchLocations = function () {
     const variableMapping = VARIABLE_LOCATIONS[variableId];
 
     function checkVariableEntry(variableEntry, checkValue) {
-      const { relation, value, location } = variableEntry;
+      const { relation, value, location, prefix } = variableEntry;
       switch (relation) {
         case "=":
           if (value != checkValue) return;
@@ -650,8 +702,14 @@ LookOutsideAPClient.watchLocations = function () {
           throw new Error("ERROR: CAN'T FIND RELATION ON SWITCH");
           return;
       }
-      if (location) console.log("SETTING VAR LOCATION: ", location);
-      LookOutsideAPClient.setLocation(location);
+
+      if (location) {
+        console.log("SETTING VAR LOCATION: ", location);
+        if (LookOutsideAPClient.shouldSendMessageForLocation(location)) {
+          $gameMessage.add(EventLogicUpdates.getMessage(location, prefix));
+        }
+        LookOutsideAPClient.setLocation(location);
+      }
     }
 
     if (Array.isArray(variableMapping)) {
@@ -706,18 +764,20 @@ LookOutsideAPClient.isLocationTrap = function (apLocationName) {
   return false;
 };
 
+LookOutsideAPClient.getLocationMapping = function (apLocationName) {
+  if ($gamePlayer && $gamePlayer.LOCATION_NAME_MAPPING)
+    return $gamePlayer.LOCATION_NAME_MAPPING[
+      LOCATION_ID_MAPPING[apLocationName]
+    ];
+};
+
 LookOutsideAPClient.getItemName = function (
   apLocationName,
   excludeBrackets = false,
   useTrapName = false,
   excludeColor = false,
 ) {
-  const locationId = LOCATION_ID_MAPPING[apLocationName];
-
-  let mapping;
-
-  if ($gamePlayer && $gamePlayer.LOCATION_NAME_MAPPING)
-    mapping = $gamePlayer.LOCATION_NAME_MAPPING[locationId];
+  let mapping = LookOutsideAPClient.getLocationMapping(apLocationName);
 
   if (!mapping)
     mapping = { player: null, name: "Randomized Item", itemColor: 24 };
@@ -755,7 +815,7 @@ LookOutsideAPClient.forceGameOver = function () {
 LookOutsideAPClient.isOnTitleMenu = function () {
   if (SceneManager._scene instanceof Scene_Title) return true;
   // check if you're on any options menus, newgame, or file select scene
-  if (SceneManager.isPreviousScene(Scene_Title)) return true; 
+  if (SceneManager.isPreviousScene(Scene_Title)) return true;
   return false;
 };
 

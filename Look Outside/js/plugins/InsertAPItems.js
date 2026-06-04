@@ -675,7 +675,7 @@ InsertAPItems.insertResourcePack = function (itemId) {
       InsertAPItems.insertItem(44, "item", 2);
       break;
     case 76: //  // 2x cloth
-      InsertAPItems.insertItem(44, "item", 150);
+      InsertAPItems.insertItem(150, "item", 2);
       break;
     default:
       console.warn(`Unrecognized pack item id: ${itemId}, no item granted`);

@@ -60,7 +60,7 @@ const DOOR_GENERAL = {
   68: "Morton",
   71: "Nobody",
   73: "Kind-Faced Man",
-  80: "Pierre"
+  80: "Pierre",
 };
 
 const DOOR_CURSED_GENERAL = {
@@ -160,18 +160,25 @@ const DOOR_ENCOUNTER_RECRUIT_MAPPING = {
 };
 
 const DOOR_ENCOUNTER_EVENT_MAPPING = {
+  68: [
+    "DOOR_MORTON_3_JUNK",
+    "DOOR_MORTON_6_JUNK",
+    "DOOR_MORTON_9_JUNK",
+    "DOOR_MORTON_12_JUNK",
+    "DOOR_MORTON_18_JUNK",
+    "DOOR_MORTON_21_JUNK",
+  ],
   263: ["DOOR_BEFRIEND_TRICKSTER"], // won't be used, but including here for the playerFinishedEncounter check
   59: ["DOOR_HARRIET_REUNITE"], // won't be used, but including here for the playerFinishedEncounter check
   49: ["DOOR_PIZZA", "DOOR_PIZZA_TIP"],
   71: ["DOOR_FREE_ITEM"],
   61: ["DOOR_WILLIAM_PRIZE_1", "DOOR_WILLIAM_PRIZE_2"], // won't be used, but including here for the playerFinishedEncounter check
-  55: ["DOOR_GAMER_KATANA"],
   57: ["DOOR_HOBBS_PRIZE"], // won't be used, but including here for the playerFinishedEncounter check
   64: [
     "DOOR_FATHER_ANDREW_GIFT",
     "DOOR_FATHER_ANDREW_DONATION",
     "DOOR_FATHER_ANDREW_BLESSING",
-  ],
+  ], // won't be used, but including here for the playerFinishedEncounter check
   70: ["DOOR_HUMPHREY_DEAL"], // won't be used, but including here for the playerFinishedEncounter check
   251: ["DOOR_BUTCHER_ITEM"], // won't be used
 };
@@ -227,6 +234,8 @@ DoorHelpers.processDoorVictory = function () {
     );
     return;
   }
+  if (LookOutsideAPClient.shouldSendMessageForLocation(locationId))
+    $gameMessage.add(EventLogicUpdates.getMessage(locationId));
   LookOutsideAPClient.setLocation(locationId);
   // resetup door encounters based on what player needs checks for
   setupDoorEncounters();
@@ -244,6 +253,9 @@ DoorHelpers.processDoorRecruit = function () {
     );
     return;
   }
+  if (LookOutsideAPClient.shouldSendMessageForLocation(locationId))
+    $gameMessage.add(EventLogicUpdates.getMessage(locationId));
+
   LookOutsideAPClient.setLocation(locationId);
   // resetup door encounters based on what player needs checks for
   setupDoorEncounters();
@@ -268,6 +280,8 @@ DoorHelpers.processDoorEvent = function (index = 0) {
     );
     return;
   }
+  if (LookOutsideAPClient.shouldSendMessageForLocation(doorEvents[index]))
+    $gameMessage.add(EventLogicUpdates.getMessage(doorEvents[index]));
 
   LookOutsideAPClient.setLocation(doorEvents[index]);
   // resetup door encounters based on what player needs checks for
@@ -328,13 +342,13 @@ DoorHelpers.setRemainingEncounterVars = function () {
   const remainingDoorRecruits = Object.keys(DOOR_RECRUIT).filter((id) =>
     DoorHelpers.playerNeedsEncounter(id),
   ).length;
-  
+
   const pierreDoorAvailable = gVr(617) == 5;
 
-  const remainingDoorGeneral = Object.keys(DOOR_GENERAL).filter((id) =>
-    DoorHelpers.playerNeedsEncounter(id),
-  ).length + (pierreDoorAvailable ? 1 : 0);
-  
+  const remainingDoorGeneral =
+    Object.keys(DOOR_GENERAL).filter((id) =>
+      DoorHelpers.playerNeedsEncounter(id),
+    ).length + (pierreDoorAvailable ? 1 : 0);
 
   const remainingDoorCursedGeneral = Object.keys(DOOR_CURSED_GENERAL).filter(
     (id) => DoorHelpers.playerNeedsEncounter(id),
@@ -389,7 +403,7 @@ DoorHelpers.buildEncounterPickerEventPage = function () {
   );
 
   if (gVr(617) == 5) {
-    remainingDoorGeneralArray.push(80); 
+    remainingDoorGeneralArray.push(80);
   }
 
   const remainingDoorCursedGeneralArray = Object.keys(

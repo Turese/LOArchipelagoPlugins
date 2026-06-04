@@ -1145,18 +1145,30 @@ EventLogicUpdates.deleteMessage = function (originalList, keyWord) {
   );
 };
 
+EventLogicUpdates.getMessage = function (
+  itemId,
+  introword = "Find",
+  suffix = ".",
+) {
+  return `${introword} ${LookOutsideAPClient.getItemName(itemId)}${suffix}`;
+};
+
 EventLogicUpdates.messageReplacement = function (
   originalList,
   keyWord,
   itemId,
-  introword = "Find",
-  suffix = ".",
+  introword,
+  suffix,
 ) {
   const newList = JsonEx.makeDeepCopy(originalList);
 
   newList.forEach((listItem) => {
     if (listItem.code == 401 && listItem.parameters[0].includes(keyWord)) {
-      listItem.parameters[0] = `${introword} ${LookOutsideAPClient.getItemName(itemId)}${suffix}`;
+      listItem.parameters[0] = EventLogicUpdates.getMessage(
+        itemId,
+        introword,
+        suffix,
+      );
     }
   });
 
@@ -1860,8 +1872,11 @@ EventLogicUpdates.clearGlitchElixirDrops = function (ev) {
 };
 
 EventLogicUpdates.clearAmbroseDrops = function (ev) {
-  let filteredList = EventLogicUpdates.itemDropClear(ev.pages[0], ITEM_CODE); // ambrose parts
-  filteredList = EventLogicUpdates.itemDropClear(ev.pages[0], ARMOR_CODE); // ambroses pipe
+  let filteredList = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    ITEM_CODE,
+  ); // ambrose parts
+  filteredList = EventLogicUpdates.itemDropClear(filteredList, ARMOR_CODE); // ambroses pipe
 
   const messageIndex = filteredList.findIndex(
     (listItem) =>
@@ -1894,21 +1909,17 @@ EventLogicUpdates.clearManuscriptCompletion = function (ev) {
   if (completeManuscriptIndex !== -1) {
     ev.pages[0].list[completeManuscriptIndex] = {
       code: 355,
-      indent: 0,
+      indent: ev.pages[0].list[completeManuscriptIndex].indent,
       parameters: ["$gameSelfSwitches.setValue([118, 5, 'A'], true)"],
     };
   }
 
-  const completeManuscriptMessageIdx = ev.pages[0].list.findIndex(
-    (listItem) =>
-      listItem.code == 401 &&
-      listItem.parameters[0] ==
-        "You add the sheet to the incomplete manuscript.",
+  ev.pages[0].list = EventLogicUpdates.messageReplacement(
+    ev.pages[0].list,
+    "You add the sheet to the incomplete manuscript.",
+    "APT_27_COMPLETE_MANUSCRIPT",
+    "This must be Jeanne's",
   );
-  if (completeManuscriptMessageIdx !== -1) {
-    ev.pages[0].list[completeManuscriptMessageIdx].parameters[0] =
-      `Find ${LookOutsideAPClient.getItemName("APT_27_COMPLETE_MANUSCRIPT")}.`;
-  }
 
   ev.pages[1].conditions = EventLogicUpdates.buildConditions("A");
 };
@@ -3385,6 +3396,40 @@ EventLogicUpdates.clearTroopsDrops = function () {
 
   EventLogicUpdates.clearDoorEncounterDrops();
 
+  function clearDarrylGift() {
+    let darrylTroop = JsonEx.makeDeepCopy(originalTroops[615].pages[7].list);
+
+    darrylTroop = EventLogicUpdates.itemDropClear(darrylTroop, WEAPON_CODE);
+
+    darrylTroop = EventLogicUpdates.messageReplacement(
+      darrylTroop,
+      "Antenniform Legs",
+      "B_CAR_DARRYL_COMBAT_VICTORY",
+      "Receive",
+    );
+    $dataTroops[615].pages[7].list = darrylTroop;
+  }
+  clearDarrylGift();
+
+  function clearMadPie() {
+    let screamingPizzaList = JsonEx.makeDeepCopy(
+      originalTroops[249].pages[1].list,
+    );
+
+    screamingPizzaList = EventLogicUpdates.itemDropClear(
+      screamingPizzaList,
+      ITEM_CODE,
+    );
+
+    screamingPizzaList = EventLogicUpdates.deleteMessage(
+      screamingPizzaList,
+      "Screaming Pizza",
+    );
+
+    $dataTroops[249].pages[1].list = screamingPizzaList;
+  }
+  clearMadPie();
+
   function clearPierreGifts() {
     const pierreTroop = JsonEx.makeDeepCopy(originalTroops[19]);
 
@@ -3487,9 +3532,7 @@ EventLogicUpdates.clearTroopsDrops = function () {
 
   // clear both the gun sale and the recruitment itself
   function clearLeighRecruitmentEvent() {
-    const leighTroopList = JsonEx.makeDeepCopy(
-      originalTroops[34].pages[0],
-    ).list;
+    let leighTroopList = JsonEx.makeDeepCopy(originalTroops[34].pages[0]).list;
 
     // make us never hit gun dialogue
     const checkHardModeIndex = leighTroopList.findIndex(
@@ -3501,6 +3544,11 @@ EventLogicUpdates.clearTroopsDrops = function () {
         indent: 1,
         parameters: [0, FALSE_SWITCH_ID, 0],
       };
+
+    leighTroopList = leighTroopList.filter(
+      (listEntry) =>
+        !(listEntry.code == SET_VAR_CODE && listEntry.parameters[0] == 37),
+    ); // dont set num people in apartment
 
     // make the recruit option hit self switch instead, and then end there.
     const leighRecruitIndex = leighTroopList.findIndex(
@@ -3809,10 +3857,7 @@ EventLogicUpdates.clearTroopsDrops = function () {
   function clearScoutDrop() {
     let scoutTroopList = JsonEx.makeDeepCopy(originalTroops[295].pages[0].list);
 
-    scoutTroopList = EventLogicUpdates.itemDropClear(
-      scoutTroopList,
-      WEAPON_CODE,
-    );
+    scoutTroopList = EventLogicUpdates.itemDropClear(scoutTroopList, ITEM_CODE);
     scoutTroopList = EventLogicUpdates.messageReplacement(
       scoutTroopList,
       "Radio",
@@ -3853,6 +3898,11 @@ EventLogicUpdates.clearTroopsDrops = function () {
     minesweeperTroopList = EventLogicUpdates.itemDropClear(
       minesweeperTroopList,
       WEAPON_CODE,
+    );
+    // dont reset tame landmine damage
+    minesweeperTroopList = minesweeperTroopList.filter(
+      (listItem) =>
+        !(listItem.code !== SET_VAR_CODE && listItem.parameters[0] == 351),
     );
     minesweeperTroopList = EventLogicUpdates.itemDropClear(
       minesweeperTroopList,
@@ -5350,7 +5400,7 @@ EventLogicUpdates.buyItemTableScript = () => {
 };
 
 // manage what dinner talks are allowed
-const oldIsTalkAllowed = isTalkAllowed();
+const oldIsTalkAllowed = isTalkAllowed;
 
 isTalkAllowed = function () {
   const evIndex = gVr(514);

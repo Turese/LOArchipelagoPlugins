@@ -178,6 +178,10 @@ NormalizeDifficulty.applyChanges = function () {
     if (lastLoadedMapId == 97 && ev.id == 6 && ev.pages.length == 3) {
       ev.pages.splice(2, 1); // turpentine in fred's studio
     }
+
+    if (lastLoadedMapId == 292 && (ev.id == 14 || ev.id == 12) && ev.pages.length == 3) {
+      ev.pages.splice(2, 1); // cheese in rat lair
+    }
   }
 
   function forceNormalModePositiveItem(ev, lastLoadedMapId) {
