@@ -594,7 +594,20 @@ LookOutsideAPClient.shouldSendMessageForLocation = function (locationId) {
   // either item name not stored or this location not included in run;
   // either way, we shouldnt print anything
   if (!LookOutsideAPClient.getLocationMapping(locationId)) return false;
-  // all these switches are set after encounters, just like battles, so we include them too
+
+  // these ones handle their own messages so we leave them out
+  if (
+    [
+      "FUNGUS_SYLVAIN_RESCUE_COMBAT_VICTORY",
+      "FUNGUS_SYLVAIN_RESCUE_COMBAT_VICTORY",
+      "FUNGUS_JEAN_P_RESCUE_COMBAT_VICTORY",
+    ].includes(locationId)
+  )
+    return false;
+
+  // all these switches are set after encounters, just like battles,
+  // or dont have their own dedicated message
+  // so we include them too
   if (
     [
       "SEWER_N_TOP_LOCKED_ROOM_CORALIE_THOMAS",
@@ -624,7 +637,26 @@ LookOutsideAPClient.shouldSendMessageForLocation = function (locationId) {
       "F2_RECRUIT_ASTER",
       "GF_JANITORS_RECRUIT_PAPINEAU",
       "APT_32_BATHROOM_RECRUIT_JOEL",
-      "F1_AUDREY_RECRUIT"
+      "F1_AUDREY_RECRUIT",
+      "GAME_SKILL_WIZARDS_HELL",
+      "GAME_SKILL_SUPER_JUMPLAD",
+      "GAME_SKILL_SUPER_JUMPLAD_3",
+      "GAME_SKILL_CATAFALQUE: 5",
+      "GAME_SKILL_HONKOS_GRAND_JOURNEY",
+      "GAME_SKILL_MADWHEELS_97",
+      "GAME_SKILL_WRAITHSCOURGE",
+      "GAME_SKILL_MASSACRE_PRINCESS",
+      "GAME_SKILL_KILL_TO_SHOOT",
+      "GAME_SKILL_MYRMIDON",
+      "GAME_SKILL_MYRMIDON_XII",
+      "GAME_SKILL_SCREAMATORIUM",
+      "GAME_SKILL_FROGIT_ABOUT_IT",
+      "GAME_SKILL_BLOOD_GHOUL_ORGY_3",
+      "GAME_SKILL_OCTOCOOK: 16",
+      "GAME_SKILL_SPACE_TRUCKERZ",
+      "GAME_SKILL_REPTILE_FOOTBALL",
+      "GAME_SKILL_CROSSWORD_CHALLENGE",
+      "GAME_SKILL_WAKE_THE_BLOOD_KNIGHT",
     ].includes(locationId)
   )
     return true;
