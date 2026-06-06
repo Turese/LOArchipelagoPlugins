@@ -3078,6 +3078,18 @@ EventLogicUpdates.clearCorrectPaintingDrop = function (ev) {
   }
 };
 
+EventLogicUpdates.gunTraderInitList = function (ev) {
+  ShopHelpers.gunTraderInitList(ev);
+};
+
+EventLogicUpdates.gamerInitList = function (ev) {
+  ShopHelpers.gamerInitList(ev);
+};
+
+EventLogicUpdates.strangeTraderInitList = function (ev) {
+  ShopHelpers.strangeTraderInitList(ev);
+};
+
 const EVENT_UPDATE_TABLE = {
   2: {
     5: BlackoutLamp.createLampBlackoutEvent,
@@ -3087,11 +3099,11 @@ const EVENT_UPDATE_TABLE = {
     12: BackInTime.createClockTimeEvent,
     9: EventLogicUpdates.doorCombatChecker,
     17: EventLogicUpdates.doorEncounterPicker,
-    52: ShopHelpers.gunTraderInitList,
-    56: ShopHelpers.gamerInitList,
+    52: EventLogicUpdates.gunTraderInitList,
+    56: EventLogicUpdates.gamerInitList,
     88: EventLogicUpdates.clearScreamatoriumEvent,
     121: EventLogicUpdates.clearRoachQuestPrize,
-    133: ShopHelpers.strangeTraderInitList,
+    133: EventLogicUpdates.strangeTraderInitList,
   },
   23: { 40: EventLogicUpdates.fixWoundedManDoor },
   24: { 3: EventLogicUpdates.clearWoundedManKnifeEvent },
