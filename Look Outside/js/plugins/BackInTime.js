@@ -97,6 +97,13 @@ BackInTime.fixLockedInOfferings = function () {
 
   sVr(465, 0); // jasperfinalestate = 0
   delete $gameSelfSwitches._data[[162, 35, "D"].toString()]; // clear jasper mask ending dead state
+
+  sVr(883, 0); // remove count of astronomers killed so masked shadow wont appear
+  sVr(466, 0); // reset 'successfull astronomers' count
+  sVr(461, 0); // reset 'ready astronomers' count
+  sSw(485, false); // playerTransformingIntoTree - makes players head split open and leads to failed ritual
+  sVr(467, 0); // players current head split state
+  $gameMap.eraseFilter("dizzy"); // remove the blur filter from player mutating
 };
 
 BackInTime.fixErnestTooLate = function () {

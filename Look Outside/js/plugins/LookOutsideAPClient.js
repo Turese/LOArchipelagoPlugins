@@ -148,6 +148,12 @@ LookOutsideAPClient.applyOverrides = function () {
   // on load, attempt to connect to apclient
   const _extractSaveContents = DataManager.extractSaveContents;
   DataManager.extractSaveContents = function (contents) {
+    if ($gamePlayer && $gamePlayer.LOCATION_NAME_MAPPING) {
+      // before logging in, try to use stored location names
+      if ($dataMap) LookOutsideAPClient.applyDataMapUpdates(lastLoadedMapId);
+      if ($dataTroops) EventLogicUpdates.clearTroopsDrops();
+      if ($dataCommonEvents) EventLogicUpdates.clearCommonEventDrops();
+    }
     LookOutsideAPClient.startAPClient();
     _extractSaveContents.call(this, contents);
   };
@@ -196,7 +202,7 @@ LookOutsideAPClient.applyOverrides = function () {
           Math.floor(Math.random() * DEATH_LINK_PHRASES.length)
         ];
 
-      const phrase = `${playerName}${message}`;
+      const phrase = `[DeathLink] ${playerName}${message}`;
 
       console.log("SENDING DEATH LINK: ", phrase);
       client.deathLink.sendDeathLink(playerName, phrase);
@@ -329,11 +335,11 @@ LookOutsideAPClient.initializeLocationNames = async function () {
         }
         locationMapping[location] = mapping;
       });
-      if ($dataMap) LookOutsideAPClient.applyDataMapUpdates(lastLoadedMapId);
-      if ($dataTroops) EventLogicUpdates.clearTroopsDrops();
-      if ($dataCommonEvents) EventLogicUpdates.clearCommonEventDrops();
     });
   $gamePlayer.LOCATION_NAME_MAPPING = locationMapping;
+  if ($dataMap) LookOutsideAPClient.applyDataMapUpdates(lastLoadedMapId);
+  if ($dataTroops) EventLogicUpdates.clearTroopsDrops();
+  if ($dataCommonEvents) EventLogicUpdates.clearCommonEventDrops();
 };
 
 LookOutsideAPClient.initializeLocationObject = function () {
@@ -488,11 +494,12 @@ LookOutsideAPClient.gameLoadedAPSetup = function (slotData) {
     LookOutsideAPClient.makeSlotDataChanges();
   }
   if (LookOutsideAPClient.isOnTitleMenu()) return; // dont initialize if we're not in a game
-  if (!$gamePlayer || !$gamePlayer.introFinished) return; // dont initialize items before the opening cutscene
+  if (!$gamePlayer) return;
+  LookOutsideAPClient.initializeLocationNames();
+  if (!$gamePlayer.introFinished) return; // dont initialize anything before the opening cutscene
   LookOutsideAPClient.updateItems();
   LookOutsideAPClient.checkGoal();
   LookOutsideAPClient.reportLocations();
-  LookOutsideAPClient.initializeLocationNames();
 };
 
 const resetClient = async function () {
@@ -612,6 +619,9 @@ LookOutsideAPClient.shouldSendMessageForLocation = function (locationId) {
       "FUNGUS_SYLVAIN_RESCUE_COMBAT_VICTORY",
       "FUNGUS_SYLVAIN_RESCUE_COMBAT_VICTORY",
       "FUNGUS_JEAN_P_RESCUE_COMBAT_VICTORY",
+      "GF_KOTD_COMBAT_VICTORY",
+      "MEAT_SYBIL_COMBAT_VICTORY",
+      "FUNGUS_COMATUS_COMBAT_VICTORY",
     ].includes(locationId)
   )
     return false;
@@ -642,8 +652,6 @@ LookOutsideAPClient.shouldSendMessageForLocation = function (locationId) {
       "DOOR_RECRUIT_KIND",
       "APT_33_RECRUIT_PHILLIPPE",
       "APT_33_RECRUIT_RAT_BABY",
-      "APT_33_BATHROOM_RECRUIT_ROACHES",
-      "APT_33_ROACH_WAR",
       "BEAST_DEN_RECRUIT_LEIGH",
       "F2_RECRUIT_ASTER",
       "GF_JANITORS_RECRUIT_PAPINEAU",
@@ -668,10 +676,27 @@ LookOutsideAPClient.shouldSendMessageForLocation = function (locationId) {
       "GAME_SKILL_REPTILE_FOOTBALL",
       "GAME_SKILL_CROSSWORD_CHALLENGE",
       "GAME_SKILL_WAKE_THE_BLOOD_KNIGHT",
+      "LL_RENT_1",
+      "LL_RENT_2",
+      "LL_RENT_3",
+      "LL_RENT_4",
+      "FUNGUS_LAUGHING_MOLD_ROUTINE",
+      "SEWER_E_PULL_LEVER",
+      "TRUE_FRED_RETURN_FACE",
+      "FRED_FIRST_COMBAT_VICTORY",
+      "FRED_SECOND_COMBAT_VICTORY",
+      "FRED_THIRD_COMBAT_VICTORY",
+      "FRED_FOURTH_COMBAT_VICTORY",
+      "FRED_FIFTH_COMBAT_VICTORY",
+      "FRED_SIXTH_COMBAT_VICTORY",
+      "FRED_SEVENTH_COMBAT_VICTORY",
+      "FRED_EIGHTH_COMBAT_VICTORY",
+      "FRED_NINTH_COMBAT_VICTORY",
+      "FRED_ALL_COMBAT_VICTORY",
     ].includes(locationId)
   )
     return true;
-  return locationId.endsWith("COMBAT_VICTORY");
+  return locationId.endsWith("COMBAT_VICTORY") || locationId.includes("ROACH");
 };
 
 LookOutsideAPClient.watchLocations = function () {

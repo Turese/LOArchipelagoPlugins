@@ -935,7 +935,7 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   15: {
     47: ["APT_25_KLYSOX", "$gameSelfSwitches.setValue([15, 47, 'A'], true)"],
     48: ["APT_25_PLATE", "$gameSelfSwitches.setValue([15, 48, 'A'], true)"],
-    26: ["APT_25_FORK", "$gameSelfSwitches.setValue([15, 26, 'A'], true)"],
+    46: ["APT_25_FORK", "$gameSelfSwitches.setValue([15, 46, 'A'], true)"],
   },
 
   16: {
@@ -1051,6 +1051,10 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   },
 
   149: {
+    52: [
+      "APT_28_ABYSSAL_HADAL_TRIDENT",
+      "$gameSelfSwitches.setValue([149, 52, 'A'], true)",
+    ],
     49: [
       "APT_28_ABYSSAL_STIMULANT",
       "$gameSelfSwitches.setValue([149, 49, 'A'], true)",
@@ -2057,7 +2061,10 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   },
 
   71: {
-    5: ["MAILROOM_OFFICE_STATIONERY", "$gameSelfSwitches.setValue([71, 5, 'A'], true)",],
+    5: [
+      "MAILROOM_OFFICE_STATIONERY",
+      "$gameSelfSwitches.setValue([71, 5, 'A'], true)",
+    ],
     24: [
       "MAILROOM_OFFICE_CELL_PHONE",
       "$gameSelfSwitches.setValue([71, 24, 'A'], true)",
@@ -2073,9 +2080,9 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
       "MAILROOM_STORAGE_SATURN_DISC",
       "$gameSelfSwitches.setValue([72, 3, 'A'], true)",
     ],
-    2: [
+    4: [
       "MAILROOM_STORAGE_DUCT_TAPE",
-      "$gameSelfSwitches.setValue([72, 2, 'A'], true)",
+      "$gameSelfSwitches.setValue([72, 4, 'A'], true)",
     ],
     6: [
       "MAILROOM_STORAGE_MAGNUM_BULLETS",
@@ -2661,6 +2668,13 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
 
   367: {
     6: ["MEAT_SYBIL_TONIC", "$gameSelfSwitches.setValue([367, 6, 'A'], true)"],
+  },
+
+  385: {
+    18: [
+      "MEAT_SUMMER_REAGENT",
+      "$gameSelfSwitches.setValue([385, 18, 'A'], true)",
+    ],
   },
 
   410: {
@@ -3548,6 +3562,10 @@ MassEventUpdates.overrideOverworldPickups = function (currentMapId) {
     }
     if (name === "FRED_HAT_ROOM_HAT") {
       pageIndex = 3;
+    }
+    if (name === "APT_28_ABYSSAL_CHOCKY_BAR") {
+      pageIndex = 1;
+      prefix = "The creature left an item. ...";
     }
 
     const isTrap = LookOutsideAPClient.isLocationTrap(name);

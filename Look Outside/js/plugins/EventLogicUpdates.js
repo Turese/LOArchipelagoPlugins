@@ -1027,6 +1027,8 @@ EventLogicUpdates.initializeAPVariables = function () {
 
   sVr(397, interactionArray);
 
+  sVr(898, 10); // choose violence - allows player to get true final
+
   // re-setup door encounters with slot data
   setupDoorEncounters();
   $gamePlayer.introFinished = true;
@@ -1100,6 +1102,7 @@ const ARMOR_CODE = 128;
 const SET_SWITCH_CODE = 121;
 const SET_VAR_CODE = 122;
 const SKILL_CODE = 318;
+const MESSAGE_CODE = 401;
 
 //codes:
 //126 = item drop
@@ -1133,7 +1136,10 @@ EventLogicUpdates.itemDropReplaceScript = function (
 EventLogicUpdates.deleteMessage = function (originalList, keyWord) {
   return originalList.filter(
     (listItem) =>
-      !(listItem.code == 401 && listItem.parameters[0].includes(keyWord)),
+      !(
+        listItem.code == MESSAGE_CODE &&
+        listItem.parameters[0].includes(keyWord)
+      ),
   );
 };
 
@@ -1791,7 +1797,7 @@ EventLogicUpdates.clearAntoinesKey = function (ev) {
     ITEM_CODE,
   );
   ev.pages[1].list = EventLogicUpdates.itemDropClear(
-    ev.pages[0].list,
+    ev.pages[1].list,
     ITEM_CODE,
   );
   ev.pages[0].list ==
@@ -1810,10 +1816,15 @@ EventLogicUpdates.clearClydesKey = function (ev) {
     ev.pages[2].list,
     ITEM_CODE,
   );
-  ev.pages[1].list ==
-    EventLogicUpdates.deleteMessage(ev.pages[1].list, "Clyde's Key");
-  ev.pages[2].list ==
-    EventLogicUpdates.deleteMessage(ev.pages[2].list, "Clyde's Key");
+
+  ev.pages[1].list = EventLogicUpdates.itemDropClear(
+    ev.pages[1].list,
+    MESSAGE_CODE,
+  );
+  ev.pages[2].list = EventLogicUpdates.itemDropClear(
+    ev.pages[2].list,
+    MESSAGE_CODE,
+  );
 };
 
 EventLogicUpdates.clearJennifersKey = function (ev) {
@@ -1822,13 +1833,17 @@ EventLogicUpdates.clearJennifersKey = function (ev) {
     ITEM_CODE,
   );
   ev.pages[1].list = EventLogicUpdates.itemDropClear(
-    ev.pages[0].list,
+    ev.pages[1].list,
     ITEM_CODE,
   );
-  ev.pages[0].list ==
-    EventLogicUpdates.deleteMessage(ev.pages[0].list, "Jennifer's Key");
-  ev.pages[1].list ==
-    EventLogicUpdates.deleteMessage(ev.pages[1].list, "Jennifer's Key");
+  ev.pages[0].list = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    MESSAGE_CODE,
+  );
+  ev.pages[1].list = EventLogicUpdates.itemDropClear(
+    ev.pages[1].list,
+    MESSAGE_CODE,
+  );
 };
 
 EventLogicUpdates.clearAugustesKey = function (ev) {
@@ -1837,13 +1852,17 @@ EventLogicUpdates.clearAugustesKey = function (ev) {
     ITEM_CODE,
   );
   ev.pages[1].list = EventLogicUpdates.itemDropClear(
-    ev.pages[0].list,
+    ev.pages[1].list,
     ITEM_CODE,
   );
-  ev.pages[0].list ==
-    EventLogicUpdates.deleteMessage(ev.pages[0].list, "Auguste's Key");
-  ev.pages[1].list ==
-    EventLogicUpdates.deleteMessage(ev.pages[1].list, "Auguste's Key");
+  ev.pages[0].list = EventLogicUpdates.itemDropClear(
+    ev.pages[0].list,
+    MESSAGE_CODE,
+  );
+  ev.pages[1].list = EventLogicUpdates.itemDropClear(
+    ev.pages[1].list,
+    MESSAGE_CODE,
+  );
 };
 
 EventLogicUpdates.clearGlitchElixirDrops = function (ev) {
@@ -2120,8 +2139,7 @@ EventLogicUpdates.clearFaceTakerDrops = function (ev) {
   ev.pages.forEach((page) => {
     // canvas carry bag and torn off face
     page.list = EventLogicUpdates.itemDropClear(page.list, ITEM_CODE);
-    page.list == EventLogicUpdates.deleteMessage(page.list, "Canvas Carry Bag");
-    page.list == EventLogicUpdates.deleteMessage(page.list, "Torn-Off Face");
+    page.list = EventLogicUpdates.itemDropClear(page.list, MESSAGE_CODE);
   });
 };
 
@@ -2474,17 +2492,25 @@ EventLogicUpdates.clearAudreySporeGuardianDrop = function (ev) {
       "She has found",
     );
   }
+  // theres no dead image for spore guardian, so we use regular image
+  const prevPage = ev.pages[2];
   const deadPage = ev.pages[3];
   EventLogicUpdates.updateAudreyLootDeadPage(
     deadPage,
     "FUNGUS_SPORE_GUARDIAN_AUDREY_LOOT",
+    `sSw(${FUNGUS_SPORE_GUARDIAN_AUDREY_LOOT_SWITCH}, true);`,
   );
+  deadPage.image = prevPage.image;
   // override the page that checks if spore mother is dead because we want to remove that condition anyway
   ev.pages[4] = {
     ...EMPTY_PAGE,
-    conditions: EventLogicUpdates.buildConditions("D"),
+    conditions: EventLogicUpdates.buildConditions(
+      undefined,
+      FUNGUS_SPORE_GUARDIAN_AUDREY_LOOT_SWITCH,
+    ),
     image: deadPage.image,
   };
+  deadPage.image = prevPage.image;
 };
 
 EventLogicUpdates.clearAudreySwatBattleDrop = function (ev) {
@@ -3387,6 +3413,26 @@ EventLogicUpdates.clearTroopsDrops = function () {
   }
 
   EventLogicUpdates.clearDoorEncounterDrops();
+
+  // deleting the message entirely so we can have the gift show up after battle
+  function clearLaughingMoldGift() {
+    let laughingMoldTroop = JsonEx.makeDeepCopy(
+      originalTroops[209].pages[0].list,
+    );
+
+    laughingMoldTroop = EventLogicUpdates.itemDropClear(
+      laughingMoldTroop,
+      ITEM_CODE,
+    );
+
+    laughingMoldTroop = EventLogicUpdates.deleteMessage(
+      laughingMoldTroop,
+      "Elixir",
+    );
+
+    $dataTroops[209].pages[0].list = laughingMoldTroop;
+  }
+  clearLaughingMoldGift();
 
   function clearDarrylGift() {
     let darrylTroop = JsonEx.makeDeepCopy(originalTroops[615].pages[7].list);
@@ -4316,6 +4362,7 @@ EventLogicUpdates.clearTroopsDrops = function () {
       comatusSwordList,
       "Whisperblade",
       "FUNGUS_COMATUS_COMBAT_VICTORY",
+      "Receive",
     );
 
     $dataTroops[207].pages[12].list = comatusSwordList;
@@ -4555,7 +4602,7 @@ EventLogicUpdates.clearTroopsDrops = function () {
       spineList,
       "Spine Dagger",
       "APT_33_MEAT_SPINE_GIFT",
-      "Receive"
+      "Receive",
     );
     $dataTroops[167].pages[0].list = spineList;
   }
