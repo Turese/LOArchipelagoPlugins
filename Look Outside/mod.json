@@ -42,6 +42,10 @@
       "target": "js/plugins/DoorHelpers.js"
     },
     {
+      "source": "js/plugins/ShopHelpers.js",
+      "target": "js/plugins/ShopHelpers.js"
+    },
+    {
       "source": "js/plugins/EventLogicUpdates.js",
       "target": "js/plugins/EventLogicUpdates.js"
     },
@@ -72,10 +76,6 @@
     {
       "source": "js/plugins/NormalizeDifficulty.js",
       "target": "js/plugins/NormalizeDifficulty.js"
-    },
-    {
-      "source": "js/plugins/ShopHelpers.js",
-      "target": "js/plugins/ShopHelpers.js"
     },
     {
       "source": "js/plugins/ToothHelpers.js",
