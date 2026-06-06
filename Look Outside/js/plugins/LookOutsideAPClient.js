@@ -154,7 +154,11 @@ LookOutsideAPClient.applyOverrides = function () {
       if ($dataTroops) EventLogicUpdates.clearTroopsDrops();
       if ($dataCommonEvents) EventLogicUpdates.clearCommonEventDrops();
     }
-    LookOutsideAPClient.startAPClient();
+    if (client.authenticated) {
+      LookOutsideAPClient.gameLoadedAPSetup();
+    } else {
+      LookOutsideAPClient.startAPClient();
+    }
     _extractSaveContents.call(this, contents);
   };
 
