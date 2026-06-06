@@ -84,7 +84,7 @@ const GOAL_CHECKER_PAGES = [
     },
   ]
 
-var GoalChecker = BackInTime || {};
+var GoalChecker = GoalChecker || {};
 
 GoalChecker.insertGoalCheckerEvent = function (ev) {
   ev.pages = GOAL_CHECKER_PAGES;
