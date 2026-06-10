@@ -3585,7 +3585,7 @@ MassEventUpdates.overrideOverworldPickups = function (currentMapId) {
     event.pages[pageIndex] = {
       ...event.pages[pageIndex],
       list: pickupList,
-      image: LookOutsideAPClient.getItemImage(name),
+      image: ItemImages.getItemImage(name),
       direction: 4,
       directionFix: true,
       moveFrequency: 3,

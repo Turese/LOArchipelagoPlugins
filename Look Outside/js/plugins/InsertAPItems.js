@@ -803,22 +803,6 @@ InsertAPItems.insertArm = function (position) {
   }
 };
 
-InsertAPItems.loadCurrentMapImages = function () {
-  if (MAP_OVERWORLD_ITEM_OVERRIDES[lastLoadedMapId]) {
-    ImageManager.loadCharacter(DEFAULT_AP_ITEM_IMAGE.characterName);
-    /*const characterImagesToLoad = new Set();
-    // todo: check if somethings already loaded before i try to reload
-    // todo: more than 1 character image
-    for (const characterImage of characterImagesToLoad) {
-      ImageManager.loadCharacter(characterImage);
-    }*/
-  }
-};
-
-InsertAPItems.shouldOverrideImage = function (url) {
-  return url == "img/characters/GameCarts.png";
-};
-
 // some items have names that need to be fixed
 InsertAPItems.renameItems = function () {
   $dataItems[336].name = "Incorrect CCTV Recording"; // incorrect recording

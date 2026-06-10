@@ -50,7 +50,7 @@ LookOutsideAPClient.applyOverrides = function () {
   // check other mods' custom images all together
   const shouldOverrideImage = function (url) {
     if (Unarmed.shouldOverrideImage(url)) return true;
-    if (InsertAPItems.shouldOverrideImage(url)) return true;
+    if (ItemImages.shouldOverrideImage(url)) return true;
     return false;
   };
 
@@ -74,7 +74,8 @@ LookOutsideAPClient.applyOverrides = function () {
   // update - extra images may be needed to be loaded when initializing the map
   const _createCharacters = Spriteset_Map.prototype.createCharacters;
   Spriteset_Map.prototype.createCharacters = function () {
-    InsertAPItems.loadCurrentMapImages();
+    console.log(this);
+    ItemImages.loadCurrentMapImages();
     _createCharacters.call(this);
   };
 
@@ -148,18 +149,14 @@ LookOutsideAPClient.applyOverrides = function () {
   // on load, attempt to connect to apclient
   const _extractSaveContents = DataManager.extractSaveContents;
   DataManager.extractSaveContents = function (contents) {
+    _extractSaveContents.call(this, contents);
     if ($gamePlayer && $gamePlayer.LOCATION_NAME_MAPPING) {
       // before logging in, try to use stored location names
       if ($dataMap) LookOutsideAPClient.applyDataMapUpdates(lastLoadedMapId);
       if ($dataTroops) EventLogicUpdates.clearTroopsDrops();
       if ($dataCommonEvents) EventLogicUpdates.clearCommonEventDrops();
     }
-    if (client.authenticated) {
-      LookOutsideAPClient.gameLoadedAPSetup();
-    } else {
-      LookOutsideAPClient.startAPClient();
-    }
-    _extractSaveContents.call(this, contents);
+    LookOutsideAPClient.startAPClient();
   };
 
   // any of these could play for any game over, but
@@ -462,6 +459,7 @@ const GOAL_MAPPING = {
 };
 
 LookOutsideAPClient.checkGoal = function () {
+  if (!$gamePlayer || !$gamePlayer.introFinished) return;
   const reachedEndings = LookOutsideAPClient.initializeReachedEndings();
   const slotData = LookOutsideAPClient.initializeSlotData();
   if (!slotData || !reachedEndings) return;
@@ -500,7 +498,6 @@ LookOutsideAPClient.gameLoadedAPSetup = function (slotData) {
   if (LookOutsideAPClient.isOnTitleMenu()) return; // dont initialize if we're not in a game
   if (!$gamePlayer) return;
   LookOutsideAPClient.initializeLocationNames();
-  if (!$gamePlayer.introFinished) return; // dont initialize anything before the opening cutscene
   LookOutsideAPClient.updateItems();
   LookOutsideAPClient.checkGoal();
   LookOutsideAPClient.reportLocations();
@@ -574,16 +571,18 @@ LookOutsideAPClient.startAPClient = async function (deathLink) {
         }
         disconnectedMessage = e.message;
       });
-  } else {
-    if ($gamePlayer) {
-      LookOutsideAPClient.retrieveSlotData().then((slotData) =>
-        LookOutsideAPClient.gameLoadedAPSetup(slotData),
-      );
-    }
+  } else if ($gamePlayer && !$gamePlayer.slotData) {
+    LookOutsideAPClient.retrieveSlotData().then((slotData) =>
+      LookOutsideAPClient.gameLoadedAPSetup(slotData),
+    );
+  } else if ($gamePlayer) {
+    LookOutsideAPClient.gameLoadedAPSetup();
   }
 };
 
 LookOutsideAPClient.reportLocations = function () {
+  if (!$gamePlayer || !$gamePlayer.introFinished) return;
+
   const reachedLocations = LookOutsideAPClient.initializeLocationObject();
   if (client.authenticated)
     client.check(...Object.keys(reachedLocations).map(Number));
@@ -867,11 +866,6 @@ LookOutsideAPClient.getItemName = function (
     return `${player && !useTrapName ? player + " " : ""}\\C[${colorToUse}]${nameToUse}\\C[0]`;
   }
   return `${player && !useTrapName ? player + " " : ""}\\C[${colorToUse}]{${nameToUse}}\\C[0]`;
-};
-
-LookOutsideAPClient.getItemImage = function (apLocationName) {
-  // todo: actually get the item image
-  return DEFAULT_AP_ITEM_IMAGE;
 };
 
 // used for deathlink; don't want to send death link on a death caused by someone else's

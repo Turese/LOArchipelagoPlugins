@@ -3090,6 +3090,10 @@ EventLogicUpdates.strangeTraderInitList = function (ev) {
   ShopHelpers.strangeTraderInitList(ev);
 };
 
+EventLogicUpdates.insertGoalCheckerEvent = function (ev) {
+  GoalChecker.insertGoalCheckerEvent(ev);
+};
+
 const EVENT_UPDATE_TABLE = {
   2: {
     5: BlackoutLamp.createLampBlackoutEvent,
@@ -3371,7 +3375,7 @@ const EVENT_UPDATE_TABLE = {
     25: EventLogicUpdates.clearMuttTrophy,
   },
   28: {
-    12: GoalChecker.insertGoalCheckerEvent,
+    12: EventLogicUpdates.insertGoalCheckerEvent,
   },
   169: {
     2: EventLogicUpdates.clearWilhelminaDrop,
@@ -3419,6 +3423,7 @@ let originalTroops;
 // i make a copy of the original troops on first modification
 // so future modifications can start from a clean slate
 EventLogicUpdates.clearTroopsDrops = function () {
+  console.log('---------------calling now---------------')
   if (!troopsUpdated) {
     originalTroops = JsonEx.makeDeepCopy($dataTroops);
     troopsUpdated = true;

@@ -46,6 +46,10 @@
       "target": "js/plugins/ShopHelpers.js"
     },
     {
+      "source": "js/plugins/ItemImages.js",
+      "target": "js/plugins/ItemImages.js"
+    },
+    {
       "source": "js/plugins/EventLogicUpdates.js",
       "target": "js/plugins/EventLogicUpdates.js"
     },
@@ -224,6 +228,12 @@
       "name": "ToothHelpers",
       "status": true,
       "description": "helper function for overriding tooth family events",
+      "parameters": {}
+    },
+    {
+      "name": "ItemImages",
+      "status": true,
+      "description": "Manages overworld item image overrides",
       "parameters": {}
     },
     {
