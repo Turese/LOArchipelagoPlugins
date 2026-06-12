@@ -619,12 +619,13 @@ LookOutsideAPClient.shouldSendMessageForLocation = function (locationId) {
   // these ones handle their own messages so we leave them out
   if (
     [
-      "FUNGUS_SYLVAIN_RESCUE_COMBAT_VICTORY",
+      "FUNGUS_CLAIRE_RESCUE_COMBAT_VICTORY",
       "FUNGUS_SYLVAIN_RESCUE_COMBAT_VICTORY",
       "FUNGUS_JEAN_P_RESCUE_COMBAT_VICTORY",
       "GF_KOTD_COMBAT_VICTORY",
       "MEAT_SYBIL_COMBAT_VICTORY",
       "FUNGUS_COMATUS_COMBAT_VICTORY",
+      "F1_RAT_KING_COMBAT_VICTORY",
     ].includes(locationId)
   )
     return false;
@@ -674,7 +675,7 @@ LookOutsideAPClient.shouldSendMessageForLocation = function (locationId) {
       "GAME_SKILL_SCREAMATORIUM",
       "GAME_SKILL_FROGIT_ABOUT_IT",
       "GAME_SKILL_BLOOD_GHOUL_ORGY_3",
-      "GAME_SKILL_OCTOCOOK: 16",
+      "GAME_SKILL_OCTOCOOK",
       "GAME_SKILL_SPACE_TRUCKERZ",
       "GAME_SKILL_REPTILE_FOOTBALL",
       "GAME_SKILL_CROSSWORD_CHALLENGE",
@@ -696,6 +697,8 @@ LookOutsideAPClient.shouldSendMessageForLocation = function (locationId) {
       "FRED_EIGHTH_COMBAT_VICTORY",
       "FRED_NINTH_COMBAT_VICTORY",
       "FRED_ALL_COMBAT_VICTORY",
+      "APT_33_MEAT_SPINE_SPARE",
+      "APT_33_BEDROOM_REFUSE_SHADOW"
     ].includes(locationId)
   )
     return true;

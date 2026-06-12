@@ -52,8 +52,8 @@ InsertAPItems.insertItem = function (id, itemClass, amount = 1) {
     if (itemClass === "weapon" && id == 251) {
       // spine dagger is ethereal dagger in non-meatworld
       if (gSw(1107))
-        $gameParty.gainItem(251, amount); // if in meat world, spine dagger
-      else $gameParty.gainItem(249, amount); // if not meat world, ethereal dagger
+        $gameParty.gainItem(item, amount); // if in meat world, spine dagger
+      else $gameParty.gainItem($dataWeapons[249], amount); // if not meat world, ethereal dagger
       return;
     }
     $gameParty.gainItem(item, amount);

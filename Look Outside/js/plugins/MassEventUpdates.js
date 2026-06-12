@@ -3435,6 +3435,31 @@ MassEventUpdates.overrideOverworldPickups = function (currentMapId) {
     ];
   }
 
+  function getNoConfAPItemPickupList(script, itemName) {
+    return [
+      {
+        code: 355,
+        indent: 0,
+        parameters: [`${script}`],
+      },
+      {
+        code: 101,
+        indent: 0,
+        parameters: ["", 0, 0, 2, ""],
+      },
+      {
+        code: 401,
+        indent: 0,
+        parameters: [`Find ${itemName}.`],
+      },
+      {
+        code: 0,
+        indent: 0,
+        parameters: [],
+      },
+    ];
+  }
+
   function getTrapPickupList(script, fakeItemName, itemName, prefix = "") {
     return [
       {
@@ -3565,27 +3590,30 @@ MassEventUpdates.overrideOverworldPickups = function (currentMapId) {
     }
     if (name === "APT_28_ABYSSAL_CHOCKY_BAR") {
       pageIndex = 1;
-      prefix = "The creature left an item. ...";
+      prefix = "The creature left an item. ";
     }
 
     const isTrap = LookOutsideAPClient.isLocationTrap(name);
+    const isHiddenItem = $gamePlayer.slotData["hide_overworld_items"];
 
     const itemName = LookOutsideAPClient.getItemName(name);
 
-    let pickupList = isTrap
-      ? getTrapPickupList(
-          script,
-          // gets trap item name
-          LookOutsideAPClient.getItemName(name, false, true),
-          itemName,
-          prefix,
-        )
-      : getAPItemPickupList(script, itemName, prefix);
+    let pickupList = isHiddenItem
+      ? getNoConfAPItemPickupList(script, itemName)
+      : isTrap
+        ? getTrapPickupList(
+            script,
+            // gets trap item name
+            LookOutsideAPClient.getItemName(name, false, true),
+            itemName,
+            prefix,
+          )
+        : getAPItemPickupList(script, itemName, prefix);
 
     event.pages[pageIndex] = {
       ...event.pages[pageIndex],
       list: pickupList,
-      image: ItemImages.getItemImage(name),
+      image: ItemImages.getItemImage(name, isHiddenItem),
       direction: 4,
       directionFix: true,
       moveFrequency: 3,

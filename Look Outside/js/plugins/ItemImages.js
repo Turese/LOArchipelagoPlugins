@@ -58,7 +58,7 @@ const ITEM_NAME_IMAGE_MAPPING = {
   "Succulent Fruit??": ["Items", 8, 0, 5],
   "Tonic+??": ["Items", 2, 1, 1],
   "Cheese Wedge": ["FoodItems", 6, 0, 4],
-  "M dic#t10n": ["APItems", 8, 2, 4],
+  "M dic#t10n": ["APItems2", 8, 2, 4],
   "Cola Can": ["Items", 2, 0, 6],
   "Lemon Drink Can": ["Items", 2, 1, 6],
   "Orange Drink Can": ["Items", 2, 2, 6],
@@ -132,7 +132,7 @@ const ITEM_NAME_IMAGE_MAPPING = {
   "Mocha Latte": ["Items", 8, 1, 6],
   Honeycomb: ["APItems", 6, 1, 3],
   "Hling Spr ay": ["Items2", 6, 1, 0],
-  "Worm Bomb": ["APItems", 2, 2, 5],
+  "Worm Bomb": ["APItems2", 2, 2, 5],
   "Marc-André": ["APItems", 6, 0, 3],
   "All-Seeing 8-Ball": ["APItems", 6, 1, 1],
   "Special Candy": ["APItems", 4, 0, 3],
@@ -148,7 +148,7 @@ const ITEM_NAME_IMAGE_MAPPING = {
   "Cheese Boy": ["FoodItems", 6, 0, 5],
   "Pale Fluid": ["APItems2", 2, 2, 4],
   "Black Ooze": ["APItems", 8, 1, 1],
-  "Caustic Brew": ["APItems", 2, 0, 5],
+  "Caustic Brew": ["APItems2", 2, 0, 5],
   Cloth: ["Items", 8, 0, 7],
   Detonator: ["KeyItems", 4, 0, 7],
   Radio: ["APItems", 4, 0, 2],
@@ -458,7 +458,7 @@ const ITEM_NAME_IMAGE_MAPPING = {
   "Pizza Cutter": ["APItems2", 4, 1, 3],
   "Wordsmith's Hammer": ["APItems", 8, 2, 7],
   "Spear of the Word": ["APItems", 6, 2, 7],
-  Spellsword: ["APItems", 6, 0, 5],
+  Spellsword: ["APItems2", 6, 0, 5],
   "Worm O' Nine Tails": ["APItems2", 6, 0, 2],
   "Stained Shears": ["APItems2", 6, 2, 3],
   "Angel's Bat": ["APItems2", 6, 1, 3],
@@ -489,7 +489,7 @@ const ITEM_NAME_IMAGE_MAPPING = {
   "Ocular Tetherblade": ["Items2", 4, 0, 1],
   "Mossy Hammer": ["APItems2", 8, 2, 2],
   "Goblin's Claws": ["Melee", 4, 2, 6],
-  "Spine Dagger": ["APItems", 8, 2, 5],
+  "Spine Dagger": ["APItems2", 8, 2, 5],
   "Icicle Spike": ["APItems2", 4, 0, 2],
   Electroclaw: ["APItems2", 8, 2, 0],
   "Hadal Trident": ["Melee", 6, 1, 5],
@@ -626,7 +626,7 @@ const ITEM_NAME_IMAGE_MAPPING = {
   "Shadow Cloak": ["APItems", 4, 0, 5],
   "Shadow Ring": ["APItems", 6, 0, 6],
   Mittens: ["APItems", 6, 1, 4],
-  "Paint-Stained Apron": ["APItems", 4, 0, 4],
+  "Paint-Stained Apron": ["APItems2", 4, 0, 4],
   Beret: ["APItems2", 4, 1, 4],
   "Strange Feather": ["APItems", 4, 2, 5],
   "Paint Palette": ["APItems2", 4, 2, 7],
@@ -794,7 +794,8 @@ const ITEM_NAME_IMAGE_MAPPING = {
 
 const DEFAULT_AP_ITEM_MAPPING = ["GameCarts", 4, 0, 3];
 
-ItemImages.getItemImage = function (apLocationName) {
+ItemImages.getItemImage = function (apLocationName, useDefault) {
+  if (useDefault) return ItemImages.buildItemImage();
   let mapping = LookOutsideAPClient.getLocationMapping(apLocationName);
   let itemName = "";
   if (mapping) {

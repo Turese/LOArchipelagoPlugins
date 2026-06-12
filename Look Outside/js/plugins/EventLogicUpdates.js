@@ -3423,7 +3423,6 @@ let originalTroops;
 // i make a copy of the original troops on first modification
 // so future modifications can start from a clean slate
 EventLogicUpdates.clearTroopsDrops = function () {
-  console.log('---------------calling now---------------')
   if (!troopsUpdated) {
     originalTroops = JsonEx.makeDeepCopy($dataTroops);
     troopsUpdated = true;
