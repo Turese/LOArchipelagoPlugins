@@ -73,12 +73,20 @@ NormalizeDifficulty.applyChanges = function () {
         const conditions = page.conditions;
 
         if (conditions.switch1Valid) {
-          if (page.conditions.switch1Id === EASYMODE)
+          if (page.conditions.switch1Id === EASYMODE) {
             page.conditions.switch1Id = TRUE_SWITCH_ID;
+            console.log(
+              `!!!!! HIT EASYMODE ON SWITCH 1: MAP: ${dataMap.mapId}, EVENT: ${evt.id}`,
+            );
+          }
         }
         if (conditions.switch2Valid) {
-          if (page.conditions.switch2Id === EASYMODE)
+          if (page.conditions.switch2Id === EASYMODE) {
             page.conditions.switch2Id = TRUE_SWITCH_ID;
+            console.log(
+              `!!!!! HIT EASYMODE ON SWITCH 2: MAP: ${dataMap.mapId}, EVENT: ${evt.id}`,
+            );
+          }
         }
       });
     });
@@ -94,12 +102,20 @@ NormalizeDifficulty.applyChanges = function () {
         const conditions = page.conditions;
 
         if (conditions.switch1Valid) {
-          if (page.conditions.switch1Id === HARDMODE)
+          if (page.conditions.switch1Id === HARDMODE) {
             page.conditions.switch1Id = TRUE_SWITCH_ID;
+            console.log(
+              `!!!!! HIT HARDMODE ON SWITCH 1: MAP: ${dataMap.mapId}, EVENT: ${evt.id}`,
+            );
+          }
         }
         if (conditions.switch2Valid) {
-          if (page.conditions.switch2Id === HARDMODE)
+          if (page.conditions.switch2Id === HARDMODE) {
             page.conditions.switch2Id = TRUE_SWITCH_ID;
+            console.log(
+              `!!!!! HIT HARDMODE ON SWITCH 2: MAP: ${dataMap.mapId}, EVENT: ${evt.id}`,
+            );
+          }
         }
       });
     });
@@ -179,7 +195,11 @@ NormalizeDifficulty.applyChanges = function () {
       ev.pages.splice(2, 1); // turpentine in fred's studio
     }
 
-    if (lastLoadedMapId == 292 && (ev.id == 14 || ev.id == 12) && ev.pages.length == 3) {
+    if (
+      lastLoadedMapId == 292 &&
+      (ev.id == 14 || ev.id == 12) &&
+      ev.pages.length == 3
+    ) {
       ev.pages.splice(2, 1); // cheese in rat lair
     }
   }
