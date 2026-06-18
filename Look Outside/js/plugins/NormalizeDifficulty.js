@@ -202,6 +202,18 @@ NormalizeDifficulty.applyChanges = function () {
     ) {
       ev.pages.splice(2, 1); // cheese in rat lair
     }
+
+    if (lastLoadedMapId == 79 && ev.id == 9 && ev.pages.length == 3) {
+      ev.pages.splice(2, 1); // basement junk 4
+    }
+
+    if (lastLoadedMapId == 258 && ev.id == 12 && ev.pages.length == 3) {
+      ev.pages.splice(2, 1); // sewer sw item 2
+    }
+
+    if (lastLoadedMapId == 84 && ev.id == 10 && ev.pages.length == 3) {
+      ev.pages.splice(1, 1); // boiler north junk 1
+    }
   }
 
   function forceNormalModePositiveItem(ev, lastLoadedMapId) {

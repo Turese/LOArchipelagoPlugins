@@ -295,7 +295,7 @@ BackInTime.regretTemplates = {
         code: 401,
         indent: 2,
         parameters: [
-          "may have been mistaken as to which Fred was the real one. You",
+          "may have been mistaken as to which Fred was the real one.",
         ],
       },
       {
@@ -347,7 +347,7 @@ BackInTime.regretTemplates = {
       {
         code: 401,
         indent: 2,
-        parameters: [" killed so many before becoming the new rat king."],
+        parameters: ["killed so many before becoming the new rat king."],
       },
       {
         code: 401,

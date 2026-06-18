@@ -83,6 +83,8 @@ LookOutsideAPClient.applyOverrides = function () {
   Scene_Map.prototype.onMapLoaded = function () {
     _onMapLoaded.call(this);
     LookOutsideAPClient.checkMapForEnding($gameMap.mapId());
+    LookOutsideAPClient.checkMapForLocation($gameMap.mapId());
+    LookOutsideAPClient.sendGrinningBeastMessages($gameMap.mapId());
   };
 
   const _Game_Map_setup = Game_Map.prototype.setup;
@@ -156,7 +158,7 @@ LookOutsideAPClient.applyOverrides = function () {
       if ($dataTroops) EventLogicUpdates.clearTroopsDrops();
       if ($dataCommonEvents) EventLogicUpdates.clearCommonEventDrops();
     }
-    LookOutsideAPClient.startAPClient();
+    LookOutsideAPClient.startAPClient(true);
   };
 
   // any of these could play for any game over, but
@@ -396,6 +398,34 @@ const ALL_ENDINGS = [
   "noGoingBack",
 ];
 
+LookOutsideAPClient.checkMapForLocation = function (lastLoadedMapId) {
+  // so far, only rat hell entrance fight covered here
+  if (lastLoadedMapId == 310)
+    LookOutsideAPClient.setLocation("RAT_HELL_ENTRANCE_COMBAT_VICTORY");
+};
+
+// sending grinning beast messages works different since if we send it upon defeating the beast,
+// it interrupts the map transition
+LookOutsideAPClient.sendGrinningBeastMessages = function (lastLoadedMapId) {
+  if (lastLoadedMapId == 186) {
+    // this is the post-beast fight map that transitions back into the f2 hall
+    // safe to print reward messages without further checks
+    // since the player will never come back here again after they defeated the grinning beast
+    if (gSw(119)) {
+      // check for grinning beast defeated
+      $gameMessage.add(
+        EventLogicUpdates.getMessage("F2_GRINNING_BEAST_COMBAT_VICTORY"),
+      );
+      if (!$gameSelfSwitches._data[[372, 31, "A"].toString()]) {
+        $gameMessage.add(
+          EventLogicUpdates.getMessage("F2_GRINNING_BEAST_CHASE_POOL_CUE"),
+        );
+        // if we didnt pick up the item manually, then it would be awarded here too
+      }
+    }
+  }
+};
+
 LookOutsideAPClient.checkMapForEnding = function (lastLoadedMapId) {
   if (!$gamePlayer) return; // no endings if player isnt playing
   let endingIds = [];
@@ -488,14 +518,14 @@ LookOutsideAPClient.submitGoal = function () {
   if (client.authenticated) client.goal();
 };
 
-LookOutsideAPClient.gameLoadedAPSetup = function (slotData) {
+LookOutsideAPClient.gameLoadedAPSetup = function (slotData, loadingSave) {
   if (!client.authenticated) return;
   if (slotData) {
     LookOutsideAPClient.updateDeathLink(slotData);
     LookOutsideAPClient.initializeSlotData(slotData);
     LookOutsideAPClient.makeSlotDataChanges();
   }
-  if (LookOutsideAPClient.isOnTitleMenu()) return; // dont initialize if we're not in a game
+  if (LookOutsideAPClient.isOnTitleMenu() && !loadingSave) return; // dont initialize if we're not in a game
   if (!$gamePlayer) return;
   LookOutsideAPClient.initializeLocationNames();
   LookOutsideAPClient.updateItems();
@@ -511,7 +541,7 @@ const resetClient = async function () {
   LookOutsideAPClient.startAPClient();
 };
 
-LookOutsideAPClient.startAPClient = async function (deathLink) {
+LookOutsideAPClient.startAPClient = async function (loadingSave) {
   if (connecting) return;
   const slotName = ConfigManager.slotName || "";
   const roomId = ConfigManager.roomId || "";
@@ -527,12 +557,6 @@ LookOutsideAPClient.startAPClient = async function (deathLink) {
     disconnectedMessage = "AP Client not connected: missing room id.";
     connectionTimerFrames = null;
     return;
-  }
-
-  let tags = [];
-
-  if (deathLink) {
-    tags = ["DeathLink"];
   }
 
   client.items.on("itemsReceived", (_m) => {
@@ -561,22 +585,25 @@ LookOutsideAPClient.startAPClient = async function (deathLink) {
       .login(roomId, slotName, "Look Outside", args)
       .then((slotData) => {
         connecting = false;
-        LookOutsideAPClient.gameLoadedAPSetup(slotData);
+        LookOutsideAPClient.gameLoadedAPSetup(slotData, loadingSave);
       })
       .catch((e) => {
         connecting = false;
         console.error(e);
         if ($gamePlayer && $gamePlayer.slotData) {
-          LookOutsideAPClient.gameLoadedAPSetup($gamePlayer.slotData);
+          LookOutsideAPClient.gameLoadedAPSetup(
+            $gamePlayer.slotData,
+            loadingSave,
+          );
         }
         disconnectedMessage = e.message;
       });
   } else if ($gamePlayer && !$gamePlayer.slotData) {
     LookOutsideAPClient.retrieveSlotData().then((slotData) =>
-      LookOutsideAPClient.gameLoadedAPSetup(slotData),
+      LookOutsideAPClient.gameLoadedAPSetup(slotData, loadingSave),
     );
-  } else if ($gamePlayer) {
-    LookOutsideAPClient.gameLoadedAPSetup();
+  } else {
+    LookOutsideAPClient.gameLoadedAPSetup(undefined, loadingSave);
   }
 };
 
@@ -626,6 +653,7 @@ LookOutsideAPClient.shouldSendMessageForLocation = function (locationId) {
       "MEAT_SYBIL_COMBAT_VICTORY",
       "FUNGUS_COMATUS_COMBAT_VICTORY",
       "F1_RAT_KING_COMBAT_VICTORY",
+      "F2_GRINNING_BEAST_COMBAT_VICTORY",
     ].includes(locationId)
   )
     return false;
@@ -698,7 +726,8 @@ LookOutsideAPClient.shouldSendMessageForLocation = function (locationId) {
       "FRED_NINTH_COMBAT_VICTORY",
       "FRED_ALL_COMBAT_VICTORY",
       "APT_33_MEAT_SPINE_SPARE",
-      "APT_33_BEDROOM_REFUSE_SHADOW"
+      "APT_33_BEDROOM_REFUSE_SHADOW",
+      "STAIRS_SPIDER_RECRUIT",
     ].includes(locationId)
   )
     return true;

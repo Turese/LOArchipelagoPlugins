@@ -201,6 +201,11 @@ const SECRET_DOOR_LIST = [
     parameters: ["You open the door."],
   },
   {
+    code: 355,
+    indent: 4,
+    parameters: ["sSw(597, false);"], // player is no longer under the stairs
+  },
+  {
     code: 201,
     indent: 4,
     parameters: [0, 324, 11, 30, 0, 0],
@@ -1392,7 +1397,7 @@ EventLogicUpdates.updateShadeDefeatConditions = function (ev) {
 
 EventLogicUpdates.updateCrawlingShadeDefeatConditions = function (ev) {
   ev.pages[0].list = EMPTY_PAGE.list;
-  updateShadeDefeatConditions(ev);
+  EventLogicUpdates.updateShadeDefeatConditions(ev);
 };
 
 EventLogicUpdates.updateJoelPages = function (ev) {
@@ -2235,7 +2240,7 @@ EventLogicUpdates.fixRoxieRoomItemDoubleEntry = function (ev) {
 EventLogicUpdates.clearGrateLever = function (ev) {
   ev.pages[1].list = EventLogicUpdates.itemDropClear(
     ev.pages[1].list,
-    111, // = set switch
+    SET_SWITCH_CODE,
   );
 };
 
@@ -5438,6 +5443,18 @@ EventLogicUpdates.clearCommonEventDrops = function () {
     $dataCommonEvents[43].list = paintingsList;
   }
   clearResetPaintings();
+
+  function disableDoorEncounters() {
+    // set the time for all four types of door encounters to 99 oq' clock (never hit)
+    $dataCommonEvents[71].list = [
+      {
+        code: 355,
+        indent: 0,
+        parameters: ["sVr(53, 99); sVr(56, 99); sVr(59, 99); sVr(624, 99);"],
+      },
+    ];
+  }
+  disableDoorEncounters();
 };
 
 EventLogicUpdates.buyItemTableScript = () => {

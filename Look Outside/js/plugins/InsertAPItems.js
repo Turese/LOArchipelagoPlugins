@@ -806,7 +806,7 @@ InsertAPItems.insertArm = function (position) {
 // some items have names that need to be fixed
 InsertAPItems.renameItems = function () {
   $dataItems[336].name = "Incorrect CCTV Recording"; // incorrect recording
-  $dataItems[365].name = "Incorrect Photograph"; // incorrect recording
+  $dataItems[365].name = "Empty Photograph"; // incorrect photo
   $dataItems[342].name = "Incorrect Painting"; // incorrect painting
 };
 

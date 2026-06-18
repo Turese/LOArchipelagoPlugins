@@ -1582,6 +1582,10 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
       "APT_12_WALLS_SMG_BULLETS",
       "$gameSelfSwitches.setValue([359, 25, 'A'], true)",
     ],
+    26: [
+      "APT_12_WALLS_BANDAGES",
+      "$gameSelfSwitches.setValue([359, 26, 'A'], true)",
+    ]
   },
 
   378: {
@@ -3260,6 +3264,8 @@ const DRAWER_ITEM_OVERRIDES = {
 // all are "LL_COUCH_LOOT" with "sSw(436, true);"
 const COUCH_ITEM_OVERRIDES = {
   129: 17,
+  129: 14,
+  129: 18,
   204: 23,
   205: 28,
   206: 33,

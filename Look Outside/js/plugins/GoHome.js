@@ -38,18 +38,21 @@ GoHome.applyChanges = function () {
     AudioManager.fadeOutBgm(1);
     $gameScreen.startTint([0, 0, 0, 0], 60);
 
-    if (gSw(1107)) { //InMeatWorld
+    if (gSw(1107)) {
+      //InMeatWorld
       $gameTemp.reserveCommonEvent(260); // commonevent - leaveFlesh
     }
     if (gSw(348)) {
-      sSw(348, false) // InLandlordApt = OFF
+      sSw(348, false); // InLandlordApt = OFF
     }
     // takes you to map 6 (f3 hall) at x=51,y=7 (frontdoor placemat)
     // position 8 (facing up) transition 0 (fade to black)
 
     $gameTimer.stop(); // if youre in the water apartment, stop timer
-    $gameMap.eraseFilter('water');
+    $gameMap.eraseFilter("water");
     $gamePlayer.setMoveSpeed(4);
+
+    sSw(597, false); // player is not under the stairs; fix clipping issue
 
     $gamePlayer.reserveTransfer(6, 51, 7, 8, 0);
     // unpauses
