@@ -247,84 +247,132 @@ BackInTime.haveAnyAstronomersLeft = function () {
   );
 };
 
+BackInTime.generateRegretList = function (rText) {
+  const regretIndent = 2;
+  // format, array of arrays of strings. each
+  // has indent 2 because thats how deep the
+  // regret dialogue is indented in the event
+  const dialogueOpener = {
+    code: 101,
+    indent: regretIndent,
+    parameters: ["", 0, 0, 2, ""],
+  };
+  let regretList = [];
+  rText.forEach((textBoxSet) => {
+    regretList.push(dialogueOpener);
+    textBoxSet.forEach((text) => {
+      regretList.push({
+        code: 401,
+        indent: regretIndent,
+        parameters: [text],
+      });
+    });
+  });
+  return regretList;
+};
+
 BackInTime.regretTemplates = {
   sybilDead: {
     rFunction: "BackInTime.fixSybilKilled",
     rName: "(([!s[975],!s[969]]))Sybil.",
-    rText: [],
+    rText: [
+      [
+        "You think of Sybil. Perhaps the knowledge she was protecting",
+        "should be left alone after all. If only you hadn't realized",
+        "this too late. You close your eyes and ruminate on your regret...",
+      ],
+      [
+        "Actually, is she dead? You wouldn't ever hurt her. In fact,",
+        "you feel as though she's coming to take a peek through the",
+        "hole in the wall very soon!",
+      ],
+    ],
   },
   spiderHuskDead: {
     rFunction: "BackInTime.fixSpiderHuskKilled",
     rName: "(([!s[1083]]))Spider Husk.",
-    rText: [],
+    rText: [
+      [
+        "You think of how you killed that spider husk",
+        "from apartment 12. It seemed more lucid than the",
+        "others. You close your eyes and imagine what it",
+        "could have been...",
+      ],
+      [
+        "Actually, did you even kill it? It was connected to the",
+        "growths on the floors and walls, and you didn't kill",
+        "that part. You feel like you should go back and see. You",
+        "wouldn't be surprised if it's already perked back up.",
+      ],
+    ],
   },
   tickleDead: {
     rFunction: "BackInTime.fixTickleDead",
     // also checks if tickle is on player or on the tickmonger
     rName: "(([s[672];s[673];!s[661]]))Tickle.",
-    rText: [],
+    rText: [
+      [
+        "You think of Tickle. You really miss his cool shop. There must",
+        "have been a better way to get him off that pipe. You close",
+        "your eyes and think...",
+      ],
+      [
+        "Actually, is he dead? You might have just knocked him into the",
+        "water. In fact, you wouldn't be surprised if he already crawled",
+        "back up there.",
+      ],
+    ],
   },
   emmanuelDead: {
     rCondition: BackInTime.isEmmanuelDead,
     rFunction: "BackInTime.fixEmmanuelKilled",
     rName: "Emmanuel.",
-    rText: [],
+    rText: [
+      [
+        "You think of Emmanuel. You have to hand it to him,",
+        "he was a chill dude. You wish you hadn't killed him.",
+        "You close your eyes and clasp your hands...",
+      ],
+      [
+        "Actually, did you kill him? You wouldn't have.",
+        "In fact, you feel like he's back at Mutt's listening",
+        "to his tapes right now.",
+      ],
+    ],
   },
   kaeleyDead: {
     rCondition: BackInTime.isKaeleyDead,
     rFunction: "BackInTime.fixKaeleyKilled",
     rName: "Kaeley.",
-    rText: [],
+    rText: [
+      [
+        "You think of Kaeley. You wish you hadn't killed",
+        "her like that. You close your eyes and focus on",
+        "locking those bad memories away...",
+      ],
+      [
+        "Actually, did you kill her? No, you couldn't have.",
+        "She's probably back in her maze locking some",
+        "more doors right now.",
+      ],
+    ],
   },
   trueFredDead: {
     rCondition: BackInTime.isTrueFredDead,
     rFunction: "BackInTime.fixTrueFredKilled",
     rName: "Fred.",
     rText: [
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["You think of that Fred from the closet. You think you"],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "may have been mistaken as to which Fred was the real one.",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["You close your eyes and vow to be more conscientious..."],
-      },
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["Actually, did you kill him? You couldn't have."],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "In fact, you feel as though he's healthier than ever right",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["now."],
-      },
+      [
+        "You think of the faceless Fred from the closet. You're getting",
+        "the feeling that you might have been too hasty in assuming",
+        "that he wasn't the real one. You close your eyes and",
+        "vow to be more conscientious in the future...",
+      ],
+      [
+        "Actually, did you kill him? Nah, you wouldn't have. You knew he",
+        "was the real one the whole time! He's probably in ",
+        "his closet painting something new at this very moment.",
+      ],
     ],
   },
   ratsDead: {
@@ -332,102 +380,32 @@ BackInTime.regretTemplates = {
     rName: "Rats.",
     rFunction: "BackInTime.fixFriendlyRatsKilled",
     rText: [
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "You think of the rats on the first floor. You wish you hadn't",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["killed so many before becoming the new rat king."],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["You close your eyes and imagine your rat kingdom..."],
-      },
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["Actually, there were plenty of rats, what's killing one"],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "or two? In fact, you feel as though new ones have arrived to",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["take the dead ones' places already."],
-      },
+      [
+        "You think of the rats on the first floor. You wish you hadn't",
+        "killed so many before becoming the new rat king.",
+        "You close your eyes and imagine your rat kingdom...",
+      ],
+      [
+        "Actually, there were plenty of rats, what's the harm in",
+        "killing one or two? You feel as though new ones",
+        "have arrived to take the dead ones' places already.",
+      ],
     ],
   },
   papineauDead: {
     rName: "(([!s[169]]))Papineau.",
     rFunction: "BackInTime.fixPapKilled",
     rText: [
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "You think of Papineau. You know you murdered him and all but you",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "but you wish he didn't have to be so dead about it. You close your",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["eyes and vow to do better..."],
-      },
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["Actually, is he dead? You might have made that part up."],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "In fact, you feel as though he's healthier than ever right",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["now."],
-      },
+      [
+        "You think of Papineau. You regret killing him.",
+        "The world is a filthier place for his absence. You close",
+        "Your eyes and vow to go clean from now on...",
+      ],
+      [
+        "Actually, is he dead? He couldn't be. You wouldn't",
+        "have done a deed that dirty. He's probably",
+        "busy mopping the break room right now.",
+      ],
     ],
   },
   joelDead: {
@@ -435,105 +413,51 @@ BackInTime.regretTemplates = {
     rCondition: BackInTime.isJoelDead,
     rFunction: "BackInTime.fixJoelKilled",
     rText: [
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "You think of Joel. He was just a kid, did you really have",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["to attack him? You close your eyes and vow to do"],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["better in the future..."],
-      },
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["Actually, is he dead? You might have hallucinated that."],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["In fact, you feel like you should run over and check"],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["on him right now."],
-      },
+      [
+        "You think of Joel. He was just a kid, did you really have",
+        "to attack him? You close your eyes and vow to do",
+        "better in the future...",
+      ],
+      [
+        "Actually, is he dead? You might have hallucinated that.",
+        "You feel like you should run over and check",
+        "on him right now.",
+      ],
     ],
   },
   benDead: {
     rName: "Ben.",
     rCondition: BackInTime.isBenDead,
     rFunction: "BackInTime.fixBenKilled",
-    rText: [],
+    rText: [
+      [
+        "You think of Joel's little brother. Ben.",
+        "You didn't need to hurt him. He wasn't even paying any",
+        "attention to you until you attacked. You close your eyes",
+        "and vow to do better...",
+      ],
+      [
+        "Actually, is he dead? You wouldn't kill a kid, would you?",
+        "You feel the urge to go over and check right now.",
+      ],
+    ],
   },
   sadipedeDead: {
     rCondition: BackInTime.isSadipedeDead,
     rName: "Marc-André.",
     rFunction: "BackInTime.fixSadipedeKilled",
     rText: [
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["You think of Marc-andré. All he wanted was to kill you."],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "Was that too much to ask? You close your eyes and vow to",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["be more generous in the future..."],
-      },
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["Actually, is he dead? You might have made that part up."],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "In fact, you feel like you should run back to the elevator and",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["let him kill you right now."],
-      },
+      [
+        "You think of Marc-André. All he wanted was",
+        "to kill you a little bit. Was that so wrong? You",
+        "close your eyes and vow to be more generous",
+        "In the future...",
+      ],
+      [
+        "Actually, did you kill him? You're better than",
+        "that. He's probably right where you left him",
+        "You feel the urge to go back up to comfort him.",
+      ],
     ],
   },
   steveDead: {
@@ -541,45 +465,17 @@ BackInTime.regretTemplates = {
     rName: "Steve.",
     rFunction: "BackInTime.fixSteveKilled",
     rText: [
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["You think of Steve. You wish you had fed him instead of"],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "killing him. You close your eyes and vow to do better...",
-        ],
-      },
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["Actually, is he dead? You might have made that part up."],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "In fact, you feel as though he's healthier than ever right",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["now."],
-      },
+      [
+        "You think of Steve. You wish you had been more generous.",
+        "They were only bandages. You close your eyes and vow",
+        "to be more careful with healing items in",
+        "the future...",
+      ],
+      [
+        "Actually, is he dead? You feel as though",
+        "he's still alive in the basement and",
+        "hungrier than ever right now.",
+      ],
     ],
   },
   sophieGone: {
@@ -587,715 +483,240 @@ BackInTime.regretTemplates = {
     rName: "(([!s[362];!s[364]]))Sophie.",
     rFunction: "BackInTime.fixSophieGone",
     rText: [
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "You think of Sophie. You wish you could have brought her",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "back to her mother. You close your eyes and pray for her",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["safety..."],
-      },
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "Suddenly, you feel a lot better about her situation. In fact,",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "you wouldn't be surprised if she's already found her way",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["back to this apartment."],
-      },
+      [
+        "You think of Sophie. You wish you could have brought her",
+        "back to her mother. You close your eyes and pray for her",
+        "safety...",
+      ],
+      [
+        "Suddenly, you feel a lot better about her situation. In fact,",
+        "you wouldn't be surprised if she's already found her way",
+        "back to this apartment!",
+      ],
     ],
   },
   hellenQuestFailed: {
     rName: "(([!s[1086]]))Hellen.",
     rFunction: "BackInTime.fixHellenQuest",
     rText: [
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "You think of Hellen. You really let her down. You close your eyes",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["and vow to do better..."],
-      },
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "Actually, did you forget to water her plant the other day?",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "Perhaps you only imagined you did. In fact, you feel as though",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["Hellen is waiting for you right now!"],
-      },
+      [
+        "You think of Hellen. You really let her down. You close your eyes",
+        "and vow to do better...",
+      ],
+      [
+        "Actually, did you forget to water her plant the other day?",
+        "Perhaps you only imagined you did. In fact, you feel as though",
+        "Hellen is waiting for you right now!",
+      ],
     ],
   },
   lyleKilled: {
     rName: "(([!s[832]]))Lyle.",
     rFunction: "BackInTime.fixLyleKilled",
     rText: [
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "You think of Lyle. You really wish it didn't have to end",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["that way. You almost miss him. You close your eyes and"],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["vow to do better..."],
-      },
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["Actually, is he dead? You might have made that part up."],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "In fact, you feel as though he's healthier than ever right",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["now."],
-      },
+      [
+        "You think of Lyle. You really wish it didn't have to end",
+        "that way. You almost miss him. You close your eyes and",
+        "think of smooches...",
+      ],
+      [
+        "Actually, is he dead? You might have made that part up.",
+        "In fact, you feel as though he's back home and",
+        "healthier than ever right now.",
+      ],
     ],
   },
   plantDead: {
     rName: "(([v[128]>5]))Your plant.",
     rFunction: "BackInTime.fixPlantHealth",
     rText: [
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "You think of your plant. You haven't been taking care of it",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "very well, and now you fear it may be too late. You close",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["your eyes and hope..."],
-      },
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "Suddenly, you feel a lot more optimistic. In fact, it's looking",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["greener already!"],
-      },
+      [
+        "You think of your plant. You haven't been taking care of it",
+        "very much lately, and now you fear it may be too late.",
+        "You close your eyes and hope...",
+      ],
+      [
+        "Suddenly, you feel a lot more optimistic. In fact, it's looking",
+        "greener already!",
+      ],
     ],
   },
   muttKilled: {
     rName: "(([!s[317]]))Mutt.",
     rFunction: "BackInTime.fixMuttKilled",
     rText: [
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "You think of Mutt. You know you murdered him and all but you",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "but you wish he didn't have to be so dead about it. You close your eyes",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["and vow to do better..."],
-      },
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["Actually, is he dead? You might have made that part up."],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "In fact, you feel as though he's healthier than ever right",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["now."],
-      },
+      [
+        "You think of Mutt. You know you killed him and robbed him and",
+        "all but you wish he didn't have to be so dead about it.",
+        "You close your eyes and vow to do better...",
+      ],
+      [
+        "Actually, is he dead? You might have made that part up.",
+        "In fact, you feel as though he's healthier than ever right now.",
+      ],
     ],
   },
   shadowDispo: {
     rName: "(([!v[152]<10;!v[150]=7]))The Masked Shadow.",
     rFunction: "BackInTime.fixMaskedShadowDispo",
     rText: [
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "You think of the masked shadow. If only you had treated it",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "better. You close your eyes and wish it knew you felt no ill will...",
-        ],
-      },
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "Now that you think of it, it did seem to like you a lot.",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "In fact, you'd be willing to bet that it's coming for a visit",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["very soon."],
-      },
+      [
+        "You think of the masked shadow. If only you had treated it",
+        "better. You close your eyes and wish it knew you felt no ill will...",
+      ],
+      [
+        "Now that you think of it, it did seem to like you a lot.",
+        "In fact, you'd be willing to bet that it's coming for a visit",
+        "very soon!",
+      ],
     ],
   },
   lockedInOffering: {
     rCondition: BackInTime.haveAnyAstronomersLeft,
-    rName: "The offerings.",
+    rName: "The ritual.",
     rFunction: "BackInTime.fixLockedInOfferings",
     rText: [
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["You think of the offerings. You said you were ready,"],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "but now you're having second thoughts. You close your eyes",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["and think..."],
-      },
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "There's nothing wrong with going back and talking to the",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "astronomers again, is there? In fact, you feel as though they may",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["have forgotten to go up to the roof..."],
-      },
+      [
+        "You think of the ritual. You said you were ready,",
+        "but now you're having second thoughts. You close your eyes",
+        "and consider your options...",
+      ],
+      [
+        "There's nothing wrong with going back and talking to the",
+        "astronomers again, is there? In fact, you feel as though they",
+        "may have forgotten to go up to the roof after all.",
+      ],
     ],
   },
   astronomersKilled: {
     rName: "(([!s[170],!s[171],!s[172],!s[173]]))The Astronomers.",
     rFunction: "BackInTime.fixAstronomersKilled",
     rText: [
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["You think of the astronomers. You wish you hadn't hurt"],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["any of them. They were only trying to help. You close"],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["your eyes and vow to do better..."],
-      },
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["Actually, did you even attack any of them?"],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["You don't think you did. In fact, you're quite certain"],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["that all four of them are just fine."],
-      },
+      [
+        "You think of the astronomers. You wish you hadn't hurt",
+        "any of them. They were only trying to help. You close",
+        "your eyes and vow to do better...",
+      ],
+      [
+        "Actually, did you even attack any of them?",
+        "You don't think you did. In fact, you're quite certain",
+        "that all four of them are just fine.",
+      ],
     ],
   },
   ernestTooLate: {
     rName: "(([!s[797];!s[790]]))Ernest.",
     rFunction: "BackInTime.fixErnestTooLate",
     rText: [
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["You think of Ernest. You wish you could have been there"],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "for him when he needed you most. You close your eyes and",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["vow to do better..."],
-      },
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["Actually, it may not be too late! In fact, you feel as"],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["though you should go check on Ernest today..."],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["now."],
-      },
+      [
+        "You think of Ernest. You wish you could have been there",
+        "for him when he needed you most. You close your eyes and",
+        "vow to do better...",
+      ],
+      [
+        "Actually, it may not be too late! In fact, you feel as",
+        "though you should go check on Ernest today.",
+      ],
     ],
   },
   ernestKilled: {
     rName: "(([!s[789]]))Ernest.",
     rFunction: "BackInTime.fixErnestKilled",
     rText: [
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["You think of Ernest. You wish you hadn't done what"],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["you did, it was unnecessary. You close your eyes and"],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["vow to do better..."],
-      },
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "Actually, you didn't do a thing to him! In fact, you feel as",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["though you should go check on Ernest today..."],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["now."],
-      },
+      [
+        "You think of Ernest. He really didn't have much. Did",
+        "you really need to kill him? You close your eyes and",
+        "vow to do better...",
+      ],
+      [
+        "Actually, you didn't do a thing to him! In fact, you feel as",
+        "though you should go check on Ernest today.",
+      ],
     ],
   },
   eugeneKilled: {
     rName: "(([!s[168]]))Eugene.",
     rFunction: "BackInTime.fixEugeneKilled",
     rText: [
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "You think of Eugene. You know you murdered him and all but you",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "wish he didn't have to be so dead about it. You close your eyes",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["and vow to do better..."],
-      },
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["Actually, is he dead? You might have made that part up."],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "In fact, you feel as though he's healthier than ever right",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["now."],
-      },
+      [
+        "You think of Eugene. You know you killed him and robbed",
+        "him and all but you wish he didn't have to be so dead about",
+        "it. You close your eyes and vow to do better...",
+      ],
+      [
+        "Actually, is he dead? You might have made that part up.",
+        "In fact, you feel as though he's healthier than ever right now.",
+      ],
     ],
   },
   basementBlocked: {
     rName: "(([!s[1097];s[1063]]))The basement pit.",
     rFunction: "BackInTime.fixBasementBlocked",
     rText: [
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "You think of that earthquake. You wish you'd had more time",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "to explore a little before it happened. You close your eyes",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["and imagine what you could have found..."],
-      },
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "Actually, was there an earthquake? You might have dreamed it.",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "In fact, you feel as though you should go explore down in",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["the parking garage right now."],
-      },
+      [
+        "You think of that earthquake. You wish you'd had more time",
+        "to explore a little before it caused that cave-in.",
+        "You close your eyes and imagine what you could have found...",
+      ],
+      [
+        "Actually, was there an earthquake? You might have dreamed it.",
+        "You feel as though you should go exploring in",
+        "the parking garage right now.",
+      ],
     ],
   },
   jeanneKilled: {
     rName: "(([!s[746]]))Jeanne.",
     rFunction: "BackInTime.fixJeanneKilled",
     rText: [
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "You think of Jeanne. You know you murdered her and all but you",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "wish she didn't have to be so dead about it. You close your eyes",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["and vow to do better..."],
-      },
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "Actually, is she dead? You might have made that part up.",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "In fact, you feel as though she's healthier than ever right",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["now."],
-      },
+      [
+        "You think of Jeanne. Sure, that mutation was gnarly,",
+        "but did she really deserve to die over it?",
+        "You close your eyes and vow to do better...",
+      ],
+      [
+        "Actually, did you kill her? You're better than that",
+        "You feel as though you should pop down to check in on her.",
+      ],
     ],
   },
   jeanneMutated: {
     rName: "(([s[746];v[583]<20]))Jeanne's mutation.",
     rFunction: "BackInTime.revertJeannePhase",
     rText: [
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["You think of Jeanne. You wish you could have seen more"],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: [
-          "of her aparement before she grew through the walls. You close",
-        ],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["your eyes and imagine..."],
-      },
-      {
-        code: 101,
-        indent: 2,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["Actually, did her mutation ever get any worse?"],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["You feel as though you should run down to double check."],
-      },
-      {
-        code: 401,
-        indent: 2,
-        parameters: ["now."],
-      },
+      [
+        "You think of Jeanne. You wish you could have seen more",
+        "of her aparement before she grew through the walls. You close",
+        "your eyes and think of stealing a muffin off the counter...",
+      ],
+      [
+        "Actually, did her mutation ever get any worse?",
+        "You feel as though you should pop down to double check.",
+      ],
     ],
   },
   spineKilled: {
     rCondition: BackInTime.isSpineDead,
     rName: "Spine.",
     rFunction: "BackInTime.fixSpineKilled",
-    rText: [],
+    rText: [["You think of Spine."], []],
   },
   wilhelminaKilled: {
     rCondition: BackInTime.isWilhelminaDead,
     rName: "Wilhelmina.",
     rFunction: "BackInTime.fixWilhelminaKilled",
-    rText: [],
+    rText: [
+      [
+        "You think of Wilhelmina. You wish you had considered",
+        "her offer more. Eternal life and power in return for one",
+        "measly word. You close your eyes and imagine...",
+      ],
+      [
+        "Actually, is she dead? Something that ancient and powerful",
+        "can't be truly killed, can it? You feel the urge to",
+        "go back to the basement and check.",
+      ],
+    ],
   },
 };
 
@@ -1343,7 +764,7 @@ BackInTime.createRegret = function (index, regretKey) {
       parameters: [index, rName],
       collapsed: true,
     },
-    ...rText,
+    ...BackInTime.generateRegretList(rText),
     {
       code: 355,
       indent: 2,
