@@ -1496,14 +1496,6 @@ EventLogicUpdates.clearWoundedManKnifeEvent = function (ev) {
     WEAPON_CODE,
   );
 
-  const messageListItem = filteredList.filter(
-    (listItem) =>
-      listItem.code === 401 &&
-      listItem.parameters[0].contains(
-        "His hand still clutches that bloody knife.",
-      ),
-  );
-
   filteredList
     .filter(
       (listItem) =>
@@ -1512,7 +1504,7 @@ EventLogicUpdates.clearWoundedManKnifeEvent = function (ev) {
     .forEach((listItem, i) => {
       const replacement =
         i == 0
-          ? `${LookOutsideAPClient.getItemName("APT_36_BATHROOM_WOUNDED_NEIGHBOR_KNIFE")}\\C[0]`
+          ? `\n${LookOutsideAPClient.getItemName("APT_36_BATHROOM_WOUNDED_NEIGHBOR_KNIFE")}\\C[0]`
           : "thing";
       listItem.parameters[0] = listItem.parameters[0].replace(
         "knife",
@@ -1530,8 +1522,6 @@ EventLogicUpdates.clearWoundedManKnifeEvent = function (ev) {
     choiceListItem.parameters[0][0] = choiceListItem.parameters[0][0] =
       "Take it.";
 
-  ev.pages[1].list = filteredList;
-
   const confirmationListItem = filteredList.find(
     (listItem) =>
       listItem.code === 401 &&
@@ -1541,6 +1531,8 @@ EventLogicUpdates.clearWoundedManKnifeEvent = function (ev) {
   if (confirmationListItem)
     confirmationListItem.parameters[0] =
       confirmationListItem.parameters[0] = `Find ${LookOutsideAPClient.getItemName("APT_36_BATHROOM_WOUNDED_NEIGHBOR_KNIFE")}\\C[0].`;
+
+  ev.pages[1].list = filteredList;
 };
 
 EventLogicUpdates.clearTelescopeEvent = function (ev) {
@@ -1805,10 +1797,8 @@ EventLogicUpdates.clearAntoinesKey = function (ev) {
     ev.pages[1].list,
     ITEM_CODE,
   );
-  ev.pages[0].list ==
-    EventLogicUpdates.deleteMessage(ev.pages[0].list, "Antoine");
-  ev.pages[1].list ==
-    EventLogicUpdates.deleteMessage(ev.pages[1].list, "Antoine");
+  ev.pages[0].list == EventLogicUpdates.deleteMessage(ev.pages[0].list, "Find");
+  ev.pages[1].list == EventLogicUpdates.deleteMessage(ev.pages[1].list, "Find");
 };
 
 EventLogicUpdates.clearClydesKey = function (ev) {

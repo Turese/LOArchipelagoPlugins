@@ -363,7 +363,7 @@ LookOutsideAPClient.initializeReachedEndings = function () {
 endingIds:
 
 ritual (any failed ritual)
-perfectRitual (any ritual with 4 good offerings, not including screaming skies)
+perfectRitual (any ritual with 4 good offerings, not including screaming sky)
 screamingSkies (run from E4)
 mask (4 mask offerings)
 xinAmon (3 good offerings and a guinea pig)

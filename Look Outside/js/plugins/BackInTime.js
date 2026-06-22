@@ -346,14 +346,12 @@ BackInTime.regretTemplates = {
     rName: "Kaeley.",
     rText: [
       [
-        "You think of Kaeley. You wish you hadn't killed",
-        "her like that. You close your eyes and focus on",
-        "locking those bad memories away...",
+        "You think of Kaeley. You wish you hadn't killed her. You close your",
+        "eyes and focus on locking those bad memories away...",
       ],
       [
-        "Actually, did you kill her? No, you couldn't have.",
-        "She's probably back in her maze locking some",
-        "more doors right now.",
+        "Actually, did you kill her? No, you couldn't have. She's probably",
+        "back in her maze locking some more doors right now.",
       ],
     ],
   },
@@ -397,14 +395,14 @@ BackInTime.regretTemplates = {
     rFunction: "BackInTime.fixPapKilled",
     rText: [
       [
-        "You think of Papineau. You regret killing him.",
-        "The world is a filthier place for his absence. You close",
-        "Your eyes and vow to go clean from now on...",
+        "You think of Papineau. You regret killing him. The world",
+        "is a filthier place for his absence. You close your eyes ",
+        "and vow to go clean from now on...",
       ],
       [
-        "Actually, is he dead? He couldn't be. You wouldn't",
-        "have done a deed that dirty. He's probably",
-        "busy mopping the break room right now.",
+        "Actually, is he dead? He couldn't be. You wouldn't have done",
+        "a deed that dirty. He's probably busy mopping",
+        "the break room right now.",
       ],
     ],
   },
@@ -745,6 +743,11 @@ BackInTime.createDateChangeOption = function (index, date, indent) {
       code: 122,
       indent: indent + 1,
       parameters: [15, 15, 0, 0, date],
+    },
+    {
+      code: 355,
+      indent: indent + 1,
+      parameters: ["sSw(1062, false);"], // reset tooth apartment door closed state
     },
     {
       code: 0,
@@ -1308,6 +1311,11 @@ BackInTime.createClockTimeEvent = function (ev) {
       parameters: [0, "Advance an hour."],
     },
     {
+      code: 355,
+      indent: 2,
+      parameters: ["sSw(1062, false);"], // reset tooth apartment door closed state
+    },
+    {
       code: 122,
       indent: 2,
       parameters: [19, 19, 0, 0, 60],
@@ -1320,7 +1328,12 @@ BackInTime.createClockTimeEvent = function (ev) {
     {
       code: 402,
       indent: 1,
-      parameters: [1, "Jump to midnight."],
+      parameters: [1, "Set time to midnight."],
+    },
+    {
+      code: 355,
+      indent: 2,
+      parameters: ["sSw(1062, false);"], // reset tooth apartment door closed state
     },
     {
       code: 122,
@@ -1340,7 +1353,12 @@ BackInTime.createClockTimeEvent = function (ev) {
     {
       code: 402,
       indent: 1,
-      parameters: [2, "Jump to 7AM."],
+      parameters: [2, "Set time to 7AM."],
+    },
+    {
+      code: 355,
+      indent: 2,
+      parameters: ["sSw(1062, false);"], // reset tooth apartment door closed state
     },
     {
       code: 122,
@@ -1360,7 +1378,12 @@ BackInTime.createClockTimeEvent = function (ev) {
     {
       code: 402,
       indent: 1,
-      parameters: [3, "Jump to 11AM."],
+      parameters: [3, "Set time to 11AM."],
+    },
+    {
+      code: 355,
+      indent: 2,
+      parameters: ["sSw(1062, false);"], // reset tooth apartment door closed state
     },
     {
       code: 122,
@@ -1380,7 +1403,12 @@ BackInTime.createClockTimeEvent = function (ev) {
     {
       code: 402,
       indent: 1,
-      parameters: [4, "Jump to 3PM."],
+      parameters: [4, "Set time to 3PM."],
+    },
+    {
+      code: 355,
+      indent: 2,
+      parameters: ["sSw(1062, false);"], // reset tooth apartment door closed state
     },
     {
       code: 122,
@@ -1400,7 +1428,12 @@ BackInTime.createClockTimeEvent = function (ev) {
     {
       code: 402,
       indent: 1,
-      parameters: [5, "Jump to 7PM."],
+      parameters: [5, "Set time to 7PM."],
+    },
+    {
+      code: 355,
+      indent: 2,
+      parameters: ["sSw(1062, false);"], // reset tooth apartment door closed state
     },
     {
       code: 122,
@@ -1420,7 +1453,12 @@ BackInTime.createClockTimeEvent = function (ev) {
     {
       code: 402,
       indent: 1,
-      parameters: [6, "Jump to 11PM."],
+      parameters: [6, "Set time to 11PM."],
+    },
+    {
+      code: 355,
+      indent: 2,
+      parameters: ["sSw(1062, false);"], // reset tooth apartment door closed state
     },
     {
       code: 122,

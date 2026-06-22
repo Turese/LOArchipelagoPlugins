@@ -242,7 +242,7 @@ NormalizeDifficulty.applyChanges = function () {
 
   // shoutout to LaughingLeader's alwaysAutosave mod
   // for the pointers as to which functions to override
-  Window_MenuCommand.prototype.isSaveEnabled = () => DataManager.isSaveEnabled;
+  Window_MenuCommand.prototype.isSaveEnabled = DataManager.isSaveEnabled;
 
   Window_MenuCommand.prototype.addSaveCommand = function () {
     if (this.needsCommand("save")) {

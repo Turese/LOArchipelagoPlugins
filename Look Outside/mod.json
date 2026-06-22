@@ -2,10 +2,10 @@
   "metadata": {
     "name": "Look Outside Archipelago Client",
     "author": "0palite",
-    "version": "1.0",
+    "version": "1.2",
     "id": "look outside archipelago client",
     "nexus_id": null,
-    "description": "",
+    "description": "Game mod and client for compatibility with Archipelago 0.6.7",
     "is_fhmm_mod": false
   },
   "file_ops": [
@@ -16,6 +16,18 @@
     {
       "source": "img/characters/Chara_Player_MissingBotharm.png",
       "target": "img/characters/Chara_Player_MissingBotharm.png"
+    },
+    {
+      "source": "img/characters/APItems.png",
+      "target": "img/characters/APItems.png"
+    },
+    {
+      "source": "img/characters/APItems2.png",
+      "target": "img/characters/APItems2.png"
+    },
+    {
+      "source": "img/characters/MuttsInventory.png",
+      "target": "img/characters/MuttsInventory.png"
     },
     {
       "source": "img/characters/GameCarts.png",
@@ -164,6 +176,10 @@
     {
       "source": "img/enemies/Reflections/playerReflection_toothpaste_MissingBotharm.png",
       "target": "img/enemies/Reflections/playerReflection_toothpaste_MissingBotharm.png"
+    },
+    {
+      "source": "img/enemies/Reflections/playerReflection_toothbrush_MissingBotharm.png",
+      "target": "img/enemies/Reflections/playerReflection_toothbrush_MissingBotharm.png"
     },
     {
       "source": "img/enemies/Reflections/playerReflection_touchChin_MissingBotharm.png",

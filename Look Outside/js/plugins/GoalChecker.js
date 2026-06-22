@@ -95,7 +95,7 @@ GoalChecker.insertGoalCheckerEvent = function (ev) {
 const GOAL_NAMES = {
   ritual: "Any Ritual Ending",
   perfectRitual: "Any Perfect Ritual Ending",
-  screamingSkies: "Screaming Skies Ending",
+  screamingSkies: "Screaming Sky Ending",
   eternalFate: "Eternal Fate Ending",
   xinAmon: "XIN-AMON Ending",
   noGoingBack: "No Going Back Ending",

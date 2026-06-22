@@ -1585,7 +1585,7 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     26: [
       "APT_12_WALLS_BANDAGES",
       "$gameSelfSwitches.setValue([359, 26, 'A'], true)",
-    ]
+    ],
   },
 
   378: {
@@ -3263,13 +3263,11 @@ const DRAWER_ITEM_OVERRIDES = {
 // but it appears in multiple places
 // all are "LL_COUCH_LOOT" with "sSw(436, true);"
 const COUCH_ITEM_OVERRIDES = {
-  129: 17,
-  129: 14,
-  129: 18,
-  204: 23,
-  205: 28,
-  206: 33,
-  184: 15,
+  129: [14, 17, 18],
+  204: [19, 23, 24],
+  205: [27, 28, 29],
+  206: [19, 32, 33],
+  184: [14, 15, 16],
 };
 
 // all safes use self switch = A (set by the simplelocks common event)
@@ -4126,47 +4124,49 @@ MassEventUpdates.overrideDrawerPickups = function (currentMapId) {
 };
 
 MassEventUpdates.overrideCouchPickups = function (currentMapId) {
-  const eventToOverride = COUCH_ITEM_OVERRIDES[currentMapId];
-  if (eventToOverride) {
-    $dataMap.events[eventToOverride].pages[0].list = [
-      {
-        code: 121,
-        indent: 0,
-        parameters: [436, 436, 0],
-      },
-      {
-        code: 101,
-        indent: 0,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 0,
-        parameters: ["You search the couch for loose change..."],
-      },
-      {
-        code: 230,
-        indent: 0,
-        parameters: [30],
-      },
-      {
-        code: 101,
-        indent: 0,
-        parameters: ["", 0, 0, 2, ""],
-      },
-      {
-        code: 401,
-        indent: 0,
-        parameters: [
-          `You find ${LookOutsideAPClient.getItemName("LL_COUCH_LOOT")}.`,
-        ],
-      },
-      {
-        code: 0,
-        indent: 0,
-        parameters: [],
-      },
-    ];
+  const eventsToOverride = COUCH_ITEM_OVERRIDES[currentMapId];
+  if (eventsToOverride) {
+    eventsToOverride.forEach((eventToOverride) => {
+      $dataMap.events[eventToOverride].pages[0].list = [
+        {
+          code: 121,
+          indent: 0,
+          parameters: [436, 436, 0],
+        },
+        {
+          code: 101,
+          indent: 0,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 0,
+          parameters: ["You search the couch for loose change..."],
+        },
+        {
+          code: 230,
+          indent: 0,
+          parameters: [30],
+        },
+        {
+          code: 101,
+          indent: 0,
+          parameters: ["", 0, 0, 2, ""],
+        },
+        {
+          code: 401,
+          indent: 0,
+          parameters: [
+            `You find ${LookOutsideAPClient.getItemName("LL_COUCH_LOOT")}.`,
+          ],
+        },
+        {
+          code: 0,
+          indent: 0,
+          parameters: [],
+        },
+      ];
+    });
   }
 };
 
