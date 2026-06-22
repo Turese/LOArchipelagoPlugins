@@ -66,6 +66,12 @@ NormalizeDifficulty.applyChanges = function () {
   // make all easymode-only events always appear
   function forceEasyModeEvents(dataMap) {
     if (!dataMap) return;
+    if (lastLoadedMapId == 56) return;
+    // TODO: this is a slapdash way
+    // of removing the forEach loop in Mutt's
+    // shop to fix lag issues
+    // i need to implement this without
+    // the loop at all for efficency
     dataMap.events.forEach((evt) => {
       if (!evt) return;
       if (!evt.pages) return;
@@ -95,6 +101,12 @@ NormalizeDifficulty.applyChanges = function () {
   // make all easymode-only events always appear
   function forceHardModeEvents(dataMap) {
     if (!dataMap) return;
+    if (lastLoadedMapId == 56) return;
+    // TODO: this is a slapdash way
+    // of removing the forEach loop in Mutt's
+    // shop to fix lag issues
+    // i need to implement this without
+    // the loop at all for efficency
     dataMap.events.forEach((evt) => {
       if (!evt) return;
       if (!evt.pages) return;

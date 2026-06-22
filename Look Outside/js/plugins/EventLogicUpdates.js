@@ -1166,7 +1166,10 @@ EventLogicUpdates.messageReplacement = function (
   const newList = JsonEx.makeDeepCopy(originalList);
 
   newList.forEach((listItem) => {
-    if (listItem.code == 401 && listItem.parameters[0].includes(keyWord)) {
+    if (
+      listItem.code == MESSAGE_CODE &&
+      listItem.parameters[0].includes(keyWord)
+    ) {
       listItem.parameters[0] = EventLogicUpdates.getMessage(
         itemId,
         introword,
@@ -1317,7 +1320,8 @@ EventLogicUpdates.updateLyleEvent = function (ev) {
   // clear out dark room key drop from killing him
   for (let i = 0; i <= 2; i++) {
     ev.pages[i].list = ev.pages[i].list.filter(
-      (listItem) => listItem.code !== ITEM_CODE && listItem.code !== 401,
+      (listItem) =>
+        listItem.code !== ITEM_CODE && listItem.code !== MESSAGE_CODE,
     );
   }
 };
@@ -1477,7 +1481,7 @@ EventLogicUpdates.clearScreamatoriumEvent = function (ev) {
   filteredList
     .filter(
       (listItem) =>
-        listItem.code === 401 &&
+        listItem.code === MESSAGE_CODE &&
         listItem.parameters[0].contains("Screamatorium"),
     )
     .forEach((listItem) => {
@@ -1499,7 +1503,8 @@ EventLogicUpdates.clearWoundedManKnifeEvent = function (ev) {
   filteredList
     .filter(
       (listItem) =>
-        listItem.code === 401 && listItem.parameters[0].contains("knife"),
+        listItem.code === MESSAGE_CODE &&
+        listItem.parameters[0].contains("knife"),
     )
     .forEach((listItem, i) => {
       const replacement =
@@ -1524,7 +1529,7 @@ EventLogicUpdates.clearWoundedManKnifeEvent = function (ev) {
 
   const confirmationListItem = filteredList.find(
     (listItem) =>
-      listItem.code === 401 &&
+      listItem.code === MESSAGE_CODE &&
       listItem.parameters[0].contains("Find a \\C[03]{Kitchen Knife}\\C[0]."),
   );
 
@@ -1561,7 +1566,8 @@ EventLogicUpdates.clearTelescopeEvent = function (ev) {
   // display the randomized item earned
   const itemEarnedDisplay = filteredList.find(
     (listItem) =>
-      listItem.code === 401 && listItem.parameters[0].contains("Negative Disc"),
+      listItem.code === MESSAGE_CODE &&
+      listItem.parameters[0].contains("Negative Disc"),
   );
 
   if (itemEarnedDisplay)
@@ -1774,14 +1780,16 @@ EventLogicUpdates.clearRatKingCrown = function (ev) {
 
   const rustyCrownAnnouncement = ev.pages[2].list.find(
     (listItem) =>
-      listItem.code === 401 && listItem.parameters[0].contains("Rusty Crown"),
+      listItem.code === MESSAGE_CODE &&
+      listItem.parameters[0].contains("Rusty Crown"),
   );
   if (rustyCrownAnnouncement)
     rustyCrownAnnouncement.parameters[0] = `You receive ${LookOutsideAPClient.getItemName("F1_RAT_KING_COMBAT_VICTORY")}.`;
 
   const crownDustAnnouncement = ev.pages[2].list.find(
     (listItem) =>
-      listItem.code === 401 && listItem.parameters[0].contains("turns to dust"),
+      listItem.code === MESSAGE_CODE &&
+      listItem.parameters[0].contains("turns to dust"),
   );
   if (crownDustAnnouncement)
     crownDustAnnouncement.parameters[0] = `The Rat King's crown turns to ${LookOutsideAPClient.getItemName("F1_RAT_KING_COMBAT_VICTORY")} in your hands.`;
@@ -1868,7 +1876,8 @@ EventLogicUpdates.clearGlitchElixirDrops = function (ev) {
 
   const messageIndex = filteredList.findIndex(
     (listItem) =>
-      listItem.code === 401 && listItem.parameters[0].contains("Elixir"),
+      listItem.code === MESSAGE_CODE &&
+      listItem.parameters[0].contains("Elixir"),
   );
   if (messageIndex !== -1) {
     filteredList[messageIndex].parameters[0] =
@@ -1886,7 +1895,7 @@ EventLogicUpdates.clearAmbroseDrops = function (ev) {
 
   const messageIndex = filteredList.findIndex(
     (listItem) =>
-      listItem.code === 401 &&
+      listItem.code === MESSAGE_CODE &&
       listItem.parameters[0].contains("AAAAAAAAAAAAAAAAAAAAAAAAAMBROS"),
   );
   if (messageIndex !== -1) {
@@ -1901,7 +1910,7 @@ EventLogicUpdates.clearTypewritherDrop = function (ev) {
   // item drops on first 2 pages
   for (let i = 0; i <= 1; i++) {
     ev.pages[i].list = ev.pages[i].list.filter(
-      (listItem) => ![ITEM_CODE, 101, 401].includes(listItem.code),
+      (listItem) => ![ITEM_CODE, 101, MESSAGE_CODE].includes(listItem.code),
     );
   }
 };
@@ -1952,7 +1961,7 @@ EventLogicUpdates.clearCribDrop = function (ev) {
           parameters: ["", 0, 0, 2, ""],
         },
         {
-          code: 401,
+          code: MESSAGE_CODE,
           indent: 1,
           parameters: [
             `Find ${LookOutsideAPClient.getItemName("RAT_APT_RAT_BABY_THING")}.`,
@@ -2258,7 +2267,7 @@ EventLogicUpdates.updateAudreyLootDeadPage = function (
       parameters: ["", 13, 0, 2, ""],
     },
     {
-      code: 401,
+      code: MESSAGE_CODE,
       indent: 1,
       parameters: ["Audrey looks through the corpse\\..\\..\\.."],
     },
@@ -2268,7 +2277,7 @@ EventLogicUpdates.updateAudreyLootDeadPage = function (
       parameters: ["", 13, 0, 2, ""],
     },
     {
-      code: 401,
+      code: MESSAGE_CODE,
       indent: 1,
       parameters: [
         `She has found ${LookOutsideAPClient.getItemName(locationId)}.`,
@@ -2701,6 +2710,94 @@ EventLogicUpdates.clearReptileFootball = function (ev) {
   ).parameters[4] = "!";
 };
 
+const MUTT_REJECT_LISTITEM = {
+  code: 205,
+  indent: 0,
+  parameters: [
+    0,
+    {
+      list: [
+        {
+          code: 45,
+          parameters: ["this.qFrm(2,1);"],
+          indent: null,
+        },
+        {
+          code: 36,
+          indent: null,
+        },
+        {
+          code: 15,
+          parameters: [5],
+          indent: null,
+        },
+        {
+          code: 18,
+          indent: 0,
+        },
+        {
+          code: 15,
+          parameters: [5],
+          indent: null,
+        },
+        {
+          code: 17,
+          indent: 0,
+        },
+        {
+          code: 15,
+          parameters: [5],
+          indent: null,
+        },
+        {
+          code: 16,
+          indent: 0,
+        },
+        {
+          code: 15,
+          parameters: [5],
+          indent: null,
+        },
+        {
+          code: 35,
+          indent: null,
+        },
+        {
+          code: 0,
+        },
+      ],
+      repeat: false,
+      skippable: false,
+      wait: false,
+    },
+  ],
+};
+
+EventLogicUpdates.sendMuttHint = function (id) {
+  const hintTracker = LookOutsideAPClient.initializeHintTracker();
+  if (hintTracker[id]) return;
+
+  if (client.authenticated) {
+    hintTracker[id] = true;
+    client.scout([LOCATION_ID_MAPPING[id]], 1);
+  }
+};
+
+EventLogicUpdates.addMuttHint = function (itemList, identifyString, itemId) {
+  const descriptionIndex = itemList.findIndex(
+    (listItem) =>
+      listItem.code == MESSAGE_CODE &&
+      listItem.parameters[0].includes(identifyString),
+  );
+
+  if (descriptionIndex !== -1)
+    itemList.splice(descriptionIndex - 1, 0, {
+      code: 355,
+      indent: itemList[descriptionIndex].indent,
+      parameters: [`EventLogicUpdates.sendMuttHint('${itemId}');`],
+    });
+};
+
 EventLogicUpdates.clearMuttPages = function (
   ev,
   deleteCode,
@@ -2716,7 +2813,7 @@ EventLogicUpdates.clearMuttPages = function (
       deleteCode,
     );
 
-    const descriptionIndex = ev.pages[i].list;
+    EventLogicUpdates.addMuttHint(ev.pages[i].list, identifyString, itemId);
     ev.pages[i].list = EventLogicUpdates.messageReplacement(
       ev.pages[i].list,
       identifyString,
@@ -2726,6 +2823,11 @@ EventLogicUpdates.clearMuttPages = function (
 
     // in some cases, Mutt uses a different identifying string
     if (altIdentifyString) {
+      EventLogicUpdates.addMuttHint(
+        ev.pages[i].list,
+        altIdentifyString,
+        itemId,
+      );
       ev.pages[i].list = EventLogicUpdates.messageReplacement(
         ev.pages[i].list,
         altIdentifyString,
@@ -2749,12 +2851,9 @@ EventLogicUpdates.clearMuttPages = function (
     //todo: find a better way
     ev.pages[i].list = ev.pages[i].list.filter(
       (listItem) =>
-        listItem.code !== 401 ||
-        ["yours for", "You don't have enough money", itemName].find(
-          (target) =>
-            listItem.parameters[0].includes(target) ||
-            (altIdentifyString &&
-              listItem.parameters[0].includes(altIdentifyString)),
+        listItem.code !== MESSAGE_CODE ||
+        ["yours for", "You don't have enough money", itemName].find((target) =>
+          listItem.parameters[0].includes(target),
         ),
     );
 
@@ -2764,6 +2863,59 @@ EventLogicUpdates.clearMuttPages = function (
         !(pageItem.code == SET_VAR_CODE && pageItem.parameters[0] == 197),
     );
   }
+  // use game cart anim for every item
+  ev.pages[startIndex].image = {
+    tileId: 0,
+    characterName: "MuttsInventory",
+    direction: 2,
+    pattern: 1,
+    characterIndex: 7,
+  };
+  ev.pages[startIndex + 1].image = {
+    tileId: 0,
+    characterName: "MuttsInventory",
+    direction: 6,
+    pattern: 1,
+    characterIndex: 0,
+  };
+  // this sets mutt's pick up animation to be for the game cart
+  ev.pages[startIndex + 1].list[0] = {
+    code: 205,
+    indent: 0,
+    parameters: [
+      0,
+      {
+        list: [
+          {
+            code: 36,
+            indent: null,
+          },
+          {
+            code: 18,
+            indent: null,
+          },
+          {
+            code: 35,
+            indent: null,
+          },
+          {
+            code: 0,
+          },
+        ],
+        repeat: false,
+        skippable: false,
+        wait: false,
+      },
+    ],
+  };
+  ev.pages[startIndex + 2].image = {
+    tileId: 0,
+    characterName: "MuttsInventory",
+    direction: 6,
+    pattern: 1,
+    characterIndex: 7,
+  };
+  ev.pages[startIndex + 2].list[0] = MUTT_REJECT_LISTITEM;
 };
 
 EventLogicUpdates.clearMuttTrophy = function (ev) {
@@ -2914,9 +3066,9 @@ EventLogicUpdates.clearMuttVideoGame = function (ev) {
     ev,
     ITEM_CODE,
     "A Game Cartridge",
-    "Crossword Challenge}",
+    "Crossword Challenge}", // the {} string differs if you buy / steal it, so we only include } here
     "MUTT_CROSSWORD_CHALLENGE",
-    "crossword video game",
+    "a hardcore",
   );
 
   // clear out video game count setting
@@ -3024,11 +3176,9 @@ EventLogicUpdates.blockPlanetariumDoor = function (ev) {
       parameters: ["", 0, 0, 2, ""],
     },
     {
-      code: 401,
+      code: MESSAGE_CODE,
       indent: 0,
-      parameters: [
-        "It still won't open. She's still alive. \\C[20]She's watching.",
-      ],
+      parameters: ["It won't open. She's still alive. \\C[20]She's watching."],
     },
     {
       code: 0,
@@ -3061,7 +3211,7 @@ EventLogicUpdates.clearCorrectPaintingDrop = function (ev) {
             parameters: ["", 0, 0, 2, ""],
           },
           {
-            code: 401,
+            code: MESSAGE_CODE,
             indent: 4,
             parameters: [
               `Get ${LookOutsideAPClient.getItemName("FRED_DARK_ROOM_CORRECT_PAINTING")}.`,
@@ -3508,7 +3658,7 @@ EventLogicUpdates.clearTroopsDrops = function () {
     // then rename to randomized item
     clownWigList.find(
       (listItem) =>
-        listItem.code === 401 &&
+        listItem.code === MESSAGE_CODE &&
         listItem.parameters[0].contains("Clown Wig and Nose"),
     ).parameters[0] =
       `Receive ${LookOutsideAPClient.getItemName("APT_38_PIERRE_CLOWN_WIG")}.`;
@@ -3773,7 +3923,7 @@ EventLogicUpdates.clearTroopsDrops = function () {
             parameters: ["Portrait_NPCs", 3, 0, 2, "Phillippe"],
           },
           {
-            code: 401,
+            code: MESSAGE_CODE,
             indent: rootIndent,
             parameters: ["I'll wait at the exit. Please be careful..."],
           },
@@ -4072,12 +4222,12 @@ EventLogicUpdates.clearTroopsDrops = function () {
         parameters: ["", 0, 0, 2, "Frederic"],
       },
       {
-        code: 401,
+        code: MESSAGE_CODE,
         indent: 4,
         parameters: ["\\C[5]\\{\\{\\{You\\.\\. FUCKING\\.\\.\\"],
       },
       {
-        code: 401,
+        code: MESSAGE_CODE,
         indent: 4,
         parameters: [
           "\\{\\{\\{\\C[10] \\{\\{\\{RANDOMIZED\\}\\}\\}\\.\\.\\C[5]  me?!?!",
@@ -4089,14 +4239,18 @@ EventLogicUpdates.clearTroopsDrops = function () {
 
     const soldIntroRageIndex = toxicTroopList.findIndex(
       (listItem) =>
-        listItem.code == 401 && listItem.parameters[0] == soldRageQuote,
+        listItem.code == MESSAGE_CODE &&
+        listItem.parameters[0] == soldRageQuote,
     );
     if (soldIntroRageIndex !== -1) {
       toxicTroopList.splice(soldIntroRageIndex, 1, ...randoRageList);
     }
 
     toxicTroopList.forEach((listItem) => {
-      if (listItem.code == 401 && listItem.parameters[0].includes("sell"))
+      if (
+        listItem.code == MESSAGE_CODE &&
+        listItem.parameters[0].includes("sell")
+      )
         listItem.parameters[0] = listItem.parameters[0].replace(
           "sell",
           "randomize",
@@ -4117,7 +4271,8 @@ EventLogicUpdates.clearTroopsDrops = function () {
 
     let page2RageIndex = toxicTroopList2.findIndex(
       (listItem) =>
-        listItem.code == 401 && listItem.parameters[0].includes("SELLING"),
+        listItem.code == MESSAGE_CODE &&
+        listItem.parameters[0].includes("SELLING"),
     );
 
     if (page2RageIndex !== -1)
@@ -4202,13 +4357,16 @@ EventLogicUpdates.clearTroopsDrops = function () {
     // update her rules speech
     kaeleyList.forEach((listItem) => {
       if (
-        listItem.code == 401 &&
+        listItem.code == MESSAGE_CODE &&
         listItem.parameters[0].includes("Third rule is")
       ) {
         listItem.parameters[0] =
           "Third rule is okay to lock\\.-ck\\.-ck pick this time!\\.\\. Special rule";
       }
-      if (listItem.code == 401 && listItem.parameters[0].includes("too easy")) {
+      if (
+        listItem.code == MESSAGE_CODE &&
+        listItem.parameters[0].includes("too easy")
+      ) {
         listItem.parameters[0] = "for randomizer only!";
       }
     });
@@ -4260,7 +4418,8 @@ EventLogicUpdates.clearTroopsDrops = function () {
     // the greeting that spider husk gives when you talk again
     const secondGreetingIndex = huskList.findIndex(
       (listItem) =>
-        listItem.code === 401 && listItem.parameters[0].includes("Hi again."),
+        listItem.code === MESSAGE_CODE &&
+        listItem.parameters[0].includes("Hi again."),
     );
     if (secondGreetingIndex !== -1) {
       huskList.splice(secondGreetingIndex + 1, 0, {
@@ -5039,14 +5198,14 @@ EventLogicUpdates.clearCommonEventDrops = function () {
             parameters: ["", 0, 0, 2, ""],
           },
           {
-            code: 401,
+            code: MESSAGE_CODE,
             indent: 4,
             parameters: [
               "The little rat thing hops out of your bags and scampers off",
             ],
           },
           {
-            code: 401,
+            code: MESSAGE_CODE,
             indent: 4,
             parameters: ["into your home."],
           },
@@ -5153,7 +5312,7 @@ EventLogicUpdates.clearCommonEventDrops = function () {
     const asterOfferingAcceptEventList = JsonEx.makeDeepCopy(
       originalCommonEvents[264].list,
     );
-    // add a condition for incorrect photograph - item 365
+    // add a condition for empty photograph - item 365
     // update condition for correct photograph - item 340
 
     const regularPhotoCheckIndex = asterOfferingAcceptEventList.findIndex(
@@ -5191,12 +5350,12 @@ EventLogicUpdates.clearCommonEventDrops = function () {
             parameters: ["Portrait_Cultists", 0, 0, 2, "Aster"],
           },
           {
-            code: 401,
+            code: MESSAGE_CODE,
             indent: 1,
             parameters: ["A photo envelope... does this hold the image of the"],
           },
           {
-            code: 401,
+            code: MESSAGE_CODE,
             indent: 1,
             parameters: ["Visitor? Very well. \\C[03]We will take this."],
           },
@@ -5270,9 +5429,9 @@ EventLogicUpdates.clearCommonEventDrops = function () {
           parameters: ["", 2, 0, 1, ""],
         },
         {
-          code: 401,
+          code: MESSAGE_CODE,
           indent: 1,
-          parameters: ["You receive \\C[3]{Incorrect Photograph}\\C[0]."],
+          parameters: ["You receive \\C[3]{Empty Photograph}\\C[0]."],
         },
         {
           code: 0,
@@ -5331,7 +5490,7 @@ EventLogicUpdates.clearCommonEventDrops = function () {
         parameters: ["Portrait_Misc", 30, 0, 2, "Kaeley"],
       },
       {
-        code: 401,
+        code: MESSAGE_CODE,
         indent: 3,
         parameters: ["That's ok-\\.k-\\.kay! This time can be picking game!"],
       },

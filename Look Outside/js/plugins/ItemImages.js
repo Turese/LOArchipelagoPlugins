@@ -841,6 +841,7 @@ ItemImages.shouldOverrideImage = function (url) {
   return (
     url == "img/characters/GameCarts.png" ||
     url == "img/characters/APItems.png" ||
-    url == "img/characters/APItems2.png"
+    url == "img/characters/APItems2.png" ||
+    url == "img/characters/MuttsInventory.png"
   );
 };
