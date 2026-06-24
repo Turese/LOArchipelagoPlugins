@@ -3222,6 +3222,7 @@ const DRAWER_ITEM_OVERRIDES = {
     13: ["LL_SIDETABLE_S", "sSw(447, true);"],
     14: ["LL_WIDE_TABLE_E", "sSw(446, true);"],
     15: ["LL_SIDETABLE_W", "sSw(444, true);"],
+    26: ["LL_BASEMENT_KEY", `sSw(${LL_BASEMENT_KEY_SWITCH}, true);`],
   },
   208: {
     3: ["LL_EAST_DRAWER_E", "$gameSelfSwitches.setValue([208, 3, 'A'], true)"],
@@ -3578,7 +3579,7 @@ MassEventUpdates.overrideOverworldPickups = function (currentMapId) {
 
     let prefix;
     // some items have different pages for whatever reason
-    if (name == "APT_13_DISC" || name === "B_UTILITY_JANITOR_KEYRING")
+    if (name == "APT_13_DISC" || name === "B_UTILITY_JANITOR_KEYRING" || name === "B_CAR_LUMPY_ITEM")
       pageIndex = 1;
 
     // the rose/other item from the masked shadow is a special case because

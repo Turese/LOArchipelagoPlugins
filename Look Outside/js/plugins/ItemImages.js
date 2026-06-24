@@ -16,7 +16,7 @@ const FULL_MEAL_MAPPING = ["FoodItems", 6, 0, 0];
 const RED_RING_MAPPING = ["Equipment", 2, 0, 3];
 const GREEN_RING_MAPPING = ["Equipment", 2, 1, 3];
 const BLUE_RING_MAPPING = ["Equipment", 2, 2, 3];
-const RECRUIT_MAPPING = ["Items2", 4, 1, 7];
+const RECRUIT_MAPPING = ["APItems2", 6, 1, 6];
 const COINS_MAPPING = ["Items", 2, 1, 0];
 const SINGLE_BILL_MAPPING = ["Items", 4, 0, 0];
 const TWO_BILL_MAPPING = ["Items", 4, 1, 0];
@@ -274,8 +274,10 @@ const ITEM_NAME_IMAGE_MAPPING = {
   "Neptune Disc": ["KeyItems", 6, 2, 1],
   "Pluto Disc": ["KeyItems", 8, 0, 1],
   "Ceres Disk": ["KeyItems", 8, 0, 1],
+  "Luna Disk": ["KeyItems", 6, 2, 1],
   "Void Disc": ["KeyItems", 8, 1, 1],
   "Negative Disc": ["KeyItems", 8, 2, 1],
+  "Positive Disc": ["KeyItems", 8, 2, 1],
   "Guinea Pig": ["KeyItems", 4, 0, 2],
   "Blank VHS tape": ["KeyItems", 4, 1, 2],
   "Incorrect CCTV Recording": ["KeyItems", 4, 1, 2],
@@ -516,12 +518,13 @@ const ITEM_NAME_IMAGE_MAPPING = {
   Hauberk: ["Equipment", 4, 0, 4],
   Breastplate: ["MuttsInventory", 2, 2, 6],
   "Flak Jacket": ["Equipment", 4, 2, 4],
-  "Kevlar Suit": ["Equipment", 8, 0, 4], // INCORRECT
+  "Flock Jacket": ["Equipment", 4, 2, 4],
+  "Kevlar Suit": ["Equipment", 6, 0, 4],
   "Studded Jacket": ["Equipment", 6, 1, 4],
   "Strange Robe": ["Equipment", 2, 0, 0],
   "Dark Robes": ["Equipment", 6, 2, 4],
   "Old Uniform": ["Valuables", 8, 0, 7],
-  "Elegant Suit": ["Valuables", 8, 0, 4], // CHECK HERE TOO
+  "Elegant Suit": ["Equipment", 8, 0, 4],
   "Floral Shirt": ["APItems2", 6, 0, 4],
   "Painter's Beret": ["APItems2", 4, 1, 4],
   "Giant Rat Skull": ["APItems2", 2, 1, 0],
@@ -580,12 +583,14 @@ const ITEM_NAME_IMAGE_MAPPING = {
   "Copper Bangle": ["Equipment", 4, 1, 3],
   "Silver Bracelet": ["APItems", 6, 2, 5],
   "Teeth Pendant": ["Equipment", 6, 0, 3],
+  "Teef Pendant": ["Equipment", 6, 0, 3],
   "Gold Bracelet": ["APItems", 6, 1, 5],
   "Lapis Band": GREEN_RING_MAPPING,
   "Eye Amulet": ["APItems2", 6, 0, 1],
   "Ring of Alertness": BLUE_RING_MAPPING,
   "Carnelian Ring": RED_RING_MAPPING,
   "Ring of Purity": GREEN_RING_MAPPING,
+  "Ring of Parity": GREEN_RING_MAPPING,
   "Asbestos Amulet": GREEN_RING_MAPPING,
   Pistol: ["Guns", 2, 0, 0],
   "Custom Handgun": ["Guns", 2, 1, 0],
@@ -629,9 +634,9 @@ const ITEM_NAME_IMAGE_MAPPING = {
   Mittens: ["APItems", 6, 1, 4],
   "Paint-Stained Apron": ["APItems2", 4, 0, 4],
   Beret: ["APItems2", 4, 1, 4],
-  "Strange Feather": ["APItems", 4, 2, 5],
+  "Strange Feather": ["APItems2", 4, 2, 5],
   "Paint Palette": ["APItems2", 4, 2, 7],
-  "Cowardly Boots": ["APItems", 8, 1, 4],
+  "Cowardly Boots": ["APItems2", 8, 1, 4],
   "War Medal": ["Equipment", 8, 0, 3],
   "Rage Armor": ["APItems2", 8, 1, 1],
   Headphones: ["Equipment", 4, 2, 7],
@@ -716,7 +721,7 @@ const ITEM_NAME_IMAGE_MAPPING = {
   "Elevator Activation": null,
   "Sewer Grates Lowered": null,
   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMBROS: ["APItems", 6, 0, 1],
-  "Glitch Elixir x99": ["APItems", 8, 0, 5],
+  "Glitch Elixir x99": ["APItems2", 8, 0, 5],
   "Sam's Life Savings": SINGLE_BILL_COINS_MAPPING,
   "Taxidermy's Spare Cash": TWO_BILL_COINS_MAPPING,
   "Edwin's Spare Cash": TWO_BILL_COINS_MAPPING,

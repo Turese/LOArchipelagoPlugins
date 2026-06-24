@@ -248,9 +248,8 @@ LookOutsideAPClient.makeSlotDataChanges = function () {
   if (slotData["rat_baby_name"])
     InsertAPItems.setRatBabyName(slotData["rat_baby_name"]);
 
-  if (slotData["allow_killing_shopkeepers"])
-    sSw(CAN_KILL_SHOPKEEPERS_SWITCH, true);
-  else sSw(CAN_KILL_SHOPKEEPERS_SWITCH, false);
+  sSw(MASK_LOCATIONS_ENABLED_SWITCH, !!slotData["include_mask"])
+  sSw(CAN_KILL_SHOPKEEPERS_SWITCH, !!slotData["allow_killing_shopkeepers"]);
 };
 
 // the games colors for reference:
@@ -295,12 +294,17 @@ const TRAP_MAPPINGS = [
   { trapTextColor: 22, trapName: "Cheese Boy" },
   { trapTextColor: 22, trapName: "Jasper Roommate" },
   { trapTextColor: 15, trapName: "Ceres Disk" },
+  { trapTextColor: 15, trapName: "Luna Disk" },
+  { trapTextColor: 15, trapName: "Positive Disk" },
   { trapTextColor: 15, trapName: "Old Rusty Key" },
   { trapTextColor: 15, trapName: "Sybil's Journal" },
   { trapTextColor: 15, trapName: "Super Jumplad 2" },
   { trapTextColor: 4, trapName: "Old Checkerboard" },
   { trapTextColor: 15, trapName: "Apt. 43 Key" },
   { trapTextColor: 22, trapName: "Master Sword" },
+  { trapTextColor: 22, trapName: "Flock Jacket" },
+  { trapTextColor: 22, trapName: "Ring of Parity" },
+  { trapTextColor: 22, trapName: "Teef Pendant" },
 ];
 
 LookOutsideAPClient.initializeHintTracker = function () {

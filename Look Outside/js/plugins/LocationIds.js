@@ -511,6 +511,17 @@ const LOCATION_ID_MAPPING = Object.freeze({
   APT_24_SEWING_BUTTON_UP_SHIRT: 2023,
   APT_24_SAFE_ITEM: 2024,
   APT_24_SUIT: 2025,
+  APT_24_HAUBERK: 2026,
+  APT_24_RING: 2027,
+  APT_24_WELDING_HELMET: 2028,
+  APT_24_SIGHT: 2029,
+  APT_24_BOOTS: 2030,
+  APT_24_CHEST_PADDING: 2031,
+  APT_24_SUPER_SLINGSHOT: 2032,
+  APT_24_DENIM_VEST: 2034,
+  APT_24_TIE: 2035,
+  APT_24_HOODIE: 2036,
+  APT_24_COWBOY_HAT: 2037,
   APT_25_KLYSOX: 2101,
   APT_25_FRIDGE: 2102,
   APT_25_PLATE: 2103,
@@ -1403,6 +1414,9 @@ const IMPLIED_LOCATIONS = Object.freeze({
 // custom switch ids (these are unused in the base game as of version 2.3
 // i use 1399 and 1400 in NormalizeDifficulty
 
+// used to decide if floor 4 is accessible in the elevator
+MASK_LOCATIONS_ENABLED_SWITCH = 1377;
+
 FUNGUS_SPORE_GUARDIAN_AUDREY_LOOT_SWITCH = 1378;
 F1_PIPE_ROOM_KEVIN_MERCHANT_1_SWITCH = 1379;
 F1_PIPE_ROOM_KEVIN_MERCHANT_2_SWITCH = 1380;
@@ -2132,6 +2146,17 @@ SELF_SWITCH_LOCATIONS = {
 
   132: {
     47: { A: "APT_24_REPTILE_FOOTBALL" },
+    51: { A: "APT_24_HAUBERK" },
+    46: { A: "APT_24_RING" },
+    53: { A: "APT_24_WELDING_HELMET" },
+    45: { A: "APT_24_SIGHT" },
+    65: { A: "APT_24_BOOTS" },
+    50: { A: "APT_24_CHEST_PADDING" },
+    42: { A: "APT_24_SUPER_SLINGSHOT" },
+    49: { A: "APT_24_DENIM_VEST" },
+    44: { A: "APT_24_TIE" },
+    48: { A: "APT_24_HOODIE" },
+    52: { A: "APT_24_COWBOY_HAT" },
   },
 
   329: {

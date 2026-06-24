@@ -198,6 +198,7 @@ NormalizeDifficulty.applyChanges = function () {
 
   function forceHardmodePositiveItems(ev, lastLoadedMapId) {
     // some items self-hide when hardmode = true
+    // todo: replace if statements with an object lookup
 
     if (lastLoadedMapId == 30 && ev.id == 10 && ev.pages.length == 3) {
       ev.pages.splice(2, 1); // stairwell pool cue
@@ -217,6 +218,14 @@ NormalizeDifficulty.applyChanges = function () {
 
     if (lastLoadedMapId == 79 && ev.id == 9 && ev.pages.length == 3) {
       ev.pages.splice(2, 1); // basement junk 4
+    }
+
+    if (lastLoadedMapId == 85 && ev.id == 11 && ev.pages.length == 3) {
+      ev.pages.splice(1, 1); // BOILER_STORAGE_D_CLOGGER_2
+    }
+
+    if (lastLoadedMapId == 85 && ev.id == 9 && ev.pages.length == 3) {
+      ev.pages.splice(1, 1); // BOILER_STORAGE_KLYSOX_1
     }
 
     if (lastLoadedMapId == 258 && ev.id == 12 && ev.pages.length == 3) {

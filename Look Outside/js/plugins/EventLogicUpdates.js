@@ -1216,13 +1216,13 @@ EventLogicUpdates.fixWoundedManDoor = function (ev) {
 
 // screw the elevator game, just let me go to 4
 EventLogicUpdates.fixElevatorButtons = function (ev) {
-  // at the start of the event, set the elevator game to be finished.
-  // make sure you only add the elevator function set once
-  ev.pages[1].list[0] = {
-    code: 355,
-    indent: 1,
-    parameters: ["sVr(1, 0), sVr(817, 4)"],
-  };
+  //the floor 4 button is controlled by whether or not the player allows mask locations
+  ev.pages[1].list[0].find(
+    (listItem) =>
+      listItem.code == 102 &&
+      listItem.parameters[0].length == 6 &&
+      listItem.parameters[0][5].includes("Floor 4"),
+  ).parameters[0][5] = `(([!s[${MASK_LOCATIONS_ENABLED_SWITCH}]]))Floor 4`;
 };
 
 // update page 2 of the apt 21 key event to trigger grinning beast if you walk over it
@@ -1300,6 +1300,11 @@ EventLogicUpdates.clearLeighQuest = function (ev) {
 // make it so grasshopper doesnt leave after leighs quest
 EventLogicUpdates.permaGrasshopper = function (ev) {
   if (ev.pages.length > 4) ev.pages.splice(3, 1);
+};
+
+// remove the page with a different item in lumpy mode
+EventLogicUpdates.updateLumpyItem = function (ev) {
+  if (ev.pages.length > 3) ev.pages.splice(2, 1);
 };
 
 // removes the switch setters that set 119 = false when walking east after fighting the beast
@@ -1933,7 +1938,7 @@ EventLogicUpdates.clearManuscriptCompletion = function (ev) {
     ev.pages[0].list,
     "You add the sheet to the incomplete manuscript.",
     "APT_27_COMPLETE_MANUSCRIPT",
-    "This must be Jeanne's",
+    "Get",
   );
 
   ev.pages[1].conditions = EventLogicUpdates.buildConditions("A");
@@ -2199,7 +2204,7 @@ EventLogicUpdates.clearPhilDelusionDropsOutside = function (ev) {
 };
 
 EventLogicUpdates.clearPhilDelusionDropsSporeMother = function (ev) {
-  EventLogicUpdates.clearPhilDelusionDrops(ev, 0);
+  EventLogicUpdates.clearPhilDelusionDrops(ev, 1);
 };
 
 // allows fungus people to be rescued after spore mother is killed
@@ -2684,19 +2689,12 @@ EventLogicUpdates.clearEugeneDeath = function (ev) {
   }
 };
 
-// dont increase game count when you buy it
-// set the name variable to the custom apitem name
-EventLogicUpdates.clearReptileFootball = function (ev) {
-  ev.pages[0].list = ev.pages[0].list.filter(
-    (listItem) =>
-      !(listItem.code == SET_SWITCH_CODE && listItem.parameters[0] == 41),
-  );
-
+EventLogicUpdates.clearEugeneTableItem = function (ev, itemName, pageIndex) {
   EventLogicUpdates.itemDropReplaceScript(
-    ev.pages[0].list,
+    ev.pages[pageIndex].list,
     SET_VAR_CODE,
     `sVr(486,"${LookOutsideAPClient.getItemName(
-      "APT_24_REPTILE_FOOTBALL",
+      itemName,
       true,
       false,
       true,
@@ -2704,10 +2702,65 @@ EventLogicUpdates.clearReptileFootball = function (ev) {
     (listItem) => listItem.parameters[0] == 486,
   );
 
-  ev.pages[0].list.find(
+  ev.pages[pageIndex].list.find(
     (listItem) =>
       listItem.code == SET_VAR_CODE && listItem.parameters[0] == 480,
   ).parameters[4] = "!";
+
+  ev.pages[pageIndex].image = ItemImages.getItemImage(itemName);
+};
+
+// dont increase game count when you buy it
+EventLogicUpdates.eugeneClearReptileFootball = function (ev) {
+  ev.pages[0].list = ev.pages[0].list.filter(
+    (listItem) =>
+      !(listItem.code == SET_SWITCH_CODE && listItem.parameters[0] == 41),
+  );
+  EventLogicUpdates.clearEugeneTableItem(ev, "APT_24_REPTILE_FOOTBALL", 0);
+};
+
+EventLogicUpdates.eugeneClearHauberk = function (ev) {
+  EventLogicUpdates.clearEugeneTableItem(ev, "APT_24_HAUBERK", 0);
+};
+
+EventLogicUpdates.eugeneClearRing = function (ev) {
+  EventLogicUpdates.clearEugeneTableItem(ev, "APT_24_RING", 0);
+};
+
+EventLogicUpdates.eugeneClearHelmet = function (ev) {
+  EventLogicUpdates.clearEugeneTableItem(ev, "APT_24_WELDING_HELMET", 1);
+};
+
+EventLogicUpdates.eugeneClearSight = function (ev) {
+  EventLogicUpdates.clearEugeneTableItem(ev, "APT_24_SIGHT", 0);
+};
+
+EventLogicUpdates.eugeneClearBoots = function (ev) {
+  EventLogicUpdates.clearEugeneTableItem(ev, "APT_24_BOOTS", 0);
+};
+
+EventLogicUpdates.eugeneClearChestGuard = function (ev) {
+  EventLogicUpdates.clearEugeneTableItem(ev, "APT_24_CHEST_PADDING", 1);
+};
+
+EventLogicUpdates.eugeneClearSlingshot = function (ev) {
+  EventLogicUpdates.clearEugeneTableItem(ev, "APT_24_SUPER_SLINGSHOT", 1);
+};
+
+EventLogicUpdates.eugeneClearDenim = function (ev) {
+  EventLogicUpdates.clearEugeneTableItem(ev, "APT_24_DENIM_VEST", 0);
+};
+
+EventLogicUpdates.eugeneClearHoodie = function (ev) {
+  EventLogicUpdates.clearEugeneTableItem(ev, "APT_24_HOODIE", 0);
+};
+
+EventLogicUpdates.eugeneClearTie = function(ev) {
+  EventLogicUpdates.clearEugeneTableItem(ev, "APT_24_TIE", 1);
+}
+
+EventLogicUpdates.eugeneClearHat = function (ev) {
+  EventLogicUpdates.clearEugeneTableItem(ev, "APT_24_COWBOY_HAT", 0);
 };
 
 const MUTT_REJECT_LISTITEM = {
@@ -3500,7 +3553,18 @@ const EVENT_UPDATE_TABLE = {
   367: { 1: EventLogicUpdates.clearSybilRedKey },
   132: {
     2: EventLogicUpdates.clearEugeneDeath,
-    47: EventLogicUpdates.clearReptileFootball,
+    47: EventLogicUpdates.eugeneClearReptileFootball,
+    51: EventLogicUpdates.eugeneClearHauberk,
+    46: EventLogicUpdates.eugeneClearRing,
+    53: EventLogicUpdates.eugeneClearHelmet,
+    45: EventLogicUpdates.eugeneClearSight,
+    65: EventLogicUpdates.eugeneClearBoots,
+    50: EventLogicUpdates.eugeneClearChestGuard,
+    42: EventLogicUpdates.eugeneClearSlingshot,
+    49: EventLogicUpdates.eugeneClearDenim,
+    44: EventLogicUpdates.eugeneClearTie,
+    48: EventLogicUpdates.eugeneClearHoodie,
+    52: EventLogicUpdates.eugeneClearHat,
   },
   56: {
     4: EventLogicUpdates.clearMuttStunBaton,
@@ -3527,6 +3591,9 @@ const EVENT_UPDATE_TABLE = {
   },
   345: {
     30: EventLogicUpdates.blockPlanetariumDoor,
+  },
+  430: {
+    16: EventLogicUpdates.updateLumpyItem,
   },
 };
 

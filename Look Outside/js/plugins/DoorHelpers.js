@@ -194,7 +194,7 @@ DoorHelpers.playerNeedsEncounter = function (encounterId) {
   const slotData = $gamePlayer.slotData;
   if (!slotData) return true;
 
-  //if (!slotData.randomize_door_encounters) return false;
+  if (!slotData.randomize_door_encounters) return false;
   const combatToCheck = slotData.friendly_fire
     ? DOOR_ENCOUNTER_VICTORY_MAPPING
     : DOOR_REGULAR_ENCOUNTER_VICTORY_MAPPING;
@@ -238,9 +238,6 @@ DoorHelpers.processDoorVictory = function () {
   if (LookOutsideAPClient.shouldSendMessageForLocation(locationId))
     $gameMessage.add(EventLogicUpdates.getMessage(locationId));
   LookOutsideAPClient.setLocation(locationId);
-  // resetup door encounters based on what player needs checks for
-  setupDoorEncounters();
-  // gives a check after defeating the current door encounter
 };
 
 // recruits
@@ -258,9 +255,6 @@ DoorHelpers.processDoorRecruit = function () {
     $gameMessage.add(EventLogicUpdates.getMessage(locationId));
 
   LookOutsideAPClient.setLocation(locationId);
-  // resetup door encounters based on what player needs checks for
-  setupDoorEncounters();
-  // gives a check after defeating the current door encounter
 };
 
 // special event prizes
@@ -285,8 +279,6 @@ DoorHelpers.processDoorEvent = function (index = 0) {
     $gameMessage.add(EventLogicUpdates.getMessage(doorEvents[index]));
 
   LookOutsideAPClient.setLocation(doorEvents[index]);
-  // resetup door encounters based on what player needs checks for
-  setupDoorEncounters();
 };
 
 DoorHelpers.buildEncounterOptions = function (encounterArray) {
@@ -630,65 +622,3 @@ DoorHelpers.buildEncounterPickerEventPage = function () {
   ];
 };
 
-// override the setup function from bunchastuff
-setupDoorEncounters = function () {
-  // the way cursed encounters are set up is a little weird
-  // where we add 200 to the regular encounter id
-  // so im setting it up this way
-
-  sVr(
-    164,
-    shuffleArray(
-      [50, 51, 52, 53, 54, 55].filter(
-        (id) =>
-          DoorHelpers.playerNeedsEncounter(id) ||
-          DoorHelpers.playerNeedsEncounter(id + 200),
-      ),
-    ),
-  );
-  sVr(
-    165,
-    shuffleArray([49, 57, 59, 61, 64, 68, 71, 73]).filter(
-      (id) =>
-        DoorHelpers.playerNeedsEncounter(id) ||
-        DoorHelpers.playerNeedsEncounter(id + 200),
-    ),
-  );
-  sVr(
-    166,
-    shuffleArray(
-      [56, 58, 60, 63].filter(
-        (id) =>
-          DoorHelpers.playerNeedsEncounter(id) ||
-          DoorHelpers.playerNeedsEncounter(id + 200),
-      ),
-    ),
-  );
-  sVr(
-    170,
-    shuffleArray(
-      [56, 58, 60, 63].filter(
-        (id) =>
-          DoorHelpers.playerNeedsEncounter(id) ||
-          DoorHelpers.playerNeedsEncounter(id + 200),
-      ),
-    ),
-  );
-
-  arr = [47, 48, 70, 72]; ///47-Mystery Trader ,48-Curio ,70-Humphrey, 72-Craftsman
-  arr = shuffleArray(arr);
-  sVr(170, arr);
-  sVr(
-    167,
-    [
-      0, 1, 0, 1, 2, 3, 1, 0, 1, 2, 0, 1, 0, 1, 2, 3, 1, 0, 1, 2, 0, 1, 0, 1, 2,
-      3, 1, 0, 1, 2, 0, 1, 0, 1, 2, 3, 1, 0, 1, 2, 0, 1, 0, 1, 2, 3, 1, 0, 1, 2,
-      0, 1, 0, 1, 2, 3, 1, 0, 1, 2, 0, 1, 0, 1, 2,
-    ],
-  );
-
-  sVr(
-    168,
-    [47, 49, 50, 51, 52, 53, 54, 56, 57, 58, 59, 60, 61, 63, 64, 68, 71],
-  );
-};
