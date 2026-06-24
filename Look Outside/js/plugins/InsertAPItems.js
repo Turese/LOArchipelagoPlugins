@@ -659,23 +659,41 @@ InsertAPItems.insertResourcePack = function (itemId) {
     case 70: // progressive rent money
       InsertAPItems.insertRentMoney();
       break;
-    case 71: //  // 2x table fork
+    case 71: // 2x table fork
       InsertAPItems.insertItem(95, "item", 2);
       break;
-    case 72: //  // 2x table knife
+    case 72: // 2x table knife
       InsertAPItems.insertItem(96, "item", 2);
       break;
-    case 73: //  // 2x beer
+    case 73: // 2x beer
       InsertAPItems.insertItem(42, "item", 2);
       break;
-    case 74: //  // 2x whiskey
+    case 74: // 2x whiskey
       InsertAPItems.insertItem(43, "item", 2);
       break;
-    case 75: //  // 2x vodka
+    case 75: // 2x vodka
       InsertAPItems.insertItem(44, "item", 2);
       break;
-    case 76: //  // 2x cloth
+    case 76: // 2x cloth
       InsertAPItems.insertItem(150, "item", 2);
+      break;
+    case 77: // 5 dollars
+      InsertAPItems.insertMoney(5);
+      break;
+    case 78: // 2x soap
+      InsertAPItems.insertItem(173, "item", 2);
+      break;
+    case 79: // 2x toothpaste
+      InsertAPItems.insertItem(174, "item", 2);
+      break;
+    case 80: // 2x duct tape
+      InsertAPItems.insertItem(176, "item", 2);
+      break;
+    case 81: // 2x shuriken
+      InsertAPItems.insertItem(102, "item", 2);
+      break;
+    case 82: // 10 marbles
+      InsertAPItems.insertItem(203, "item", 10);
       break;
     default:
       console.warn(`Unrecognized pack item id: ${itemId}, no item granted`);
