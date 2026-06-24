@@ -1217,7 +1217,7 @@ EventLogicUpdates.fixWoundedManDoor = function (ev) {
 // screw the elevator game, just let me go to 4
 EventLogicUpdates.fixElevatorButtons = function (ev) {
   //the floor 4 button is controlled by whether or not the player allows mask locations
-  ev.pages[1].list[0].find(
+  ev.pages[1].list.find(
     (listItem) =>
       listItem.code == 102 &&
       listItem.parameters[0].length == 6 &&
