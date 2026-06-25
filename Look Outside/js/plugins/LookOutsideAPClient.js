@@ -95,6 +95,7 @@ LookOutsideAPClient.applyOverrides = function () {
 
   const _Game_Map_refresh = Game_Map.prototype.refresh;
   Game_Map.prototype.refresh = function () {
+    if (this.mapId() == 56) return _Game_Map_refresh.call(this);; // disable on mutt's
     LookOutsideAPClient.applyDataMapUpdates(this.mapId());
     _Game_Map_refresh.call(this);
   };
