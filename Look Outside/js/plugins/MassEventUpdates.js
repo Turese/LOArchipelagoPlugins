@@ -1439,7 +1439,7 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
       "RAT_APT_BEDROOM_MAGAZINES",
       "$gameSelfSwitches.setValue([102, 15, 'A'], true)",
     ],
-    15: [
+    "15-2": [
       "RAT_APT_BEDROOM_DIRTY_MAGAZINES",
       "$gameSelfSwitches.setValue([102, 15, 'B'], true)",
     ],
@@ -3572,14 +3572,23 @@ MassEventUpdates.overrideOverworldPickups = function (currentMapId) {
 
   const eventsToOverride = MAP_OVERWORLD_ITEM_OVERRIDES[currentMapId];
   if (!eventsToOverride) return;
-  Object.keys(eventsToOverride).forEach((eventId) => {
+  Object.keys(eventsToOverride).forEach((_eventId) => {
     const [name, script] = eventsToOverride[eventId];
+    // theres 2 items in one spot when it comes to the magazines and dirty magazines in the rat apartment; 
+    // this is the only event in the game that does this
+    // todo: find a better one-off id
+    eventId = _eventId == "15-2" ? 15 : eventId;
     const event = $dataMap.events[eventId];
     let pageIndex = 0;
 
     let prefix;
     // some items have different pages for whatever reason
-    if (name == "APT_13_DISC" || name === "B_UTILITY_JANITOR_KEYRING" || name === "B_CAR_LUMPY_ITEM")
+    if (
+      name == "APT_13_DISC" ||
+      name === "B_UTILITY_JANITOR_KEYRING" ||
+      name === "B_CAR_LUMPY_ITEM" ||
+      name == "RAT_APT_BEDROOM_DIRTY_MAGAZINES"
+    )
       pageIndex = 1;
 
     // the rose/other item from the masked shadow is a special case because
