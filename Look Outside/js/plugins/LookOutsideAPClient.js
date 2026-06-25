@@ -697,7 +697,7 @@ LookOutsideAPClient.shouldSendMessageForLocation = function (locationId) {
       "GAME_SKILL_WIZARDS_HELL",
       "GAME_SKILL_SUPER_JUMPLAD",
       "GAME_SKILL_SUPER_JUMPLAD_3",
-      "GAME_SKILL_CATAFALQUE: 5",
+      "GAME_SKILL_CATAFALQUE",
       "GAME_SKILL_HONKOS_GRAND_JOURNEY",
       "GAME_SKILL_MADWHEELS_97",
       "GAME_SKILL_WRAITHSCOURGE",

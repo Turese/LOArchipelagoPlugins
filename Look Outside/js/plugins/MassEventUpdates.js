@@ -1746,6 +1746,8 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
     6: ["LL_BATHROOM_SOAP", "$gameSelfSwitches.setValue([63, 6, 'A'], true)"],
   },
 
+  205: { 26: ["LL_BASEMENT_KEY", `sSw(${LL_BASEMENT_KEY_SWITCH}, true);`] },
+
   130: { 11: ["LL_BASEMENT_KEY", `sSw(${LL_BASEMENT_KEY_SWITCH}, true);`] },
 
   204: {
@@ -3222,7 +3224,6 @@ const DRAWER_ITEM_OVERRIDES = {
     13: ["LL_SIDETABLE_S", "sSw(447, true);"],
     14: ["LL_WIDE_TABLE_E", "sSw(446, true);"],
     15: ["LL_SIDETABLE_W", "sSw(444, true);"],
-    26: ["LL_BASEMENT_KEY", `sSw(${LL_BASEMENT_KEY_SWITCH}, true);`],
   },
   208: {
     3: ["LL_EAST_DRAWER_E", "$gameSelfSwitches.setValue([208, 3, 'A'], true)"],
@@ -3575,7 +3576,7 @@ MassEventUpdates.overrideOverworldPickups = function (currentMapId) {
   Object.keys(eventsToOverride).forEach((_eventId) => {
     const [name, script] = eventsToOverride[_eventId];
     const eventId = _eventId == "15-2" ? 15 : _eventId;
-    // theres 2 items in one spot when it comes to the magazines and dirty magazines in the rat apartment; 
+    // theres 2 items in one spot when it comes to the magazines and dirty magazines in the rat apartment;
     // this is the only event in the game that does this
     // todo: find a better one-off id
     const event = $dataMap.events[eventId];
