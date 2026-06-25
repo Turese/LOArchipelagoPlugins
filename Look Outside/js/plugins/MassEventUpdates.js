@@ -3573,8 +3573,8 @@ MassEventUpdates.overrideOverworldPickups = function (currentMapId) {
   const eventsToOverride = MAP_OVERWORLD_ITEM_OVERRIDES[currentMapId];
   if (!eventsToOverride) return;
   Object.keys(eventsToOverride).forEach((_eventId) => {
+    const [name, script] = eventsToOverride[_eventId];
     const eventId = _eventId == "15-2" ? 15 : _eventId;
-    const [name, script] = eventsToOverride[eventId];
     // theres 2 items in one spot when it comes to the magazines and dirty magazines in the rat apartment; 
     // this is the only event in the game that does this
     // todo: find a better one-off id
