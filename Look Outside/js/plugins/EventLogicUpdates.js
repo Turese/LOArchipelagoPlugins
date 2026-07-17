@@ -996,9 +996,6 @@ EventLogicUpdates.initializeAPVariables = function () {
   // foughtwoundedman = true; allows players to enter vincents apartment right away
   sSw(94, true);
 
-  // starting arms are 0
-  window.Unarmed.setArms(3);
-
   // we use these for difficulty normalization
   sSw(TRUE_SWITCH_ID, true);
   sSw(FALSE_SWITCH_ID, false);
@@ -2755,9 +2752,9 @@ EventLogicUpdates.eugeneClearHoodie = function (ev) {
   EventLogicUpdates.clearEugeneTableItem(ev, "APT_24_HOODIE", 0);
 };
 
-EventLogicUpdates.eugeneClearTie = function(ev) {
+EventLogicUpdates.eugeneClearTie = function (ev) {
   EventLogicUpdates.clearEugeneTableItem(ev, "APT_24_TIE", 1);
-}
+};
 
 EventLogicUpdates.eugeneClearHat = function (ev) {
   EventLogicUpdates.clearEugeneTableItem(ev, "APT_24_COWBOY_HAT", 0);
@@ -5167,11 +5164,7 @@ EventLogicUpdates.clearCommonEventDrops = function () {
         (listItem) => listItem.code !== SKILL_CODE,
       );
 
-      if (
-        $gamePlayer &&
-        $gamePlayer.slotData &&
-        $gamePlayer.slotData["include_game_skills"] == 0
-      ) {
+      if (!$gamePlayer.slotData["include_game_skills"]) {
         // doing this makes it so the skill awarded even if you play this
         // in meat apt 33, but whatever
         if ($dataCommonEvents[i].list[0].code !== 355) {

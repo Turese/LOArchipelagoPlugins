@@ -1437,14 +1437,14 @@ UnarmedAndDangerous.applyChanges = function () {
   // @type position {'left' | 'right'}
   const addArm = function (position) {
     try {
-      const armStatus = gVr(187);
-      if (armStatus == 3) {
-        sVr(187, position == "left" ? 1 : 2);
+      const armStatus = gVr(ARM_VARIABLE_ID);
+      if (armStatus == MISSING_BOTH_ARM_VALUE) {
+        sVr(ARM_VARIABLE_ID, position == "left" ? MISSING_RIGHT_ARM_VALUE : MISSING_LEFT_ARM_VALUE);
       } else if (
-        (armStatus == 2 && position == "left") ||
-        (armStatus == 1 && position == "right")
+        (armStatus == MISSING_LEFT_ARM_VALUE && position == "left") ||
+        (armStatus == MISSING_RIGHT_ARM_VALUE && position == "right")
       ) {
-        sVr(187, 0);
+        sVr(ARM_VARIABLE_ID, MISSING_NO_ARM_VALUE);
       }
       $gameParty.leader().setCharacterImage("Chara_Player", 0);
       $gamePlayer.refresh();

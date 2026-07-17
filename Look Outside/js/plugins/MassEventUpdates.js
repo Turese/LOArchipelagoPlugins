@@ -1576,7 +1576,7 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   359: {
     3: [
       "APT_12_WALLS_APT_35_KEY",
-      "$gameSelfSwitches.setValue([359, 3, 'A'], true)",
+      "$gameSelfSwitches.setValue([359, 3, 'A'], true); sVr(888, 6); sVr(887, 150); sSw(1101, true);", // triggers obsession spawn
     ],
     25: [
       "APT_12_WALLS_SMG_BULLETS",

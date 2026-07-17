@@ -95,7 +95,7 @@ LookOutsideAPClient.applyOverrides = function () {
 
   const _Game_Map_refresh = Game_Map.prototype.refresh;
   Game_Map.prototype.refresh = function () {
-    if (this.mapId() == 56) return _Game_Map_refresh.call(this);; // disable on mutt's
+    if (this.mapId() == 56) return _Game_Map_refresh.call(this); // disable on mutt's
     LookOutsideAPClient.applyDataMapUpdates(this.mapId());
     _Game_Map_refresh.call(this);
   };
@@ -199,19 +199,19 @@ LookOutsideAPClient.applyOverrides = function () {
     }
 
     if (client.authenticated) {
-      const playerName = client.players.self.alias;
-      // random death phrase from the list
-      const message =
-        DEATH_LINK_PHRASES[
-          Math.floor(Math.random() * DEATH_LINK_PHRASES.length)
-        ];
+      if ($gamePlayer.slotData && $gamePlayer.slotData.death_link) {
+        const playerName = client.players.self.alias;
+        // random death phrase from the list
+        const message =
+          DEATH_LINK_PHRASES[
+            Math.floor(Math.random() * DEATH_LINK_PHRASES.length)
+          ];
 
-      const phrase = `[DeathLink] ${playerName}${message}`;
+        const phrase = `[DeathLink] ${playerName}${message}`;
+        client.deathLink.sendDeathLink(playerName, phrase);
 
-      console.log("SENDING DEATH LINK: ", phrase);
-      client.deathLink.sendDeathLink(playerName, phrase);
-
-      client.messages.say(phrase);
+        client.messages.say(phrase);
+      }
     }
   };
 };
@@ -249,7 +249,7 @@ LookOutsideAPClient.makeSlotDataChanges = function () {
   if (slotData["rat_baby_name"])
     InsertAPItems.setRatBabyName(slotData["rat_baby_name"]);
 
-  sSw(MASK_LOCATIONS_ENABLED_SWITCH, !!slotData["include_mask"])
+  sSw(MASK_LOCATIONS_ENABLED_SWITCH, !!slotData["include_mask"]);
   sSw(CAN_KILL_SHOPKEEPERS_SWITCH, !!slotData["allow_killing_shopkeepers"]);
 };
 
@@ -833,6 +833,10 @@ LookOutsideAPClient.watchLocations = function () {
 LookOutsideAPClient.updateItems = function () {
   const items = client.items.received;
   const currIndex = LookOutsideAPClient.initializeItemIndex();
+  if (currIndex == 0) {
+    // starting arms are 0
+    window.Unarmed.setArms(3);
+  }
   for (let i = currIndex; i < items.length; i++) {
     const itemId = items[i].id;
     if (i < $gamePlayer.APItemsIndex) {
