@@ -2149,6 +2149,13 @@ EventLogicUpdates.clearFaceTakerDrops = function (ev) {
   });
 };
 
+EventLogicUpdates.clearWrigglyLeaving = function (ev) {
+  // clear page that makes overworld wriggly leave when you recruit him
+  if (ev.pages.length > 4) {
+    ev.pages.splice(4, 1);
+  }
+};
+
 EventLogicUpdates.clearToxicFredDrop = function (ev) {
   // toxic fred/paintlings/hat stained key drops
   ev.pages.forEach((page) => {
@@ -2228,7 +2235,6 @@ EventLogicUpdates.updateLaughingMoldEvent = function (ev) {
     ev.pages.push(ev.pages[7]);
   }
 };
-
 
 EventLogicUpdates.clearGrateLever = function (ev) {
   ev.pages[1].list = EventLogicUpdates.itemDropClear(
@@ -3443,6 +3449,7 @@ const EVENT_UPDATE_TABLE = {
   },
   96: {
     12: EventLogicUpdates.clearFaceTakerDrops,
+    23: EventLogicUpdates.clearWrigglyLeaving,
   },
   50: {
     12: EventLogicUpdates.clearOozeMachine,
