@@ -10,6 +10,140 @@
 
 var NormalizeDifficulty = NormalizeDifficulty || {};
 
+// instances where a certain difficulty being on results in an item appearing
+// in these instances, the difficulty condition is to be set to the always true switch
+
+// format: {mapid: [eventid1, eventid2]}
+// all of these will check every single page
+const MAP_OVERWORLD_DIFFICULTY_POSITIVE_OVERRIDES = {
+  60: [
+    21, // GF_MACKINAW_JACKET
+    22, // GF_ARROWED_SASH
+  ],
+  92: [1, 2, 3, 4, 6, 7], // floor 1 hardmode = transitions
+  97: [7], // FRED_DARK_ROOM_BEER_2
+  109: [8], // APT_31_BEDROOM_TONIC
+  111: [9], // APT_31_BATHROOM_DCLOGGER_2
+  31: [
+    21, // APT_32_KITCHEN_VINEGAR_2
+    30, // APT_32_ENTRY_HOODIE
+    31, // APT_32_ENTRY_BANDAGES
+    33, // APT_32_KITCHEN_TOOTH_FAIRY_COMBAT_VICTORY
+  ],
+  69: [9], // LAUNDRY_KLYSOX_1
+  32: [8], // APT_32_BATHROOM_TONIC
+  35: [17], // APT_37_TABLE_PLATE_2
+  352: [21], // APT_37_LOCKED_ROOM_TONIC
+  353: [
+    15, // APT_38_PLATE_1
+    23, // APT_38_PLATE_2
+  ],
+  7: [
+    32, // F2_PISTOL_BULLETS_2
+  ],
+  10: [
+    6, // APT_21_BEDROOM_BEEF_6
+    9, // APT_21_BEDROOM_BEEF_3
+  ],
+  105: [
+    10, // APT_12_PISTOL_BULLETS_2
+    12, // APT_12_SHOTGUN_SHELLS_2
+  ],
+  293: [23], // APT_18_SKITTERBUSH_COMBAT_VICTORY
+  297: [30], // APT_18_SE_SKITTERBUSH_COMBAT_VICTORY
+  375: [13], // APT_18_SW_SKITTERBUSH_COMBAT_VICTORY
+  98: [5], // AURELIUS_FIRST_AID_KIT
+  101: [
+    16, // RAT_APT_BABY_ROOM_RATS_COMBAT_VICTORY
+    19, // RAT_APT_BABY_ROOM_RATS_COMBAT_VICTORY
+  ],
+  102: [
+    10, // RAT_APT_BEDROOM_TRENCH_COAT
+    13, // RAT_APT_BEDROOM_DENIM_JACKET !!! THIS ONE CHECKS NORMAL MODE
+    14, // RAT_APT_BEDROOM_HOODIE
+  ],
+  103: [12], // RAT_APT_BATHROOM_TONIC
+  96: [7], // FRED_ENTRYWAY_MACHETE
+  8: [49, 50, 1, 2, 3], // hardmode beast chase phase 1
+  372: [10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26], // eye animations in beast chase hardmode and 10 = door only exists in hardmode
+  302: [16], // B1_BATHROOM_URANUS_DISC
+  207: [
+    23, // LL_BATTLEFIELD_RIDER_2_COMBAT_VICTORY
+    24, // LL_BATTLEFIELD_RIDER_1_COMBAT_VICTORY
+  ],
+  184: [11, 12, 13], // LL_ROCKET_LAUNCHER_COMBAT_VICTORY
+  122: [19, 21], // APT_34_LONG_BEDROOM_MANTEAU_COMBAT_VICTORY
+  48: [3], // door to steve room in sewer with lock
+  299: [4], // locked bathroomdoor in b1
+  119: [5], // FRED_TOXIC_ROOM_TONIC
+  85: [
+    23, // BOILER_STORAGE_KLYSOX_3
+    21, // BOILER_STORAGE_D_CLOGGER_3
+    19, // BOILER_STORAGE_DUCT_TAPE_3
+  ],
+};
+
+// instances where a certain difficulty being on results in an item not appearing
+// in these instances, the page condition is to be set to always false
+
+// format: {mapid: {eventid: pageid}}
+// if multiple pages {mapid: {eventid: [pageid1, pageid2]}}
+const MAP_OVERWORLD_DIFFICULTY_NEGATIVE_OVERRIDES = {
+  7: {
+    30: [2, 3], // F2_PISTOL
+    31: [2, 3], // F2_PISTOL_BULLETS_1
+  },
+  30: {
+    10: 2, // STAIRWELL_POOL_CUE
+  },
+  97: {
+    6: 2, // FRED_DARK_ROOM_TURPENTINE
+  },
+  292: {
+    14: 2, // RAT_LAIR_GUARDED_CHEESE_3
+    12: 2, // RAT_LAIR_GUARDED_CHEESE_4
+  },
+  79: {
+    9: 2, // B_STEVE_JUNK_4
+  },
+  77: {
+    3: 2, // SECURITY_STORAGE_GRENADE_2
+  },
+  69: {
+    7: 2, // LAUNDRY_KLYSOX_3
+  },
+  85: {
+    22: 2, // BOILER_STORAGE_VINEGAR_1
+    11: 1, // BOILER_STORAGE_D_CLOGGER_2
+    9: 1, // BOILER_STORAGE_KLYSOX_1
+    8: 1, // BOILER_STORAGE_GASOLINE_1
+    6: 2, // BOILER_STORAGE_DUCT_TAPE_1
+  },
+  258: {
+    12: 2, // SEWER_SW_MOLOTOV_2
+  },
+  84: {
+    10: 1, // BOILER_NORTH_JUNK_1
+  },
+  239: {
+    2: 1, // TRUE_FRED_CLOSET_TURPENTINE_2
+  },
+  233: {
+    8: 2, // LL_MEMORIAL_GRENADE
+    10: 2, // LL_MEMORIAL_AMMO_CRATE_1
+  },
+  332: {
+    9: 1, // APT_24_BEDROOM_CHOCKY_BAR_1
+  },
+  259: {
+    3: 1, // SEWER_SE_SUPER_EXPLOSIVE
+    17: 1, // SEWER_SE_FIREBOMB
+  },
+  58: {
+    4: 2, // MUTT_BATHROOM_URANUS_DISC
+  },
+};
+
 NormalizeDifficulty.applyChanges = function () {
   // track this to know what mapid to overwrite events for
   let mostRecentMapId;
@@ -20,240 +154,50 @@ NormalizeDifficulty.applyChanges = function () {
     loadMapData.call(this, mapId);
   };
 
-  // used in this plugin to decide what setting to normalize to
-  const TO_EASYMODE = 1;
-  const TO_HARDMODE = 2;
-
   // in-game difficulty variable ids
   const HARDMODE = 8;
   const EASYMODE = 13;
   const NORMALMODE = 31;
 
-  // todo: this focuses on fights with extra events or unique spawns
-  // ive skipped the rat encounters on floor 1 where hardmode adds more rats
-  // forcing hardmode checks on these fights will also increase the hp and other stats of most
-  // but i'll leave in the easymode debuffs to possibly counteract them
-  const TROOPS_WITH_HARDMODE_EXTRAS = [
-    20, // Wounded neighbor
-    30, // Toothlings => rotten tooth
-    31, // Teratoma, hardmode adds rotten tooth
-    79, // Include wiggle eye in the encounter
-    164, // stretchface with lil stretchy
-    166, // confusion with crawlcorpse and screaming skull
-    275, // surgeon - hardmode adds more soldiers
-    281, // trench digger has sidekicks on hard mode
-    283, // hardmode transforms soldier into commando
-    284, // hardmode transforms soldier into commando
-    286, // hardmode transforms soldier into commando
-    426, // hardmode adds bottines to the fight
-    427, // hardmode adds bottines to the fight
-    428, // hardmode adds bottines to the fight
-    429, // hardmode adds manchon to the fight
-    433, // argot; hardmode adds tonsil and papillae
-    434, // pompom; hardmode adds tuque and bottines
-    439, // needles; hardmode adds mannikin
-    440, // scissors; hardmode adds mannikin
-    441, // taxidermy; hardmode adds extra heads
-    444, // limbs; hardmode adds hideface
-    445, // tiger; hardmode adds hideface
-    465, // antoine; hardmode adds esther and noah
-    466, // clyde; hardmode adds all his children and especially angel
-    469, // steve; hardmode adds steve jr
-  ];
+  const allModeSwitches = [HARDMODE, EASYMODE, NORMALMODE];
 
-  // make all events conform to a difficulty no matter which one was selected
+  function forceDifficultyNegativeItem(ev, lastLoadedMapId) {
+    const mapDifficultyNegativeEvents = MAP_OVERWORLD_DIFFICULTY_POSITIVE_OVERRIDES[lastLoadedMapId];
+    if (!mapDifficultyNegativeEvents) return;
+    const eventPageIds = mapDifficultyNegativeEvents[ev.id];
+    if (!eventPageIdMapping) return; // i can get away with this for now because none of these checks occur on page 0 which is falsy
+    const eventPageIdArray  = Array.isArray(eventPageIdMapping) ? eventPageIdMapping : [eventPageIdMapping]; 
 
-  // make all easymode-only events always appear
-  function forceEasyModeEvents(dataMap) {
-    if (!dataMap) return;
-    if (lastLoadedMapId == 56) return;
-    // TODO: this is a slapdash way
-    // of removing the forEach loop in Mutt's
-    // shop to fix lag issues
-    // i need to implement this without
-    // the loop at all for efficency
-    dataMap.events.forEach((evt) => {
-      if (!evt) return;
-      if (!evt.pages) return;
-      evt.pages.forEach((page) => {
-        const conditions = page.conditions;
-
-        if (conditions.switch1Valid) {
-          if (page.conditions.switch1Id === EASYMODE) {
-            page.conditions.switch1Id = TRUE_SWITCH_ID;
-            console.log(
-              `!!!!! HIT EASYMODE ON SWITCH 1: MAP: ${dataMap.mapId}, EVENT: ${evt.id}`,
-            );
-          }
+    // force the page always false
+    eventPageIdArray.forEach((pageId) => {
+      if (ev.pages[pageId]) {
+        if (allModeSwitches.includes(ev.pages[pageId].conditions.switch1Id)) {
+          ev.pages[pageId].conditions.switch1Id = FALSE_SWITCH_ID;
         }
-        if (conditions.switch2Valid) {
-          if (page.conditions.switch2Id === EASYMODE) {
-            page.conditions.switch2Id = TRUE_SWITCH_ID;
-            console.log(
-              `!!!!! HIT EASYMODE ON SWITCH 2: MAP: ${dataMap.mapId}, EVENT: ${evt.id}`,
-            );
-          }
-        }
-      });
-    });
-  }
-
-  // make all easymode-only events always appear
-  function forceHardModeEvents(dataMap) {
-    if (!dataMap) return;
-    if (lastLoadedMapId == 56) return;
-    // TODO: this is a slapdash way
-    // of removing the forEach loop in Mutt's
-    // shop to fix lag issues
-    // i need to implement this without
-    // the loop at all for efficency
-    dataMap.events.forEach((evt) => {
-      if (!evt) return;
-      if (!evt.pages) return;
-      evt.pages.forEach((page) => {
-        const conditions = page.conditions;
-
-        if (conditions.switch1Valid) {
-          if (page.conditions.switch1Id === HARDMODE) {
-            page.conditions.switch1Id = TRUE_SWITCH_ID;
-            console.log(
-              `!!!!! HIT HARDMODE ON SWITCH 1: MAP: ${dataMap.mapId}, EVENT: ${evt.id}`,
-            );
-          }
-        }
-        if (conditions.switch2Valid) {
-          if (page.conditions.switch2Id === HARDMODE) {
-            page.conditions.switch2Id = TRUE_SWITCH_ID;
-            console.log(
-              `!!!!! HIT HARDMODE ON SWITCH 2: MAP: ${dataMap.mapId}, EVENT: ${evt.id}`,
-            );
-          }
-        }
-      });
-    });
-  }
-
-  // allows fridges to randomly attack you like on hardmode
-  function forceHardmodeFridgeFightLogic(commonEvents) {
-    commonEvents[286].list.forEach((listEntry) => {
-      if (listEntry.code === 111) {
-        // if statement check command
-        if (
-          listEntry.parameters[0] === 0 &&
-          listEntry.parameters[1] === HARDMODE
-        ) {
-          // index 0 - check switches, 1 - switch id
-          listEntry.parameters[1] = TRUE_SWITCH_ID;
+        if (allModeSwitches.includes(ev.pages[pageId].conditions.switch2Id)) {
+          ev.pages[pageId].conditions.switch2Id = FALSE_SWITCH_ID;
         }
       }
     });
   }
 
-  //
-  function addHardmodeSpawnsToTroops(troops) {
-    if (!troops) return;
-    TROOPS_WITH_HARDMODE_EXTRAS.forEach((troopId) => {
-      const troop = troops[troopId];
-      troop.pages.forEach((page) => {
-        if (page.conditions.switchId === HARDMODE)
-          page.conditions.switchId = TRUE_SWITCH_ID;
-        page.list.forEach((listEntry) => {
-          if (listEntry.code === 111) {
-            // if statement check command
-            if (
-              listEntry.parameters[0] === 0 &&
-              listEntry.parameters[1] === HARDMODE
-            ) {
-              // index 0 - check switches, 1 - switch id
-              listEntry.parameters[1] = TRUE_SWITCH_ID;
-            }
-          }
-        });
+  function forceDataMapDifficultyPositiveItems(dataMap) {
+    const eventIdArray = MAP_OVERWORLD_DIFFICULTY_POSITIVE_OVERRIDES[dataMap.mapId];
+    
+    // force the page always true
+    eventIdArray.forEach((eventId) => {
+      ev = dataMap.events[eventId];
+      // checking every page --- this is a little redundant but it's only about 1 or 2 redundant pages per event
+      ev.pages.forEach(page => {
+        if (allModeSwitches.includes(page.conditions.switch1Id)) {
+          page.conditions.switch1Id = TRUE_SWITCH_ID;
+        }
+        if (allModeSwitches.includes(page.conditions.switch2Id)) {
+          page.conditions.switch2Id = TRUE_SWITCH_ID;
+        }
       });
     });
-  }
 
-  function forceHardModeBeastChaseItems(ev, lastLoadedMapId) {
-    if (lastLoadedMapId == 8 && ev.id == 61) {
-      // checks switch 1049; if you defeated hardmode grinning beast
-      // switching it to 81; if you faced the beast at all
-      ev.pages[0].conditions.switch1Id = 81;
-    }
-
-    // make grinning beast gun always drop (on hard mode it only drops when you dont fight)
-    // and the first page of bullets always visible (hardmode gets a special page)
-    if (lastLoadedMapId == 7) {
-      if (ev.id == 31 || ev.id == 30) {
-        if (ev.pages.length > 2) ev.pages.splice(2, 3);
-      }
-      if (ev.id == 61) {
-        // this item is ordarily a reward for defeating leigh on cursed; changing condition to having seen the beast at all
-        ev.pages[0].conditions = EventLogicUpdates.buildConditions(
-          undefined,
-          81,
-        );
-      }
-    }
-  }
-
-  function forceHardmodePositiveItems(ev, lastLoadedMapId) {
-    // some items self-hide when hardmode = true
-    // todo: replace if statements with an object lookup
-
-    if (lastLoadedMapId == 30 && ev.id == 10 && ev.pages.length == 3) {
-      ev.pages.splice(2, 1); // stairwell pool cue
-    }
-
-    if (lastLoadedMapId == 97 && ev.id == 6 && ev.pages.length == 3) {
-      ev.pages.splice(2, 1); // turpentine in fred's studio
-    }
-
-    if (
-      lastLoadedMapId == 292 &&
-      (ev.id == 14 || ev.id == 12) &&
-      ev.pages.length == 3
-    ) {
-      ev.pages.splice(2, 1); // cheese in rat lair
-    }
-
-    if (lastLoadedMapId == 79 && ev.id == 9 && ev.pages.length == 3) {
-      ev.pages.splice(2, 1); // basement junk 4
-    }
-
-    if (lastLoadedMapId == 85 && ev.id == 11 && ev.pages.length == 3) {
-      ev.pages.splice(1, 1); // BOILER_STORAGE_D_CLOGGER_2
-    }
-
-    if (lastLoadedMapId == 85 && ev.id == 9 && ev.pages.length == 3) {
-      ev.pages.splice(1, 1); // BOILER_STORAGE_KLYSOX_1
-    }
-
-    if (lastLoadedMapId == 258 && ev.id == 12 && ev.pages.length == 3) {
-      ev.pages.splice(2, 1); // sewer sw item 2
-    }
-
-    if (lastLoadedMapId == 84 && ev.id == 10 && ev.pages.length == 3) {
-      ev.pages.splice(1, 1); // boiler north junk 1
-    }
-  }
-
-  function forceNormalModePositiveItem(ev, lastLoadedMapId) {
-    // as far as i can tell, theres only 1 item like this
-    if (lastLoadedMapId == 102 && ev.id == 13) {
-      ev.pages[0].conditions.switch1Id = TRUE_SWITCH_ID;
-    }
-  }
-
-  function forceHardmodeF1(ev, lastLoadedMapId) {
-    // floor 1 layout checks the hardmode switch in the middle of the page logic
-    if (lastLoadedMapId == 92 && [1, 2, 3, 4].includes(ev.id)) {
-      ev.pages[0].list
-        .filter(
-          (listItem) =>
-            listItem.code === 111 && listItem.parameters[1] === HARDMODE,
-        )
-        .forEach((listItem) => (listItem.parameters[1] = TRUE_SWITCH_ID));
-    }
   }
 
   // always enable saves, even in places like the roof and rat hell
@@ -275,15 +219,8 @@ NormalizeDifficulty.applyChanges = function () {
   DataManager.onLoad = function (object) {
     _dataManagerOnLoad.call(this, object);
     if (object === $dataMap) {
-      forceEasyModeEvents(object);
-      forceHardModeEvents(object);
+      forceDataMapDifficultyPositiveItems(object);
     }
-    /*if (object === $dataTroops) {
-      //addHardmodeSpawnsToTroops(object);
-    }
-    if (object === $dataCommonEvents) {
-      forceHardmodeFridgeFightLogic(object);
-    }*/
   };
 
   const _Game_Event_event = Game_Event.prototype.event;
@@ -292,10 +229,7 @@ NormalizeDifficulty.applyChanges = function () {
 
     if (!ev) return ev;
 
-    forceHardModeBeastChaseItems(ev, lastLoadedMapId);
-    forceHardmodePositiveItems(ev, lastLoadedMapId);
-    forceNormalModePositiveItem(ev, lastLoadedMapId);
-    forceHardmodeF1(ev, lastLoadedMapId);
+    forceDifficultyNegativeItem(ev, lastLoadedMapId);
 
     return ev;
   };

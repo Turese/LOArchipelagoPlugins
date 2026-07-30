@@ -2229,14 +2229,6 @@ EventLogicUpdates.updateLaughingMoldEvent = function (ev) {
   }
 };
 
-EventLogicUpdates.fixRoxieRoomItemDoubleEntry = function (ev) {
-  // two of the items in roxie's room in the sewers have two separate pages
-  // since theyre different items on hard mode
-  // we will delete the second entries
-  if (ev.pages.length > 2) {
-    ev.pages.splice(1, 1);
-  }
-};
 
 EventLogicUpdates.clearGrateLever = function (ev) {
   ev.pages[1].list = EventLogicUpdates.itemDropClear(
@@ -3521,10 +3513,6 @@ const EVENT_UPDATE_TABLE = {
     3: EventLogicUpdates.clearAudreySporeGuardianDrop,
     24: EventLogicUpdates.clearAudreySporeGuardianDrop,
     26: EventLogicUpdates.clearAudreySporeGuardianDrop,
-  },
-  259: {
-    3: EventLogicUpdates.fixRoxieRoomItemDoubleEntry,
-    17: EventLogicUpdates.fixRoxieRoomItemDoubleEntry,
   },
   256: {
     3: EventLogicUpdates.clearGrateLever,

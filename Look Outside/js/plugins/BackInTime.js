@@ -46,6 +46,7 @@ BackInTime.isSpineDead = function () {
 
 BackInTime.fixSpineKilled = function () {
   delete $gameSelfSwitches._data[[267, 19, "C"].toString()]; // delete the dead spine state on her event
+  
 };
 
 BackInTime.isBenDead = function () {
@@ -140,9 +141,6 @@ BackInTime.fixJeanneKilled = function () {
   sSw(747, false); // MainHydraHeadDead = OFF
   // change jeane apartment tileset back to normal
 };
-
-BackInTime.fixSpineKilled = function () {};
-
 BackInTime.revertJeannePhase = function () {
   sVr(583, 5); // set jeanne state to her middle phase
 };
