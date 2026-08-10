@@ -1399,7 +1399,7 @@ const IMPLIED_LOCATIONS = Object.freeze({
   F2_GRINNING_BEAST_COMBAT_VICTORY: ["F2_GRINNING_BEAST_CHASE_POOL_CUE"],
   APT_32_BATHROOM_RECRUIT_JOEL: ["APT_32_BATHROOM_JOEL_COMBAT_VICTORY"],
   F2_RECRUIT_ASTER: ["F2_ASTER_COMBAT_VICTORY"],
-  APT_21_SECOND_KISS_GIFT: ["APT_21_LYLE_COMBAT_VICTORY"], // lets make him always vanish after 2nd kiss
+  APT_21_SECOND_KISS_GIFT: ["APT_21_LYLE_COMBAT_VICTORY"], // just in case the player peeks
   ERNEST_COLONEL_COMBAT_VICTORY: ["ERNEST_COMBAT_VICTORY"],
   RAT_HELL_RECRUIT_ERNEST: [
     "ERNEST_COMBAT_VICTORY",
@@ -1409,6 +1409,17 @@ const IMPLIED_LOCATIONS = Object.freeze({
   GF_JANITORS_RECRUIT_PAPINEAU: ["GF_JANITORS_PAPINEAU_COMBAT_VICTORY"],
   DOOR_WILLIAM_PRIZE_2: ["DOOR_WILLIAM_PRIZE_1"],
   SEWER_NE_ZACHARY: ["SEWER_NE_CHEW_TOY"],
+  LL_RENT_4: [
+    "LL_SIDETABLE_N",
+    "LL_SIDETABLE_W",
+    "LL_SIDETABLE_S",
+    "LL_SOLDIER_GRP1_COMBAT_VICTORY",
+    "LL_WIDE_TABLE_S",
+    "LL_GATLING_COMBAT_VICTORY",
+    "LL_WIDE_TABLE_E",
+    "LL_MANATARMS_COMBAT_VICTORY",
+  ],
+
 });
 
 // custom switch ids (these are unused in the base game as of version 2.3
@@ -3503,6 +3514,7 @@ VARIABLE_LOCATIONS = {
     { relation: ">=", value: 3, location: "LL_RENT_2" },
     { relation: ">=", value: 4, location: "LL_RENT_3" },
     { relation: ">=", value: 5, location: "LL_RENT_4" },
+    { relation: ">=", value: 6, location: "LL_ROCKET_LAUNCHER_COMBAT_VICTORY" }, // you get location even when you run past it
   ],
   355: { relation: "=", value: 1, location: "LL_DINING_RADIO" },
   353: { relation: "=", value: 1, location: "LL_SAPPER_GIFT_FROM_SAPPER" },
