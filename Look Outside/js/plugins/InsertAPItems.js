@@ -41,6 +41,12 @@ InsertAPItems.insertItem = function (id, itemClass, amount = 1) {
       }
       return;
     }
+    if (itemClass === "item" && id == 3) {
+      // suturing kit; initialize charges
+      sVr(474, 10); // initial value
+      if (gSw(13)) sVr(474, 14); // if easymode, add 4
+      if (gSw(8)) sVr(474, 6); // if easymode, remove 4
+    }
     if (itemClass === "item" && id == 5) {
       // rat baby thing; set the sacrifice room to "solved"
       sSw(130, true); // gratingRoomSolved

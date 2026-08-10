@@ -1031,9 +1031,18 @@ EventLogicUpdates.initializeAPVariables = function () {
 
   sVr(898, 10); // choose violence - allows player to get true final
 
-  // re-setup door encounters with slot data
-  setupDoorEncounters();
   $gamePlayer.introFinished = true;
+
+  // unlock the planetarium
+  sSw(993, true); // switch that decides if door is unlocked
+  sSw(994, true); // switch that stores whether player still hasnt found the code so they can ask for it
+  sVr(766, 187552); // combo lock variable
+
+  // complete every puzzle but 1
+  sVr(491, 99) // puzzles completed = 99/100
+  sVr(492, 5) // crossword difficulty = 5
+
+  // the crossword passcode gets initialized on first crossword interaction
 
   LookOutsideAPClient.gameLoadedAPSetup();
 };
@@ -1357,6 +1366,18 @@ EventLogicUpdates.updateAudreyPose = function (ev) {
   // also disabled on recruit
   if (ev.pages.length >= 2) {
     ev.pages.splice(1, 1);
+  }
+};
+
+EventLogicUpdates.forceHardmodeFloor1Transitions = function (ev) {
+  const pageList = ev.pages[0].list;
+  const hardmodeCheck = pageList.find(
+    (listItem) => (listEntry) =>
+      listEntry.code == 111 && listEntry.parameters[1] == HARDMODE,
+  );
+
+  if (hardmodeCheck) {
+    hardmodeCheck.parameters[1] = TRUE_SWITCH_ID; // force the hardmode transition to always be true
   }
 };
 
@@ -2546,8 +2567,16 @@ EventLogicUpdates.clearAudreySwatOverworldDrop = function (ev) {
   );
 };
 
-EventLogicUpdates.clearAudreyTaxidermyDrop = function (ev) {
+EventLogicUpdates.clearTaxidermyDrops = function (ev) {
+  // clear audrey taxidermy drops
   for (let i = 1; i < 3; i++) {
+    EventLogicUpdates.itemDropReplaceScript(
+      ev.pages[i].list,
+      SET_VAR_CODE,
+      "",
+      (listItem) => listItem.parameters[0] == 474,
+    ); // delete suturing kit use amount change
+
     EventLogicUpdates.itemDropReplaceScript(
       ev.pages[i].list,
       ARMOR_CODE,
@@ -3329,6 +3358,12 @@ const EVENT_UPDATE_TABLE = {
     111: EventLogicUpdates.forceAudreyToStay,
     113: EventLogicUpdates.updateAudreyEvents,
     114: EventLogicUpdates.updateAudreyPose,
+    1: EventLogicUpdates.forceHardmodeFloor1Transitions,
+    2: EventLogicUpdates.forceHardmodeFloor1Transitions,
+    3: EventLogicUpdates.forceHardmodeFloor1Transitions,
+    4: EventLogicUpdates.forceHardmodeFloor1Transitions,
+    6: EventLogicUpdates.forceHardmodeFloor1Transitions,
+    7: EventLogicUpdates.forceHardmodeFloor1Transitions,
   },
   93: {
     3: EventLogicUpdates.forceLeighToStay,
@@ -3536,7 +3571,7 @@ const EVENT_UPDATE_TABLE = {
   },
   152: { 6: EventLogicUpdates.clearAudreyShrimpKnightDrop },
   270: {
-    6: EventLogicUpdates.clearAudreyTaxidermyDrop,
+    6: EventLogicUpdates.clearTaxidermyDrops,
   },
   106: { 11: EventLogicUpdates.clearRatFreakGift },
   289: { 6: EventLogicUpdates.clearBurritoRatGift },
@@ -3794,7 +3829,8 @@ EventLogicUpdates.clearTroopsDrops = function () {
 
     // make us never hit gun dialogue
     const checkHardModeIndex = leighTroopList.findIndex(
-      (listEntry) => listEntry.code == 111 && listEntry.parameters[1] == 8,
+      (listEntry) =>
+        listEntry.code == 111 && listEntry.parameters[1] == HARDMODE,
     );
     if (checkHardModeIndex !== -1)
       leighTroopList[checkHardModeIndex] = {
@@ -5159,7 +5195,11 @@ EventLogicUpdates.clearCommonEventDrops = function () {
         (listItem) => listItem.code !== SKILL_CODE,
       );
 
-      if (!$gamePlayer.slotData["include_game_skills"]) {
+      if (
+        $gamePlayer &&
+        $gamePlayer.slotData &&
+        !$gamePlayer.slotData["include_game_skills"]
+      ) {
         // doing this makes it so the skill awarded even if you play this
         // in meat apt 33, but whatever
         if ($dataCommonEvents[i].list[0].code !== 355) {

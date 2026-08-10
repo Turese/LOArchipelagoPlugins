@@ -74,7 +74,6 @@ LookOutsideAPClient.applyOverrides = function () {
   // update - extra images may be needed to be loaded when initializing the map
   const _createCharacters = Spriteset_Map.prototype.createCharacters;
   Spriteset_Map.prototype.createCharacters = function () {
-    console.log(this);
     ItemImages.loadCurrentMapImages();
     _createCharacters.call(this);
   };

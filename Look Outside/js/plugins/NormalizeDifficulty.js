@@ -20,7 +20,6 @@ const MAP_OVERWORLD_DIFFICULTY_POSITIVE_OVERRIDES = {
     21, // GF_MACKINAW_JACKET
     22, // GF_ARROWED_SASH
   ],
-  92: [1, 2, 3, 4, 6, 7], // floor 1 hardmode = transitions
   97: [7], // FRED_DARK_ROOM_BEER_2
   109: [8], // APT_31_BEDROOM_TONIC
   111: [9], // APT_31_BATHROOM_DCLOGGER_2
@@ -64,7 +63,7 @@ const MAP_OVERWORLD_DIFFICULTY_POSITIVE_OVERRIDES = {
   ],
   103: [12], // RAT_APT_BATHROOM_TONIC
   96: [7], // FRED_ENTRYWAY_MACHETE
-  8: [49, 50, 1, 2, 3], // hardmode beast chase phase 1
+  8: [46, 49, 50, 1, 2, 3], // hardmode beast chase phase 1
   372: [10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26], // eye animations in beast chase hardmode and 10 = door only exists in hardmode
   302: [16], // B1_BATHROOM_URANUS_DISC
   207: [
@@ -144,6 +143,10 @@ const MAP_OVERWORLD_DIFFICULTY_NEGATIVE_OVERRIDES = {
   },
 };
 
+const HARDMODE = 8;
+const EASYMODE = 13;
+const NORMALMODE = 31;
+
 NormalizeDifficulty.applyChanges = function () {
   // track this to know what mapid to overwrite events for
   let mostRecentMapId;
@@ -155,40 +158,43 @@ NormalizeDifficulty.applyChanges = function () {
   };
 
   // in-game difficulty variable ids
-  const HARDMODE = 8;
-  const EASYMODE = 13;
-  const NORMALMODE = 31;
 
   const allModeSwitches = [HARDMODE, EASYMODE, NORMALMODE];
 
-  function forceDifficultyNegativeItem(ev, lastLoadedMapId) {
-    const mapDifficultyNegativeEvents = MAP_OVERWORLD_DIFFICULTY_POSITIVE_OVERRIDES[lastLoadedMapId];
+  function forceDataMapDifficultyNegativeItems(dataMap, lastLoadedMapId) {
+    const mapDifficultyNegativeEvents =
+      MAP_OVERWORLD_DIFFICULTY_NEGATIVE_OVERRIDES[lastLoadedMapId];
     if (!mapDifficultyNegativeEvents) return;
-    const eventPageIds = mapDifficultyNegativeEvents[ev.id];
-    if (!eventPageIdMapping) return; // i can get away with this for now because none of these checks occur on page 0 which is falsy
-    const eventPageIdArray  = Array.isArray(eventPageIdMapping) ? eventPageIdMapping : [eventPageIdMapping]; 
 
-    // force the page always false
-    eventPageIdArray.forEach((pageId) => {
-      if (ev.pages[pageId]) {
-        if (allModeSwitches.includes(ev.pages[pageId].conditions.switch1Id)) {
-          ev.pages[pageId].conditions.switch1Id = FALSE_SWITCH_ID;
+    // force the page always true
+    Object.keys(mapDifficultyNegativeEvents).forEach((eventId) => {
+      const eventPages = Array.isArray(mapDifficultyNegativeEvents[eventId])
+        ? mapDifficultyNegativeEvents[eventId]
+        : [mapDifficultyNegativeEvents[eventId]];
+      eventPages.forEach((pageId) => {
+        const page = dataMap.events[eventId].pages[pageId];
+        console.log("PAGE HERE: ", page);
+        if (allModeSwitches.includes(page.conditions.switch1Id)) {
+          page.conditions.switch1Id = FALSE_SWITCH_ID;
         }
-        if (allModeSwitches.includes(ev.pages[pageId].conditions.switch2Id)) {
-          ev.pages[pageId].conditions.switch2Id = FALSE_SWITCH_ID;
+        if (allModeSwitches.includes(page.conditions.switch2Id)) {
+          page.conditions.switch2Id = FALSE_SWITCH_ID;
         }
-      }
+      });
     });
   }
 
-  function forceDataMapDifficultyPositiveItems(dataMap) {
-    const eventIdArray = MAP_OVERWORLD_DIFFICULTY_POSITIVE_OVERRIDES[dataMap.mapId];
-    
+  function forceDataMapDifficultyPositiveItems(dataMap, lastLoadedMapId) {
+    const eventIdArray =
+      MAP_OVERWORLD_DIFFICULTY_POSITIVE_OVERRIDES[lastLoadedMapId];
+    if (!eventIdArray) return;
+
+    console.log(eventIdArray);
     // force the page always true
     eventIdArray.forEach((eventId) => {
       ev = dataMap.events[eventId];
       // checking every page --- this is a little redundant but it's only about 1 or 2 redundant pages per event
-      ev.pages.forEach(page => {
+      ev.pages.forEach((page) => {
         if (allModeSwitches.includes(page.conditions.switch1Id)) {
           page.conditions.switch1Id = TRUE_SWITCH_ID;
         }
@@ -197,7 +203,6 @@ NormalizeDifficulty.applyChanges = function () {
         }
       });
     });
-
   }
 
   // always enable saves, even in places like the roof and rat hell
@@ -219,19 +224,9 @@ NormalizeDifficulty.applyChanges = function () {
   DataManager.onLoad = function (object) {
     _dataManagerOnLoad.call(this, object);
     if (object === $dataMap) {
-      forceDataMapDifficultyPositiveItems(object);
+      forceDataMapDifficultyPositiveItems(object, lastLoadedMapId);
+      forceDataMapDifficultyNegativeItems(object, lastLoadedMapId);
     }
-  };
-
-  const _Game_Event_event = Game_Event.prototype.event;
-  Game_Event.prototype.event = function () {
-    const ev = _Game_Event_event.call(this);
-
-    if (!ev) return ev;
-
-    forceDifficultyNegativeItem(ev, lastLoadedMapId);
-
-    return ev;
   };
 };
 

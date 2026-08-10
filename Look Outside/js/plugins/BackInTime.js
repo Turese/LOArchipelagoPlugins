@@ -601,7 +601,7 @@ BackInTime.regretTemplates = {
     ],
   },
   ernestTooLate: {
-    rName: "(([!s[797];!s[790]]))Ernest.",
+    rName: "(([!s[797],!s[790]]))Ernest.",
     rFunction: "BackInTime.fixErnestTooLate",
     rText: [
       [
