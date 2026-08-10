@@ -1220,15 +1220,19 @@ EventLogicUpdates.fixWoundedManDoor = function (ev) {
   // set the page that lets you in to the bathroom unarmed on hardmode to always hit
 };
 
-// screw the elevator game, just let me go to 4
+// update it to use elevator items
 EventLogicUpdates.fixElevatorButtons = function (ev) {
   //the floor 4 button is controlled by whether or not the player allows mask locations
-  ev.pages[1].list.find(
+  const elevatorButtonEntry = ev.pages[1].list.find(
     (listItem) =>
       listItem.code == 102 &&
-      listItem.parameters[0].length == 6 &&
-      listItem.parameters[0][5].includes("Floor 4"),
-  ).parameters[0][5] = `(([!s[${MASK_LOCATIONS_ENABLED_SWITCH}]]))Floor 4`;
+      listItem.parameters[0].length == 6)
+      
+      elevatorButtonEntry.parameters[0][1] = `(([!s[${F2_ACCESS_SWITCH}]]))Floor 2`;
+      elevatorButtonEntry.parameters[0][2] = `(([!s[${F1_ACCESS_SWITCH}]]))Floor 1`;
+      elevatorButtonEntry.parameters[0][3] = `(([!s[${GF_ACCESS_SWITCH}]]))Ground Floor`;
+      elevatorButtonEntry.parameters[0][4] = `(([!s[${BASEMENT_ACCESS_SWITCH}]]))Basement`;
+      elevatorButtonEntry.parameters[0][5] = `(([!s[${MASK_LOCATIONS_ENABLED_SWITCH}];!s[${F4_ACCESS_SWITCH}]]))Floor 4`;
 };
 
 // update page 2 of the apt 21 key event to trigger grinning beast if you walk over it

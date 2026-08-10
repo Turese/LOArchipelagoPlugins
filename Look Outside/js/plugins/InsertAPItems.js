@@ -28,7 +28,7 @@ InsertAPItems.insertItem = function (id, itemClass, amount = 1) {
     }
     if (itemClass === "item" && id == 85) {
       // set tame landmine damage when it is rewarded
-      sVr(351, 60) // the in-game grant sets it to 60, so we do that here too
+      sVr(351, 60); // the in-game grant sets it to 60, so we do that here too
     }
     if (itemClass === "item" && id == 346) {
       // progressive loose manuscript. second add should complete it
@@ -314,9 +314,34 @@ InsertAPItems.insertMiscItem = function (itemId) {
       break;
     case 23:
       sSw(115, true); // unlockedElevator
+      sSw(F2_ACCESS_SWITCH, true);
+      sSw(F1_ACCESS_SWITCH, true);
+      sSw(GF_ACCESS_SWITCH, true);
+      sSw(BASEMENT_ACCESS_SWITCH, true);
+      sSw(F4_ACCESS_SWITCH, true);
       break;
     case 24:
       sSw(456, true); // floodedMazeGateOpen
+      break;
+    case 25: // floor 1 elevator access
+      sSw(115, true); // unlockedElevator
+      sSw(F1_ACCESS_SWITCH, true);
+      break;
+    case 26: // floor 2 elevator access
+      sSw(115, true); // unlockedElevator
+      sSw(F2_ACCESS_SWITCH, true);
+      break;
+    case 27: // floor 4 elevator access
+      sSw(115, true); // unlockedElevator
+      sSw(F4_ACCESS_SWITCH, true);
+      break;
+    case 28: // basement elevator access
+      sSw(115, true); // unlockedElevator
+      sSw(BASEMENT_ACCESS_SWITCH, true);
+      break;
+    case 29: // GF elevator access
+      sSw(115, true); // unlockedElevator
+      sSw(GF_ACCESS_SWITCH, true);
       break;
     default:
       console.warn(`Unrecognized misc item id: ${itemId}, no item granted`);
