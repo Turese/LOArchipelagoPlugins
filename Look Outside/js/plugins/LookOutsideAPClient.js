@@ -89,15 +89,26 @@ LookOutsideAPClient.applyOverrides = function () {
   const _Game_Map_setup = Game_Map.prototype.setup;
   Game_Map.prototype.setup = function (mapId) {
     _Game_Map_setup.call(this, mapId);
+    console.log("AP: applying data map updates for mapId", mapId);
     LookOutsideAPClient.applyDataMapUpdates(mapId);
+    console.log("AP: datamap updates finished for mapid", mapId);
   };
 
   const _Game_Map_refresh = Game_Map.prototype.refresh;
   Game_Map.prototype.refresh = function () {
     if (this.mapId() == 56) return _Game_Map_refresh.call(this); // disable on mutt's
+    console.log(
+      "AP: applying game map refresh updates for mapId",
+      this.mapId(),
+    );
     LookOutsideAPClient.applyDataMapUpdates(this.mapId());
+    console.log(
+      "AP:  game map refresh updates finished for mapId",
+      this.mapId(),
+    );
+
     _Game_Map_refresh.call(this);
-  };
+  }; 
 
   const _Game_Event_refresh = Game_Event.prototype.refresh;
 
@@ -110,10 +121,19 @@ LookOutsideAPClient.applyOverrides = function () {
   const _dataManagerOnLoad = DataManager.onLoad;
   DataManager.onLoad = function (object) {
     if (object === $dataMap) {
+      console.log(
+        "AP: applying datamap onload event updates for map id ",
+        lastLoadedMapId,
+      );
+
       MassEventUpdates.overrideAllPickups(lastLoadedMapId);
       $dataMap.events.forEach((ev) => {
         if (ev) EventLogicUpdates.applyEventUpdates(lastLoadedMapId, ev);
       });
+      console.log(
+        "AP: datamap onload event updates finished for mapid",
+        lastLoadedMapId,
+      );
     }
     if (object === $dataEnemies) {
       EventLogicUpdates.clearAllEnemiesDrops();

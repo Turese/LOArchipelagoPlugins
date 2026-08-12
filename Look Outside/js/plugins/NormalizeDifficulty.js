@@ -224,8 +224,16 @@ NormalizeDifficulty.applyChanges = function () {
   DataManager.onLoad = function (object) {
     _dataManagerOnLoad.call(this, object);
     if (object === $dataMap) {
+      console.log(
+        "AP: applying datamap onload difficulty updates for map id ",
+        lastLoadedMapId,
+      );
       forceDataMapDifficultyPositiveItems(object, lastLoadedMapId);
       forceDataMapDifficultyNegativeItems(object, lastLoadedMapId);
+      console.log(
+        "AP: finished datamap onload difficulty updates for map id ",
+        lastLoadedMapId,
+      );
     }
   };
 };

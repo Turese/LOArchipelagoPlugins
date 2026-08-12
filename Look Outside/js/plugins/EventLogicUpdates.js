@@ -993,9 +993,6 @@ EventLogicUpdates.initializeAPVariables = function () {
   // gotsupplies = true; prevents fungus guys from giving you supplies at the entrance to the lair
   sSw(493, true);
 
-  // foughtwoundedman = true; allows players to enter vincents apartment right away
-  sSw(94, true);
-
   // we use these for difficulty normalization
   sSw(TRUE_SWITCH_ID, true);
   sSw(FALSE_SWITCH_ID, false);
@@ -1039,8 +1036,8 @@ EventLogicUpdates.initializeAPVariables = function () {
   sVr(766, 187552); // combo lock variable
 
   // complete every puzzle but 1
-  sVr(491, 99) // puzzles completed = 99/100
-  sVr(492, 5) // crossword difficulty = 5
+  sVr(491, 99); // puzzles completed = 99/100
+  sVr(492, 5); // crossword difficulty = 5
 
   // the crossword passcode gets initialized on first crossword interaction
 
@@ -1224,15 +1221,14 @@ EventLogicUpdates.fixWoundedManDoor = function (ev) {
 EventLogicUpdates.fixElevatorButtons = function (ev) {
   //the floor 4 button is controlled by whether or not the player allows mask locations
   const elevatorButtonEntry = ev.pages[1].list.find(
-    (listItem) =>
-      listItem.code == 102 &&
-      listItem.parameters[0].length == 6)
-      
-      elevatorButtonEntry.parameters[0][1] = `(([!s[${F2_ACCESS_SWITCH}]]))Floor 2`;
-      elevatorButtonEntry.parameters[0][2] = `(([!s[${F1_ACCESS_SWITCH}]]))Floor 1`;
-      elevatorButtonEntry.parameters[0][3] = `(([!s[${GF_ACCESS_SWITCH}]]))Ground Floor`;
-      elevatorButtonEntry.parameters[0][4] = `(([!s[${BASEMENT_ACCESS_SWITCH}]]))Basement`;
-      elevatorButtonEntry.parameters[0][5] = `(([!s[${MASK_LOCATIONS_ENABLED_SWITCH}];!s[${F4_ACCESS_SWITCH}]]))Floor 4`;
+    (listItem) => listItem.code == 102 && listItem.parameters[0].length == 6,
+  );
+
+  elevatorButtonEntry.parameters[0][1] = `(([!s[${F2_ACCESS_SWITCH}]]))Floor 2`;
+  elevatorButtonEntry.parameters[0][2] = `(([!s[${F1_ACCESS_SWITCH}]]))Floor 1`;
+  elevatorButtonEntry.parameters[0][3] = `(([!s[${GF_ACCESS_SWITCH}]]))Ground Floor`;
+  elevatorButtonEntry.parameters[0][4] = `(([!s[${BASEMENT_ACCESS_SWITCH}]]))Basement`;
+  elevatorButtonEntry.parameters[0][5] = `(([!s[${MASK_LOCATIONS_ENABLED_SWITCH}];!s[${F4_ACCESS_SWITCH}]]))Floor 4`;
 };
 
 // update page 2 of the apt 21 key event to trigger grinning beast if you walk over it
@@ -1283,6 +1279,12 @@ EventLogicUpdates.leighRematch = function (ev) {
   ];
 
   ev.pages[1].trigger = 1;
+};
+
+// update page 1 of the cursed grinningbeast award to always show even when not cursed
+EventLogicUpdates.cursedGrinReward = function (ev) {
+  // 119 = beatgrinningbeast
+  ev.pages[0].conditions = EventLogicUpdates.buildConditions(undefined, 119);
 };
 
 EventLogicUpdates.clearLeighQuest = function (ev) {
@@ -3350,6 +3352,7 @@ const EVENT_UPDATE_TABLE = {
     1: EventLogicUpdates.leighRematch,
     14: EventLogicUpdates.forceAsterToStay,
     60: EventLogicUpdates.permaGrasshopper,
+    61: EventLogicUpdates.cursedGrinReward,
   },
   434: { 1: EventLogicUpdates.clearLeighQuest },
   186: {
