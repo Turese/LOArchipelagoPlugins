@@ -316,6 +316,7 @@ const TRAP_MAPPINGS = [
   { trapTextColor: 15, trapName: "Ceres Disk" },
   { trapTextColor: 15, trapName: "Luna Disk" },
   { trapTextColor: 15, trapName: "Positive Disk" },
+  { trapTextColor: 4, trapName: "Pocky" },
   { trapTextColor: 15, trapName: "Old Rusty Key" },
   { trapTextColor: 15, trapName: "Sybil's Journal" },
   { trapTextColor: 15, trapName: "Super Jumplad 2" },
