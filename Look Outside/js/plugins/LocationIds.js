@@ -1419,7 +1419,6 @@ const IMPLIED_LOCATIONS = Object.freeze({
     "LL_WIDE_TABLE_E",
     "LL_MANATARMS_COMBAT_VICTORY",
   ],
-
 });
 
 // custom switch ids (these are unused in the base game as of version 2.3
@@ -2249,6 +2248,7 @@ SELF_SWITCH_LOCATIONS = {
   },
 
   42: {
+    6: { C: "FRED_HAT_ROOM_HAT" },
     9: { A: "FRED_HALL_CLOSET_PLASTIC_GLOVES" },
     2: { B: "FRED_HALL_CLOSET_ROACH" },
   },
