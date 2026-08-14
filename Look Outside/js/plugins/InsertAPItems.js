@@ -63,7 +63,6 @@ InsertAPItems.insertItem = function (id, itemClass, amount = 1) {
       return;
     }
     $gameParty.gainItem(item, amount);
-    console.log(`Item granted: ${id}`);
   } catch (e) {
     console.error(e);
   }

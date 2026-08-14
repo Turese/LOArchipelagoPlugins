@@ -173,7 +173,6 @@ NormalizeDifficulty.applyChanges = function () {
         : [mapDifficultyNegativeEvents[eventId]];
       eventPages.forEach((pageId) => {
         const page = dataMap.events[eventId].pages[pageId];
-        console.log("PAGE HERE: ", page);
         if (allModeSwitches.includes(page.conditions.switch1Id)) {
           page.conditions.switch1Id = FALSE_SWITCH_ID;
         }
@@ -189,7 +188,6 @@ NormalizeDifficulty.applyChanges = function () {
       MAP_OVERWORLD_DIFFICULTY_POSITIVE_OVERRIDES[lastLoadedMapId];
     if (!eventIdArray) return;
 
-    console.log(eventIdArray);
     // force the page always true
     eventIdArray.forEach((eventId) => {
       ev = dataMap.events[eventId];
@@ -224,16 +222,8 @@ NormalizeDifficulty.applyChanges = function () {
   DataManager.onLoad = function (object) {
     _dataManagerOnLoad.call(this, object);
     if (object === $dataMap) {
-      console.log(
-        "AP: applying datamap onload difficulty updates for map id ",
-        lastLoadedMapId,
-      );
       forceDataMapDifficultyPositiveItems(object, lastLoadedMapId);
       forceDataMapDifficultyNegativeItems(object, lastLoadedMapId);
-      console.log(
-        "AP: finished datamap onload difficulty updates for map id ",
-        lastLoadedMapId,
-      );
     }
   };
 };
