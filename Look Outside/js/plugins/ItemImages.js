@@ -587,7 +587,7 @@ const ITEM_NAME_IMAGE_MAPPING = {
   "Sapphire Ring": BLUE_RING_MAPPING,
   "Odd Necklace": ["Equipment", 4, 0, 3],
   "Copper Bangle": ["Equipment", 4, 1, 3],
-  "Silver Bracelet": ["APItems", 6, 2, 5],
+  "Silver Bracelet": ["APItems2", 6, 2, 5],
   "Teeth Pendant": ["Equipment", 6, 0, 3],
   "Teef Pendant": ["Equipment", 6, 0, 3],
   "Gold Bracelet": ["APItems", 6, 1, 5],
