@@ -313,12 +313,6 @@
       "parameters": {}
     },
     {
-      "name": "ToothHelpers",
-      "status": true,
-      "description": "Helpers for updating the tooth family events",
-      "parameters": {}
-    },
-    {
       "name": "Unarmed",
       "status": true,
       "description": "Unarmed and Dangerous: Play as Sam with no arms!",
