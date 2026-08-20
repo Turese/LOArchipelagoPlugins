@@ -58,7 +58,8 @@ BackInTime.fixBenKilled = function () {
 };
 
 BackInTime.isWilhelminaDead = function () {
-  if (!$gamePlayer.slotData || !$gamePlayer.slotData.goal !== 9) return false; // dont need to revive her if her ending not needed
+  // dont need to revive her if her ending not needed or if it's already achieved
+  if (!$gamePlayer.slotData || !$gamePlayer.slotData.goal.includes("Words of Power Ending") || LookOutsideAPClient.initializeReachedEndings()['wordsOfPower']) return false;
   return gSw(1135);
 };
 

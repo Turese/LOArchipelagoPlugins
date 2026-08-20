@@ -234,8 +234,6 @@ DoorHelpers.processDoorVictory = function () {
     );
     return;
   }
-  if (LookOutsideAPClient.shouldSendMessageForLocation(locationId))
-    $gameMessage.add(EventLogicUpdates.getMessage(locationId));
   LookOutsideAPClient.setLocation(locationId);
 };
 
@@ -250,9 +248,6 @@ DoorHelpers.processDoorRecruit = function () {
     );
     return;
   }
-  if (LookOutsideAPClient.shouldSendMessageForLocation(locationId))
-    $gameMessage.add(EventLogicUpdates.getMessage(locationId));
-
   LookOutsideAPClient.setLocation(locationId);
 };
 
@@ -274,9 +269,6 @@ DoorHelpers.processDoorEvent = function (index = 0) {
     );
     return;
   }
-  if (LookOutsideAPClient.shouldSendMessageForLocation(doorEvents[index]))
-    $gameMessage.add(EventLogicUpdates.getMessage(doorEvents[index]));
-
   LookOutsideAPClient.setLocation(doorEvents[index]);
 };
 

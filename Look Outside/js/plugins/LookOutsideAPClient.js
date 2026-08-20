@@ -97,7 +97,7 @@ LookOutsideAPClient.applyOverrides = function () {
     if (this.mapId() == 56) return _Game_Map_refresh.call(this); // disable on mutt's
     LookOutsideAPClient.applyDataMapUpdates(this.mapId());
     _Game_Map_refresh.call(this);
-  }; 
+  };
 
   const _Game_Event_refresh = Game_Event.prototype.refresh;
 
@@ -364,44 +364,19 @@ LookOutsideAPClient.initializeReachedEndings = function () {
   return $gamePlayer.reachedEndings;
 };
 
-/*
-endingIds:
-
-ritual (any failed ritual)
-perfectRitual (any ritual with 4 good offerings, not including screaming sky)
-screamingSkies (run from E4)
-mask (4 mask offerings)
-xinAmon (3 good offerings and a guinea pig)
-eternalFate (anything shy of xin-amon or failing to defeat xin-amon)
-unity (read the note)
-wordsOfPower (give in to the crossword queen)
-
-*/
-
-const ALL_ROOF_ENDINGS = [
-  "ritual",
-  "perfectRitual",
-  "screamingSkies",
-  "promise",
-  "mask",
-  "xinAmon",
-  "eternalFate",
-  "trueFinal",
-];
-
-const ALL_ENDINGS = [
-  "ritual",
-  "perfectRitual",
-  "screamingSkies",
-  "promise",
-  "mask",
-  "xinAmon",
-  "eternalFate",
-  "trueFinal",
-  "unity",
-  "wordsOfPower",
-  "noGoingBack",
-];
+const GOAL_MAPPING = {
+  "Failed Ritual": "failedRitual",
+  "Flawed Ritual": "flawedRitual",
+  "Perfect Ritual": "perfectRitual",
+  "Screaming Sky Ending": "screamingSkies",
+  "Promise Ending": "promise",
+  "Mask Ending": "mask",
+  "XIN-AMON Ending": "xinAmon",
+  "Eternal Fate Ending": "eternalFate",
+  "Unity Ending": "unity",
+  "True Final Ending": "trueFinal",
+  "Words of Power Ending": "wordsOfPower",
+};
 
 LookOutsideAPClient.checkMapForLocation = function (lastLoadedMapId) {
   // so far, only rat hell entrance fight covered here
@@ -436,25 +411,27 @@ LookOutsideAPClient.checkMapForEnding = function (lastLoadedMapId) {
   let endingIds = [];
   if (lastLoadedMapId == 260) {
     // spaceapproach; the perfect ritual map before you meet the visitor
-    endingIds = ["ritual", "perfectRitual"];
+    endingIds = ["perfectRitual"];
   } else if (lastLoadedMapId == 165) {
-    endingIds = ["ritual", "perfectRitual", "promise"];
+    endingIds = ["perfectRitual", "promise"];
   } else if (lastLoadedMapId == 340) {
-    endingIds = ["ritual", "perfectRitual", "trueFinal"];
+    endingIds = ["trueFinal"];
   } else if (lastLoadedMapId == 176) {
-    endingIds = ["ritual", "xinAmon"];
+    endingIds = ["flawedRitual", "xinAmon"];
   } else if (lastLoadedMapId == 170) {
-    endingIds = ["ritual"];
+    endingIds = ["flawedRitual"];
   } else if (lastLoadedMapId == 172) {
     endingIds = ["noGoingBack"];
   } else if (lastLoadedMapId == 173) {
-    endingIds = ["ritual", "screamingSkies"];
+    endingIds = ["screamingSkies"];
   } else if (lastLoadedMapId == 175) {
-    endingIds = ["ritual", "eternalFate"];
+    endingIds = ["flawedRitual", "eternalFate"];
   } else if (lastLoadedMapId == 171) {
     endingIds = ["unity"];
   } else if (lastLoadedMapId == 174) {
-    endingIds = ["ritual", "mask"];
+    endingIds = ["failedRitual", "mask"];
+  } else if (lastLoadedMapId == 178) {
+    endingIds = ["failedRitual"];
   } else if (lastLoadedMapId == 431) {
     endingIds = ["wordsOfPower"];
   }
@@ -482,41 +459,15 @@ LookOutsideAPClient.saveEndingReached = async function (endingIds) {
   });
 };
 
-const GOAL_MAPPING = {
-  0: "ritual",
-  1: "perfectRitual",
-  2: "screamingSkies",
-  3: "promise",
-  4: "mask",
-  5: "xinAmon",
-  6: "unity",
-  7: "trueFinal",
-};
-
 LookOutsideAPClient.checkGoal = function () {
   if (!$gamePlayer || !$gamePlayer.introFinished) return;
   const reachedEndings = LookOutsideAPClient.initializeReachedEndings();
   const slotData = LookOutsideAPClient.initializeSlotData();
   if (!slotData || !reachedEndings) return;
   const goal = slotData["goal"];
-  if (goal < 8) {
-    // any perfect ritual ending
-    if (reachedEndings[GOAL_MAPPING[goal]]) {
-      LookOutsideAPClient.submitGoal();
-    }
-  }
-  if (goal == 8) {
-    // all roof
-    if (ALL_ROOF_ENDINGS.every((ending) => reachedEndings[ending])) {
-      LookOutsideAPClient.submitGoal();
-    }
-  }
-  if (goal == 9) {
-    // all
-    if (ALL_ENDINGS.every((ending) => reachedEndings[ending])) {
-      LookOutsideAPClient.submitGoal();
-    }
-  }
+  return;
+  if (goal.every((g) => reachedEndings[GOAL_MAPPING[goal]]))
+    LookOutsideAPClient.submitGoal();
 };
 
 LookOutsideAPClient.submitGoal = function () {
@@ -623,6 +574,9 @@ LookOutsideAPClient.reportLocations = function () {
 LookOutsideAPClient.setLocation = function (locationName) {
   const locationId = LOCATION_ID_MAPPING[locationName];
   if (!locationId) return;
+  if (LookOutsideAPClient.shouldSendMessageForLocation(locationName)) {
+    $gameMessage.add(EventLogicUpdates.getMessage(locationName));
+  }
   const reachedLocations = LookOutsideAPClient.initializeLocationObject();
   if (!reachedLocations[locationId]) {
     reachedLocations[locationId] = true;
@@ -630,8 +584,12 @@ LookOutsideAPClient.setLocation = function (locationName) {
   if (IMPLIED_LOCATIONS[locationName]) {
     for (impliedLocation of IMPLIED_LOCATIONS[locationName]) {
       reachedLocations[LOCATION_ID_MAPPING[impliedLocation]] = true;
+      if (LookOutsideAPClient.shouldSendMessageForLocation(impliedLocation)) {
+        $gameMessage.add(EventLogicUpdates.getMessage(impliedLocation));
+      }
     }
   }
+
   LookOutsideAPClient.reportLocations();
 };
 
@@ -643,6 +601,18 @@ LookOutsideAPClient.isLocationSet = function (locationName) {
 
 LookOutsideAPClient.shouldSendMessageForLocation = function (locationId) {
   // if player already has location, dont send message again
+  console.log(" --- checking location");
+  console.log(
+    "is location set:",
+    locationId,
+    LookOutsideAPClient.isLocationSet(locationId),
+  );
+  console.log(
+    "no location mapping:",
+    locationId,
+    !LookOutsideAPClient.getLocationMapping(locationId),
+  );
+
   if (LookOutsideAPClient.isLocationSet(locationId)) return false;
   // either item name not stored or this location not included in run;
   // either way, we shouldnt print anything
@@ -694,6 +664,7 @@ LookOutsideAPClient.shouldSendMessageForLocation = function (locationId) {
       "GF_JANITORS_RECRUIT_PAPINEAU",
       "APT_32_BATHROOM_RECRUIT_JOEL",
       "F1_AUDREY_RECRUIT",
+      "RAT_HELL_RECRUIT_ERNEST",
       "GAME_SKILL_WIZARDS_HELL",
       "GAME_SKILL_SUPER_JUMPLAD",
       "GAME_SKILL_SUPER_JUMPLAD_3",
@@ -750,9 +721,6 @@ LookOutsideAPClient.watchLocations = function () {
       if (SELF_SWITCH_LOCATIONS[roomId][eventId]) {
         const locationId = SELF_SWITCH_LOCATIONS[roomId][eventId][switchId];
         if (locationId) {
-          if (LookOutsideAPClient.shouldSendMessageForLocation(locationId)) {
-            $gameMessage.add(EventLogicUpdates.getMessage(locationId));
-          }
           LookOutsideAPClient.setLocation(locationId);
         }
       }
@@ -768,9 +736,6 @@ LookOutsideAPClient.watchLocations = function () {
 
       if (locationId && value) {
         if (locationId) {
-          if (LookOutsideAPClient.shouldSendMessageForLocation(locationId)) {
-            $gameMessage.add(EventLogicUpdates.getMessage(locationId));
-          }
         }
         // make sure the switch is set to true
         LookOutsideAPClient.setLocation(locationId);
@@ -808,9 +773,6 @@ LookOutsideAPClient.watchLocations = function () {
       }
 
       if (location) {
-        if (LookOutsideAPClient.shouldSendMessageForLocation(location)) {
-          $gameMessage.add(EventLogicUpdates.getMessage(location, prefix));
-        }
         LookOutsideAPClient.setLocation(location);
       }
     }

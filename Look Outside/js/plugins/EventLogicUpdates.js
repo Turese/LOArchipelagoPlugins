@@ -3676,6 +3676,22 @@ EventLogicUpdates.clearTroopsDrops = function () {
 
   EventLogicUpdates.clearDoorEncounterDrops();
 
+  function includeEyeShoulder() {
+    let lockedRoomTroop = JsonEx.makeDeepCopy(originalTroops[79].pages[0].list);
+
+    const checkHardModeIndex = lockedRoomTroop.findIndex(
+      (listEntry) =>
+        listEntry.code == 111 && listEntry.parameters[1] == HARDMODE,
+    );
+    if (checkHardModeIndex !== -1)
+      lockedRoomTroop[checkHardModeIndex] = {
+        ...lockedRoomTroop[checkHardModeIndex],
+        parameters: [0, TRUE_SWITCH_ID, 0],
+      };
+    $dataTroops[79].pages[0].list = lockedRoomTroop;
+  }
+  includeEyeShoulder();
+
   // deleting the message entirely so we can have the gift show up after battle
   function clearLaughingMoldGift() {
     let laughingMoldTroop = JsonEx.makeDeepCopy(

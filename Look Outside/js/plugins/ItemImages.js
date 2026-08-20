@@ -318,7 +318,7 @@ const ITEM_NAME_IMAGE_MAPPING = {
   NeoDuo: ["KeyItems", 8, 1, 5],
   "Eugene's Key": ["KeyItems", 6, 2, 0],
   "Shrunken Head": ["KeyItems", 8, 2, 6],
-  "Plumbing Tools": ["APItems", 4, 0, 6],
+  "Plumbing Tools": ["APItems2", 4, 0, 6],
   "Potting Soil": ["KeyItems", 4, 1, 6],
   "Worm Egg": ["APItems", 8, 0, 3],
   "Antoine's Key": ["APItems", 8, 2, 1],
