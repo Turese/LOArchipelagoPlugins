@@ -574,7 +574,9 @@ LookOutsideAPClient.reportLocations = function () {
 LookOutsideAPClient.setLocation = function (locationName) {
   const locationId = LOCATION_ID_MAPPING[locationName];
   if (!locationId) return;
-  if (LookOutsideAPClient.shouldSendMessageForLocation(locationName)) {
+  if (
+    LookOutsideAPClient.shouldSendMessageForLocation(locationName)
+  ) {
     $gameMessage.add(EventLogicUpdates.getMessage(locationName));
   }
   const reachedLocations = LookOutsideAPClient.initializeLocationObject();
@@ -601,22 +603,9 @@ LookOutsideAPClient.isLocationSet = function (locationName) {
 
 LookOutsideAPClient.shouldSendMessageForLocation = function (locationId) {
   // if player already has location, dont send message again
-  console.log(" --- checking location");
-  console.log(
-    "is location set:",
-    locationId,
-    LookOutsideAPClient.isLocationSet(locationId),
-  );
-  console.log(
-    "no location mapping:",
-    locationId,
-    !LookOutsideAPClient.getLocationMapping(locationId),
-  );
-
   if (LookOutsideAPClient.isLocationSet(locationId)) return false;
-  // either item name not stored or this location not included in run;
-  // either way, we shouldnt print anything
-  if (!LookOutsideAPClient.getLocationMapping(locationId)) return false;
+  // item name not stored and item isnt specifically excluded
+  if (!LookOutsideAPClient.getLocationMapping(locationId) && !LookOutsideAPClient.isExcludedLocation(locationId)) return false;
 
   // these ones handle their own messages so we leave them out
   if (
@@ -708,6 +697,31 @@ LookOutsideAPClient.shouldSendMessageForLocation = function (locationId) {
   )
     return true;
   return locationId.endsWith("COMBAT_VICTORY") || locationId.includes("ROACH");
+};
+
+LookOutsideAPClient.isExcludedLocation = function (locationId) {
+  return new Set([
+    ...GAME_SKILL_SET,
+    ...MASK_LOCATION_SET,
+    ...MASK_BOSS_SET,
+    ...ROOMMATE_QUEST_SET,
+    ...FRIENDLY_FIRE_SET,
+    ...RAT_FRIENDLY_FIRE_SET,
+    ...RUSTY_CROWN_SET,
+    ...FRIENDLY_FIRE_LOCATION_SET,
+    ...NESTOR_QUEST_SET,
+    ...LARGE_SHADE_SET,
+    ...SPIDER_SET,
+    ...CRAWLING_SHADE_SET,
+    ...SUPER_DUPER_BOSS_SET,
+    ...DOOR_ENCOUNTER_SET,
+  ]).has(locationId);
+};
+
+LookOutsideAPClient.findLocationExcludedReason = function (locationId) {
+  // check if location mappings exist, but not for this location
+  if (!LookOutsideAPClient.getLocationMapping(locationId)) {
+  }
 };
 
 LookOutsideAPClient.watchLocations = function () {

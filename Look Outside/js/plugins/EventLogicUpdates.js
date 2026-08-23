@@ -1156,7 +1156,67 @@ EventLogicUpdates.getMessage = function (
   introword = "Find",
   suffix = ".",
 ) {
+  const excludedMessage = EventLogicUpdates.getExcludedMessage(itemId);
+
+  if (excludedMessage) return excludedMessage;
   return `${introword} ${LookOutsideAPClient.getItemName(itemId)}${suffix}`;
+};
+
+EventLogicUpdates.getExcludedMessage = function (locationId) {
+  const slotData = LookOutsideAPClient.initializeSlotData();
+  if (!slotData) return null;
+  let excludedSetName;
+  let customMessage;
+
+  if (!LookOutsideAPClient.isExcludedLocation(locationId)) return null;
+
+  if (!slotData.include_door_encounters && DOOR_ENCOUNTER_SET.has(locationId))
+    excludedSetName = "Door Encounter Location";
+  else if (!slotData.include_friendly_fire && FRIENDLY_FIRE_SET.has(locationId))
+    excludedSetName = "Friendly Fire Location";
+  else if (!slotData.include_game_skills && GAME_SKILL_SET.has(locationId)) {
+    //excludedSetName = "Video Game Skill Location";
+    customMessage = `You learned \\C[4]{${GAME_SKILL_MAPPING[locationId]}}\\C[0].`;
+  } else if (!slotData.include_mask && MASK_LOCATION_SET.has(locationId))
+    excludedSetName = "Mask Offering Location";
+  else if (!slotData.include_nestor_quest && NESTOR_QUEST_SET.has(locationId))
+    excludedSetName = "Nestor/Rafta Quest Location";
+  else if (
+    !slotData.include_rat_friendly_fire &&
+    RAT_FRIENDLY_FIRE_SET.has(locationId)
+  )
+    excludedSetName = "Rat Friendly Fire Location";
+  else if (
+    !slotData.include_roommate_quests &&
+    ROOMMATE_QUEST_SET.has(locationId)
+  )
+    excludedSetName = "Long Roommate Quest Location";
+  else if (!slotData.include_rusty_crown && RUSTY_CROWN_SET.has(locationId))
+    excludedSetName = "Rusty Crown Location";
+  else if (slotData.include_shades < 1 && LARGE_SHADE_SET.has(locationId))
+    excludedSetName = "Spider Recruitment Quest Location";
+  else if (slotData.include_shades < 2 && SPIDER_SET.has(locationId))
+    excludedSetName = "Spider Recruitment Quest Location";
+  else if (slotData.include_shades < 3 && CRAWLING_SHADE_SET.has(locationId))
+    excludedSetName = "Spider Recruitment Quest Location";
+  else if (
+    !slotData.include_superbosses &&
+    SUPER_DUPER_BOSS_SET.has(locationId)
+  ) {
+    if (
+      locationId == "MEAT_SYBIL_COMBAT_VICTORY" &&
+      slotData.goal.findIndex("Unity Ending") !== -1
+    )
+      return null;
+    excludedSetName = "Superboss Location";
+  }
+
+  if (!excludedSetName && !customMessage) return null;
+  let message = customMessage
+    ? customMessage
+    : `Reason: \\C[4]${excludedSetName}\\C[0].`;
+
+  return `This location has not been randomized in your settings.\n${message}`;
 };
 
 EventLogicUpdates.messageReplacement = function (
@@ -5236,7 +5296,6 @@ EventLogicUpdates.clearCommonEventDrops = function () {
           ];
         }
       }
-      // todo: alert the player to what they earned
     }
   }
   clearGameSkills();

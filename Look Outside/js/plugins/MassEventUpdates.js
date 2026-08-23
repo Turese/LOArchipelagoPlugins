@@ -3376,7 +3376,7 @@ const OBSERVATORY_TRASH_ENDING = [
 ];
 
 MassEventUpdates.overrideOverworldPickups = function (currentMapId) {
-  function getAPItemPickupList(script, itemName, prefix = "") {
+  function getAPItemPickupList(script, locationId, prefix = "", suffix = "") {
     return [
       {
         code: 101,
@@ -3386,7 +3386,9 @@ MassEventUpdates.overrideOverworldPickups = function (currentMapId) {
       {
         code: 401,
         indent: 0,
-        parameters: [`${prefix}Take ${itemName}\\C[0]?`],
+        parameters: [
+          `${prefix}Take ${LookOutsideAPClient.getItemName(locationId)}\\C[0]?`,
+        ],
       },
       {
         code: 102,
@@ -3406,7 +3408,7 @@ MassEventUpdates.overrideOverworldPickups = function (currentMapId) {
       {
         code: 401,
         indent: 1,
-        parameters: [`Find ${itemName}.`],
+        parameters: [EventLogicUpdates.getMessage(locationId)],
       },
       {
         code: 355,
@@ -3441,7 +3443,9 @@ MassEventUpdates.overrideOverworldPickups = function (currentMapId) {
     ];
   }
 
-  function getNoConfAPItemPickupList(script, itemName) {
+  function getNoConfAPItemPickupList(script, locationId) {
+    const message = EventLogicUpdates.getMessage(locationId);
+
     return [
       {
         code: 355,
@@ -3456,7 +3460,7 @@ MassEventUpdates.overrideOverworldPickups = function (currentMapId) {
       {
         code: 401,
         indent: 0,
-        parameters: [`Find ${itemName}.`],
+        parameters: [message],
       },
       {
         code: 0,
@@ -3611,19 +3615,17 @@ MassEventUpdates.overrideOverworldPickups = function (currentMapId) {
     const isTrap = LookOutsideAPClient.isLocationTrap(name);
     const isHiddenItem = $gamePlayer.slotData["hide_overworld_items"];
 
-    const itemName = LookOutsideAPClient.getItemName(name);
-
     let pickupList = isHiddenItem
-      ? getNoConfAPItemPickupList(script, itemName)
+      ? getNoConfAPItemPickupList(script, name)
       : isTrap
         ? getTrapPickupList(
             script,
             // gets trap item name
             LookOutsideAPClient.getItemName(name, false, true),
-            itemName,
+            LookOutsideAPClient.getItemName(name),
             prefix,
           )
-        : getAPItemPickupList(script, itemName, prefix);
+        : getAPItemPickupList(script, name, prefix);
 
     event.pages[pageIndex] = {
       ...event.pages[pageIndex],
