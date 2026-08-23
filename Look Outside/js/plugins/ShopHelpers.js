@@ -10,60 +10,60 @@
 
 var ShopHelpers = ShopHelpers || {};
 
-const SHOP_LOCATIONS = {
-  f3Vending: [
-    "F3_VENDING_MACHINE_CHEESE",
-    "F3_VENDING_MACHINE_CHIPS",
-    "F3_VENDING_MACHINE_SPICY",
-    "F3_VENDING_MACHINE_GUMMI_BEARS",
-    "F3_VENDING_MACHINE_ONIONOS",
-  ].map((id) => LOCATION_ID_MAPPING[id]),
-  audrey: [
-    "AUDREY_VENDING_COLA",
-    "AUDREY_VENDING_LEMON",
-    "AUDREY_VENDING_ORANGE",
-    "AUDREY_VENDING_JUICE",
-  ].map((id) => LOCATION_ID_MAPPING[id]),
-  ooze: [
-    "B_OOZE_MACHINE_MERCHANT_1",
-    "B_OOZE_MACHINE_MERCHANT_2",
-    "B_OOZE_MACHINE_MERCHANT_3",
-    "B_OOZE_MACHINE_MERCHANT_4",
-    "B_OOZE_MACHINE_MERCHANT_5",
-  ].map((id) => LOCATION_ID_MAPPING[id]),
-  tickle: [
-    "SEWER_TICKLE_BLOODCLOT_BOMB",
-    "SEWER_TICKLE_MOSQUITO_KNIFE",
-    "SEWER_TICKLE_BLOOD_CAP",
-    "SEWER_TICKLE_VAMPIRIC_JACKET",
-    "SEWER_TICKLE_CRIMSON_RING",
-  ].map((id) => LOCATION_ID_MAPPING[id]),
-  emmanuel: [
-    "MUTT_EMMANUEL_MERCHANT_1",
-    "MUTT_EMMANUEL_MERCHANT_2",
-    "MUTT_EMMANUEL_MERCHANT_3",
-    "MUTT_EMMANUEL_MERCHANT_4",
-    "MUTT_EMMANUEL_MERCHANT_5",
-  ].map((id) => LOCATION_ID_MAPPING[id]),
-  ratHole: [
-    "F1_PASSAGE_RAT_HOLE_MERCHANT_1",
-    "F1_PASSAGE_RAT_HOLE_MERCHANT_2",
-    "F1_PASSAGE_RAT_HOLE_MERCHANT_3",
-    "F1_PASSAGE_RAT_HOLE_MERCHANT_4",
-    "F1_PASSAGE_RAT_HOLE_MERCHANT_5",
-  ].map((id) => LOCATION_ID_MAPPING[id]),
-  kevin: [
-    "F1_PIPE_ROOM_KEVIN_MERCHANT_1",
-    "F1_PIPE_ROOM_KEVIN_MERCHANT_2",
-    "F1_PIPE_ROOM_KEVIN_MERCHANT_3",
-    "F1_PIPE_ROOM_KEVIN_MERCHANT_4",
-    "F1_PIPE_ROOM_KEVIN_MERCHANT_5",
-  ].map((id) => LOCATION_ID_MAPPING[id]),
-};
-
 ShopHelpers.sendLocationHints = function (shopKey) {
   const hintTracker = LookOutsideAPClient.initializeHintTracker();
   if (hintTracker[shopKey]) return;
+
+  const SHOP_LOCATIONS = {
+    f3Vending: [
+      "F3_VENDING_MACHINE_CHEESE",
+      "F3_VENDING_MACHINE_CHIPS",
+      "F3_VENDING_MACHINE_SPICY",
+      "F3_VENDING_MACHINE_GUMMI_BEARS",
+      "F3_VENDING_MACHINE_ONIONOS",
+    ].map((id) => LOCATION_ID_MAPPING[id]),
+    audrey: [
+      "AUDREY_VENDING_COLA",
+      "AUDREY_VENDING_LEMON",
+      "AUDREY_VENDING_ORANGE",
+      "AUDREY_VENDING_JUICE",
+    ].map((id) => LOCATION_ID_MAPPING[id]),
+    ooze: [
+      "B_OOZE_MACHINE_MERCHANT_1",
+      "B_OOZE_MACHINE_MERCHANT_2",
+      "B_OOZE_MACHINE_MERCHANT_3",
+      "B_OOZE_MACHINE_MERCHANT_4",
+      "B_OOZE_MACHINE_MERCHANT_5",
+    ].map((id) => LOCATION_ID_MAPPING[id]),
+    tickle: [
+      "SEWER_TICKLE_BLOODCLOT_BOMB",
+      "SEWER_TICKLE_MOSQUITO_KNIFE",
+      "SEWER_TICKLE_BLOOD_CAP",
+      "SEWER_TICKLE_VAMPIRIC_JACKET",
+      "SEWER_TICKLE_CRIMSON_RING",
+    ].map((id) => LOCATION_ID_MAPPING[id]),
+    emmanuel: [
+      "MUTT_EMMANUEL_MERCHANT_1",
+      "MUTT_EMMANUEL_MERCHANT_2",
+      "MUTT_EMMANUEL_MERCHANT_3",
+      "MUTT_EMMANUEL_MERCHANT_4",
+      "MUTT_EMMANUEL_MERCHANT_5",
+    ].map((id) => LOCATION_ID_MAPPING[id]),
+    ratHole: [
+      "F1_PASSAGE_RAT_HOLE_MERCHANT_1",
+      "F1_PASSAGE_RAT_HOLE_MERCHANT_2",
+      "F1_PASSAGE_RAT_HOLE_MERCHANT_3",
+      "F1_PASSAGE_RAT_HOLE_MERCHANT_4",
+      "F1_PASSAGE_RAT_HOLE_MERCHANT_5",
+    ].map((id) => LOCATION_ID_MAPPING[id]),
+    kevin: [
+      "F1_PIPE_ROOM_KEVIN_MERCHANT_1",
+      "F1_PIPE_ROOM_KEVIN_MERCHANT_2",
+      "F1_PIPE_ROOM_KEVIN_MERCHANT_3",
+      "F1_PIPE_ROOM_KEVIN_MERCHANT_4",
+      "F1_PIPE_ROOM_KEVIN_MERCHANT_5",
+    ].map((id) => LOCATION_ID_MAPPING[id]),
+  };
 
   if (client.authenticated) {
     hintTracker[shopKey] = true;
@@ -6439,28 +6439,42 @@ ShopHelpers.strangeTraderInitList = function (ev) {
 };
 
 ShopHelpers.getGiveJunkRewardsList = function () {
-  const threeJunkItemName =
-    LookOutsideAPClient.getItemName("DOOR_MORTON_3_JUNK");
+  const threeJunkItemMessage = EventLogicUpdates.getMessage(
+    "DOOR_MORTON_3_JUNK",
+    "Morton gives you",
+  );
 
-  const sixJunkItemName = LookOutsideAPClient.getItemName("DOOR_MORTON_6_JUNK");
+  const sixJunkItemMessage = EventLogicUpdates.getMessage(
+    "DOOR_MORTON_6_JUNK",
+    "Morton gives you",
+  );
 
   const nineJunkItemName =
     LookOutsideAPClient.getItemName("DOOR_MORTON_9_JUNK");
 
-  const twelveJunkItemName = LookOutsideAPClient.getItemName(
+  const nineJunkItemMessage = EventLogicUpdates.getMessage(
+    "DOOR_MORTON_9_JUNK",
+    "Morton gives you",
+  );
+
+  const twelveJunkItemMessage = EventLogicUpdates.getMessage(
     "DOOR_MORTON_12_JUNK",
+    "Morton gives you",
   );
 
-  const fifteenJunkItemName = LookOutsideAPClient.getItemName(
-    "DOOR_RECRUIT_MORTON",
+  const fifteenJunkItemMessage = EventLogicUpdates.getMessage(
+    "DOOR_MORTON_15_JUNK",
+    "Morton gives you",
   );
 
-  const eighteenJunkItemName = LookOutsideAPClient.getItemName(
+  const eighteenJunkItemMessage = EventLogicUpdates.getMessage(
     "DOOR_MORTON_18_JUNK",
+    "Morton gives you",
   );
 
-  const twentyOneJunkItemName = LookOutsideAPClient.getItemName(
+  const twentyOneJunkItemMessage = EventLogicUpdates.getMessage(
     "DOOR_MORTON_21_JUNK",
+    "Morton gives you",
   );
 
   return [
@@ -6487,7 +6501,7 @@ ShopHelpers.getGiveJunkRewardsList = function () {
     {
       code: 401,
       indent: 2,
-      parameters: [`Morton gives you ${threeJunkItemName}.`],
+      parameters: [threeJunkItemMessage],
     },
     {
       code: 0,
@@ -6532,7 +6546,7 @@ ShopHelpers.getGiveJunkRewardsList = function () {
     {
       code: 401,
       indent: 2,
-      parameters: [`Morton gives you ${sixJunkItemName}.`],
+      parameters: [sixJunkItemMessage],
     },
     {
       code: 0,
@@ -6577,7 +6591,7 @@ ShopHelpers.getGiveJunkRewardsList = function () {
     {
       code: 401,
       indent: 2,
-      parameters: [`Morton gives you ${nineJunkItemName}.`],
+      parameters: [nineJunkItemMessage],
     },
     {
       code: 0,
@@ -6622,7 +6636,7 @@ ShopHelpers.getGiveJunkRewardsList = function () {
     {
       code: 401,
       indent: 2,
-      parameters: [`Morton gives you ${twelveJunkItemName}.`],
+      parameters: [twelveJunkItemMessage],
     },
     {
       code: 0,
@@ -6667,7 +6681,7 @@ ShopHelpers.getGiveJunkRewardsList = function () {
     {
       code: 401,
       indent: 2,
-      parameters: [`Morton gives you ${fifteenJunkItemName}.`],
+      parameters: [fifteenJunkItemMessage],
     },
     {
       code: 0,
@@ -6712,7 +6726,7 @@ ShopHelpers.getGiveJunkRewardsList = function () {
     {
       code: 401,
       indent: 2,
-      parameters: [`Morton gives you ${eighteenJunkItemName}.`],
+      parameters: [eighteenJunkItemMessage],
     },
     {
       code: 0,
@@ -6757,7 +6771,7 @@ ShopHelpers.getGiveJunkRewardsList = function () {
     {
       code: 401,
       indent: 2,
-      parameters: [`Morton gives you ${twentyOneJunkItemName}.`],
+      parameters: [twentyOneJunkItemMessage],
     },
     {
       code: 0,
