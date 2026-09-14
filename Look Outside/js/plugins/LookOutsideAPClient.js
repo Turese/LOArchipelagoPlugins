@@ -376,6 +376,8 @@ const GOAL_MAPPING = {
   "Unity Ending": "unity",
   "True Final Ending": "trueFinal",
   "Words of Power Ending": "wordsOfPower",
+  "Smooch the Sultan": "smoochSultan",
+  "Smooch the Visitor": "smoochVisitor",
 };
 
 LookOutsideAPClient.checkMapForLocation = function (lastLoadedMapId) {
@@ -698,7 +700,7 @@ LookOutsideAPClient.shouldSendMessageForLocation = function (locationId) {
     ].includes(locationId)
   )
     return true;
-  return locationId.endsWith("COMBAT_VICTORY") || locationId.includes("ROACH");
+  return locationId.endsWith("COMBAT_VICTORY") || locationId.includes("ROACH") || locationId.startsWith("SMOOCH");
 };
 
 LookOutsideAPClient.isExcludedLocation = function (locationId) {
@@ -746,7 +748,21 @@ LookOutsideAPClient.watchLocations = function () {
   LookOutsideAPClient.checkSmooch = function () {
     const currentTroop = BattleManager._troop._troopId;
 
-    console.log("CURRENTLY SMOOCHING:", BattleManager._troop._troopId);
+    const currentSmoochLocation = SMOOCH_TROOP_LOCATIONS[currentTroop];
+    if (currentSmoochLocation) {
+      const reachedEndings = LookOutsideAPClient.initializeReachedEndings();
+
+      if (currentSmoochLocation == "SMOOCH_SULTAN") {
+        LookOutsideAPClient.setLocation("SMOOCH_SULTAN");
+        reachedEndings["smoochSultan"] = true;
+        LookOutsideAPClient.checkGoal();
+      } else if (currentSmoochLocation == "SMOOCH_VISITOR") {
+        reachedEndings["smoochVisitor"] = true;
+        LookOutsideAPClient.checkGoal();
+      }
+
+      LookOutsideAPClient.setLocation(currentSmoochLocation);
+    }
   };
 
   _setSwitchValue = Game_Switches.prototype.setValue;
