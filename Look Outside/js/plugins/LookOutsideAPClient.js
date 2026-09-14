@@ -574,9 +574,7 @@ LookOutsideAPClient.reportLocations = function () {
 LookOutsideAPClient.setLocation = function (locationName) {
   const locationId = LOCATION_ID_MAPPING[locationName];
   if (!locationId) return;
-  if (
-    LookOutsideAPClient.shouldSendMessageForLocation(locationName)
-  ) {
+  if (LookOutsideAPClient.shouldSendMessageForLocation(locationName)) {
     $gameMessage.add(EventLogicUpdates.getMessage(locationName));
   }
   const reachedLocations = LookOutsideAPClient.initializeLocationObject();
@@ -605,7 +603,11 @@ LookOutsideAPClient.shouldSendMessageForLocation = function (locationId) {
   // if player already has location, dont send message again
   if (LookOutsideAPClient.isLocationSet(locationId)) return false;
   // item name not stored and item isnt specifically excluded
-  if (!LookOutsideAPClient.getLocationMapping(locationId) && !LookOutsideAPClient.isExcludedLocation(locationId)) return false;
+  if (
+    !LookOutsideAPClient.getLocationMapping(locationId) &&
+    !LookOutsideAPClient.isExcludedLocation(locationId)
+  )
+    return false;
 
   // these ones handle their own messages so we leave them out
   if (
@@ -741,6 +743,12 @@ LookOutsideAPClient.watchLocations = function () {
     }
   };
 
+  LookOutsideAPClient.checkSmooch = function () {
+    const currentTroop = BattleManager._troop._troopId;
+
+    console.log("CURRENTLY SMOOCHING:", BattleManager._troop._troopId);
+  };
+
   _setSwitchValue = Game_Switches.prototype.setValue;
   Game_Switches.prototype.setValue = function (switchId, value) {
     _setSwitchValue.call(this, switchId, value);
@@ -760,6 +768,11 @@ LookOutsideAPClient.watchLocations = function () {
   _setVarValue = Game_Variables.prototype.setValue;
   Game_Variables.prototype.setValue = function (variableId, value) {
     _setVarValue.call(this, variableId, value);
+
+    // we added a smooch
+    if (variableId == 629) {
+      LookOutsideAPClient.checkSmooch();
+    }
 
     const variableMapping = VARIABLE_LOCATIONS[variableId];
 

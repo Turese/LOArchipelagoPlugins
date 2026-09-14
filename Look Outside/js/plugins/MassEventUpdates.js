@@ -1558,7 +1558,7 @@ const MAP_OVERWORLD_ITEM_OVERRIDES = {
   363: {
     3: [
       "APT_12_PLANETARIUM_MUFFIN",
-      "$gameSelfSwitches.setValue([363, 3, 'A'], true)",
+      "$gameSelfSwitches.setValue([363, 4, 'A'], true)",
     ],
   },
 

@@ -2574,7 +2574,7 @@ EventLogicUpdates.clearAudreySporeGuardianDrop = function (ev) {
     EventLogicUpdates.itemDropReplaceScript(
       ev.pages[i].list,
       ARMOR_CODE,
-      "$gameSelfSwitches.setValue([127, 3, 'D'], true)",
+      "sSw(${FUNGUS_SPORE_GUARDIAN_AUDREY_LOOT_SWITCH}, true);",
     );
     ev.pages[i].list = EventLogicUpdates.messageReplacement(
       ev.pages[i].list,
