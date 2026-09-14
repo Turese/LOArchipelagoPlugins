@@ -1886,75 +1886,57 @@ EventLogicUpdates.clearRatKingCrown = function (ev) {
 
 EventLogicUpdates.clearAntoinesKey = function (ev) {
   // only one of these pages may actually be hit but im clearing both jic
-  ev.pages[0].list = EventLogicUpdates.itemDropClear(
-    ev.pages[0].list,
-    ITEM_CODE,
-  );
-  ev.pages[1].list = EventLogicUpdates.itemDropClear(
-    ev.pages[1].list,
-    ITEM_CODE,
-  );
-  ev.pages[0].list == EventLogicUpdates.deleteMessage(ev.pages[0].list, "Find");
-  ev.pages[1].list == EventLogicUpdates.deleteMessage(ev.pages[1].list, "Find");
+
+  [0, 1].forEach((pageIndex) => {
+    ev.pages[pageIndex].list = EventLogicUpdates.itemDropClear(
+      ev.pages[pageIndex].list,
+      ITEM_CODE,
+    );
+    ev.pages[pageIndex].list = EventLogicUpdates.itemDropClear(
+      ev.pages[pageIndex].list,
+      MESSAGE_CODE,
+    );
+  });
 };
 
 EventLogicUpdates.clearClydesKey = function (ev) {
   // only one of these pages may actually be hit but im clearing both jic
-  ev.pages[1].list = EventLogicUpdates.itemDropClear(
-    ev.pages[1].list,
-    ITEM_CODE,
-  );
-  ev.pages[2].list = EventLogicUpdates.itemDropClear(
-    ev.pages[2].list,
-    ITEM_CODE,
-  );
-
-  ev.pages[1].list = EventLogicUpdates.itemDropClear(
-    ev.pages[1].list,
-    MESSAGE_CODE,
-  );
-  ev.pages[2].list = EventLogicUpdates.itemDropClear(
-    ev.pages[2].list,
-    MESSAGE_CODE,
-  );
+  [1, 2].forEach((pageIndex) => {
+    ev.pages[pageIndex].list = EventLogicUpdates.itemDropClear(
+      ev.pages[pageIndex].list,
+      ITEM_CODE,
+    );
+    ev.pages[pageIndex].list = EventLogicUpdates.itemDropClear(
+      ev.pages[pageIndex].list,
+      MESSAGE_CODE,
+    );
+  });
 };
 
 EventLogicUpdates.clearJennifersKey = function (ev) {
-  ev.pages[0].list = EventLogicUpdates.itemDropClear(
-    ev.pages[0].list,
-    ITEM_CODE,
-  );
-  ev.pages[1].list = EventLogicUpdates.itemDropClear(
-    ev.pages[1].list,
-    ITEM_CODE,
-  );
-  ev.pages[0].list = EventLogicUpdates.itemDropClear(
-    ev.pages[0].list,
-    MESSAGE_CODE,
-  );
-  ev.pages[1].list = EventLogicUpdates.itemDropClear(
-    ev.pages[1].list,
-    MESSAGE_CODE,
-  );
+  [0, 1].forEach((pageIndex) => {
+    ev.pages[pageIndex].list = EventLogicUpdates.itemDropClear(
+      ev.pages[pageIndex].list,
+      ITEM_CODE,
+    );
+    ev.pages[pageIndex].list = EventLogicUpdates.itemDropClear(
+      ev.pages[pageIndex].list,
+      MESSAGE_CODE,
+    );
+  });
 };
 
 EventLogicUpdates.clearAugustesKey = function (ev) {
-  ev.pages[0].list = EventLogicUpdates.itemDropClear(
-    ev.pages[0].list,
-    ITEM_CODE,
-  );
-  ev.pages[1].list = EventLogicUpdates.itemDropClear(
-    ev.pages[1].list,
-    ITEM_CODE,
-  );
-  ev.pages[0].list = EventLogicUpdates.itemDropClear(
-    ev.pages[0].list,
-    MESSAGE_CODE,
-  );
-  ev.pages[1].list = EventLogicUpdates.itemDropClear(
-    ev.pages[1].list,
-    MESSAGE_CODE,
-  );
+  [0, 1].forEach((pageIndex) => {
+    ev.pages[pageIndex].list = EventLogicUpdates.itemDropClear(
+      ev.pages[pageIndex].list,
+      ITEM_CODE,
+    );
+    ev.pages[pageIndex].list = EventLogicUpdates.itemDropClear(
+      ev.pages[pageIndex].list,
+      MESSAGE_CODE,
+    );
+  });
 };
 
 EventLogicUpdates.clearGlitchElixirDrops = function (ev) {
