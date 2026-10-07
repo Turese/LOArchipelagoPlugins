@@ -44,9 +44,16 @@ BackInTime.isSpineDead = function () {
   return !!$gameSelfSwitches._data[[267, 19, "C"].toString()];
 };
 
+BackInTime.isMinesweeperDead = function () {
+  return !!$gameSelfSwitches._data[[240, 13, "D"].toString()];
+};
+
+BackInTime.fixMinesweeperKilled = function () {
+  delete $gameSelfSwitches._data[[240, 13, "D"].toString()]; // delete the dead minesweeper state on his event
+};
+
 BackInTime.fixSpineKilled = function () {
   delete $gameSelfSwitches._data[[267, 19, "C"].toString()]; // delete the dead spine state on her event
-  
 };
 
 BackInTime.isBenDead = function () {
@@ -59,7 +66,12 @@ BackInTime.fixBenKilled = function () {
 
 BackInTime.isWilhelminaDead = function () {
   // dont need to revive her if her ending not needed or if it's already achieved
-  if (!$gamePlayer.slotData || !$gamePlayer.slotData.goal.includes("Words of Power Ending") || LookOutsideAPClient.initializeReachedEndings()['wordsOfPower']) return false;
+  if (
+    !$gamePlayer.slotData ||
+    !$gamePlayer.slotData.goal.includes("Words of Power Ending") ||
+    LookOutsideAPClient.initializeReachedEndings()["wordsOfPower"]
+  )
+    return false;
   return gSw(1135);
 };
 
@@ -696,7 +708,20 @@ BackInTime.regretTemplates = {
     rCondition: BackInTime.isSpineDead,
     rName: "Spine.",
     rFunction: "BackInTime.fixSpineKilled",
-    rText: [["You think of Spine."], []],
+    rText: [
+      ["You think of Spine. She wasn't so bad, really. Just lonely."],
+      [
+        "Actually, is she dead? You're not sure she was exactly alive in",
+        "the first place. She probably started moving again the moment you left the room.",
+        "What was that brushing up against you just now? You feel you ought to go check...",
+      ],
+    ],
+  },
+  minesweeperKilled: {
+    rCondition: BackInTime.isMinesweeperDead,
+    rName: "Minesweeper.",
+    rFunction: "BackInTime.fixMinesweeperKilled",
+    rText: [["You think of the Minesweeper."]],
   },
   wilhelminaKilled: {
     rCondition: BackInTime.isWilhelminaDead,

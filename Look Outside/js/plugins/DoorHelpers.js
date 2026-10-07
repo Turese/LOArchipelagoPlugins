@@ -193,7 +193,7 @@ DoorHelpers.playerNeedsEncounter = function (encounterId) {
   const slotData = $gamePlayer.slotData;
   if (!slotData) return true;
 
-  if (!slotData.randomize_door_encounters) return false;
+  if (!slotData.include_door_encounters) return false;
   const combatToCheck = slotData.include_friendly_fire
     ? DOOR_ENCOUNTER_VICTORY_MAPPING
     : DOOR_REGULAR_ENCOUNTER_VICTORY_MAPPING;

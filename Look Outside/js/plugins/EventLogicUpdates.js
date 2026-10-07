@@ -1447,6 +1447,13 @@ EventLogicUpdates.forceHardmodeFloor1Transitions = function (ev) {
   }
 };
 
+EventLogicUpdates.updateRoofDoorBlackoutTrigger = function (ev) {
+  ev.pages[0].list = ev.pages[0].list.filter(
+    (listItem) =>
+      !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 987), // dont set blackoutfixed = true
+  );
+};
+
 EventLogicUpdates.makeSpiderLeave = function (ev) {
   if (ev.pages.length < 2) {
     ev.pages.push({
@@ -1892,10 +1899,13 @@ EventLogicUpdates.clearAntoinesKey = function (ev) {
       ev.pages[pageIndex].list,
       ITEM_CODE,
     );
-    ev.pages[pageIndex].list = EventLogicUpdates.itemDropClear(
-      ev.pages[pageIndex].list,
-      MESSAGE_CODE,
+    const hardmodeCheck = ev.pages[pageIndex].list.find(
+      (listEntry) =>
+        listEntry.code == 111 && listEntry.parameters[1] == HARDMODE,
     );
+
+    if (hardmodeCheck) hardmodeCheck.parameters[1] = FALSE_SWITCH_ID;
+
   });
 };
 
@@ -3414,6 +3424,9 @@ const EVENT_UPDATE_TABLE = {
     6: EventLogicUpdates.forceHardmodeFloor1Transitions,
     7: EventLogicUpdates.forceHardmodeFloor1Transitions,
   },
+  113: {
+    4: EventLogicUpdates.updateRoofDoorBlackoutTrigger,
+  },
   93: {
     3: EventLogicUpdates.forceLeighToStay,
   },
@@ -4100,6 +4113,36 @@ EventLogicUpdates.clearTroopsDrops = function () {
   }
   clearPhillippeRecruitmentEvent();
 
+  function clearNestorGun() {
+    let nestorGunList = JsonEx.makeDeepCopy(
+      originalTroops[118].pages[0].list,
+    );
+
+    nestorGunList = EventLogicUpdates.itemDropClear(
+      nestorGunList,
+      ARMOR_CODE,
+    );
+
+    nestorGunList = EventLogicUpdates.messageReplacement(
+      nestorGunList,
+      "Custom Handgun",
+      "APT_24_NESTOR_HEAD_CUSTOM_GUN",
+      "Receive",
+    );
+
+    // it sets switch 1 to whether player has item <custom gun>
+    // this sets it to always be false so player can receive item
+    nestorGunList = nestorGunList
+      .filter(
+        (listItem) =>
+          listItem.code === 111 &&
+          listItem.parameters[1] === 1,
+      )
+      .forEach((listItem) => (listItem.parameters[1] = FALSE_SWITCH_ID));
+
+    $dataTroops[118].pages[0].list = nestorGunList;
+  } clearNestorGun()
+
   function clearFungusMimicGifts() {
     let jeanPierreGiftList = JsonEx.makeDeepCopy(
       originalTroops[347].pages[1].list,
@@ -4349,6 +4392,14 @@ EventLogicUpdates.clearTroopsDrops = function () {
     faceTakerTroopList = EventLogicUpdates.itemDropClear(
       faceTakerTroopList,
       ARMOR_CODE,
+    );
+
+    faceTakerTroopList = EventLogicUpdates.messageReplacement(
+      faceTakerTroopList,
+      "my keys",
+      "FRED_PAINTERS_KEY",
+      "Here is",
+      "\nYou should have access to"
     );
 
     faceTakerTroopList = EventLogicUpdates.deleteMessage(

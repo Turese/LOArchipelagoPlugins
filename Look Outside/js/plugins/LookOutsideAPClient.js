@@ -485,6 +485,7 @@ LookOutsideAPClient.gameLoadedAPSetup = function (slotData, loadingSave) {
   }
   if (LookOutsideAPClient.isOnTitleMenu() && !loadingSave) return; // dont initialize if we're not in a game
   if (!$gamePlayer) return;
+  LookOutsideAPClient.setMode();
   LookOutsideAPClient.initializeLocationNames();
   LookOutsideAPClient.updateItems();
   LookOutsideAPClient.checkGoal();
@@ -700,7 +701,11 @@ LookOutsideAPClient.shouldSendMessageForLocation = function (locationId) {
     ].includes(locationId)
   )
     return true;
-  return locationId.endsWith("COMBAT_VICTORY") || locationId.includes("ROACH") || locationId.startsWith("SMOOCH");
+  return (
+    locationId.endsWith("COMBAT_VICTORY") ||
+    locationId.includes("ROACH") ||
+    locationId.startsWith("SMOOCH")
+  );
 };
 
 LookOutsideAPClient.isExcludedLocation = function (locationId) {
@@ -746,7 +751,12 @@ LookOutsideAPClient.watchLocations = function () {
   };
 
   LookOutsideAPClient.checkSmooch = function () {
-    const currentTroop = BattleManager._troop._troopId;
+    if (!$gameTroop) {
+      console.log("ERROR: NO TROOP FOUND FOR SMOOCH CHECK");
+      return;
+    }
+
+    const currentTroop = $gameTroop._troopId;
 
     const currentSmoochLocation = SMOOCH_TROOP_LOCATIONS[currentTroop];
     if (currentSmoochLocation) {
@@ -861,6 +871,28 @@ LookOutsideAPClient.updateItems = function () {
       console.warn("ITEMTYPE NYI", itemId);
     }
     $gamePlayer.APItemsIndex = i + 1;
+  }
+};
+
+LookOutsideAPClient.setMode = function () {
+  if (!$gamePlayer || !$gamePlayer.slotData) return;
+  const casanovaSwitch = 1199;
+  const permaSmoochSwitch = 1194;
+
+  const slotData = LookOutsideAPClient.initializeSlotData();
+  const goal = slotData["goal"];
+  const casanovaToggle = slotData["casanova_mode"];
+
+  if (
+    casanovaToggle ||
+    goal.find(
+      (goalName) =>
+        GOAL_MAPPING[goalName] == "smoochSultan" ||
+        GOAL_MAPPING[goalName] == "smoochVisitor",
+    )
+  ) {
+    sSw(casanovaSwitch, true);
+    sSw(permaSmoochSwitch, true);
   }
 };
 
