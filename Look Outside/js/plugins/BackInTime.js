@@ -123,7 +123,7 @@ BackInTime.fixLockedInOfferings = function () {
 BackInTime.fixErnestTooLate = function () {
   sSw(797, false); // ernestTooLate = OFF
   sSw(790, false); // colSqueakumDead = OFF
-  sVr(285,0) // ernestChase reset
+  sVr(285, 0); // ernestChase reset
 };
 
 BackInTime.fixErnestKilled = function () {
@@ -710,11 +710,15 @@ BackInTime.regretTemplates = {
     rName: "Spine.",
     rFunction: "BackInTime.fixSpineKilled",
     rText: [
-      ["You think of Spine. She wasn't so bad, really. Just lonely."],
       [
-        "Actually, is she dead? You're not sure she was exactly alive in",
-        "the first place. She probably started moving again the moment you left the room.",
-        "What was that brushing up against you just now? You feel you ought to go check...",
+        "You think of Spine. She wasn't so bad, really. Just lonely. Did you",
+        "really need to kill her? ...Though you're not certain she was",
+        "exactly alive in the first place.",
+      ],
+      [
+        "She probably started moving again the moment you left the",
+        "room. What was that brushing up against you just now?",
+        "You feel like you ought to go check...",
       ],
     ],
   },
@@ -722,7 +726,18 @@ BackInTime.regretTemplates = {
     rCondition: BackInTime.isMinesweeperDead,
     rName: "Minesweeper.",
     rFunction: "BackInTime.fixMinesweeperKilled",
-    rText: [["You think of the Minesweeper."]],
+    rText: [
+      [
+        "You think of the Minesweeper. It sure was nice of him to",
+        "pay you back for all those disarmed mines. If only you hadn't",
+        "killed him. You close your eyes and vow to do better...",
+      ],
+      [
+        "Actually, is he dead? You would think a solider would be",
+        "tougher than that. In fact you feel as though you should",
+        "return to the battlefield to check.",
+      ],
+    ],
   },
   wilhelminaKilled: {
     rCondition: BackInTime.isWilhelminaDead,
