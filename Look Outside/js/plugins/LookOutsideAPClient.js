@@ -445,7 +445,7 @@ LookOutsideAPClient.saveEndingReached = async function (endingIds) {
   const reachedEndings = LookOutsideAPClient.initializeReachedEndings();
 
   endingIds.forEach((endingId) => {
-    if (!ALL_ENDINGS.find((ending) => ending == endingId))
+    if (!Object.values(GOAL_MAPPING).find((ending) => ending == endingId))
       throw new Error("UNRECOGNIZED ENDING");
     reachedEndings[endingId] = true;
   });
@@ -467,8 +467,7 @@ LookOutsideAPClient.checkGoal = function () {
   const slotData = LookOutsideAPClient.initializeSlotData();
   if (!slotData || !reachedEndings) return;
   const goal = slotData["goal"];
-  return;
-  if (goal.every((g) => reachedEndings[GOAL_MAPPING[goal]]))
+  if (goal.every((g) => reachedEndings[GOAL_MAPPING[g]]))
     LookOutsideAPClient.submitGoal();
 };
 
@@ -760,15 +759,12 @@ LookOutsideAPClient.watchLocations = function () {
 
     const currentSmoochLocation = SMOOCH_TROOP_LOCATIONS[currentTroop];
     if (currentSmoochLocation) {
-      const reachedEndings = LookOutsideAPClient.initializeReachedEndings();
 
       if (currentSmoochLocation == "SMOOCH_SULTAN") {
         LookOutsideAPClient.setLocation("SMOOCH_SULTAN");
-        reachedEndings["smoochSultan"] = true;
-        LookOutsideAPClient.checkGoal();
+        LookOutsideAPClient.saveEndingReached(["smoochSultan"]);
       } else if (currentSmoochLocation == "SMOOCH_VISITOR") {
-        reachedEndings["smoochVisitor"] = true;
-        LookOutsideAPClient.checkGoal();
+        LookOutsideAPClient.saveEndingReached(["smoochVisitor"]);
       }
 
       LookOutsideAPClient.setLocation(currentSmoochLocation);

@@ -123,6 +123,7 @@ BackInTime.fixLockedInOfferings = function () {
 BackInTime.fixErnestTooLate = function () {
   sSw(797, false); // ernestTooLate = OFF
   sSw(790, false); // colSqueakumDead = OFF
+  sVr(285,0) // ernestChase reset
 };
 
 BackInTime.fixErnestKilled = function () {
@@ -614,7 +615,7 @@ BackInTime.regretTemplates = {
     ],
   },
   ernestTooLate: {
-    rName: "(([!s[797],!s[790]]))Ernest.",
+    rName: "(([!s[797],!s[790],!v[285]=1]))Ernest.",
     rFunction: "BackInTime.fixErnestTooLate",
     rText: [
       [

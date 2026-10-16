@@ -1450,7 +1450,7 @@ EventLogicUpdates.forceHardmodeFloor1Transitions = function (ev) {
 EventLogicUpdates.updateRoofDoorBlackoutTrigger = function (ev) {
   ev.pages[0].list = ev.pages[0].list.filter(
     (listItem) =>
-      !(listItem.code == SET_VAR_CODE && listItem.parameters[0] == 987), // dont set blackoutfixed = true
+      !(listItem.code == SET_SWITCH_CODE && listItem.parameters[0] == 987), // dont set blackoutfixed = true
   );
 };
 
@@ -1849,14 +1849,21 @@ EventLogicUpdates.clearCoffeeMachineEvent = function (ev) {
 EventLogicUpdates.clearElevatorFreakEvent = function (ev) {
   // the elevator access switch is also used to tell whether the freak is dead; lets change it to a self switch
   victorySwitchIdx = ev.pages[0].list.findIndex(
-    (listItem) => listItem.code == SET_SWITCH_CODE,
+    (listItem) => listItem.code == SET_SWITCH_CODE && listItem.parameters[0] == 115
   );
   if (victorySwitchIdx !== -1) {
     ev.pages[0].list[victorySwitchIdx] = {
       code: 355,
-      indent: 0,
+      indent: ev.pages[0].list[victorySwitchIdx].indent,
       parameters: ["$gameSelfSwitches.setValue([74, 3, 'A'], true)"],
     };
+
+    // clear out player transfer to basement
+    ev.pages[0].list = EventLogicUpdates.itemDropClear(
+      ev.pages[0].list,
+      201
+    );
+
     ev.pages[1].conditions = EventLogicUpdates.buildConditions("A");
   }
   // also clear out the power outage effect; player should trigger this manually
