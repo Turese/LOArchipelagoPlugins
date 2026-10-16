@@ -1849,7 +1849,8 @@ EventLogicUpdates.clearCoffeeMachineEvent = function (ev) {
 EventLogicUpdates.clearElevatorFreakEvent = function (ev) {
   // the elevator access switch is also used to tell whether the freak is dead; lets change it to a self switch
   victorySwitchIdx = ev.pages[0].list.findIndex(
-    (listItem) => listItem.code == SET_SWITCH_CODE && listItem.parameters[0] == 115
+    (listItem) =>
+      listItem.code == SET_SWITCH_CODE && listItem.parameters[0] == 115,
   );
   if (victorySwitchIdx !== -1) {
     ev.pages[0].list[victorySwitchIdx] = {
@@ -1859,10 +1860,7 @@ EventLogicUpdates.clearElevatorFreakEvent = function (ev) {
     };
 
     // clear out player transfer to basement
-    ev.pages[0].list = EventLogicUpdates.itemDropClear(
-      ev.pages[0].list,
-      201
-    );
+    ev.pages[0].list = EventLogicUpdates.itemDropClear(ev.pages[0].list, 201);
 
     ev.pages[1].conditions = EventLogicUpdates.buildConditions("A");
   }
@@ -1912,7 +1910,6 @@ EventLogicUpdates.clearAntoinesKey = function (ev) {
     );
 
     if (hardmodeCheck) hardmodeCheck.parameters[1] = FALSE_SWITCH_ID;
-
   });
 };
 
@@ -4121,14 +4118,9 @@ EventLogicUpdates.clearTroopsDrops = function () {
   clearPhillippeRecruitmentEvent();
 
   function clearNestorGun() {
-    let nestorGunList = JsonEx.makeDeepCopy(
-      originalTroops[118].pages[0].list,
-    );
+    let nestorGunList = JsonEx.makeDeepCopy(originalTroops[118].pages[0].list);
 
-    nestorGunList = EventLogicUpdates.itemDropClear(
-      nestorGunList,
-      ARMOR_CODE,
-    );
+    nestorGunList = EventLogicUpdates.itemDropClear(nestorGunList, ARMOR_CODE);
 
     nestorGunList = EventLogicUpdates.messageReplacement(
       nestorGunList,
@@ -4139,16 +4131,15 @@ EventLogicUpdates.clearTroopsDrops = function () {
 
     // it sets switch 1 to whether player has item <custom gun>
     // this sets it to always be false so player can receive item
-    nestorGunList = nestorGunList
+    nestorGunList
       .filter(
-        (listItem) =>
-          listItem.code === 111 &&
-          listItem.parameters[1] === 1,
+        (listItem) => listItem.code === 111 && listItem.parameters[1] === 1,
       )
       .forEach((listItem) => (listItem.parameters[1] = FALSE_SWITCH_ID));
 
     $dataTroops[118].pages[0].list = nestorGunList;
-  } clearNestorGun()
+  }
+  clearNestorGun();
 
   function clearFungusMimicGifts() {
     let jeanPierreGiftList = JsonEx.makeDeepCopy(
@@ -4406,7 +4397,7 @@ EventLogicUpdates.clearTroopsDrops = function () {
       "my keys",
       "FRED_PAINTERS_KEY",
       "Here is",
-      "\nYou should have access to"
+      "\nYou should have access to",
     );
 
     faceTakerTroopList = EventLogicUpdates.deleteMessage(
