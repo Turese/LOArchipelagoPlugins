@@ -1205,7 +1205,7 @@ EventLogicUpdates.getExcludedMessage = function (locationId) {
   ) {
     if (
       locationId == "MEAT_SYBIL_COMBAT_VICTORY" &&
-      slotData.goal.findIndex("Unity Ending") !== -1
+      slotData.goal.findIndex((goalName) => goalName == "Unity Ending") !== -1
     )
       return null;
     excludedSetName = "Superboss Location";
