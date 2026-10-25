@@ -94,12 +94,10 @@ const initializeConnectionStatus = function () {
     }
   };
 
-  const _Scene_Base_update = Scene_Base.prototype.update;
-
   // make it show on the overworld
   const _Scene_Map_createDisplayObjects =
     Scene_Map.prototype.createDisplayObjects;
-
+ 
   Scene_Map.prototype.createDisplayObjects = function () {
     _Scene_Map_createDisplayObjects.call(this);
 

@@ -263,6 +263,7 @@ MainMenuAPOptions.applyChanges = function () {
   const _onNameOk = Window_NameInput.prototype.onNameOk;
   Window_NameInput.prototype.onNameOk = function () {
     if (SceneManager._scene instanceof APNameScene) {
+      // need this or else it reverts to previous value instead of allowing empty
       this.playOkSound();
       this.callOkHandler();
     } else {
@@ -272,6 +273,7 @@ MainMenuAPOptions.applyChanges = function () {
 
   APNameScene.prototype.onInputOk = function () {
     this._actor.setName(this._editWindow.name());
+    // add the save to config manager command here
     ConfigManager.save();
     this.popScene();
     resetClient();
